@@ -1,5 +1,5 @@
 ---
-name: "Issue - 작업할 것"
+name: "BE Issue template"
 about: "Custom backend issue template"
 title: "[BE] Issue - "
 labels: BE Issue
