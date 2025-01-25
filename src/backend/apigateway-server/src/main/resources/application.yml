@@ -1,0 +1,28 @@
+server:
+  port: 8000
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+
+spring:
+  application:
+    name: apigateway-server
+  cloud:
+    gateway:
+      routes:
+#        # ToDo 유저 서버 개발 후 활성화
+#        - id: user-server
+#          uri: lb://CONFIG-SERVER
+#          predicates:
+#            - Path=/user-server/**
+#          filters:
+#            - RemoveRequestHeader=Cookie
+#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+#            - AuthorizationHeaderFilter
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans

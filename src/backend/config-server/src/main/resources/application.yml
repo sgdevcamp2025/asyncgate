@@ -7,6 +7,8 @@ spring:
   cloud:
     config:
       server:
+        encrypt:
+          enabled: true
         git:
           uri: https://github.com/sgdevcamp2025/asyncgate
           # ToDo 테스트 후 변경
@@ -19,3 +21,9 @@ management:
     web:
       exposure:
         include: health, refresh
+
+logging:
+  level:
+    org.springframework.cloud.config.server.encryption: DEBUG
+    org.springframework.cloud.config.server.decryption: DEBUG
+    org.springframework.security: DEBUG
