@@ -1,4 +1,4 @@
 eureka:
   client:
     service-url:
-      defaultZone: '{cipher}78c7dbbc4eb362dc27ae78ba86413013c9542f79d553b7185f3125b7222508db'
+      defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
