@@ -1,14 +1,15 @@
 package com.asyncgate.apigatewayserver.filter;
 
+import com.asyncgate.apigatewayserver.exception.ApiGatewayServerException;
 import com.asyncgate.apigatewayserver.jwt.JwtTokenProvider;
-import com.asyncgate.apigatewayserver.vo.ErrorResponse;
+import com.asyncgate.apigatewayserver.support.response.FailResponse;
+import com.asyncgate.apigatewayserver.exception.FailType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -34,48 +35,48 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     }
 
     @Override
-    public GatewayFilter apply(final AuthorizationHeaderFilter.Config config) {
-        return ((exchange, chain) -> {
+    public GatewayFilter apply(final Config config) {
+        return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
-                return onError(exchange, "no authorization header", HttpStatus.UNAUTHORIZED);
+                return onError(exchange, FailType.AUTHORIZATION_MISSING_HEADER);
             }
 
             String authorizationHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
             if (authorizationHeader == null || !authorizationHeader.startsWith(BEARER_PREFIX)) {
-                return onError(exchange, "no valid authorization header format", HttpStatus.UNAUTHORIZED);
+                return onError(exchange, FailType.AUTHORIZATION_INVALID_FORMAT);
             }
 
             String jwt = authorizationHeader.replace(BEARER_PREFIX, "");
 
-            if (!jwtTokenProvider.isJwtValid(jwt)) {
-                return onError(exchange, "token is not valid", HttpStatus.UNAUTHORIZED);
+            try {
+                jwtTokenProvider.validate(jwt);
+            } catch (ApiGatewayServerException e) {
+                return onError(exchange, e.getFailType());
             }
 
             return chain.filter(exchange);
-        });
+        };
     }
 
     private Mono<Void> onError(
             final ServerWebExchange exchange,
-            final String message,
-            final HttpStatus status
+            final FailType failType
     ) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(status);
+        response.setStatusCode(failType.getStatus());
         response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 
-        ErrorResponse errorResponse = ErrorResponse.of(
-                status.value(),
-                status.getReasonPhrase(),
-                message
+        FailResponse failResponse = FailResponse.of(
+                failType.getErrorCode(),
+                failType.getMessage(),
+                failType.getStatus().value()
         );
 
         try {
-            String errorResponseBody = objectMapper.writeValueAsString(errorResponse);
-            byte[] bytes = errorResponseBody.getBytes(StandardCharsets.UTF_8);
-
+            String responseBody = objectMapper.writeValueAsString(failResponse);
+            byte[] bytes = responseBody.getBytes(StandardCharsets.UTF_8);
             return response.writeWith(Mono.just(response.bufferFactory().wrap(bytes)));
         } catch (Exception e) {
             log.error("Failed to create error response", e);

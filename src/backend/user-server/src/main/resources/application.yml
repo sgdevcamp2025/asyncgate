@@ -1,0 +1,23 @@
+server:
+  port: 0
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+spring:
+  application:
+    name: user-server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans, refresh
+
+logging:
+  level:
+    com.asyncgate.user_server: DEBUG
