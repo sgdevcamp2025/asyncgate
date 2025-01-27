@@ -5,8 +5,57 @@
 **/gradle/wrapper/gradle-wrapper.jar
 **/gradle/wrapper/gradle-wrapper.properties
 
+**/.gradle/**
+
 **/HELP.MD
 
 src/backend/config-server/src/main/resources/bootstrap.yml
 
-src/backend/apigateway-server-server/src/main/resources/bootstrap.yml
+src/backend/apigateway-server/src/main/resources/bootstrap.yml
+
+src/backend/user-server/src/main/resources/bootstrap.yml
+
+src/backend/**/.gitignore
+
+# Ignore common files under backend
+src/backend/**/HELP.md
+src/backend/**/.gradle/
+src/backend/**/build/
+src/backend/**/gradle/wrapper/gradle-wrapper.jar
+!src/backend/**/src/main/**/build/
+!src/backend/**/src/test/**/build/
+
+# STS (Spring Tool Suite) specific files under backend
+src/backend/**/.apt_generated
+src/backend/**/.classpath
+src/backend/**/.factorypath
+src/backend/**/.project
+src/backend/**/.settings/
+src/backend/**/.springBeans
+src/backend/**/.sts4-cache
+src/backend/**/bin/
+!src/backend/**/src/main/**/bin/
+!src/backend/**/src/test/**/bin/
+
+# IntelliJ IDEA specific files under backend
+src/backend/**/.idea/
+src/backend/**/*.iws
+src/backend/**/*.iml
+src/backend/**/*.ipr
+src/backend/**/out/
+!src/backend/**/src/main/**/out/
+!src/backend/**/src/test/**/out/
+
+# NetBeans specific files under backend
+src/backend/**/nbproject/private/
+src/backend/**/nbbuild/
+src/backend/**/dist/
+src/backend/**/nbdist/
+src/backend/**/.nb-gradle/
+
+# VS Code specific files under backend
+src/backend/**/.vscode/
+
+# Bootstrap resources under backend
+src/backend/**/resources/bootstrap.yml
+src/backend/**/src/main/resources/bootstrap.yml
