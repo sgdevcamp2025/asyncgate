@@ -1,1 +1,12 @@
 .idea
+
+**/gradlew
+**/gradlew.bat
+**/gradle/wrapper/gradle-wrapper.jar
+**/gradle/wrapper/gradle-wrapper.properties
+
+**/HELP.MD
+
+src/backend/config-server/src/main/resources/bootstrap.yml
+
+src/backend/apigateway-server-server/src/main/resources/bootstrap.yml

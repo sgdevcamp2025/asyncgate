@@ -1,0 +1,31 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        encrypt:
+          enabled: true
+        git:
+          uri: https://github.com/sgdevcamp2025/asyncgate
+          # ToDo 테스트 후 변경
+#          default-label: be/feat/1-spring-cloud-init
+#          default-label: dev
+          default-label: main
+          search-paths:
+            - "config"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, refresh
+
+logging:
+  level:
+    org.springframework.cloud.config.server.encryption: DEBUG
+    org.springframework.cloud.config.server.decryption: DEBUG
+    org.springframework.security: DEBUG
