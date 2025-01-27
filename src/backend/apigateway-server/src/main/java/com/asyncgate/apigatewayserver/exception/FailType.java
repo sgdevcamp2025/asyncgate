@@ -1,4 +1,4 @@
-package com.asyncgate.apigatewayserver.support.response;
+package com.asyncgate.apigatewayserver.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

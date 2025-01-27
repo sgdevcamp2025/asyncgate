@@ -1,9 +1,9 @@
 package com.asyncgate.apigatewayserver.filter;
 
-import com.asyncgate.apigatewayserver.exception.JwtValidationException;
+import com.asyncgate.apigatewayserver.exception.ApiGatewayServerException;
 import com.asyncgate.apigatewayserver.jwt.JwtTokenProvider;
 import com.asyncgate.apigatewayserver.support.response.FailResponse;
-import com.asyncgate.apigatewayserver.support.response.FailType;
+import com.asyncgate.apigatewayserver.exception.FailType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +52,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             try {
                 jwtTokenProvider.validate(jwt);
-            } catch (JwtValidationException e) {
+            } catch (ApiGatewayServerException e) {
                 return onError(exchange, e.getFailType());
             }
 

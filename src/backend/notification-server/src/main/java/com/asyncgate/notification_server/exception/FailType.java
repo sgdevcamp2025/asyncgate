@@ -1,4 +1,4 @@
-package com.asyncgate.signaling_server.support.response;
+package com.asyncgate.notification_server.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

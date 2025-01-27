@@ -1,4 +1,4 @@
-package com.asyncgate.guild_server.support.response;
+package com.asyncgate.guild_server.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

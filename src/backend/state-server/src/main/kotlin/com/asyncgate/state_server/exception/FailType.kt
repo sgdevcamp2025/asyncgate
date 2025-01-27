@@ -1,4 +1,4 @@
-package com.asyncgate.chat_server.support.response
+package com.asyncgate.state_server.exception
 
 import org.springframework.http.HttpStatus
 

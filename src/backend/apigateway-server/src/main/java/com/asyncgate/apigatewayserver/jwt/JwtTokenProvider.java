@@ -1,7 +1,7 @@
 package com.asyncgate.apigatewayserver.jwt;
 
-import com.asyncgate.apigatewayserver.exception.JwtValidationException;
-import com.asyncgate.apigatewayserver.support.response.FailType;
+import com.asyncgate.apigatewayserver.exception.ApiGatewayServerException;
+import com.asyncgate.apigatewayserver.exception.FailType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -32,18 +32,18 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
             String subject = claims.getBody().getSubject();
             if (StringUtils.isBlank(subject)) {
-                throw new JwtValidationException(FailType.JWT_INVALID_TOKEN);
+                throw new ApiGatewayServerException(FailType.JWT_INVALID_TOKEN);
             }
         } catch (SignatureException e) {
-            throw new JwtValidationException(FailType.JWT_INVALID_SIGNATURE);
+            throw new ApiGatewayServerException(FailType.JWT_INVALID_SIGNATURE);
         } catch (ExpiredJwtException e) {
-            throw new JwtValidationException(FailType.JWT_EXPIRED_TOKEN);
+            throw new ApiGatewayServerException(FailType.JWT_EXPIRED_TOKEN);
         } catch (MalformedJwtException e) {
-            throw new JwtValidationException(FailType.JWT_MALFORMED_TOKEN);
+            throw new ApiGatewayServerException(FailType.JWT_MALFORMED_TOKEN);
         } catch (UnsupportedJwtException e) {
-            throw new JwtValidationException(FailType.JWT_UNSUPPORTED_TOKEN);
+            throw new ApiGatewayServerException(FailType.JWT_UNSUPPORTED_TOKEN);
         } catch (Exception e) {
-            throw new JwtValidationException(FailType.JWT_INVALID_TOKEN);
+            throw new ApiGatewayServerException(FailType.JWT_INVALID_TOKEN);
         }
     }
 }
