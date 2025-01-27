@@ -6,9 +6,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum FailType {
 
-    // 예시
-    // 400대  JWT_BAD_REQUEST  500 대 _JWT_BAD_REQUEST
-    JWT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Jwt_4001", "잘못된 JWT Token 타입입니다."),
+    // -------------------------------------------    Authorization    -------------------------------------------
+    AUTHORIZATION_MISSING_HEADER(HttpStatus.UNAUTHORIZED, "Auth_4011", "Authorization 헤더가 존재하지 않습니다."),
+    AUTHORIZATION_INVALID_FORMAT(HttpStatus.UNAUTHORIZED, "Auth_4012", "Authorization 헤더의 형식이 잘못되었습니다."),
+
+    // -------------------------------------------         JWT         -------------------------------------------
+    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "Auth_4013", "유효하지 않은 JWT 토큰입니다.");
 
     ;
     private final HttpStatus status;
