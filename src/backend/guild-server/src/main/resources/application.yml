@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: signaling_server
+    name: guild-server
 
 management:
   endpoints:
@@ -20,4 +20,4 @@ management:
 
 logging:
   level:
-    com.asyncgate.signaling_server: DEBUG
+    com.asyncgate.guild_server: DEBUG
