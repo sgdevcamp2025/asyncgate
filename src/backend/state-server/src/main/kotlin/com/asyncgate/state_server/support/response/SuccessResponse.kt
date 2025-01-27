@@ -12,7 +12,7 @@ data class SuccessResponse<T>(
     val message: String,
     val time: LocalDateTime = LocalDateTime.now(),
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    val result: T? = null
+    val result: T? = null,
 ) {
     companion object {
         fun <T> ok(result: T): SuccessResponse<T> {

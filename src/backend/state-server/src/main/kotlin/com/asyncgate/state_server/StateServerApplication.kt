@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class StateServerApplication
 
 fun main(args: Array<String>) {
-	runApplication<StateServerApplication>(*args)
+    runApplication<StateServerApplication>(*args)
 }

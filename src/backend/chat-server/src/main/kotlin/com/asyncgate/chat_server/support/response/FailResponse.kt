@@ -10,10 +10,14 @@ data class FailResponse(
     val httpStatus: Int,
     val errorCode: String,
     val message: String,
-    val time: LocalDateTime = LocalDateTime.now()
+    val time: LocalDateTime = LocalDateTime.now(),
 ) {
     companion object {
-        fun of(errorCode: String, message: String, httpStatus: Int): FailResponse {
+        fun of(
+            errorCode: String,
+            message: String,
+            httpStatus: Int,
+        ): FailResponse {
             return FailResponse(
                 httpStatus = httpStatus,
                 errorCode = errorCode,

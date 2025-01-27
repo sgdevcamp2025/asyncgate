@@ -5,5 +5,4 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EnableDiscoveryClient
-class DiscoveryClientConfig {
-}
+class DiscoveryClientConfig
