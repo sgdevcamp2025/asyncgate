@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: chat-server
+    name: state-server
 
 management:
   endpoints:
@@ -20,4 +20,4 @@ management:
 
 logging:
   level:
-    com.asyncgate.chat_server: DEBUG
+    com.asyncgate.state_server: DEBUG
