@@ -11,7 +11,11 @@ public enum FailType {
     AUTHORIZATION_INVALID_FORMAT(HttpStatus.UNAUTHORIZED, "Auth_4012", "Authorization 헤더의 형식이 잘못되었습니다."),
 
     // -------------------------------------------         JWT         -------------------------------------------
-    INVALID_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "Auth_4013", "유효하지 않은 JWT 토큰입니다.");
+    JWT_INVALID_SIGNATURE(HttpStatus.UNAUTHORIZED, "Jwt_4011", "JWT 서명이 유효하지 않습니다."),
+    JWT_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "Jwt_4012", "JWT 토큰이 만료되었습니다."),
+    JWT_MALFORMED_TOKEN(HttpStatus.UNAUTHORIZED, "Jwt_4013", "잘못된 형식의 JWT 토큰입니다."),
+    JWT_UNSUPPORTED_TOKEN(HttpStatus.UNAUTHORIZED, "Jwt_4014", "지원하지 않는 JWT 토큰입니다."),
+    JWT_INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Jwt_4015", "유효하지 않은 JWT 토큰입니다.");
 
     ;
     private final HttpStatus status;

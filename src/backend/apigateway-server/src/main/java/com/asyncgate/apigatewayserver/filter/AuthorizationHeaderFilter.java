@@ -1,5 +1,6 @@
 package com.asyncgate.apigatewayserver.filter;
 
+import com.asyncgate.apigatewayserver.exception.JwtValidationException;
 import com.asyncgate.apigatewayserver.jwt.JwtTokenProvider;
 import com.asyncgate.apigatewayserver.support.response.FailResponse;
 import com.asyncgate.apigatewayserver.support.response.FailType;
@@ -49,8 +50,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             String jwt = authorizationHeader.replace(BEARER_PREFIX, "");
 
-            if (!jwtTokenProvider.isJwtValid(jwt)) {
-                return onError(exchange, FailType.INVALID_JWT_TOKEN);
+            try {
+                jwtTokenProvider.validate(jwt);
+            } catch (JwtValidationException e) {
+                return onError(exchange, e.getFailType());
             }
 
             return chain.filter(exchange);
