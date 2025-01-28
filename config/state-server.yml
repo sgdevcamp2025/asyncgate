@@ -4,14 +4,3 @@ eureka:
       defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
-
-cloud:
-  aws:
-    credentials:
-      access-key: "{cipher}27ac45d373e5ab8c85a2a29dba678d5cf4bce210d4561ce5e8a107b8ed300c998e5e68fb10b4c4b7b51457bb7e0d03cd%"
-      secret-key: "{cipher}4f26ef87fac4e6434d23d5bf3a2cf460f4770b5e85ba0b96e52a3d22cb1fe553f5d8d2f14afff4600a6d01db476576639fb06ea006617722d588c24ebee798c7%"
-    region:
-      static: "{cipher}9c1fddf30981e4a52bb3b5d483faf3640277ea98e56cd896c4af07fc74f8a7d1"
-    s3:
-      bucket: "{cipher}791ddfe9003ecb7c329f694bbc05d386cf783189f0e7196d5a3dcbfec48d84bd"
-      url: "{cipher}0d5e7427241949e0656366472edde113f98d7b215ef6f982cbf6725264510beffa4da0f650b56d13c71eea6b5827179650b9aaf563bda7a0d6a14375ff7d8eff6a603b1063687a88b2073d3ca273d1f9"
