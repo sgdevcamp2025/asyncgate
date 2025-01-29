@@ -12,7 +12,7 @@ spring:
         git:
           uri: https://github.com/sgdevcamp2025/asyncgate
           # ToDo 테스트 후 변경
-#          default-label: be/feat/1-spring-cloud-init
+#         default-label: be/feat/5-s3
 #          default-label: dev
           default-label: main
           search-paths:
