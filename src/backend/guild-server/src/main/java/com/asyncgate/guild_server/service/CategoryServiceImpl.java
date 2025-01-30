@@ -32,6 +32,13 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
+    @Override
+    @Transactional
+    public void delete(final String userId, final String guildId, final String categoryId) {
+        validatePermission(userId, guildId);
+        categoryRepository.deleteById(categoryId);
+    }
+
     private void validatePermission(final String userId, final String guildId) {
         GuildMember guildMember = guildMemberRepository.getByUserIdAndGuildId(userId, guildId);
         // ToDo guildMember에 저장되어있는 카테고리 생성할 수 있는지 권한 확인

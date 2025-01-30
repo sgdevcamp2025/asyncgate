@@ -56,5 +56,14 @@ public class DomainUtil {
                     .guildId(category.getGuildId())
                     .build();
         }
+
+        public static Category toDomain(final CategoryEntity entity) {
+            return Category.builder()
+                    .id(entity.getId())
+                    .name(entity.getName())
+                    .isPrivate(entity.isPrivate())
+                    .guildId(entity.getGuildId())
+                    .build();
+        }
     }
 }
