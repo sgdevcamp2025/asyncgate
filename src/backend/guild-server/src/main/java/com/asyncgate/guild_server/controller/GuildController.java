@@ -1,7 +1,6 @@
 package com.asyncgate.guild_server.controller;
 
-import com.asyncgate.guild_server.dto.request.GuildCreateRequest;
-import com.asyncgate.guild_server.dto.request.GuildUpdateRequest;
+import com.asyncgate.guild_server.dto.request.GuildRequest;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.service.GuildService;
 import com.asyncgate.guild_server.support.response.SuccessResponse;
@@ -23,7 +22,7 @@ public class GuildController {
     @PostMapping
     public SuccessResponse<GuildResponse> create(
             final @AuthenticationPrincipal String userId,
-            final @RequestBody GuildCreateRequest request
+            final @RequestBody GuildRequest request
     ) {
         GuildResponse response = guildService.create(userId, request);
         return SuccessResponse.created(response);
@@ -33,7 +32,7 @@ public class GuildController {
     public SuccessResponse<GuildResponse> update(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId,
-            final @RequestBody GuildUpdateRequest request
+            final @RequestBody GuildRequest request
     ) {
         GuildResponse response = guildService.update(userId, guildId, request);
         return SuccessResponse.ok(response);

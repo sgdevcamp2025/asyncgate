@@ -7,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GuildResponse {
 
-    private String id;
+    private String guildId;
     private String name;
     private boolean isPrivate;
 
-    public static GuildResponse of(final String id, final String name, final boolean isPrivate) {
-        return new GuildResponse(id, name, isPrivate);
+    public static GuildResponse of(final String guildId, final String name, final boolean isPrivate) {
+        return new GuildResponse(guildId, name, isPrivate);
     }
 }

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class GuildCreateRequest {
+public class GuildRequest {
 
     @NotBlank(message = "길드 이름은 필수 입력 값입니다.")
     @Size(min = 3, max = 30, message = "길드 이름은 최소 3자 이상, 최대 30자 이하여야 합니다.")

@@ -1,7 +1,9 @@
 package com.asyncgate.guild_server.utility;
 
+import com.asyncgate.guild_server.domain.Category;
 import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.domain.GuildMember;
+import com.asyncgate.guild_server.entity.CategoryEntity;
 import com.asyncgate.guild_server.entity.GuildEntity;
 import com.asyncgate.guild_server.entity.GuildMemberEntity;
 
@@ -41,6 +43,17 @@ public class DomainUtil {
                     .userId(entity.getUserId())
                     .guildId(entity.getGuildId())
                     .guildRole(entity.getGuildRole())
+                    .build();
+        }
+    }
+
+    public static class CategoryMapper {
+        public static CategoryEntity toEntity(final Category category) {
+            return CategoryEntity.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .isPrivate(category.isPrivate())
+                    .guildId(category.getGuildId())
                     .build();
         }
     }
