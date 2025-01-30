@@ -18,8 +18,8 @@ cloud:
 
 spring:
   datasource:
-    driver-class-name: '{cipher}d7685c9b93a93f09b7debf30c5df7e6430f65b565779a244cb4e0768a401e82bf4389b94e6288b7b7585b9065d568d90'
-    url: '{cipher}d6f0b816a8b0ed81e1a00368e2fa853476d1c84d50273bff8c282dbeef32301226c48f6da2410013e0e2dc99c0d4ead0ee0820c76c632fc962c34bc8768c12d45e9e426e91f2eb4171466b742244e32581e4caf00301fa704158fea6bc869ec4e8b735ca23ace10c6072f09765afb755'
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user?useSSL=false&serverTimezone=Asia/Seoul
     username: '{cipher}56d454dea6f1332e8d9b5656400700369e6024c027fbc51e372dd64ff7ecb6a4'
     password: '{cipher}1e4d1a106597d4b9efd8a80f25ccb4cec28a08b2f02d9b4c3b1ff3ffae90ad83'
     hikari:
