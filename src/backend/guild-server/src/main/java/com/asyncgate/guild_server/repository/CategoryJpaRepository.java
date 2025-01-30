@@ -16,4 +16,8 @@ public interface CategoryJpaRepository extends JpaRepository<CategoryEntity, Str
     @Query("UPDATE CategoryEntity c SET c.deleted = true WHERE c.id = :categoryId AND c.deleted = false")
     void softDeleteById(@Param("categoryId") String categoryId);
 
+    @Modifying
+    @Query("UPDATE CategoryEntity c SET c.deleted = true WHERE c.guildId = :guildId AND c.deleted = false")
+    void softDeleteAllByGuildId(@Param("guildId") String guildId);
+
 }

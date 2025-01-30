@@ -28,7 +28,7 @@ public class GuildMemberRepositoryImpl implements GuildMemberRepository {
     }
 
     @Override
-    public void softDeleteAllByGuildId(final String guildId) {
+    public void deleteAllByGuildId(final String guildId) {
         jpaRepository.softDeleteAllByGuildId(guildId);
     }
 }

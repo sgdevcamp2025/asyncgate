@@ -23,13 +23,11 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     @Override
     public void deleteById(final String categoryId) {
-//         1번 방법이 좀 더 DDD 스럽긴해서 고민 중입니다.
-        // 1번 방법
-//        CategoryEntity categoryEntity = categoryJpaRepository.findActiveCategoryById(categoryId)
-//                .orElseThrow(() -> new GuildServerException(FailType.CATEGORY_NOT_FOUND));
-//        categoryEntity.deactivate();
-
-        // 2번 방법
         categoryJpaRepository.softDeleteById(categoryId);
+    }
+
+    @Override
+    public void deleteAllByGuildId(final String guildId) {
+        categoryJpaRepository.softDeleteAllByGuildId(guildId);
     }
 }

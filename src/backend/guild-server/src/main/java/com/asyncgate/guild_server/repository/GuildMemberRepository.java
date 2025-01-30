@@ -7,5 +7,5 @@ public interface GuildMemberRepository {
 
     GuildMember getByUserIdAndGuildId(String userId, String guildId);
 
-    void softDeleteAllByGuildId(String guildId);
+    void deleteAllByGuildId(String guildId);
 }

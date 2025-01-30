@@ -6,4 +6,6 @@ public interface CategoryRepository {
     void save(Category category);
 
     void deleteById(String categoryId);
+
+    void deleteAllByGuildId(String guildId);
 }

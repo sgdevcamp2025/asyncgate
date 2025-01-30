@@ -28,9 +28,7 @@ public class GuildRepositoryImpl implements GuildRepository {
 
     @Override
     public void deleteById(final String guildId) {
-        GuildEntity guildEntity = getActiveGuildEntityById(guildId);
-        guildEntity.deactivate();
-        guildJpaRepository.save(guildEntity);
+        guildJpaRepository.softDeleteById(guildId);
     }
 
     private GuildEntity getActiveGuildEntityById(final String guildId) {
