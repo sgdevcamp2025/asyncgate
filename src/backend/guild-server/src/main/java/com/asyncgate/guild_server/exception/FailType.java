@@ -21,6 +21,8 @@ public enum FailType {
 
     // Guild
     GUILD_NOT_FOUND(HttpStatus.NOT_FOUND, "Guild_4041", "Guild를 찾을 수 없습니다."),
+    GUILD_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Guild_4042", "Guild에 존재하는 회원이 아닙니다."),
+    GUILD_PERMISSION_DENIED(HttpStatus.FORBIDDEN, "Guild_4031", "Guild를 삭제하거나 수정할 권한이 없습니다."),
 
     ;
 

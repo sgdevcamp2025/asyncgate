@@ -5,9 +5,9 @@ import com.asyncgate.guild_server.dto.request.GuildUpdateRequest;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 
 public interface GuildService {
-    GuildResponse create(GuildCreateRequest request);
+    GuildResponse create(String userId, GuildCreateRequest request);
 
-    void delete(String guildId);
+    void delete(String userId, String guildId);
 
-    GuildResponse update(String guildId, GuildUpdateRequest request);
+    GuildResponse update(String userId, String guildId, GuildUpdateRequest request);
 }

@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "guild")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class GuildEntity extends BaseEntity {
 
     @Id
@@ -22,4 +21,11 @@ public class GuildEntity extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String name;
     private boolean isPrivate;
+
+    @Builder
+    private GuildEntity(final String id, final String name, final boolean isPrivate) {
+        this.id = id;
+        this.name = name;
+        this.isPrivate = isPrivate;
+    }
 }

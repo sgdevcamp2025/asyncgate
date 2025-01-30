@@ -4,7 +4,7 @@ import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.entity.GuildEntity;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
-import com.asyncgate.guild_server.mapper.GuildMapper;
+import com.asyncgate.guild_server.utility.DomainUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,14 +16,14 @@ public class GuildRepositoryImpl implements GuildRepository {
 
     @Override
     public void save(final Guild guild) {
-        GuildEntity guildEntity = GuildMapper.toEntity(guild);
+        GuildEntity guildEntity = DomainUtil.GuildMapper.toEntity(guild);
         guildJpaRepository.save(guildEntity);
     }
 
     @Override
     public Guild getById(final String guildId) {
         GuildEntity guildEntity = getActiveGuildEntityById(guildId);
-        return GuildMapper.toDomain(guildEntity);
+        return DomainUtil.GuildMapper.toDomain(guildEntity);
     }
 
     @Override

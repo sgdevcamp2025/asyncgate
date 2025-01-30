@@ -1,6 +1,7 @@
 package com.asyncgate.guild_server.domain;
 
 import java.util.UUID;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -10,7 +11,8 @@ public class Guild implements Identifiable {
     private final String name;
     private final boolean isPrivate;
 
-    public Guild(final String id, final String name, final boolean isPrivate) {
+    @Builder
+    private Guild(final String id, final String name, final boolean isPrivate) {
         this.id = id;
         this.name = name;
         this.isPrivate = isPrivate;
