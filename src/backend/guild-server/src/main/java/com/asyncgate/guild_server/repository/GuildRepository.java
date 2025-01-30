@@ -6,4 +6,6 @@ public interface GuildRepository {
     void save(Guild guild);
 
     Guild getById(String guildId);
+
+    void deleteById(String guildId);
 }

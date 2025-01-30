@@ -22,8 +22,19 @@ public class GuildRepositoryImpl implements GuildRepository {
 
     @Override
     public Guild getById(final String guildId) {
-        GuildEntity guildEntity = guildJpaRepository.findById(guildId)
-                .orElseThrow(() -> new GuildServerException(FailType.GUILD_NOT_FOUND));
+        GuildEntity guildEntity = getActiveGuildEntityById(guildId);
         return GuildMapper.toDomain(guildEntity);
+    }
+
+    @Override
+    public void deleteById(final String guildId) {
+        GuildEntity guildEntity = getActiveGuildEntityById(guildId);
+        guildEntity.deactivate();
+        guildJpaRepository.save(guildEntity);
+    }
+
+    private GuildEntity getActiveGuildEntityById(final String guildId) {
+        return guildJpaRepository.findActiveGuildById(guildId)
+                .orElseThrow(() -> new GuildServerException(FailType.GUILD_NOT_FOUND));
     }
 }

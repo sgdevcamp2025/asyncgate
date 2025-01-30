@@ -25,8 +25,9 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public void delete() {
-
+    @Transactional
+    public void delete(final String guildId) {
+        guildRepository.deleteById(guildId);
     }
 
     @Override
