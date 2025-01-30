@@ -12,15 +12,14 @@ spring:
   cloud:
     gateway:
       routes:
-#        # ToDo 유저 서버 개발 후 활성화
-#        - id: user-server
-#          uri: lb://CONFIG-SERVER
-#          predicates:
-#            - Path=/user-server/**
-#          filters:
-#            - RemoveRequestHeader=Cookie
-#            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-#            - AuthorizationHeaderFilter
+        - id: guild-server
+          uri: lb://GUILD-SERVER
+          predicates:
+            - Path=/guild/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
 management:
   endpoints:
     web:
