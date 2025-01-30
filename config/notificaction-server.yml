@@ -4,3 +4,7 @@ eureka:
       defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
+
+spring:
+  kafka:
+    bootstrap-servers: '{cipher}276ada73fdb90a68125e2dcce993b77384c8c80d672a78b26eefda56bf60f808f77d486f86d9f1de94e6cb342711bb6211dd8f6cbf98b01e4ece80b938b40acf1cfef75ec74c910f32e68873b06dd3d5'
