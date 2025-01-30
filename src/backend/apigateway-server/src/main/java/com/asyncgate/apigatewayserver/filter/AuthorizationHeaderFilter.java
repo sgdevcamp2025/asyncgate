@@ -56,7 +56,16 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
                 return onError(exchange, e.getFailType());
             }
 
-            return chain.filter(exchange);
+            ServerHttpRequest modifiedRequest = exchange.getRequest()
+                    .mutate()
+                    .header(HttpHeaders.AUTHORIZATION, jwt)
+                    .build();
+
+            return chain.filter(
+                    exchange.mutate()
+                            .request(modifiedRequest)
+                            .build()
+            );
         };
     }
 
