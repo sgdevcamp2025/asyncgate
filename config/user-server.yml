@@ -15,3 +15,29 @@ cloud:
     s3:
       bucket: '{cipher}791ddfe9003ecb7c329f694bbc05d386cf783189f0e7196d5a3dcbfec48d84bd'
       url: '{cipher}0d5e7427241949e0656366472edde113f98d7b215ef6f982cbf6725264510beffa4da0f650b56d13c71eea6b5827179650b9aaf563bda7a0d6a14375ff7d8eff6a603b1063687a88b2073d3ca273d1f9'
+
+spring:
+  datasource:
+    driver-class-name: '{cipher}d7685c9b93a93f09b7debf30c5df7e6430f65b565779a244cb4e0768a401e82bf4389b94e6288b7b7585b9065d568d90'
+    url: '{cipher}d6f0b816a8b0ed81e1a00368e2fa853476d1c84d50273bff8c282dbeef32301226c48f6da2410013e0e2dc99c0d4ead0ee0820c76c632fc962c34bc8768c12d45e9e426e91f2eb4171466b742244e32581e4caf00301fa704158fea6bc869ec4e8b735ca23ace10c6072f09765afb755'
+    username: '{cipher}56d454dea6f1332e8d9b5656400700369e6024c027fbc51e372dd64ff7ecb6a4'
+    password: '{cipher}1e4d1a106597d4b9efd8a80f25ccb4cec28a08b2f02d9b4c3b1ff3ffae90ad83'
+    hikari:
+      pool-name: '{cipher}b5848c642d7a307f92f1579de1809bcd68584ddbd8a474cc1d2ddef834c093e9'
+      maximum-pool-size: 5
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: '{cipher}623b0560db7816d2ffd55845e924030f6acdc6d044abce0a1826e873e268b17d1171767fd2e21614d47fd6cdd9f07ff0cd2a39d7c956e179ad7e850a8a375292'
+        default_batch_fetch_size: 100
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+    open-in-view: false
