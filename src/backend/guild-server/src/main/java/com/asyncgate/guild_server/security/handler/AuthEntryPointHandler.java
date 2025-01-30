@@ -29,7 +29,7 @@ public class AuthEntryPointHandler implements AuthenticationEntryPoint {
     }
 
     public void writeResponse(final HttpServletResponse response) throws IOException {
-        FailType failType = FailType.JWT_INVALID_TOKEN;
+        FailType failType = FailType._JWT_INVALID_TOKEN;
         FailResponse failResponse = FailResponse.of(
                 failType.getErrorCode(),
                 failType.getMessage(),

@@ -38,7 +38,7 @@ public class JwtService {
                     .parseClaimsJws(token);
             return claims.getBody().getSubject();
         } catch (Exception e) {
-            throw new GuildServerException(FailType.JWT_INVALID_TOKEN);
+            throw new GuildServerException(FailType._JWT_INVALID_TOKEN);
         }
     }
 

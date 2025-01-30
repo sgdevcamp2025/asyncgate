@@ -1,12 +1,13 @@
 package com.asyncgate.guild_server.service;
 
 import com.asyncgate.guild_server.dto.request.GuildCreateRequest;
-import com.asyncgate.guild_server.dto.response.GuildCreateResponse;
+import com.asyncgate.guild_server.dto.request.GuildUpdateRequest;
+import com.asyncgate.guild_server.dto.response.GuildResponse;
 
 public interface GuildService {
-    GuildCreateResponse create(final GuildCreateRequest request);
+    GuildResponse create(final GuildCreateRequest request);
 
     void delete();
 
-    void update();
+    GuildResponse update(String guildId, GuildUpdateRequest request);
 }

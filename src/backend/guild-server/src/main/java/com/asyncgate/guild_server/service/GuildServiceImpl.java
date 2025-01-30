@@ -2,9 +2,8 @@ package com.asyncgate.guild_server.service;
 
 import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.dto.request.GuildCreateRequest;
-import com.asyncgate.guild_server.dto.response.GuildCreateResponse;
-import com.asyncgate.guild_server.entity.GuildEntity;
-import com.asyncgate.guild_server.mapper.GuildMapper;
+import com.asyncgate.guild_server.dto.request.GuildUpdateRequest;
+import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.repository.GuildRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,10 @@ public class GuildServiceImpl implements GuildService {
 
     @Override
     @Transactional
-    public GuildCreateResponse create(final GuildCreateRequest request) {
+    public GuildResponse create(final GuildCreateRequest request) {
         Guild guild = Guild.create(request.getName(), request.isPrivate());
-        GuildEntity guildEntity = GuildMapper.toEntity(guild);
-        guildRepository.create(guildEntity);
-        return GuildCreateResponse.of(guildEntity.getId(), guildEntity.getName(), guildEntity.isPrivate());
+        guildRepository.save(guild);
+        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate());
     }
 
     @Override
@@ -32,7 +30,11 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public void update() {
-
+    @Transactional
+    public GuildResponse update(final String guildId, final GuildUpdateRequest request) {
+        Guild guild = guildRepository.getById(guildId);
+        Guild updateGuild = guild.update(request.getName(), request.isPrivate());
+        guildRepository.save(updateGuild);
+        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate());
     }
 }

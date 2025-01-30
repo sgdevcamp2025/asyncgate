@@ -21,4 +21,7 @@ public class Guild implements Identifiable {
         return new Guild(id, name, isPrivate);
     }
 
+    public Guild update(final String name, final boolean isPrivate) {
+        return new Guild(this.id, name, isPrivate);
+    }
 }
