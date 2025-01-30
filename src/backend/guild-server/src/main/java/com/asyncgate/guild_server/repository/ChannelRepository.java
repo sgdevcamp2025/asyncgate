@@ -6,4 +6,9 @@ public interface ChannelRepository {
     void create(Channel channel);
 
     void delete(String categoryId);
+
+    void deleteAllByGuildId(String guildId);
+
+    void deleteAllByCategoryId(String categoryId);
+
 }

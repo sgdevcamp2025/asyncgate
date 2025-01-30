@@ -22,4 +22,14 @@ public class ChannelRepositoryImpl implements ChannelRepository {
     public void delete(final String categoryId) {
         jpaRepository.softDeleteById(categoryId);
     }
+
+    @Override
+    public void deleteAllByGuildId(final String guildId) {
+        jpaRepository.softDeleteAllByGuildId(guildId);
+    }
+
+    @Override
+    public void deleteAllByCategoryId(final String categoryId) {
+        jpaRepository.softDeleteAllByCategoryId(categoryId);
+    }
 }

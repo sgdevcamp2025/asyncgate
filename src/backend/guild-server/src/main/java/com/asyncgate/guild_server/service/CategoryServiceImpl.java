@@ -6,6 +6,7 @@ import com.asyncgate.guild_server.domain.GuildRole;
 import com.asyncgate.guild_server.dto.request.CategoryRequest;
 import com.asyncgate.guild_server.dto.response.CategoryResponse;
 import com.asyncgate.guild_server.repository.CategoryRepository;
+import com.asyncgate.guild_server.repository.ChannelRepository;
 import com.asyncgate.guild_server.repository.GuildMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final GuildMemberRepository guildMemberRepository;
+    private final ChannelRepository channelRepository;
 
     @Override
     @Transactional
@@ -37,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(final String userId, final String guildId, final String categoryId) {
         validatePermission(userId, guildId);
         categoryRepository.deleteById(categoryId);
+        channelRepository.deleteAllByCategoryId(categoryId);
     }
 
     private void validatePermission(final String userId, final String guildId) {

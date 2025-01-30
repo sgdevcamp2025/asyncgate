@@ -8,6 +8,7 @@ import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
 import com.asyncgate.guild_server.repository.CategoryRepository;
+import com.asyncgate.guild_server.repository.ChannelRepository;
 import com.asyncgate.guild_server.repository.GuildMemberRepository;
 import com.asyncgate.guild_server.repository.GuildRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class GuildServiceImpl implements GuildService {
     private final GuildRepository guildRepository;
     private final GuildMemberRepository guildMemberRepository;
     private final CategoryRepository categoryRepository;
+    private final ChannelRepository channelRepository;
 
     @Override
     @Transactional
@@ -42,6 +44,7 @@ public class GuildServiceImpl implements GuildService {
         guildRepository.deleteById(guildId);
         guildMemberRepository.deleteAllByGuildId(guildId);
         categoryRepository.deleteAllByGuildId(guildId);
+        channelRepository.deleteAllByGuildId(guildId);
     }
 
     private void validatePermission(final String userId, final String guildId) {

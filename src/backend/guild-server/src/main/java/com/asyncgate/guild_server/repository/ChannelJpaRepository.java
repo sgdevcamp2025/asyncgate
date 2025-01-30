@@ -12,4 +12,11 @@ public interface ChannelJpaRepository extends JpaRepository<ChannelEntity, Strin
     @Query("UPDATE CategoryEntity c SET c.deleted = true WHERE c.id = :categoryId")
     void softDeleteById(@Param("categoryId") String categoryId);
 
+    @Modifying
+    @Query("UPDATE ChannelEntity c SET c.deleted = true WHERE c.guildId = :guildId AND c.deleted = false")
+    void softDeleteAllByGuildId(@Param("guildId") String guildId);
+
+    @Modifying
+    @Query("UPDATE ChannelEntity c SET c.deleted = true WHERE c.categoryId = :categoryId AND c.deleted = false")
+    void softDeleteAllByCategoryId(@Param("categoryId") String categoryId);
 }
