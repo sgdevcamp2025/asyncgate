@@ -6,7 +6,6 @@ import lombok.Getter;
 
 @Getter
 public class Guild implements Identifiable {
-
     private final String id;
     private final String name;
     private final boolean isPrivate;

@@ -26,6 +26,10 @@ public enum FailType {
 
     // Category
     CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "Category_4041", "Category를 찾을 수 없습니다."),
+
+    // Channel
+    CHANNEL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Channel_4001", "채널 타입은 VOICE 또는 TEXT만 가능합니다."),
+
     ;
 
     private final HttpStatus status;
