@@ -22,9 +22,9 @@ spring:
             - AuthorizationHeaderFilter
         # ToDo 유저 서버 개발 후 활성화
         - id: user-server
-          uri: lb://CONFIG-SERVER
+          uri: lb://USER-SERVER
           predicates:
-            - Path=/user-server/**
+            - Path=/users/**
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
