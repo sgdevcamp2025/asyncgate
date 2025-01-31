@@ -26,7 +26,7 @@ public class MemberCommandController {
      */
     @PostMapping("/sign-up")
     public SuccessResponse<?> signUp(
-            @RequestBody RegisterTemporaryMemberRequestDto requestDto
+            @RequestBody final RegisterTemporaryMemberRequestDto requestDto
     ) {
         RegisterTemporaryMemberUseCase.execute(requestDto);
         return SuccessResponse.created("인증번호가 발송되었습니다.");
@@ -37,7 +37,7 @@ public class MemberCommandController {
      */
     @PostMapping("/sign-in")
     public SuccessResponse<DefaultJsonWebTokenResponseDto> signIn(
-            @RequestBody LoginMemberRequestDto requestDto
+            @RequestBody final LoginMemberRequestDto requestDto
     ) {
         return SuccessResponse.ok(
                 LoginMemberUsecase.execute(requestDto)
@@ -49,7 +49,7 @@ public class MemberCommandController {
      */
     @PostMapping("/authentication-code")
     public SuccessResponse<?> validateAuthentication(
-            @RequestBody ValidateAuthenticationCodeRequestDto requestDto
+            @RequestBody final ValidateAuthenticationCodeRequestDto requestDto
     ) {
         ValidateAuthenticationCodeUseCase.execute(requestDto);
         return SuccessResponse.ok("인증되었습니다.");
