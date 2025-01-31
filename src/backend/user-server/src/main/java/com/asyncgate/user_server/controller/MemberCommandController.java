@@ -29,7 +29,7 @@ public class MemberCommandController {
             @RequestBody RegisterTemporaryMemberRequestDto requestDto
     ) {
         RegisterTemporaryMemberUseCase.execute(requestDto);
-        return SuccessResponse.created(null);
+        return SuccessResponse.created("인증번호가 발송되었습니다.");
     }
 
     /**
@@ -52,6 +52,6 @@ public class MemberCommandController {
             @RequestBody ValidateAuthenticationCodeRequestDto requestDto
     ) {
         ValidateAuthenticationCodeUseCase.execute(requestDto);
-        return SuccessResponse.ok(null);
+        return SuccessResponse.ok("인증되었습니다.");
     }
 }
