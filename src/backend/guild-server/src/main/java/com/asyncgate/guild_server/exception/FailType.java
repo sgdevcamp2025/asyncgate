@@ -29,6 +29,7 @@ public enum FailType {
 
     // Channel
     CHANNEL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Channel_4001", "채널 타입은 VOICE 또는 TEXT만 가능합니다."),
+    CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "Channel_4041", "채널을 찾을 수 없습니다."),
 
     ;
 

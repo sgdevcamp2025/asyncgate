@@ -1,25 +1,29 @@
 package com.asyncgate.guild_server.domain;
 
+import com.asyncgate.guild_server.dto.request.ChannelUpdateRequest;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 @Getter
 public class Channel implements Identifiable {
     private final String id;
     private final String guildId;
     private final String categoryId;
-    private final String name;
     private final ChannelType channelType;
-    private final boolean isPrivate;
+    private String name;
+    private String topic;
+    private boolean isPrivate;
 
     @Builder
     private Channel(String id, String guildId, String categoryId, String name,
-                    ChannelType channelType, boolean isPrivate) {
+                    String topic, ChannelType channelType, boolean isPrivate) {
         this.id = id;
         this.guildId = guildId;
         this.categoryId = categoryId;
         this.name = name;
+        this.topic = topic;
         this.channelType = channelType;
         this.isPrivate = isPrivate;
     }
@@ -37,5 +41,27 @@ public class Channel implements Identifiable {
                 .channelType(channelType)
                 .isPrivate(isPrivate)
                 .build();
+    }
+
+    private void changeTopic(final String topic) {
+        this.topic = topic;
+    }
+
+    private void changeName(final String name) {
+        if (StringUtils.hasText(name) && !this.name.equals(name)) {
+            this.name = name;
+        }
+    }
+
+    private void changePrivate(final boolean isPrivate) {
+        if (this.isPrivate != isPrivate) {
+            this.isPrivate = isPrivate;
+        }
+    }
+
+    public void update(final ChannelUpdateRequest request) {
+        changeName(request.getName());
+        changePrivate(request.isPrivate());
+        changeTopic(request.getTopic());
     }
 }

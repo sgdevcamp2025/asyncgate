@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class Category {
+public class Category implements Identifiable {
     private final String id;
     private final String name;
     private final boolean isPrivate;

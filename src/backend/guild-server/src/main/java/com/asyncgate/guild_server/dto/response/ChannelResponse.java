@@ -1,30 +1,16 @@
 package com.asyncgate.guild_server.dto.response;
 
 import com.asyncgate.guild_server.domain.ChannelType;
+import lombok.AccessLevel;
 import lombok.Builder;
 
-public class ChannelResponse {
-    private final String channelId;
-    private final String guildId;
-    private final String categoryId;
-    private final String name;
-    private final ChannelType channelType;
-    private final boolean isPrivate;
+@Builder(access = AccessLevel.PRIVATE)
+public record ChannelResponse(
+        String channelId, String guildId, String categoryId, String name,
+        String topic, ChannelType channelType, boolean isPrivate
+) {
 
-    @Builder
-    public ChannelResponse(
-            String channelId, String guildId, String categoryId,
-            String name, ChannelType channelType, boolean isPrivate
-    ) {
-        this.channelId = channelId;
-        this.guildId = guildId;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.channelType = channelType;
-        this.isPrivate = isPrivate;
-    }
-
-    public static ChannelResponse of(
+    public static ChannelResponse create(
             final String channelId, final String guildId, final String categoryId,
             final String name, final ChannelType channelType, final boolean isPrivate
     ) {
@@ -33,6 +19,21 @@ public class ChannelResponse {
                 .guildId(guildId)
                 .categoryId(categoryId)
                 .name(name)
+                .channelType(channelType)
+                .isPrivate(isPrivate)
+                .build();
+    }
+
+    public static ChannelResponse update(
+            final String channelId, final String guildId, final String categoryId,
+            final String name, final String topic, final ChannelType channelType, final boolean isPrivate
+    ) {
+        return ChannelResponse.builder()
+                .channelId(channelId)
+                .guildId(guildId)
+                .categoryId(categoryId)
+                .name(name)
+                .topic(topic)
                 .channelType(channelType)
                 .isPrivate(isPrivate)
                 .build();

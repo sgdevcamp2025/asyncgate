@@ -3,7 +3,7 @@ package com.asyncgate.guild_server.repository;
 import com.asyncgate.guild_server.domain.Channel;
 
 public interface ChannelRepository {
-    void create(Channel channel);
+    void save(Channel channel);
 
     void delete(String categoryId);
 
@@ -11,4 +11,5 @@ public interface ChannelRepository {
 
     void deleteAllByCategoryId(String categoryId);
 
+    Channel getById(String channelId);
 }
