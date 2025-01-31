@@ -1,8 +1,7 @@
 package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.domain.Member;
-import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequestDto;
-import com.asyncgate.user_server.entity.MemberEntity;
+import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequest;
 import com.asyncgate.user_server.entity.redis.AuthenticationCodeEntity;
 import com.asyncgate.user_server.entity.redis.TemporaryMemberEntity;
 import com.asyncgate.user_server.exception.FailType;
@@ -26,17 +25,17 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
 
     @Override
     @Transactional
-    public void execute(ValidateAuthenticationCodeRequestDto requestDto) {
+    public void execute(final ValidateAuthenticationCodeRequest request) {
 
-        AuthenticationCodeEntity storedAuthCode = authenticationCodeRepository.findById(requestDto.email())
+        AuthenticationCodeEntity storedAuthCode = authenticationCodeRepository.findById(request.email())
                 .orElseThrow(() -> new UserServerException(FailType._EMAIL_AUTH_CODE_NOT_FOUND));
 
-        if (!storedAuthCode.getCode().equals(requestDto.authenticationCode())) {
+        if (!storedAuthCode.getCode().equals(request.authenticationCode())) {
             throw new UserServerException(FailType._INVALID_EMAIL_AUTH_CODE);
         }
 
         // 임시 회원 정보 get
-        TemporaryMemberEntity tempMember = temporaryMemberRepository.findByEmail(requestDto.email())
+        TemporaryMemberEntity tempMember = temporaryMemberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserServerException(FailType.TEMPORARY_MEMBER_NOT_FOUND));
 
         log.info("tempMember: {}", tempMember);

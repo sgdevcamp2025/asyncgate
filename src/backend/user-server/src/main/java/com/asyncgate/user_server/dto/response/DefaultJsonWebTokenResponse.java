@@ -6,13 +6,13 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class DefaultJsonWebTokenResponseDto {
+public class DefaultJsonWebTokenResponse {
     @JsonProperty("access_token")
     @NotBlank
     private final String accessToken;
 
     @Builder
-    public DefaultJsonWebTokenResponseDto(String accessToken) {
+    public DefaultJsonWebTokenResponse(String accessToken) {
         this.accessToken = accessToken;
     }
 }

@@ -2,7 +2,7 @@ package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.domain.redis.AuthenticationCode;
 import com.asyncgate.user_server.domain.redis.TemporaryMember;
-import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequestDto;
+import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import com.asyncgate.user_server.repository.MemberRepository;
@@ -33,21 +33,21 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
 
     @Override
     @Transactional
-    public void execute(RegisterTemporaryMemberRequestDto requestDto) {
+    public void execute(final RegisterTemporaryMemberRequest request) {
 
         // 중복된 이메일인지 확인
-        if (isDuplicatedEmail(requestDto.email())) {
+        if (isDuplicatedEmail(request.email())) {
             throw new UserServerException(FailType.ALREADY_EXIST_EMAIL);
         }
 
         // 도메인 객체 생성
         TemporaryMember tempMember = TemporaryMember.builder()
                 .id(UUID.randomUUID().toString()) // 고유 ID 생성
-                .email(requestDto.email())
-                .password(requestDto.password())
-                .name(requestDto.name())
-                .nickname(requestDto.nickname())
-                .birth(requestDto.birth())
+                .email(request.email())
+                .password(request.password())
+                .name(request.name())
+                .nickname(request.nickname())
+                .birth(request.birth())
                 .build();
 
         tempMember.encodePassword(passwordEncoder);
@@ -57,12 +57,12 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
 
         String code = PasswordUtil.generateAuthCode(6);
 
-        AuthenticationCode authCode = AuthenticationCode.createAuthenticationCode(requestDto.email(), code);
+        AuthenticationCode authCode = AuthenticationCode.createAuthenticationCode(request.email(), code);
 
         authenticationCodeRepository.save(DomainUtil.AuthenticationCodeMapper.toEntity(authCode));
 
         // 메일 전송 (추후 비동기로 변경)
-        emailUtil.sendAuthenticationCode(requestDto.email(), code);
+        emailUtil.sendAuthenticationCode(request.email(), code);
     }
 
     /**

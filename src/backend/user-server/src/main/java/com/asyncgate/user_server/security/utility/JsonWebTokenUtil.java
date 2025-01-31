@@ -1,7 +1,7 @@
 package com.asyncgate.user_server.security.utility;
 
 import com.asyncgate.user_server.security.constant.Constants;
-import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponseDto;
+import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import io.jsonwebtoken.*;
@@ -34,8 +34,8 @@ public class JsonWebTokenUtil implements InitializingBean {
     }
 
     // token 생성 메서드
-    public DefaultJsonWebTokenResponseDto generateDefaultJsonWebTokens(final String id) {
-        return new DefaultJsonWebTokenResponseDto(
+    public DefaultJsonWebTokenResponse generateDefaultJsonWebTokens(final String id) {
+        return new DefaultJsonWebTokenResponse(
                 generateToken(id, accessTokenExpirePeriod)
         );
     }

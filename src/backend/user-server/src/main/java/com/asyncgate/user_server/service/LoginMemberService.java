@@ -1,8 +1,8 @@
 package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.domain.Member;
-import com.asyncgate.user_server.dto.request.LoginMemberRequestDto;
-import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponseDto;
+import com.asyncgate.user_server.dto.request.LoginMemberRequest;
+import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import com.asyncgate.user_server.repository.MemberRepository;
@@ -18,13 +18,13 @@ public class LoginMemberService implements LoginMemberUsecase {
     private final JsonWebTokenUtil jsonWebTokenUtil;
 
     @Override
-    public DefaultJsonWebTokenResponseDto execute(LoginMemberRequestDto requestDto) {
-        Member member = memberRepository.findByEmail(requestDto.email())
+    public DefaultJsonWebTokenResponse execute(final LoginMemberRequest request) {
+        Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserServerException(FailType.MEMBER_NOT_EXIST_EMAIL));
         if (member == null) {
             throw new UserServerException(FailType.MEMBER_NOT_EXIST_EMAIL);
         }
-        if (!member.getPassword().equals(requestDto.password())) {
+        if (!member.getPassword().equals(request.password())) {
             throw new UserServerException(FailType._INVALID_PASSWORD);
         }
 

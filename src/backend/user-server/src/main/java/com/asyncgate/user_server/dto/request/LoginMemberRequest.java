@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public record LoginMemberRequestDto(
+public record LoginMemberRequest(
 
         @JsonProperty("email")
         @NotBlank(message = "이메일을 입력해주세요.")

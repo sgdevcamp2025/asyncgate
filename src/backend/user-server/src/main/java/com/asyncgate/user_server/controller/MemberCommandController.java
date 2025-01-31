@@ -1,9 +1,9 @@
 package com.asyncgate.user_server.controller;
 
-import com.asyncgate.user_server.dto.request.LoginMemberRequestDto;
-import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequestDto;
-import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequestDto;
-import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponseDto;
+import com.asyncgate.user_server.dto.request.LoginMemberRequest;
+import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
+import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequest;
+import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.support.response.SuccessResponse;
 import com.asyncgate.user_server.usecase.LoginMemberUsecase;
 import com.asyncgate.user_server.usecase.RegisterTemporaryMemberUseCase;
@@ -26,9 +26,9 @@ public class MemberCommandController {
      */
     @PostMapping("/sign-up")
     public SuccessResponse<?> signUp(
-            @RequestBody final RegisterTemporaryMemberRequestDto requestDto
+            @RequestBody final RegisterTemporaryMemberRequest request
     ) {
-        RegisterTemporaryMemberUseCase.execute(requestDto);
+        RegisterTemporaryMemberUseCase.execute(request);
         return SuccessResponse.created("인증번호가 발송되었습니다.");
     }
 
@@ -36,11 +36,11 @@ public class MemberCommandController {
      * 1.1 로그인
      */
     @PostMapping("/sign-in")
-    public SuccessResponse<DefaultJsonWebTokenResponseDto> signIn(
-            @RequestBody final LoginMemberRequestDto requestDto
+    public SuccessResponse<DefaultJsonWebTokenResponse> signIn(
+            @RequestBody final LoginMemberRequest request
     ) {
         return SuccessResponse.ok(
-                LoginMemberUsecase.execute(requestDto)
+                LoginMemberUsecase.execute(request)
         );
     }
 
@@ -49,9 +49,9 @@ public class MemberCommandController {
      */
     @PostMapping("/authentication-code")
     public SuccessResponse<?> validateAuthentication(
-            @RequestBody final ValidateAuthenticationCodeRequestDto requestDto
+            @RequestBody final ValidateAuthenticationCodeRequest request
     ) {
-        ValidateAuthenticationCodeUseCase.execute(requestDto);
+        ValidateAuthenticationCodeUseCase.execute(request);
         return SuccessResponse.ok("인증되었습니다.");
     }
 }
