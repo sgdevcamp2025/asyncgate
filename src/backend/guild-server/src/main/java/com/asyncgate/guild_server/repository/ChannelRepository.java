@@ -2,6 +2,8 @@ package com.asyncgate.guild_server.repository;
 
 import com.asyncgate.guild_server.domain.Channel;
 
+import java.util.List;
+
 public interface ChannelRepository {
     void save(Channel channel);
 
@@ -12,4 +14,6 @@ public interface ChannelRepository {
     void deleteAllByCategoryId(String categoryId);
 
     Channel getById(String channelId);
+
+    List<Channel> findActiveAllByGuildId(String guildId);
 }

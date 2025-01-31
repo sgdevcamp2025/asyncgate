@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.dto.response;
 
+import com.asyncgate.guild_server.domain.Channel;
 import com.asyncgate.guild_server.domain.ChannelType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,32 +11,15 @@ public record ChannelResponse(
         String topic, ChannelType channelType, boolean isPrivate
 ) {
 
-    public static ChannelResponse create(
-            final String channelId, final String guildId, final String categoryId,
-            final String name, final ChannelType channelType, final boolean isPrivate
-    ) {
+    public static ChannelResponse from(final Channel channel) {
         return ChannelResponse.builder()
-                .channelId(channelId)
-                .guildId(guildId)
-                .categoryId(categoryId)
-                .name(name)
-                .channelType(channelType)
-                .isPrivate(isPrivate)
-                .build();
-    }
-
-    public static ChannelResponse update(
-            final String channelId, final String guildId, final String categoryId,
-            final String name, final String topic, final ChannelType channelType, final boolean isPrivate
-    ) {
-        return ChannelResponse.builder()
-                .channelId(channelId)
-                .guildId(guildId)
-                .categoryId(categoryId)
-                .name(name)
-                .topic(topic)
-                .channelType(channelType)
-                .isPrivate(isPrivate)
+                .channelId(channel.getId())
+                .guildId(channel.getGuildId())
+                .categoryId(channel.getCategoryId())
+                .name(channel.getName())
+                .topic(channel.getTopic())
+                .channelType(channel.getChannelType())
+                .isPrivate(channel.isPrivate())
                 .build();
     }
 }

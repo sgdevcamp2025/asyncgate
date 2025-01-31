@@ -6,25 +6,35 @@ import com.asyncgate.guild_server.support.utility.DomainUtil.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class CategoryRepositoryImpl implements CategoryRepository {
 
-    private final CategoryJpaRepository categoryJpaRepository;
+    private final CategoryJpaRepository jpaRepository;
+    private final CategoryQueryDslRepository queryDslRepository;
 
     @Override
     public void save(final Category category) {
         CategoryEntity categoryEntity = CategoryMapper.toEntity(category);
-        categoryJpaRepository.save(categoryEntity);
+        jpaRepository.save(categoryEntity);
     }
 
     @Override
     public void deleteById(final String categoryId) {
-        categoryJpaRepository.softDeleteById(categoryId);
+        jpaRepository.softDeleteById(categoryId);
     }
 
     @Override
     public void deleteAllByGuildId(final String guildId) {
-        categoryJpaRepository.softDeleteAllByGuildId(guildId);
+        jpaRepository.softDeleteAllByGuildId(guildId);
+    }
+
+    @Override
+    public List<Category> findActiveAllByGuildId(final String guildId) {
+        return queryDslRepository.findActiveAllByGuildId(guildId).stream()
+                .map(CategoryMapper::toDomain)
+                .toList();
     }
 }

@@ -28,14 +28,7 @@ public class ChannelServiceImpl implements ChannelService {
         );
         channelRepository.save(channel);
 
-        return ChannelResponse.create(
-                channel.getId(),
-                channel.getGuildId(),
-                channel.getCategoryId(),
-                channel.getName(),
-                channel.getChannelType(),
-                channel.isPrivate()
-        );
+        return ChannelResponse.from(channel);
     }
 
     @Override
@@ -58,16 +51,7 @@ public class ChannelServiceImpl implements ChannelService {
         Channel channel = channelRepository.getById(channelId);
         channel.update(request);
         channelRepository.save(channel);
-
-        return ChannelResponse.update(
-                channel.getId(),
-                channel.getGuildId(),
-                channel.getCategoryId(),
-                channel.getName(),
-                channel.getTopic(),
-                channel.getChannelType(),
-                channel.isPrivate()
-        );
+        return ChannelResponse.from(channel);
     }
 
     private void validatePermission(final String userId, final String guildId, final String categoryId) {

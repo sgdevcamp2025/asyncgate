@@ -4,6 +4,8 @@ import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.domain.GuildRole;
 import com.asyncgate.guild_server.dto.request.GuildRequest;
+import com.asyncgate.guild_server.dto.response.CategoryResponse;
+import com.asyncgate.guild_server.dto.response.ChannelResponse;
 import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.exception.FailType;
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +47,7 @@ public class GuildServiceImpl implements GuildService {
         GuildMember guildMember = GuildMember.join(userId, guild.getId(), GuildRole.ADMIN);
         guildMemberRepository.save(guildMember);
 
-        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate(), profileImageUrl);
+        return GuildResponse.from(guild);
     }
 
     private String getProfileImageUrl(final MultipartFile profileImage) {
@@ -80,13 +84,27 @@ public class GuildServiceImpl implements GuildService {
         String profileImageUrl = determineProfileImageUrl(request.getProfileImage(), guild.getProfileImageUrl());
         guild.update(request.getName(), request.isPrivate(), profileImageUrl);
         guildRepository.save(guild);
-        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate(), profileImageUrl);
+        return GuildResponse.from(guild);
     }
 
     @Override
     public GuildInfoResponse get(final String userId, final String guildId) {
+        validGuildMember(userId, guildId);
+        GuildResponse guildResponse = GuildResponse.from(guildRepository.getById(guildId));
 
-        return null;
+        List<CategoryResponse> categoryResponses = categoryRepository.findActiveAllByGuildId(guildId).stream()
+                .map(CategoryResponse::from)
+                .toList();
+
+        List<ChannelResponse> channelResponses = channelRepository.findActiveAllByGuildId(guildId).stream()
+                .map(ChannelResponse::from)
+                .toList();
+
+        return GuildInfoResponse.of(guildResponse, categoryResponses, channelResponses);
+    }
+
+    private void validGuildMember(String userId, String guildId) {
+        guildMemberRepository.getByUserIdAndGuildId(userId, guildId);
     }
 
     private String determineProfileImageUrl(final MultipartFile newProfileImage, final String currentProfileImageUrl) {

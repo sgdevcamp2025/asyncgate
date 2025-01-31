@@ -26,12 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
         validatePermission(userId, request.getGuildId());
         Category category = Category.create(request.getName(), request.getGuildId(), request.isPrivate());
         categoryRepository.save(category);
-        return CategoryResponse.of(
-                category.getId(),
-                category.getName(),
-                category.isPrivate(),
-                category.getGuildId()
-        );
+        return CategoryResponse.from(category);
     }
 
     @Override

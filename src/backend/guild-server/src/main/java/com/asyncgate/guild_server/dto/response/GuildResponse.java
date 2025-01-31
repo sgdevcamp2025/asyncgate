@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.dto.response;
 
+import com.asyncgate.guild_server.domain.Guild;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,10 +13,7 @@ public class GuildResponse {
     private boolean isPrivate;
     private String profileImageUrl;
 
-    public static GuildResponse of(
-            final String guildId, final String name,
-            final boolean isPrivate, final String profileImageUrl
-    ) {
-        return new GuildResponse(guildId, name, isPrivate, profileImageUrl);
+    public static GuildResponse from(final Guild guild) {
+        return new GuildResponse(guild.getId(), guild.getName(), guild.isPrivate(), guild.getProfileImageUrl());
     }
 }
