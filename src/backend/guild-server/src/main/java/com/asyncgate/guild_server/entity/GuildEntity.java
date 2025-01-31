@@ -21,11 +21,13 @@ public class GuildEntity extends BaseEntity {
     @Column(nullable = false, length = 30)
     private String name;
     private boolean isPrivate;
+    private String profileImageUrl;
 
     @Builder
-    private GuildEntity(final String id, final String name, final boolean isPrivate) {
+    private GuildEntity(String id, String name, boolean isPrivate, String profileImageUrl) {
         this.id = id;
         this.name = name;
         this.isPrivate = isPrivate;
+        this.profileImageUrl = profileImageUrl;
     }
 }

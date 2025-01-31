@@ -2,7 +2,7 @@ package com.asyncgate.guild_server.repository;
 
 import com.asyncgate.guild_server.domain.Category;
 import com.asyncgate.guild_server.entity.CategoryEntity;
-import com.asyncgate.guild_server.utility.DomainUtil.CategoryMapper;
+import com.asyncgate.guild_server.support.utility.DomainUtil.CategoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -4,7 +4,7 @@ import com.asyncgate.guild_server.domain.Channel;
 import com.asyncgate.guild_server.entity.ChannelEntity;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
-import com.asyncgate.guild_server.utility.DomainUtil;
+import com.asyncgate.guild_server.support.utility.DomainUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

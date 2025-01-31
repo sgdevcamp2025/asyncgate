@@ -7,10 +7,10 @@ import com.asyncgate.guild_server.support.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("/guild")
@@ -22,7 +22,7 @@ public class GuildController {
     @PostMapping
     public SuccessResponse<GuildResponse> create(
             final @AuthenticationPrincipal String userId,
-            final @RequestBody GuildRequest request
+            final @ModelAttribute GuildRequest request
     ) {
         GuildResponse response = guildService.create(userId, request);
         return SuccessResponse.created(response);
@@ -32,7 +32,7 @@ public class GuildController {
     public SuccessResponse<GuildResponse> update(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId,
-            final @RequestBody GuildRequest request
+            final @ModelAttribute GuildRequest request
     ) {
         GuildResponse response = guildService.update(userId, guildId, request);
         return SuccessResponse.ok(response);

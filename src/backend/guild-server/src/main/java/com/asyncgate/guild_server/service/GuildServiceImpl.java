@@ -11,9 +11,12 @@ import com.asyncgate.guild_server.repository.CategoryRepository;
 import com.asyncgate.guild_server.repository.ChannelRepository;
 import com.asyncgate.guild_server.repository.GuildMemberRepository;
 import com.asyncgate.guild_server.repository.GuildRepository;
+import com.asyncgate.guild_server.support.utility.S3Util;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -24,17 +27,30 @@ public class GuildServiceImpl implements GuildService {
     private final GuildMemberRepository guildMemberRepository;
     private final CategoryRepository categoryRepository;
     private final ChannelRepository channelRepository;
+    private final S3Util s3Util;
+
+    @Value("${cloud.aws.s3.profile.default.url}")
+    private String defaultProfileImageUrl;
 
     @Override
     @Transactional
     public GuildResponse create(final String userId, final GuildRequest request) {
-        Guild guild = Guild.create(request.getName(), request.isPrivate());
+        String profileImageUrl = getProfileImageUrl(request.getProfileImage());
+        Guild guild = Guild.create(request.getName(), request.isPrivate(), profileImageUrl);
         guildRepository.save(guild);
 
         GuildMember guildMember = GuildMember.join(userId, guild.getId(), GuildRole.ADMIN);
         guildMemberRepository.save(guildMember);
 
-        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate());
+        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate(), profileImageUrl);
+    }
+
+    private String getProfileImageUrl(final MultipartFile profileImage) {
+        if (profileImage != null && !profileImage.isEmpty()) {
+            return s3Util.uploadFile(profileImage, Guild.class.getName());
+        } else {
+            return defaultProfileImageUrl;
+        }
     }
 
     @Override
@@ -60,8 +76,25 @@ public class GuildServiceImpl implements GuildService {
         Guild guild = guildRepository.getById(guildId);
         validatePermission(userId, guildId);
 
-        Guild updateGuild = guild.update(request.getName(), request.isPrivate());
-        guildRepository.save(updateGuild);
-        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate());
+        String profileImageUrl = determineProfileImageUrl(request.getProfileImage(), guild.getProfileImageUrl());
+        guild.update(request.getName(), request.isPrivate(), profileImageUrl);
+        guildRepository.save(guild);
+        return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate(), profileImageUrl);
+    }
+
+    private String determineProfileImageUrl(final MultipartFile newProfileImage, final String currentProfileImageUrl) {
+        // 클라이언트가 프로필을 변경하지 않았으므로 기존 이미지 유지
+        if (newProfileImage == null) {
+            return currentProfileImageUrl;
+        }
+        // 클라이언트가 기존 이미지를 삭제하려고 빈 파일을 보낸 경우 -> 기본 프로필로 변경
+        if (newProfileImage.isEmpty()) {
+            return defaultProfileImageUrl;
+        }
+        if (!currentProfileImageUrl.equals(defaultProfileImageUrl)) {
+            // 기존 파일 삭제
+            s3Util.deleteFile(currentProfileImageUrl);
+        }
+        return s3Util.uploadFile(newProfileImage, Guild.class.getName());
     }
 }

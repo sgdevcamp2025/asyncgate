@@ -1,4 +1,4 @@
-package com.asyncgate.guild_server.utility;
+package com.asyncgate.guild_server.support.utility;
 
 import com.asyncgate.guild_server.domain.Category;
 import com.asyncgate.guild_server.domain.Channel;
@@ -17,6 +17,7 @@ public class DomainUtil {
                     .id(guild.getId())
                     .name(guild.getName())
                     .isPrivate(guild.isPrivate())
+                    .profileImageUrl(guild.getProfileImageUrl())
                     .build();
         }
 
@@ -25,6 +26,7 @@ public class DomainUtil {
                     .id(entity.getId())
                     .name(entity.getName())
                     .isPrivate(entity.isPrivate())
+                    .profileImageUrl(entity.getProfileImageUrl())
                     .build();
         }
     }
