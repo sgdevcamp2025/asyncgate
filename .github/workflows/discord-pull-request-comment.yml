@@ -1,0 +1,76 @@
+name: Discord Notification on Pull Request
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+env:
+  'bianbbc87': '874203782391660554'
+  'chysis': '243991296060948491'
+  'onegood07': '674195406107967498'
+  'toychip': '534083612572909578'
+  'zelkovaria': '905293004322005043'
+
+jobs:
+  notify-on-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify on PR Review
+        run: |
+          echo "Notify on Discord"
+
+          PR_URL='${{ github.event.pull_request.html_url }}'
+          PR_TITLE='${{ github.event.pull_request.title }}'
+          PR_AUTHOR='${{ github.event.pull_request.user.login }}'
+          REVIEWER='${{ github.event.review.user.login }}'
+
+          REVIEWER_DISCORD_ID='${{ env[github.event.review.user.id] }}'
+          AUTHOR_DISCORD_ID='${{ env[github.event.pull_request.user.id] }}'
+
+          if [ "${{ github.event.review.state }}" = 'approved' ]; then
+            COMMENT="PR Approved 되었습니다🚀"
+            COLOR=65305
+          elif [ "${{ github.event.review.state }}" = 'changes_requested' ]; then
+            COMMENT="PR에 수정 요구사항이 있습니다👀"
+            COLOR=16736293
+          elif [ "${{ github.event.review.state }}" = 'commented' ]; then
+            COMMENT="PR에 코멘트가 등록됐습니다📝"
+            COLOR=8421504
+          else 
+            echo "Invalid review state"
+            exit 0
+          fi
+
+          JSON_FILE=$(mktemp)
+          cat > $JSON_FILE <<EOF
+          {
+            "content": "<@$AUTHOR_DISCORD_ID> $COMMENT",
+            "embeds": [
+              {
+                "author": {
+                    "name": "$PR_AUTHOR",
+                    "icon_url": "https://github.com/$PR_AUTHOR.png"
+                },
+                "title": "$PR_TITLE",
+                "url": "$PR_URL",
+                "color": $COLOR,
+                "footer": {
+                  "text": "AsyncGate"
+                },
+                "fields": [
+                  {
+                    "name": "리뷰어",
+                    "value": "$REVIEWER",
+                    "inline": true
+                  }
+                ],
+                "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+                }
+              ]
+            }
+          EOF
+          cat $JSON_FILE
+          curl -X POST -H 'Content-type: application/json' \
+          --data @$JSON_FILE \
+          $WEBHOOK_URL
+          rm $JSON_FILE

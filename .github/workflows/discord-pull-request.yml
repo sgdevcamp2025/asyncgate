@@ -1,0 +1,48 @@
+name: Discord Notification on Pull Request
+
+on:
+  pull_request:
+    types: [opened, reopened] # PR이 열렸을 때 작동합니다.
+
+jobs:
+  notify-on-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify on PR
+        run: |
+          echo "Notify on Discord"
+
+          PR_URL='${{ github.event.pull_request.html_url }}'
+          PR_TITLE='${{ github.event.pull_request.title }}'
+          PR_AUTHOR='${{ github.event.sender.login }}'
+          WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}
+
+          JSON_FILE=$(mktemp)
+          cat > $JSON_FILE <<EOF
+          {
+            "content": "@everyone 새로운 Pull Request가 등록됐어요🔥",
+            "allowed_mentions": {
+              "parse": ["everyone"]
+            },
+            "embeds": [
+              {
+                "author": {
+                    "name": "$PR_AUTHOR",
+                    "icon_url": "https://github.com/$PR_AUTHOR.png"
+                },
+                "title": "$PR_TITLE",
+                "url": "$PR_URL",
+                "color": 6156543,
+                "footer": {
+                  "text": "AsyncGate"
+                },
+                "timestamp": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+              }
+            ]
+          }
+          EOF
+          cat $JSON_FILE
+          curl -X POST -H 'Content-type: application/json' \
+          --data @$JSON_FILE \
+          $WEBHOOK_URL
+          rm $JSON_FILE
