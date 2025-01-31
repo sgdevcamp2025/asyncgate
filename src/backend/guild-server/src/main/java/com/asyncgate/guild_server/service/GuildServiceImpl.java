@@ -4,6 +4,7 @@ import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.domain.GuildRole;
 import com.asyncgate.guild_server.dto.request.GuildRequest;
+import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
@@ -80,6 +81,12 @@ public class GuildServiceImpl implements GuildService {
         guild.update(request.getName(), request.isPrivate(), profileImageUrl);
         guildRepository.save(guild);
         return GuildResponse.of(guild.getId(), guild.getName(), guild.isPrivate(), profileImageUrl);
+    }
+
+    @Override
+    public GuildInfoResponse get(final String userId, final String guildId) {
+
+        return null;
     }
 
     private String determineProfileImageUrl(final MultipartFile newProfileImage, final String currentProfileImageUrl) {

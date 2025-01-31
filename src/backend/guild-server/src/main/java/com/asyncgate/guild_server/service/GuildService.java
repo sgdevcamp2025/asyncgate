@@ -1,6 +1,7 @@
 package com.asyncgate.guild_server.service;
 
 import com.asyncgate.guild_server.dto.request.GuildRequest;
+import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 
 public interface GuildService {
@@ -9,4 +10,6 @@ public interface GuildService {
     void delete(String userId, String guildId);
 
     GuildResponse update(String userId, String guildId, GuildRequest request);
+
+    GuildInfoResponse get(String userId, String guildId);
 }

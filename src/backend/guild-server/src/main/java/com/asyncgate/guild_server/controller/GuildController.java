@@ -1,6 +1,7 @@
 package com.asyncgate.guild_server.controller;
 
 import com.asyncgate.guild_server.dto.request.GuildRequest;
+import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.service.GuildService;
 import com.asyncgate.guild_server.support.response.SuccessResponse;
@@ -22,6 +23,15 @@ public class GuildController {
     ) {
         GuildResponse response = guildService.create(userId, request);
         return SuccessResponse.created(response);
+    }
+
+    @GetMapping("/{guildId}")
+    public SuccessResponse<GuildInfoResponse> raedOne(
+            final @AuthenticationPrincipal String userId,
+            final @PathVariable String guildId
+    ) {
+        GuildInfoResponse response = guildService.get(userId, guildId);
+        return SuccessResponse.ok(response);
     }
 
     @PatchMapping("/{guildId}")
