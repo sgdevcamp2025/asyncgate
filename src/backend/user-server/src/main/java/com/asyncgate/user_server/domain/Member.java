@@ -1,15 +1,14 @@
 package com.asyncgate.user_server.domain;
 
-import com.asyncgate.user_server.entity.MemberEntity;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-public class Member {
-
-    private final UUID id;
+public class Member implements Identifiable {
+    private final String id;
     private final String email;
     private String password;
     private String deviceToken;
@@ -18,7 +17,8 @@ public class Member {
     private String profileImgUrl;
     private LocalDate birth;
 
-    public Member(UUID id, String email, String password, String name, String nickname, String profileImgUrl, String deviceToken, LocalDate birth) {
+    @Builder
+    public Member(final String id, final String email, final String password, final String name, final String nickname, final String profileImgUrl, final String deviceToken, final LocalDate birth) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -28,6 +28,19 @@ public class Member {
         this.deviceToken = deviceToken;
         this.birth = birth;
     }
+
+    public static Member createMember(final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
+        return Member.builder()
+                .id(UUID.randomUUID().toString())
+                .email(email)
+                .password(password)
+                .name(name)
+                .nickname(nickname)
+                .deviceToken(deviceToken)
+                .birth(birth)
+                .build();
+    }
+
 
     public void updateName(String name) {
         this.name = name;
@@ -51,23 +64,6 @@ public class Member {
 
     public void updateBirth(LocalDate birth) {
         this.birth = birth;
-    }
-
-    public MemberEntity toEntity() {
-        return new MemberEntity(email, password, name, nickname, profileImgUrl, birth);
-    }
-
-    public static Member fromEntity(MemberEntity entity) {
-        return new Member(
-                entity.getId(),
-                entity.getEmail(),
-                entity.getPassword(),
-                entity.getName(),
-                entity.getNickname(),
-                entity.getProfileImgUrl(),
-                entity.getDeviceToken(),
-                entity.getBirth()
-        );
     }
 
     // device token이 NULL인 겨우

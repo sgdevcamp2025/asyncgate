@@ -3,6 +3,7 @@ package com.asyncgate.user_server.entity;
 import com.asyncgate.user_server.entity.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,7 @@ public class MemberEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private UUID id;
+    private String id;
 
     /* -------------------------------------------- */
     /* Security Column ---------------------------- */
@@ -53,9 +54,12 @@ public class MemberEntity extends BaseEntity {
     /* -------------------------------------------- */
     /* Methods ------------------------------------ */
     /* -------------------------------------------- */
-    public MemberEntity(String email, String password, String name, String nickname, String profileImgUrl, LocalDate birth) {
+    @Builder
+    public MemberEntity(String id, String email, String password, String deviceToken, String name, String nickname, String profileImgUrl, LocalDate birth) {
+        this.id = id;
         this.email = email;
         this.password = password;
+        this.deviceToken = deviceToken;
         this.name = name;
         this.nickname = nickname;
         this.profileImgUrl = profileImgUrl;
