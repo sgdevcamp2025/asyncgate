@@ -20,7 +20,7 @@ public class HttpMemberIDArgumentResolver implements HandlerMethodArgumentResolv
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(Long.class)
+        return parameter.getParameterType().equals(String.class) // 🔥 String으로 변경
                 && parameter.hasParameterAnnotation(MemberID.class);
     }
 
@@ -31,7 +31,7 @@ public class HttpMemberIDArgumentResolver implements HandlerMethodArgumentResolv
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory
     ) {
-        Long memberId = (Long) webRequest.getAttribute(
+        Object memberId = webRequest.getAttribute(
                 Constants.MEMBER_ID_ATTRIBUTE_NAME,
                 WebRequest.SCOPE_REQUEST
         );
@@ -40,6 +40,6 @@ public class HttpMemberIDArgumentResolver implements HandlerMethodArgumentResolv
             throw new CommonException(FailType.ACCESS_DENIED);
         }
 
-        return memberId;
+        return memberId.toString();
     }
 }

@@ -13,7 +13,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.core.context.SecurityContext;
@@ -61,6 +60,9 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authenticationToken);
         SecurityContextHolder.setContext(context);
+
+        // memberId를 request에 추가
+        request.setAttribute(Constants.MEMBER_ID_ATTRIBUTE_NAME, memberId);
 
         // 다음 필터로 전달
         filterChain.doFilter(request, response);
