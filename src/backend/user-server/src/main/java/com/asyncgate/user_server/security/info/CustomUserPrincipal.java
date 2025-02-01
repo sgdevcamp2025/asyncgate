@@ -5,8 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -36,10 +38,14 @@ public class CustomUserPrincipal implements UserDetails {
         return id;
     }
 
-    // 현재 role이 없으므로 빈 리스트 반환
+    // 임시 권한 user
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        SimpleGrantedAuthority adminAuthority = new SimpleGrantedAuthority("ROLE_USER");
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(adminAuthority);
+
+        return authorities;
     }
 
     @Override

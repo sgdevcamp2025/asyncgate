@@ -51,7 +51,8 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
         // AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 principal,
-                null
+                null,
+                principal.getAuthorities()
         );
 
         // SecurityContext에 AuthenticationToken 저장
