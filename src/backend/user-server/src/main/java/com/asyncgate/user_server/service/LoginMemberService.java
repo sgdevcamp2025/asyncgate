@@ -9,10 +9,12 @@ import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.security.utility.JsonWebTokenUtil;
 import com.asyncgate.user_server.usecase.LoginMemberUsecase;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginMemberService implements LoginMemberUsecase {
@@ -31,6 +33,9 @@ public class LoginMemberService implements LoginMemberUsecase {
             throw new UserServerException(FailType._INVALID_PASSWORD);
         }
 
-        return jsonWebTokenUtil.generate(member.getId());
+        DefaultJsonWebTokenResponse response = jsonWebTokenUtil.generate(member.getId());
+        log.info(response.getAccessToken());
+
+        return response;
     }
 }

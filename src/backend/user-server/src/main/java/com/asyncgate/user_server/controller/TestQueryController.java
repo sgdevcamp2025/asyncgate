@@ -12,9 +12,8 @@ public class TestQueryController {
     /**
      * 0.0 security no need 테스트용 get method
      */
-    @GetMapping("/connection-test")
-    public SuccessResponse<String> testGet() {
-        SuccessResponse<String> response = SuccessResponse.created("security no need");
-        return response;
+    @GetMapping("/health")
+    public SuccessResponse<String> health() {
+        return SuccessResponse.ok("security no need");
     }
 }

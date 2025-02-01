@@ -2,8 +2,6 @@ package com.asyncgate.user_server.security.config;
 
 import com.asyncgate.user_server.config.CorsConfig;
 import com.asyncgate.user_server.security.constant.Constants;
-import com.asyncgate.user_server.security.filter.ExceptionFilter;
-import com.asyncgate.user_server.security.filter.GlobalLoggerFilter;
 import com.asyncgate.user_server.security.filter.JsonWebTokenAuthenticationFilter;
 import com.asyncgate.user_server.security.usecase.AuthenticateJsonWebTokenUseCase;
 import com.asyncgate.user_server.security.utility.JsonWebTokenUtil;
@@ -52,16 +50,6 @@ public class SecurityConfig {
                                 jsonWebTokenUtil
                         ),
                         LogoutFilter.class
-                )
-
-                .addFilterBefore(
-                        new ExceptionFilter(),
-                        JsonWebTokenAuthenticationFilter.class
-                )
-
-                .addFilterBefore(
-                        new GlobalLoggerFilter(),
-                        ExceptionFilter.class
                 )
 
                 .getOrBuild();

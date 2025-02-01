@@ -19,9 +19,11 @@ public class Constants {
     public static List<String> NO_NEED_AUTH_URLS = List.of(
             // Authentication/Authorization
             "/connection-test",
-            "/authentication-code",
+            "/validation/authentication-code",
             "/sign-up",
             "/sign-in",
+            "/validation/email",
+            "/", // root
 
             // Swagger
             "/api-docs.html",
@@ -38,12 +40,5 @@ public class Constants {
             "/api-docs",
             "/swagger-ui",
             "/v3"
-    );
-
-    /**
-     * 사용자 URL
-     */
-    public static List<String> USER_URLS = List.of(
-            "/v1/**"
     );
 }
