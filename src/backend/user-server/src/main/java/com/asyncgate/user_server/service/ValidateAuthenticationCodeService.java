@@ -27,8 +27,7 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
     @Transactional
     public void execute(final ValidateAuthenticationCodeRequest request) {
 
-        AuthenticationCodeEntity storedAuthCode = authenticationCodeRepository.findById(request.email())
-                .orElseThrow(() -> new UserServerException(FailType.EMAIL_AUTH_CODE_NOT_FOUND));
+        AuthenticationCodeEntity storedAuthCode = authenticationCodeRepository.findById(request.email());
 
         if (!storedAuthCode.getCode().equals(request.authenticationCode())) {
             throw new UserServerException(FailType.INVALID_EMAIL_AUTH_CODE);

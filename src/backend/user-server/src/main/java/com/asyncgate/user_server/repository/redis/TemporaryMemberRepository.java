@@ -1,14 +1,14 @@
 package com.asyncgate.user_server.repository.redis;
 
+import com.asyncgate.user_server.domain.Member;
 import com.asyncgate.user_server.entity.redis.TemporaryMemberEntity;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface TemporaryMemberRepository extends CrudRepository<TemporaryMemberEntity, String> {
+public interface TemporaryMemberRepository {
     Optional<TemporaryMemberEntity> findByEmail(String email);
 
-    void deleteById(String id);
+    void delete(TemporaryMemberEntity temporaryMemberEntity);
+
+    void save(TemporaryMemberEntity temporaryMemberEntity);
 }
