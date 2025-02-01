@@ -24,11 +24,12 @@ spring:
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/users/**
+            - Path=/user/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+
 management:
   endpoints:
     web:

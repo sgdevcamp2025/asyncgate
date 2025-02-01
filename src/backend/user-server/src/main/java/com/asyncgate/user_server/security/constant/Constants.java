@@ -24,6 +24,8 @@ public class Constants {
             "/sign-in",
             "/validation/email",
             "/", // root
+            "/actuator/info",
+            "/health",
 
             // Swagger
             "/api-docs.html",
