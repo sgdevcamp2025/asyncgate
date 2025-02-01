@@ -20,16 +20,9 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     @Override
     public void save(final Member member) {
-        log.info("jpa 접근 직전");
         MemberEntity memberEntity = DomainUtil.MemberMapper.toEntity(member);
 
-        try {
-            log.info("true");
-            memberJpaRepository.save(memberEntity);
-        } catch (OptimisticLockException e) {
-            log.info("OptimisticLockException 발생: {}", e.getMessage());
-            throw new UserServerException(FailType._CONCURRENT_UPDATE_ERROR);
-        }
+        memberJpaRepository.save(memberEntity);
     }
 
     @Override
