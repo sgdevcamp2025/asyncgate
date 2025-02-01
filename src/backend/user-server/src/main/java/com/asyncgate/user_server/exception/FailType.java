@@ -12,6 +12,7 @@ public enum FailType {
 
     // 알 수 없는 에러
     _UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server_5000", "알 수 없는 에러가 발생하였습니다."),
+    _CONCURRENT_UPDATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server_5001", "동시 업데이트 에러가 발생하였습니다."),
 
     // S3
     _UPLOAD_FILE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "S3_5001", "S3 이미지 업로드에 실패하였습니다."),
@@ -19,24 +20,23 @@ public enum FailType {
     _FILE_NOT_FOUND(HttpStatus.NOT_FOUND, "S3_5003", "파일이 S3에 존재하지 않습니다."),
 
     // email
-    _SEND_EMAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Email_5001", "이메일 전송에 실패하였습니다."),
-    _EMAIL_NOT_FOUND(HttpStatus.NOT_FOUND, "Email_5002", "이메일이 존재하지 않습니다."),
-    _INVALID_EMAIL_AUTH_CODE(HttpStatus.BAD_REQUEST, "Email_5004", "인증 코드가 일치하지 않습니다."),
-    _EMAIL_AUTH_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "Email_5005", "인증 코드가 만료되었습니다."),
-    _EMAIL_AUTH_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "Email_5007", "인증 코드가 존재하지 않습니다."),
-    _EMAIL_AUTH_CODE_SEND(HttpStatus.BAD_REQUEST, "Email_5008", "인증 코드 전송에 실패하였습니다."),
+    _SEND_EMAIL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Email_5000", "이메일 전송에 실패하였습니다."),
+
+    INVALID_EMAIL_AUTH_CODE(HttpStatus.BAD_REQUEST, "Email_4001", "인증 코드가 일치하지 않습니다."),
+    EMAIL_AUTH_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "Email_4002", "인증 코드가 만료되었습니다."),
+    EMAIL_AUTH_CODE_SEND(HttpStatus.BAD_REQUEST, "Email_4003", "인증 코드 전송에 실패하였습니다."),
+    EMAIL_AUTH_CODE_NOT_FOUND(HttpStatus.NOT_FOUND, "Email_4004", "인증 코드가 존재하지 않습니다."),
 
     // password
-    _INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Password_5001", "비밀번호가 일치하지 않습니다."),
-    _INVALID_PASSWORD_FORMAT(HttpStatus.BAD_REQUEST, "Password_5002", "비밀번호 형식이 올바르지 않습니다."),
+    _INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "Password_4001", "비밀번호가 일치하지 않습니다."),
+    _INVALID_PASSWORD_FORMAT(HttpStatus.BAD_REQUEST, "Password_4002", "비밀번호 형식이 올바르지 않습니다."),
 
     // temporary member
-    TEMPORARY_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "TemporaryMember_5001", "임시 회원 정보가 존재하지 않습니다."),
+    TEMPORARY_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "TemporaryMember_4001", "임시 회원 정보가 존재하지 않습니다."),
 
     // member
-    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member_5001", "회원 정보가 존재하지 않습니다."),
-    MEMBER_NOT_EXIST_EMAIL(HttpStatus.NOT_FOUND, "Member_5002", "존재하지 않는 이메일입니다."),
-    _CONCURRENT_UPDATE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Member_5003", "동시 업데이트 에러가 발생하였습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "Member_4001", "회원 정보가 존재하지 않습니다."),
+    MEMBER_NOT_EXIST_EMAIL(HttpStatus.NOT_FOUND, "Member_4002", "존재하지 않는 이메일입니다."),
 
     // Unauthorized Error
     INVALID_HEADER_ERROR(HttpStatus.UNAUTHORIZED, "Member_40108", "헤더가 올바르지 않습니다."),

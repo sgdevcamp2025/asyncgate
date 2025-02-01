@@ -9,7 +9,5 @@ import java.util.Optional;
 @Repository
 public interface AuthenticationCodeRepository extends CrudRepository<AuthenticationCodeEntity, String> {
 
-    Optional<AuthenticationCodeEntity> findById(String id);
-
     void deleteById(String id);
 }

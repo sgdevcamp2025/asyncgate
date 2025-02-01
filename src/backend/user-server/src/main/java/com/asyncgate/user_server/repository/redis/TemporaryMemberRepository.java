@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface TemporaryMemberRepository extends CrudRepository<TemporaryMemberEntity, String> {
     Optional<TemporaryMemberEntity> findByEmail(String email);
+
     void deleteById(String id);
 }

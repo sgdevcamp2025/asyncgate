@@ -28,17 +28,15 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
     public void execute(final ValidateAuthenticationCodeRequest request) {
 
         AuthenticationCodeEntity storedAuthCode = authenticationCodeRepository.findById(request.email())
-                .orElseThrow(() -> new UserServerException(FailType._EMAIL_AUTH_CODE_NOT_FOUND));
+                .orElseThrow(() -> new UserServerException(FailType.EMAIL_AUTH_CODE_NOT_FOUND));
 
         if (!storedAuthCode.getCode().equals(request.authenticationCode())) {
-            throw new UserServerException(FailType._INVALID_EMAIL_AUTH_CODE);
+            throw new UserServerException(FailType.INVALID_EMAIL_AUTH_CODE);
         }
 
         // 임시 회원 정보 get
         TemporaryMemberEntity tempMember = temporaryMemberRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserServerException(FailType.TEMPORARY_MEMBER_NOT_FOUND));
-
-        log.info("tempMember: {}", tempMember);
 
         Member member = Member.create(tempMember.getEmail(), tempMember.getPassword(), tempMember.getName(),
                 tempMember.getNickname(), tempMember.getDeviceToken(), tempMember.getBirth());
