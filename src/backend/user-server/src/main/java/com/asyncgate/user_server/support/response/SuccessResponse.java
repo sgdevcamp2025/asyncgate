@@ -13,10 +13,14 @@ public class SuccessResponse<T> {
     @JsonProperty("httpStatus")
     private final int httpStatus;
 
+    @JsonProperty("message")
     private final String message;
+
+    @JsonProperty("time")
     private final LocalDateTime time;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("result")
     private final T result;
 
     private SuccessResponse(final int httpStatus, final String message, final T result) {

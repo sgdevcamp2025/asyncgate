@@ -12,8 +12,13 @@ public class FailResponse {
     @JsonProperty("httpStatus")
     private final int httpStatus;
 
+    @JsonProperty("errorCode")
     private final String errorCode;
+
+    @JsonProperty("message")
     private final String message;
+
+    @JsonProperty("time")
     private final LocalDateTime time;
 
     private FailResponse(final String errorCode, final String message, final int httpStatus) {
