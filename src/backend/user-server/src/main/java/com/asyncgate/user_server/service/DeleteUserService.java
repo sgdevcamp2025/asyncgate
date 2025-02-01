@@ -5,8 +5,14 @@ import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.usecase.DeleteUserUseCase;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
+@Service
+@RequiredArgsConstructor
 public class DeleteUserService implements DeleteUserUseCase {
 
     MemberRepository memberRepository;

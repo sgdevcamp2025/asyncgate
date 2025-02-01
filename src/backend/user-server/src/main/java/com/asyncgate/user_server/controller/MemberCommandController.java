@@ -22,7 +22,7 @@ public class MemberCommandController {
     private final ValidateAuthenticationCodeUseCase ValidateAuthenticationCodeUseCase;
     private final CheckEmailDuplicateUseCase CheckEmailDuplicateUseCase;
     private final UpdateUserInfoUseCase UpdateUserInfoUseCase;
-    private final DeleteUserUseCase deleteUserUseCase;
+    private final DeleteUserUseCase DeleteUserUseCase;
 
     /**
      * 1.0 임시 회원가입
@@ -84,7 +84,7 @@ public class MemberCommandController {
      */
     @DeleteMapping("/withdrawal")
     public SuccessResponse<?> deleteUser(@MemberID String userId) {
-        deleteUserUseCase.execute(userId);
+        DeleteUserUseCase.execute(userId);
         return SuccessResponse.ok("회원탈퇴 완료");
     }
 }
