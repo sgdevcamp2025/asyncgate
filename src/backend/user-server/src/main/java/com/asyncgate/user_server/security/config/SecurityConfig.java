@@ -1,5 +1,6 @@
 package com.asyncgate.user_server.security.config;
 
+import com.asyncgate.user_server.config.CorsConfig;
 import com.asyncgate.user_server.security.constant.Constants;
 import com.asyncgate.user_server.security.filter.ExceptionFilter;
 import com.asyncgate.user_server.security.filter.GlobalLoggerFilter;
@@ -28,6 +29,9 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(cors -> cors
+                        .configurationSource(CorsConfig.corsConfigurationSource())
+                )
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .httpBasic(AbstractHttpConfigurer::disable)
