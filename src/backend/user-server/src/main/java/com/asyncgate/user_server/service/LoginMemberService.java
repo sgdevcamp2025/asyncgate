@@ -9,7 +9,7 @@ import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.security.utility.JsonWebTokenUtil;
 import com.asyncgate.user_server.usecase.LoginMemberUsecase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginMemberService implements LoginMemberUsecase {
     private final MemberRepository memberRepository;
     private final JsonWebTokenUtil jsonWebTokenUtil;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     @Transactional(readOnly = true)
