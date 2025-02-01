@@ -20,7 +20,6 @@ public class MemberEntity extends BaseEntity {
     /* Default Column ----------------------------- */
     /* -------------------------------------------- */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private String id;
 
