@@ -42,7 +42,7 @@ public class JsonWebTokenAuthenticationFilter extends OncePerRequestFilter {
         String token = HeaderUtil.refineHeader(request, Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX)
                 .orElseThrow(() -> new CommonException(FailType.INVALID_HEADER_ERROR));
 
-        Claims claims = jsonWebTokenUtil.validateToken(token);
+        Claims claims = jsonWebTokenUtil.validate(token);
 
         String memberId = claims.get(Constants.MEMBER_ID_CLAIM_NAME, String.class);
 

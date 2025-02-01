@@ -31,6 +31,6 @@ public class LoginMemberService implements LoginMemberUsecase {
             throw new UserServerException(FailType._INVALID_PASSWORD);
         }
 
-        return jsonWebTokenUtil.generateDefaultJsonWebTokens(member.getId());
+        return jsonWebTokenUtil.generate(member.getId());
     }
 }

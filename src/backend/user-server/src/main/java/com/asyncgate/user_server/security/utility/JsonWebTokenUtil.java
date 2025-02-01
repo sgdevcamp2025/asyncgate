@@ -34,14 +34,14 @@ public class JsonWebTokenUtil implements InitializingBean {
     }
 
     // token 생성 메서드
-    public DefaultJsonWebTokenResponse generateDefaultJsonWebTokens(final String id) {
+    public DefaultJsonWebTokenResponse generate(final String id) {
         return new DefaultJsonWebTokenResponse(
-                generateToken(id, accessTokenExpirePeriod)
+                generateJwt(id, accessTokenExpirePeriod)
         );
     }
 
     // token 검증 메서드
-    public Claims validateToken(final String token) {
+    public Claims validate(final String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(key)
@@ -54,7 +54,7 @@ public class JsonWebTokenUtil implements InitializingBean {
         }
     }
 
-    private String generateToken(final String identifier, final Long expirePeriod) {
+    private String generateJwt(final String identifier, final Long expirePeriod) {
         Claims claims = Jwts.claims();
 
         claims.put(Constants.MEMBER_ID_CLAIM_NAME, identifier);
