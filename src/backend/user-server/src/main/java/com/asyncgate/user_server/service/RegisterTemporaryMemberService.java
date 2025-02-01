@@ -3,7 +3,6 @@ package com.asyncgate.user_server.service;
 import com.asyncgate.user_server.domain.AuthenticationCode;
 import com.asyncgate.user_server.domain.TemporaryMember;
 import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
-import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.repository.redis.AuthenticationCodeRepository;
 import com.asyncgate.user_server.repository.redis.TemporaryMemberRepository;
 import com.asyncgate.user_server.support.utility.DomainUtil;

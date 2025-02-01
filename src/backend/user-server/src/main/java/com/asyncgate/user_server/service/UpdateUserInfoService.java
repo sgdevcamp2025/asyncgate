@@ -1,7 +1,6 @@
 package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.domain.Member;
-import com.asyncgate.user_server.dto.request.UpdateUserInfoRequest;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import com.asyncgate.user_server.repository.MemberRepository;
@@ -27,13 +26,13 @@ public class UpdateUserInfoService implements UpdateUserInfoUseCase {
 
     @Override
     @Transactional
-    public void execute(final String userId, final UpdateUserInfoRequest request) {
-        String profileImageUrl = getProfileImageUrl(request.profileImage());
+    public void execute(final String userId, final String name, final String nickname, final MultipartFile profileImage) {
+        String profileImageUrl = getProfileImageUrl(profileImage);
 
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new UserServerException(FailType.MEMBER_NOT_FOUND));
 
-        member.update(request.name(), request.nickname(), profileImageUrl);
+        member.update(name, nickname, profileImageUrl);
 
         memberRepository.save(member);
     }

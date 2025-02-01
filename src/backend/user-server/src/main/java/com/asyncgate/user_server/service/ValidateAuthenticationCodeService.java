@@ -13,6 +13,7 @@ import com.asyncgate.user_server.usecase.ValidateAuthenticationCodeUseCase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -22,6 +23,9 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
     private final MemberRepository memberRepository;
     private final AuthenticationCodeRepository authenticationCodeRepository;
     private final TemporaryMemberRepository temporaryMemberRepository;
+
+    @Value("${cloud.aws.s3.profile.default.url}")
+    private String defaultProfileImageUrl;
 
     @Override
     @Transactional
@@ -38,7 +42,7 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
                 .orElseThrow(() -> new UserServerException(FailType.TEMPORARY_MEMBER_NOT_FOUND));
 
         Member member = Member.create(tempMember.getEmail(), tempMember.getPassword(), tempMember.getName(),
-                tempMember.getNickname(), tempMember.getDeviceToken(), tempMember.getBirth());
+                tempMember.getNickname(), tempMember.getDeviceToken(), defaultProfileImageUrl, tempMember.getBirth());
 
         memberRepository.save(member);
 

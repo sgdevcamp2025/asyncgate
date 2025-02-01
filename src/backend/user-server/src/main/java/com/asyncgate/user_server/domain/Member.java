@@ -29,9 +29,9 @@ public class Member implements Identifiable {
         this.birth = birth;
     }
 
-    public static Member create(final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
+    public static Member create(final String email, final String password, final String name, final String nickname, final String deviceToken, final String profileImgUrl, final LocalDate birth) {
         String id = UUID.randomUUID().toString();
-        return new Member(id, email, password, name, nickname, null, deviceToken, birth);
+        return new Member(id, email, password, name, nickname, profileImgUrl, deviceToken, birth);
     }
 
     public void update(String name, String nickname, String profileImageUrl) {

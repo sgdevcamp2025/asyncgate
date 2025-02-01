@@ -17,6 +17,7 @@ public class DomainUtil {
                     .name(member.getName())
                     .nickname(member.getNickname())
                     .deviceToken(member.getDeviceToken())
+                    .profileImgUrl(member.getProfileImgUrl())
                     .birth(member.getBirth())
                     .build();
         }
@@ -29,6 +30,7 @@ public class DomainUtil {
                     .name(entity.getName())
                     .nickname(entity.getNickname())
                     .deviceToken(entity.getDeviceToken())
+                    .profileImgUrl(entity.getProfileImgUrl())
                     .birth(entity.getBirth())
                     .build();
         }

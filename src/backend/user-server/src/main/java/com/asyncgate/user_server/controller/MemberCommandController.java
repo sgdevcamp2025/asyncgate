@@ -1,17 +1,14 @@
 package com.asyncgate.user_server.controller;
 
-import com.asyncgate.user_server.dto.request.LoginMemberRequest;
-import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
-import com.asyncgate.user_server.dto.request.UpdateUserInfoRequest;
-import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequest;
+import com.asyncgate.user_server.dto.request.*;
 import com.asyncgate.user_server.dto.response.CheckEmailDuplicateResponse;
 import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.security.annotation.MemberID;
 import com.asyncgate.user_server.support.response.SuccessResponse;
 import com.asyncgate.user_server.usecase.*;
-import io.lettuce.core.dynamic.annotation.Param;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,6 +20,7 @@ public class MemberCommandController {
     private final CheckEmailDuplicateUseCase CheckEmailDuplicateUseCase;
     private final UpdateUserInfoUseCase UpdateUserInfoUseCase;
     private final DeleteUserUseCase DeleteUserUseCase;
+    private final UpdateDeviceTokenUseCase ReIssueDeviceTokenUseCase;
 
     /**
      * 1.0 임시 회원가입
@@ -63,7 +61,7 @@ public class MemberCommandController {
      */
     @PostMapping("/validation/email")
     public SuccessResponse<CheckEmailDuplicateResponse> checkEmailDuplicate(
-            @Param("email") final String email
+            @RequestParam("email") final String email
     ) {
         return SuccessResponse.ok(
                 CheckEmailDuplicateUseCase.execute(email)
@@ -73,17 +71,22 @@ public class MemberCommandController {
     /**
      * 1.5 유저 정보 수정
      */
-    @PatchMapping("/user-info")
-    public SuccessResponse<?> updateUserInfo(@MemberID String userId, @RequestBody final UpdateUserInfoRequest request) {
-        UpdateUserInfoUseCase.execute(userId, request);
+    @PatchMapping("/info")
+    public SuccessResponse<?> updateUserInfo(
+            @MemberID final String userId,
+            @RequestPart(value = "name", required = false) final String name,
+            @RequestPart(value = "nickname", required = false) final String nickname,
+            @RequestPart(value = "profile_image", required = false) final MultipartFile profileImage
+    ) {
+        UpdateUserInfoUseCase.execute(userId, name, nickname, profileImage);
         return SuccessResponse.ok("유저 정보 수정 완료");
     }
 
     /**
      * 1.6 회원탈퇴
      */
-    @DeleteMapping("/withdrawal")
-    public SuccessResponse<?> deleteUser(@MemberID String userId) {
+    @DeleteMapping("/auth")
+    public SuccessResponse<?> deleteUser(@MemberID final String userId) {
         DeleteUserUseCase.execute(userId);
         return SuccessResponse.ok("회원탈퇴 완료");
     }
