@@ -18,7 +18,7 @@ public class AuthenticationCodeEntity {
     private String code;
 
     @Builder
-    public AuthenticationCodeEntity(String id, String code) {
+    private AuthenticationCodeEntity(String id, String code) {
         this.id = id;
         this.code = code;
     }

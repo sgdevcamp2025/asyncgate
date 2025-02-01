@@ -1,7 +1,7 @@
 package com.asyncgate.user_server.service;
 
-import com.asyncgate.user_server.domain.redis.AuthenticationCode;
-import com.asyncgate.user_server.domain.redis.TemporaryMember;
+import com.asyncgate.user_server.domain.AuthenticationCode;
+import com.asyncgate.user_server.domain.TemporaryMember;
 import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
 import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.repository.redis.AuthenticationCodeRepository;
@@ -50,7 +50,7 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
 
         String code = PasswordUtil.generateAuthCode(6);
 
-        AuthenticationCode authCode = AuthenticationCode.createAuthenticationCode(request.email(), code);
+        AuthenticationCode authCode = AuthenticationCode.create(request.email(), code);
 
         authenticationCodeRepository.save(DomainUtil.AuthenticationCodeMapper.toEntity(authCode));
 

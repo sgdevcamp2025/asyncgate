@@ -28,7 +28,7 @@ public class TemporaryMemberEntity {
     private LocalDate birth;
 
     @Builder
-    public TemporaryMemberEntity(String id, String email, String password, String name, String nickname, String deviceToken, LocalDate birth) {
+    private TemporaryMemberEntity(String id, String email, String password, String name, String nickname, String deviceToken, LocalDate birth) {
         this.id = id;
         this.email = email;
         this.password = password;

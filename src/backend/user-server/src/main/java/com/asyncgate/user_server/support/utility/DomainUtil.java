@@ -1,8 +1,8 @@
 package com.asyncgate.user_server.support.utility;
 
 import com.asyncgate.user_server.domain.Member;
-import com.asyncgate.user_server.domain.redis.AuthenticationCode;
-import com.asyncgate.user_server.domain.redis.TemporaryMember;
+import com.asyncgate.user_server.domain.AuthenticationCode;
+import com.asyncgate.user_server.domain.TemporaryMember;
 import com.asyncgate.user_server.entity.MemberEntity;
 import com.asyncgate.user_server.entity.redis.AuthenticationCodeEntity;
 import com.asyncgate.user_server.entity.redis.TemporaryMemberEntity;

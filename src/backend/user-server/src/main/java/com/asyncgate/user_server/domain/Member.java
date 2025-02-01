@@ -18,7 +18,7 @@ public class Member implements Identifiable {
     private LocalDate birth;
 
     @Builder
-    public Member(final String id, final String email, final String password, final String name, final String nickname, final String profileImgUrl, final String deviceToken, final LocalDate birth) {
+    private Member(final String id, final String email, final String password, final String name, final String nickname, final String profileImgUrl, final String deviceToken, final LocalDate birth) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -29,16 +29,9 @@ public class Member implements Identifiable {
         this.birth = birth;
     }
 
-    public static Member createMember(final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
-        return Member.builder()
-                .id(UUID.randomUUID().toString())
-                .email(email)
-                .password(password)
-                .name(name)
-                .nickname(nickname)
-                .deviceToken(deviceToken)
-                .birth(birth)
-                .build();
+    public static Member create(final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
+        String id = UUID.randomUUID().toString();
+        return new Member(id, email, password, name, nickname, null, deviceToken, birth);
     }
 
 

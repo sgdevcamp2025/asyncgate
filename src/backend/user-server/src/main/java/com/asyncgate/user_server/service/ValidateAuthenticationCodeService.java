@@ -40,7 +40,7 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
 
         log.info("tempMember: {}", tempMember);
 
-        Member member = Member.createMember(tempMember.getEmail(), tempMember.getPassword(), tempMember.getName(),
+        Member member = Member.create(tempMember.getEmail(), tempMember.getPassword(), tempMember.getName(),
                 tempMember.getNickname(), tempMember.getDeviceToken(), tempMember.getBirth());
 
         memberRepository.save(member);

@@ -1,21 +1,22 @@
-package com.asyncgate.user_server.domain.redis;
+package com.asyncgate.user_server.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Getter
-public class TemporaryMember {
+public class TemporaryMember implements Identifiable {
 
     private final String id;
     private final String email;
     private String password;
-    private String name;
-    private String nickname;
-    private String deviceToken;
-    private LocalDate birth;
+    private final String name;
+    private final String nickname;
+    private final String deviceToken;
+    private final LocalDate birth;
 
     @Builder
     public TemporaryMember(final String id, final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
@@ -28,16 +29,9 @@ public class TemporaryMember {
         this.birth = birth;
     }
 
-    public static TemporaryMember createTemporaryMember(final String id, final String email, final String password, final String name, final String nickname, final String deviceToken, final LocalDate birth) {
-        return TemporaryMember.builder()
-                .id(id)
-                .email(email)
-                .password(password)
-                .name(name)
-                .nickname(nickname)
-                .deviceToken(deviceToken)
-                .birth(birth)
-                .build();
+    public static TemporaryMember create(final String email, final String password, final String name, final String nickname, final LocalDate birth) {
+        String id = UUID.randomUUID().toString();
+        return new TemporaryMember(id, email, password, name, nickname, null, birth);
     }
 
     /**

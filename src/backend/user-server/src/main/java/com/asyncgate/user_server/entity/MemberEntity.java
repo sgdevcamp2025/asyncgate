@@ -54,7 +54,7 @@ public class MemberEntity extends BaseEntity {
     /* Methods ------------------------------------ */
     /* -------------------------------------------- */
     @Builder
-    public MemberEntity(String id, String email, String password, String deviceToken, String name, String nickname, String profileImgUrl, LocalDate birth) {
+    private MemberEntity(String id, String email, String password, String deviceToken, String name, String nickname, String profileImgUrl, LocalDate birth) {
         this.id = id;
         this.email = email;
         this.password = password;
