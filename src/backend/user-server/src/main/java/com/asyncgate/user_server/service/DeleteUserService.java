@@ -15,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DeleteUserService implements DeleteUserUseCase {
 
-    MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
-    public void execute(String userId) {
+    public void execute(final String userId) {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new UserServerException(FailType.MEMBER_NOT_FOUND));
 
