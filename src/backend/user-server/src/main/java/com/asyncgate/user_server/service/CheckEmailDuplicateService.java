@@ -2,12 +2,13 @@ package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.dto.response.CheckEmailDuplicateResponse;
 import com.asyncgate.user_server.repository.MemberRepository;
+import com.asyncgate.user_server.usecase.CheckEmailDuplicateUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CheckEmailDuplicateService {
+public class CheckEmailDuplicateService implements CheckEmailDuplicateUseCase {
 
     private final MemberRepository memberRepository;
 
