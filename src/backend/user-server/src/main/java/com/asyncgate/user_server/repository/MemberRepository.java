@@ -14,4 +14,6 @@ public interface MemberRepository {
     boolean isExistById(String id);
 
     void save(Member member);
+
+    void delete(Member member);
 }

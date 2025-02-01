@@ -2,19 +2,16 @@ package com.asyncgate.user_server.controller;
 
 import com.asyncgate.user_server.dto.request.LoginMemberRequest;
 import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
+import com.asyncgate.user_server.dto.request.UpdateUserInfoRequest;
 import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequest;
 import com.asyncgate.user_server.dto.response.CheckEmailDuplicateResponse;
 import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
+import com.asyncgate.user_server.security.annotation.MemberID;
 import com.asyncgate.user_server.support.response.SuccessResponse;
-import com.asyncgate.user_server.usecase.CheckEmailDuplicateUseCase;
-import com.asyncgate.user_server.usecase.LoginMemberUsecase;
-import com.asyncgate.user_server.usecase.RegisterTemporaryMemberUseCase;
-import com.asyncgate.user_server.usecase.ValidateAuthenticationCodeUseCase;
+import com.asyncgate.user_server.usecase.*;
 import io.lettuce.core.dynamic.annotation.Param;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +21,8 @@ public class MemberCommandController {
     private final LoginMemberUsecase LoginMemberUsecase;
     private final ValidateAuthenticationCodeUseCase ValidateAuthenticationCodeUseCase;
     private final CheckEmailDuplicateUseCase CheckEmailDuplicateUseCase;
+    private final UpdateUserInfoUseCase UpdateUserInfoUseCase;
+    private final DeleteUserUseCase deleteUserUseCase;
 
     /**
      * 1.0 임시 회원가입
@@ -69,5 +68,23 @@ public class MemberCommandController {
         return SuccessResponse.ok(
                 CheckEmailDuplicateUseCase.execute(email)
         );
+    }
+
+    /**
+     * 1.5 유저 정보 수정
+     */
+    @PatchMapping("/user-info")
+    public SuccessResponse<?> updateUserInfo(@MemberID String userId, @RequestBody final UpdateUserInfoRequest request) {
+        UpdateUserInfoUseCase.execute(userId, request);
+        return SuccessResponse.ok("유저 정보 수정 완료");
+    }
+
+    /**
+     * 1.6 회원탈퇴
+     */
+    @DeleteMapping("/withdrawal")
+    public SuccessResponse<?> deleteUser(@MemberID String userId) {
+        deleteUserUseCase.execute(userId);
+        return SuccessResponse.ok("회원탈퇴 완료");
     }
 }

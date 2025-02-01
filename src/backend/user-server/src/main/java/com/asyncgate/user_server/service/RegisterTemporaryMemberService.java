@@ -23,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUseCase {
 
-    private final MemberRepository memberRepository;
     private final AuthenticationCodeRepository authenticationCodeRepository;
     private final PasswordEncoder passwordEncoder;
     private final TemporaryMemberRepository temporaryMemberRepository;

@@ -26,6 +26,13 @@ public class MemberRepositoryImpl implements MemberRepository {
     }
 
     @Override
+    public void delete(final Member member) {
+        MemberEntity memberEntity = DomainUtil.MemberMapper.toEntity(member);
+
+        memberJpaRepository.delete(memberEntity);
+    }
+
+    @Override
     public Optional<Member> findByEmail(final String email) {
         return memberJpaRepository.findByEmail(email)
                 .map(DomainUtil.MemberMapper::toDomain);

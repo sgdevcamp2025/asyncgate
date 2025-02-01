@@ -34,17 +34,11 @@ public class Member implements Identifiable {
         return new Member(id, email, password, name, nickname, null, deviceToken, birth);
     }
 
+    public void update(String name, String nickname, String profileImageUrl) {
+            this.name = name;
+            this.nickname = nickname;
+            this.profileImgUrl = profileImageUrl;
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void updateProfileImgUrl(String profileImgUrl) {
-        this.profileImgUrl = profileImgUrl;
     }
 
     public void updatePassword(String password) {
@@ -53,10 +47,6 @@ public class Member implements Identifiable {
 
     public void updateDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
-    }
-
-    public void updateBirth(LocalDate birth) {
-        this.birth = birth;
     }
 
     // device token이 NULL인 겨우
