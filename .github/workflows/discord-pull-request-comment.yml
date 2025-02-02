@@ -25,8 +25,8 @@ jobs:
           REVIEWER='${{ github.event.review.user.login }}'
           WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}
 
-          REVIEWER_DISCORD_ID='${{ env[github.event.review.user.id] }}'
-          AUTHOR_DISCORD_ID='${{ env[github.event.pull_request.user.id] }}'
+          REVIEWER_DISCORD_ID='${{ env[github.event.review.user.login] }}'
+          AUTHOR_DISCORD_ID='${{ env[github.event.pull_request.user.login] }}'
 
           if [ "${{ github.event.review.state }}" = 'approved' ]; then
             COMMENT="PR Approved 되었습니다🚀"
