@@ -2,7 +2,9 @@ package com.asyncgate.guild_server.controller;
 
 import com.asyncgate.guild_server.dto.request.GuildRequest;
 import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
+import com.asyncgate.guild_server.dto.response.GuildRandResponses;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
+import com.asyncgate.guild_server.dto.response.GuildResponses;
 import com.asyncgate.guild_server.service.GuildService;
 import com.asyncgate.guild_server.support.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/guild")
+@RequestMapping("/guilds")
 public class GuildController {
 
     private final GuildService guildService;
@@ -25,12 +27,30 @@ public class GuildController {
         return SuccessResponse.created(response);
     }
 
+    @GetMapping
+    public SuccessResponse<GuildResponses> getMyGuilds(
+            final @AuthenticationPrincipal String userId,
+            final @RequestParam(required = false, defaultValue = "10") int limit
+    ) {
+        GuildResponses guildResponses = guildService.readMyGuilds(userId, limit);
+        return SuccessResponse.created(guildResponses);
+    }
+
+    @GetMapping("/rand")
+    public SuccessResponse<GuildRandResponses> getRand(
+            final @AuthenticationPrincipal String userId,
+            final @RequestParam(required = false, defaultValue = "10") int limit
+    ) {
+        GuildRandResponses guildResponses = guildService.readRand(userId, limit);
+        return SuccessResponse.created(guildResponses);
+    }
+
     @GetMapping("/{guildId}")
     public SuccessResponse<GuildInfoResponse> raedOne(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId
     ) {
-        GuildInfoResponse response = guildService.get(userId, guildId);
+        GuildInfoResponse response = guildService.readOne(userId, guildId);
         return SuccessResponse.ok(response);
     }
 

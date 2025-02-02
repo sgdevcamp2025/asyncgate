@@ -4,10 +4,7 @@ import com.asyncgate.guild_server.domain.Guild;
 import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.domain.GuildRole;
 import com.asyncgate.guild_server.dto.request.GuildRequest;
-import com.asyncgate.guild_server.dto.response.CategoryResponse;
-import com.asyncgate.guild_server.dto.response.ChannelResponse;
-import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
-import com.asyncgate.guild_server.dto.response.GuildResponse;
+import com.asyncgate.guild_server.dto.response.*;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
 import com.asyncgate.guild_server.repository.CategoryRepository;
@@ -88,7 +85,7 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public GuildInfoResponse get(final String userId, final String guildId) {
+    public GuildInfoResponse readOne(final String userId, final String guildId) {
         validGuildMember(userId, guildId);
         GuildResponse guildResponse = GuildResponse.from(guildRepository.getById(guildId));
 
@@ -103,7 +100,21 @@ public class GuildServiceImpl implements GuildService {
         return GuildInfoResponse.of(guildResponse, categoryResponses, channelResponses);
     }
 
-    private void validGuildMember(String userId, String guildId) {
+    @Override
+    public GuildRandResponses readRand(final String userId, int limit) {
+        List<String> guildIds = guildMemberRepository.findRandGuildIdsNotJoinedByUser(userId, limit);
+        List<Guild> guilds = guildRepository.getByIds(guildIds);
+        return GuildRandResponses.from(guilds);
+    }
+
+    @Override
+    public GuildResponses readMyGuilds(final String userId, final int limit) {
+        List<String> guildIds = guildMemberRepository.findGuildIdsJoinedByUserId(userId, limit);
+        List<Guild> guilds = guildRepository.findAllByIds(guildIds);
+        return GuildResponses.of(guilds, limit);
+    }
+
+    private void validGuildMember(final String userId, final String guildId) {
         guildMemberRepository.getByUserIdAndGuildId(userId, guildId);
     }
 

@@ -8,11 +8,14 @@ import com.asyncgate.guild_server.support.utility.DomainUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class GuildMemberRepositoryImpl implements GuildMemberRepository {
 
     private final GuildMemberJpaRepository jpaRepository;
+    private final GuildMemberQuerydslRepository querydslRepository;
 
     @Override
     public void save(final GuildMember guildMember) {
@@ -30,5 +33,15 @@ public class GuildMemberRepositoryImpl implements GuildMemberRepository {
     @Override
     public void deleteAllByGuildId(final String guildId) {
         jpaRepository.softDeleteAllByGuildId(guildId);
+    }
+
+    @Override
+    public List<String> findRandGuildIdsNotJoinedByUser(final String userId, int limit) {
+        return querydslRepository.findRandGuildIdsNotJoinedByUser(userId, limit);
+    }
+
+    @Override
+    public List<String> findGuildIdsJoinedByUserId(final String userId, final int limit) {
+        return querydslRepository.findGuildIdsJoinedByUserId(userId, limit);
     }
 }

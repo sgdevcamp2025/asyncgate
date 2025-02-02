@@ -8,16 +8,19 @@ import com.asyncgate.guild_server.support.utility.DomainUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class GuildRepositoryImpl implements GuildRepository {
 
-    private final GuildJpaRepository guildJpaRepository;
+    private final GuildJpaRepository jpaRepository;
+    private final GuildQuerydslRepository querydslRepository;
 
     @Override
     public void save(final Guild guild) {
         GuildEntity guildEntity = DomainUtil.GuildMapper.toEntity(guild);
-        guildJpaRepository.save(guildEntity);
+        jpaRepository.save(guildEntity);
     }
 
     @Override
@@ -28,11 +31,26 @@ public class GuildRepositoryImpl implements GuildRepository {
 
     @Override
     public void deleteById(final String guildId) {
-        guildJpaRepository.softDeleteById(guildId);
+        jpaRepository.softDeleteById(guildId);
+    }
+
+    @Override
+    public List<Guild> getByIds(final List<String> guildIds) {
+        return jpaRepository.findAllById(guildIds).stream()
+                .map(DomainUtil.GuildMapper::toDomain)
+                .toList();
     }
 
     private GuildEntity getActiveGuildEntityById(final String guildId) {
-        return guildJpaRepository.findActiveGuildById(guildId)
+        return jpaRepository.findActiveGuildById(guildId)
                 .orElseThrow(() -> new GuildServerException(FailType.GUILD_NOT_FOUND));
     }
+
+    @Override
+    public List<Guild> findAllByIds(final List<String> guildIds) {
+        return querydslRepository.findAllByIds(guildIds).stream()
+                .map(DomainUtil.GuildMapper::toDomain)
+                .toList();
+    }
+
 }
