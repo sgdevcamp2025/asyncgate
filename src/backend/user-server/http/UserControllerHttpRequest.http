@@ -26,6 +26,10 @@ Content-Type: application/json
   "password": "{{user.API_1_1_SIGNIN.password}}"
 }
 
+> {%
+    client.global.set("access_token", response.body.result.access_token);
+%}
+
 
 ### 1.2 인증코드 인증
 // @no-log
@@ -58,19 +62,23 @@ Authorization: Bearer {{access_token}}
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
-Content-Disposition: form-data; name="profile_img"; filename="image.png"
+Content-Disposition: form-data; name="profile_image"; filename="image.png"
 Content-Type: image/png
 
 < /Users/eunji/Desktop/profile2.png
 
 --boundary
-Content-Disposition: form-data; name="body"
-Content-Type: application/json
+Content-Disposition: form-data; name="name"
 
-{
-	"name" : "{{user.API_1_5_UPDATE_USERINFO.name}}",
-	"nickname" : "{{user.API_1_5_UPDATE_USERINFO.nickname}}"
-}
+{{user.API_1_5_UPDATE_USERINFO.name}}
+
+--boundary
+Content-Disposition: form-data; name="nickname"
+
+{{user.API_1_5_UPDATE_USERINFO.nickname}}
+
+--boundary--
+
 
 ### 1.6 회원 탈퇴
 // @no-log

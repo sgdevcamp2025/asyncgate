@@ -20,7 +20,7 @@ public class MemberCommandController {
     private final CheckEmailDuplicateUseCase CheckEmailDuplicateUseCase;
     private final UpdateUserInfoUseCase UpdateUserInfoUseCase;
     private final DeleteUserUseCase DeleteUserUseCase;
-    private final UpdateDeviceTokenUseCase ReIssueDeviceTokenUseCase;
+    private final UpdateDeviceTokenUseCase UpdateDeviceTokenUseCase;
 
     /**
      * 1.0 임시 회원가입
@@ -66,6 +66,18 @@ public class MemberCommandController {
         return SuccessResponse.ok(
                 CheckEmailDuplicateUseCase.execute(email)
         );
+    }
+
+    /**
+     * 1.4 디바이스 토큰 업데이트
+     */
+    @PatchMapping("/device-token")
+    public SuccessResponse<?> updateDeviceToken(
+            @MemberID final String userId,
+            @RequestBody final UpdateDeviceTokenRequest request
+    ) {
+        UpdateDeviceTokenUseCase.execute(userId, request);
+        return SuccessResponse.ok("디바이스 토큰 업데이트 완료");
     }
 
     /**
