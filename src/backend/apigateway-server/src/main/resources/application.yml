@@ -24,11 +24,44 @@ spring:
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
+            - Path=/user/sign-up
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/sign-in
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+        
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/validation/authentication-code
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/validation/email
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+          
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
             - Path=/user/**
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+            
 
 management:
   endpoints:
