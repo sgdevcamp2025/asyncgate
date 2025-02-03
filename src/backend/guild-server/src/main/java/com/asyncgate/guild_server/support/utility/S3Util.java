@@ -1,4 +1,4 @@
-package com.asyncgate.guild_server.utility;
+package com.asyncgate.guild_server.support.utility;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +27,9 @@ public class S3Util {
     private String bucketUrl;
 
     // S3 이미지 업로드
-    public String uploadFile(final MultipartFile file, final String id) {
+    public String uploadFile(final MultipartFile file, final String domain) {
         try {
-            String fileName = id + "/" + UUID.randomUUID().toString();
+            String fileName = domain + "/" + LocalDate.now().toString() + UUID.randomUUID().toString();
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());
