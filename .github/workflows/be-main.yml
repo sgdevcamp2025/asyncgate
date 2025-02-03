@@ -1,0 +1,217 @@
+name: ECR actions for multiple folders
+
+on:
+  pull_request:
+    # 임시 테스트 브랜치
+    branches:
+      - be/setting/24-test
+
+jobs:
+  # 변경 사항 감지 Job (각 서비스별로 실행)
+  check-folder-change:
+    runs-on: ubuntu-latest
+    outputs:
+      msa_discovery_changed: ${{ steps.check_msa_discovery.outputs.changed }}
+      msa_config_changed: ${{ steps.check_msa_config.outputs.changed }}
+      msa_apigateway_changed: ${{ steps.check_msa_apigateway.outputs.changed }}
+      service_user_changed: ${{ steps.check_service_user.outputs.changed }}
+      service_chat_changed: ${{ steps.check_service_chat.outputs.changed }}
+      service_state_changed: ${{ steps.check_service_state.outputs.changed }}
+      service_guild_changed: ${{ steps.check_service_guild.outputs.changed }}
+      service_notification_changed: ${{ steps.check_service_notification.outputs.changed }}
+      service_signaling_changed: ${{ steps.check_service_signaling.outputs.changed }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check for changes in MSA - Discovery
+        id: check_msa_discovery
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/discovery-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in MSA - Config
+        id: check_msa_config
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/config-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in MSA - API Gateway
+        id: check_msa_apigateway
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/apigateway-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - User
+        id: check_service_user
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/user-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - Chat
+        id: check_service_chat
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/chat-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - State
+        id: check_service_state
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/state-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - Guild
+        id: check_service_guild
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/guild-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - Notification
+        id: check_service_notification
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/notification-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Check for changes in Service - Signaling
+        id: check_service_signaling
+        run: |
+          if git diff --name-only origin/main...HEAD | grep -q "^src/backend/signaling-server/"; then
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=changed::false"
+          fi
+
+  # MSA 빌드 및 푸시
+  build-msa-discovery:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_discovery_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push MSA Discovery
+        uses: ./.github/actions/ecr-push-msa-discovery
+        with:
+          folder: "src/backend/discovery-server"
+          ecr_repo: "msa-discovery"
+
+  build-msa-config:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_config_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push MSA Config
+        uses: ./.github/actions/ecr-push-msa-config
+        with:
+          folder: "src/backend/config-server"
+          ecr_repo: "msa-config"
+
+  build-msa-apigateway:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_apigateway_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push MSA API Gateway
+        uses: ./.github/actions/ecr-push-msa-apigateway
+        with:
+          folder: "src/backend/apigateway-server"
+          ecr_repo: "msa-apigateway"
+
+  # Service 빌드 및 푸시
+  build-service-user:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_user_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service User
+        uses: ./.github/actions/ecr-push-service-user
+        with:
+          folder: "src/backend/user-server"
+          ecr_repo: "service-user"
+
+  build-service-chat:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_chat_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service Chat
+        uses: ./.github/actions/ecr-push-service-chat
+        with:
+          folder: "src/backend/chat-server"
+          ecr_repo: "service-chat"
+
+  build-service-state:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_state_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service State
+        uses: ./.github/actions/ecr-push-service-state
+        with:
+          folder: "src/backend/state-server"
+          ecr_repo: "service-state"
+
+  build-service-guild:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_guild_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service Guild
+        uses: ./.github/actions/ecr-push-service-guild
+        with:
+          folder: "src/backend/guild-server"
+          ecr_repo: "service-guild"
+
+  build-service-notification:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_notification_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service Notification
+        uses: ./.github/actions/ecr-push-service-notification
+        with:
+          folder: "src/backend/notification-server"
+          ecr_repo: "service-notification"
+
+  build-service-signaling:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_signaling_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build & Push Service Signaling
+        uses: ./.github/actions/ecr-push-service-signaling
+        with:
+          folder: "src/backend/signaling-server"
+          ecr_repo: "service-media"
