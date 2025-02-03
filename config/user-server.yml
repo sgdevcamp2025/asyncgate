@@ -4,6 +4,8 @@ eureka:
       defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
+  temporary-token-expire-period: 900000
+  access-token-expire-period: 1209600000
 
 cloud:
   aws:
@@ -15,3 +17,47 @@ cloud:
     s3:
       bucket: '{cipher}791ddfe9003ecb7c329f694bbc05d386cf783189f0e7196d5a3dcbfec48d84bd'
       url: '{cipher}0d5e7427241949e0656366472edde113f98d7b215ef6f982cbf6725264510beffa4da0f650b56d13c71eea6b5827179650b9aaf563bda7a0d6a14375ff7d8eff6a603b1063687a88b2073d3ca273d1f9'
+      profile:
+        default:
+          url: '{cipher}cb5a8d7a800e3b5558a7ad39e592f88dd22a6f81d5143d3571e51f1ac690f96f639280d2fe55c13d8ecfb0f5e91339812d41df429df17b6b9e65b33e644554719f03e300c1d9cde8776b463c3daeea1d10af9c563addf7d4ae74801d721fdc48'
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user?useSSL=false&serverTimezone=Asia/Seoul
+    username: '{cipher}56d454dea6f1332e8d9b5656400700369e6024c027fbc51e372dd64ff7ecb6a4'
+    password: '{cipher}1e4d1a106597d4b9efd8a80f25ccb4cec28a08b2f02d9b4c3b1ff3ffae90ad83'
+    hikari:
+      pool-name: '{cipher}b5848c642d7a307f92f1579de1809bcd68584ddbd8a474cc1d2ddef834c093e9'
+      maximum-pool-size: 5
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: '{cipher}623b0560db7816d2ffd55845e924030f6acdc6d044abce0a1826e873e268b17d1171767fd2e21614d47fd6cdd9f07ff0cd2a39d7c956e179ad7e850a8a375292'
+        default_batch_fetch_size: 100
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+    open-in-view: false
+  
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: '{cipher}55c4145543a06549c17f7ae1a9fc1ff241cf5b04a6b12596c5585d4163826c0fd5de29fff4acd199bf7d4a03f5cad596'
+    password: '{cipher}d821571e7ad6e5c3aa5c0bd2353b1e79bc93f0940d22a8763616e504b7bd870627e0b18d3fba6e330771f8732cfbad8b'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout: 5000
+          starttls:
+            enable: true
+      auth-code-expiration-millis: 300000

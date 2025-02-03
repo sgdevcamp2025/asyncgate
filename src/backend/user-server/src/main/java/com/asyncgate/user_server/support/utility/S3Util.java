@@ -1,4 +1,4 @@
-package com.asyncgate.user_server.utility;
+package com.asyncgate.user_server.support.utility;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;

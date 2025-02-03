@@ -20,6 +20,49 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+        # ToDo 유저 서버 개발 후 활성화
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/sign-up
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/sign-in
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+        
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/validation/authentication-code
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/validation/email
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+          
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/user/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+            
+
 management:
   endpoints:
     web:

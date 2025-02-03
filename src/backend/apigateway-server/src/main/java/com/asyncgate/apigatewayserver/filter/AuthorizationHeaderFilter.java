@@ -6,6 +6,8 @@ import com.asyncgate.apigatewayserver.support.response.FailResponse;
 import com.asyncgate.apigatewayserver.exception.FailType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -25,6 +27,10 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
 
+    private static final List<String> NO_NEED_URLS = List.of(
+        "/sign-up", "/sign-in", "/validation/email", "/validation/authentication-code"
+    );
+
     public AuthorizationHeaderFilter(
             final JwtTokenProvider jwtTokenProvider,
             final ObjectMapper objectMapper
@@ -38,6 +44,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     public GatewayFilter apply(final Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+            String path = request.getURI().getPath();
+
+            // user server 특정 url인 경우 filter 제외
+            if (NO_NEED_URLS.contains(path)) {
+                return chain.filter(exchange);
+            }
 
             if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
                 return onError(exchange, FailType.AUTHORIZATION_MISSING_HEADER);

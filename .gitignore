@@ -62,3 +62,6 @@ src/backend/**/src/main/resources/bootstrap.yml
 
 # Ignore all generated directories under backend
 src/backend/**/generated/
+
+# http env
+src/backend/**/http/http-client.private.env.json
