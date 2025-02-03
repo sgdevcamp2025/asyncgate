@@ -13,5 +13,5 @@ public interface GuildMemberRepository {
 
     List<String> findRandGuildIdsNotJoinedByUser(String userId, int limit);
 
-    List<String> findGuildIdsJoinedByUserId(String userId, int limit);
+    List<String> findGuildIdsJoinedByUserId(String userId);
 }

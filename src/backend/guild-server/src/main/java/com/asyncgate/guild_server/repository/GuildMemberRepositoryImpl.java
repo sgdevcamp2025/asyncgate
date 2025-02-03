@@ -41,7 +41,7 @@ public class GuildMemberRepositoryImpl implements GuildMemberRepository {
     }
 
     @Override
-    public List<String> findGuildIdsJoinedByUserId(final String userId, final int limit) {
-        return querydslRepository.findGuildIdsJoinedByUserId(userId, limit);
+    public List<String> findGuildIdsJoinedByUserId(final String userId) {
+        return querydslRepository.findGuildIdsJoinedByUserId(userId);
     }
 }

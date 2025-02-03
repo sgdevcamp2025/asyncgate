@@ -101,17 +101,17 @@ public class GuildServiceImpl implements GuildService {
     }
 
     @Override
-    public GuildRandResponses readRand(final String userId, int limit) {
+    public GuildResponses readRand(final String userId, int limit) {
         List<String> guildIds = guildMemberRepository.findRandGuildIdsNotJoinedByUser(userId, limit);
         List<Guild> guilds = guildRepository.getByIds(guildIds);
-        return GuildRandResponses.from(guilds);
+        return GuildResponses.from(guilds);
     }
 
     @Override
-    public GuildResponses readMyGuilds(final String userId, final int limit) {
-        List<String> guildIds = guildMemberRepository.findGuildIdsJoinedByUserId(userId, limit);
+    public GuildResponses readMyGuilds(final String userId) {
+        List<String> guildIds = guildMemberRepository.findGuildIdsJoinedByUserId(userId);
         List<Guild> guilds = guildRepository.findAllByIds(guildIds);
-        return GuildResponses.of(guilds, limit);
+        return GuildResponses.from(guilds);
     }
 
     private void validGuildMember(final String userId, final String guildId) {

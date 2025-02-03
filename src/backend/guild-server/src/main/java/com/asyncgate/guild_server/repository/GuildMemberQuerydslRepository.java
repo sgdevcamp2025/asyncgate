@@ -2,7 +2,6 @@ package com.asyncgate.guild_server.repository;
 
 import com.asyncgate.guild_server.entity.QGuildMemberEntity;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,7 +28,7 @@ public class GuildMemberQuerydslRepository {
                 .fetch();
     }
 
-    public List<String> findGuildIdsJoinedByUserId(final String userId, final long limit) {
+    public List<String> findGuildIdsJoinedByUserId(final String userId) {
         return queryFactory
                 .select(guildMember.guildId)
                 .from(guildMember)
@@ -38,7 +37,6 @@ public class GuildMemberQuerydslRepository {
                         guildMember.deleted.isFalse()
                 )
                 .orderBy(guildMember.createdDate.desc())
-                .limit(limit + 1)  // limit보다 하나 더 가져와서 다음 페이지 존재 여부 확인
                 .fetch();
     }
 

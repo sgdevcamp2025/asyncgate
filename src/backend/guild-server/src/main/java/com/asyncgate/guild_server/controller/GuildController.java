@@ -2,7 +2,6 @@ package com.asyncgate.guild_server.controller;
 
 import com.asyncgate.guild_server.dto.request.GuildRequest;
 import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
-import com.asyncgate.guild_server.dto.response.GuildRandResponses;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponses;
 import com.asyncgate.guild_server.service.GuildService;
@@ -29,19 +28,18 @@ public class GuildController {
 
     @GetMapping
     public SuccessResponse<GuildResponses> getMyGuilds(
-            final @AuthenticationPrincipal String userId,
-            final @RequestParam(required = false, defaultValue = "10") int limit
+            final @AuthenticationPrincipal String userId
     ) {
-        GuildResponses guildResponses = guildService.readMyGuilds(userId, limit);
+        GuildResponses guildResponses = guildService.readMyGuilds(userId);
         return SuccessResponse.created(guildResponses);
     }
 
     @GetMapping("/rand")
-    public SuccessResponse<GuildRandResponses> getRand(
+    public SuccessResponse<GuildResponses> getRand(
             final @AuthenticationPrincipal String userId,
             final @RequestParam(required = false, defaultValue = "10") int limit
     ) {
-        GuildRandResponses guildResponses = guildService.readRand(userId, limit);
+        GuildResponses guildResponses = guildService.readRand(userId, limit);
         return SuccessResponse.created(guildResponses);
     }
 
