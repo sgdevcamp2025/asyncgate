@@ -41,7 +41,7 @@ public class GuildServiceImpl implements GuildService {
         Guild guild = Guild.create(request.getName(), request.isPrivate(), profileImageUrl);
         guildRepository.save(guild);
 
-        GuildMember guildMember = GuildMember.join(userId, guild.getId(), GuildRole.ADMIN);
+        GuildMember guildMember = GuildMember.createdByAdmin(userId, guild.getId());
         guildMemberRepository.save(guildMember);
 
         return GuildResponse.from(guild);
@@ -66,7 +66,7 @@ public class GuildServiceImpl implements GuildService {
     }
 
     private void validatePermission(final String userId, final String guildId) {
-        GuildMember guildMember = guildMemberRepository.getByUserIdAndGuildId(userId, guildId);
+        GuildMember guildMember = guildMemberRepository.findAcceptedMemberByUserIdAndGuildId(userId, guildId);
         if (!guildMember.getGuildRole().equals(GuildRole.ADMIN)) {
             throw new GuildServerException(FailType.GUILD_PERMISSION_DENIED);
         }
@@ -115,7 +115,7 @@ public class GuildServiceImpl implements GuildService {
     }
 
     private void validGuildMember(final String userId, final String guildId) {
-        guildMemberRepository.getByUserIdAndGuildId(userId, guildId);
+        guildMemberRepository.findAcceptedMemberByUserIdAndGuildId(userId, guildId);
     }
 
     private String determineProfileImageUrl(final MultipartFile newProfileImage, final String currentProfileImageUrl) {

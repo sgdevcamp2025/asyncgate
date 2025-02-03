@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.repository;
 
+import com.asyncgate.guild_server.domain.GuildInvitationStatus;
 import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.entity.GuildMemberEntity;
 import com.asyncgate.guild_server.exception.FailType;
@@ -24,8 +25,8 @@ public class GuildMemberRepositoryImpl implements GuildMemberRepository {
     }
 
     @Override
-    public GuildMember getByUserIdAndGuildId(final String userId, final String guildId) {
-        GuildMemberEntity guildMemberEntity = jpaRepository.findActiveByUserIdAndGuildId(userId, guildId)
+    public GuildMember findAcceptedMemberByUserIdAndGuildId(final String userId, final String guildId) {
+        GuildMemberEntity guildMemberEntity = querydslRepository.findAcceptedMemberByUserIdAndGuildId(userId, guildId)
                 .orElseThrow(() -> new GuildServerException(FailType.GUILD_MEMBER_NOT_FOUND));
         return DomainUtil.GuildMemberMapper.toDomain(guildMemberEntity);
     }
@@ -43,5 +44,12 @@ public class GuildMemberRepositoryImpl implements GuildMemberRepository {
     @Override
     public List<String> findGuildIdsJoinedByUserId(final String userId) {
         return querydslRepository.findGuildIdsJoinedByUserId(userId);
+    }
+
+    @Override
+    public GuildMember findByUserIdAndGuildIdAndStatus(final String userId, final String guildId, final GuildInvitationStatus status) {
+        GuildMemberEntity guildMemberEntity = querydslRepository.findPendingMemberByUserIdAndGuildId(userId, guildId)
+                .orElseThrow(() -> new GuildServerException(FailType.INVITATION_NOT_FOUND));
+        return DomainUtil.GuildMemberMapper.toDomain(guildMemberEntity);
     }
 }

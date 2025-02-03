@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.entity;
 
+import com.asyncgate.guild_server.domain.GuildInvitationStatus;
 import com.asyncgate.guild_server.domain.GuildRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,11 +27,15 @@ public class GuildMemberEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private GuildRole guildRole;
 
+    @Enumerated(EnumType.STRING)
+    private GuildInvitationStatus status = GuildInvitationStatus.PENDING;
+
     @Builder
-    private GuildMemberEntity(String id, String userId, String guildId, GuildRole guildRole) {
+    public GuildMemberEntity(String id, String userId, String guildId, GuildRole guildRole, GuildInvitationStatus status) {
         this.id = id;
         this.userId = userId;
         this.guildId = guildId;
         this.guildRole = guildRole;
+        this.status = status;
     }
 }

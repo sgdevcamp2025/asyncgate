@@ -1,9 +1,10 @@
 package com.asyncgate.guild_server.domain;
 
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
+
+import java.util.UUID;
 
 @Getter
 public class Guild implements Identifiable {

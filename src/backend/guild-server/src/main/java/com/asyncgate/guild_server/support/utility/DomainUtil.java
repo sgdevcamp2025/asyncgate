@@ -38,6 +38,7 @@ public class DomainUtil {
                     .userId(guildMember.getUserId())
                     .guildId(guildMember.getGuildId())
                     .guildRole(guildMember.getGuildRole())
+                    .status(guildMember.getStatus())
                     .build();
         }
 
@@ -47,6 +48,7 @@ public class DomainUtil {
                     .userId(entity.getUserId())
                     .guildId(entity.getGuildId())
                     .guildRole(entity.getGuildRole())
+                    .status(entity.getStatus())
                     .build();
         }
     }

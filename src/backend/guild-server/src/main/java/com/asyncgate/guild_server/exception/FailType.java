@@ -31,6 +31,14 @@ public enum FailType {
     CHANNEL_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Channel_4001", "채널 타입은 VOICE 또는 TEXT만 가능합니다."),
     CHANNEL_NOT_FOUND(HttpStatus.NOT_FOUND, "Channel_4041", "채널을 찾을 수 없습니다."),
 
+    // Guild Invitation
+    INVITATION_NOT_FOUND(HttpStatus.NOT_FOUND, "Invitation_4041", "해당 초대를 찾을 수 없습니다."),
+    INVITATION_ALREADY_ACCEPTED(HttpStatus.BAD_REQUEST, "Invitation_4001", "이미 수락된 초대입니다."),
+    INVITATION_ALREADY_REJECTED(HttpStatus.BAD_REQUEST, "Invitation_4002", "이미 거절된 초대입니다."),
+    INVITATION_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "Invitation_4003", "이미 취소된 초대입니다."),
+    INVITATION_ALREADY_EXPIRED(HttpStatus.BAD_REQUEST, "Invitation_4004", "이미 만료된 초대입니다."),
+    INVITATION_INVALID_STATUS(HttpStatus.BAD_REQUEST, "Invitation_4005", "잘못된 초대 상태입니다."),
+
     ;
 
     private final HttpStatus status;
