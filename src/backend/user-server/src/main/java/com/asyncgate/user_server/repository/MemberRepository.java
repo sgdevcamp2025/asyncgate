@@ -15,5 +15,5 @@ public interface MemberRepository {
 
     void save(Member member);
 
-    void delete(Member member);
+    void softDeleteById(String id);
 }

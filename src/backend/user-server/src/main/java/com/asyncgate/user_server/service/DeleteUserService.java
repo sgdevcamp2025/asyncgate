@@ -23,6 +23,6 @@ public class DeleteUserService implements DeleteUserUseCase {
         Member member = memberRepository.findById(userId)
                 .orElseThrow(() -> new UserServerException(FailType.MEMBER_NOT_FOUND));
 
-        memberRepository.delete(member);
+        memberRepository.softDeleteById(member.getId());
     }
 }
