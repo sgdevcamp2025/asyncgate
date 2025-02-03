@@ -13,10 +13,15 @@ public class HeaderUtil {
     public static Optional<String> refineHeader(final HttpServletRequest request, final String header, final String prefix) {
         String unpreparedToken = request.getHeader(header);
 
-        if (!StringUtils.hasText(unpreparedToken) || !unpreparedToken.startsWith(prefix)) {
+        if (!StringUtils.hasText(unpreparedToken)) {
             return Optional.empty();
         }
 
-        return Optional.of(unpreparedToken.substring(prefix.length()));
+        // prefix가 존재하면 제거하고, 없으면 그대로 반환
+        if (unpreparedToken.startsWith(prefix)) {
+            return Optional.of(unpreparedToken.substring(prefix.length()));
+        }
+
+        return Optional.of(unpreparedToken);
     }
 }
