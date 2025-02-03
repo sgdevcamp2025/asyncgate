@@ -6,10 +6,15 @@ on:
     branches:
       - be/setting/24-test
 
+env:
+  NAMESPACE_MSA: "msa"
+  NAMESPACE_SERVICE: "service"
+
 jobs:
   # 변경 사항 감지 Job (각 서비스별로 실행)
   check-folder-change:
     runs-on: ubuntu-latest
+
     outputs:
       msa_discovery_changed: ${{ steps.check_msa_discovery.outputs.changed }}
       msa_config_changed: ${{ steps.check_msa_config.outputs.changed }}
@@ -112,36 +117,36 @@ jobs:
     if: ${{ needs.check-folder-change.outputs.msa_discovery_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push MSA Discovery
-        uses: ./.github/actions/ecr-push-msa-discovery
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_MSA }}
           folder: "src/backend/discovery-server"
-          ecr_repo: "msa-discovery"
+          ecr_repo: "discovery"
 
   build-msa-config:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.msa_config_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push MSA Config
-        uses: ./.github/actions/ecr-push-msa-config
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_MSA }}
           folder: "src/backend/config-server"
-          ecr_repo: "msa-config"
+          ecr_repo: "config"
 
   build-msa-apigateway:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.msa_apigateway_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push MSA API Gateway
-        uses: ./.github/actions/ecr-push-msa-apigateway
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_MSA }}
           folder: "src/backend/apigateway-server"
-          ecr_repo: "msa-apigateway"
+          ecr_repo: "apigateway"
 
   # Service 빌드 및 푸시
   build-service-user:
@@ -149,69 +154,69 @@ jobs:
     if: ${{ needs.check-folder-change.outputs.service_user_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service User
-        uses: ./.github/actions/ecr-push-service-user
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/user-server"
-          ecr_repo: "service-user"
+          ecr_repo: "user"
 
   build-service-chat:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.service_chat_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service Chat
-        uses: ./.github/actions/ecr-push-service-chat
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/chat-server"
-          ecr_repo: "service-chat"
+          ecr_repo: "chat"
 
   build-service-state:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.service_state_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service State
-        uses: ./.github/actions/ecr-push-service-state
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/state-server"
-          ecr_repo: "service-state"
+          ecr_repo: "state"
 
   build-service-guild:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.service_guild_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service Guild
-        uses: ./.github/actions/ecr-push-service-guild
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/guild-server"
-          ecr_repo: "service-guild"
+          ecr_repo: "guild"
 
   build-service-notification:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.service_notification_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service Notification
-        uses: ./.github/actions/ecr-push-service-notification
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/notification-server"
-          ecr_repo: "service-notification"
+          ecr_repo: "notification"
 
   build-service-signaling:
     needs: check-folder-change
     if: ${{ needs.check-folder-change.outputs.service_signaling_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: Build & Push Service Signaling
-        uses: ./.github/actions/ecr-push-service-signaling
+        uses: ./.github/actions/ecr-push
         with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
           folder: "src/backend/signaling-server"
-          ecr_repo: "service-media"
+          ecr_repo: "media"
