@@ -36,7 +36,7 @@ public class JwtService {
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
-            return claims.getBody().getSubject();
+            return claims.getBody().get("mid", String.class);
         } catch (Exception e) {
             throw new GuildServerException(FailType._JWT_INVALID_TOKEN);
         }
@@ -50,4 +50,5 @@ public class JwtService {
                 new UsernamePasswordAuthenticationToken(userId, token, authorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
 }

@@ -1,0 +1,33 @@
+### 변수 설정
+@host_url = http://localhost:8080
+@access_token = token
+
+
+### 1.0 채널 생성
+POST {{host_url}}/channel
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "name": "New Channel",
+  "isPrivate": false,
+  "guildId": "guild-123",
+  "categoryId": "category-456",
+  "channelType": "TEXT"
+}
+
+
+### 1.1 채널 수정
+PATCH {{host_url}}/channel/guild-id/category-id/channel-id
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "name": "Updated Channel",
+  "isPrivate": true
+}
+
+
+### 1.2 채널 삭제
+DELETE {{host_url}}/channel/guild-id/category-id/channel-id
+Authorization: {{access_token}}

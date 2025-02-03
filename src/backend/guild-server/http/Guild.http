@@ -1,0 +1,81 @@
+@host_url = http://localhost:8080
+@access_token = token
+
+### 1.0 길드 생성
+POST {{host_url}}/guilds
+Authorization: {{access_token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+길드2
+
+--boundary
+Content-Disposition: form-data; name="isPrivate"
+Content-Type: text/plain
+
+true
+
+--boundary
+Content-Disposition: form-data; name="profileImage"; filename="test.png"
+Content-Type: image/png
+
+< ./test.png
+
+### 1.1 내가 가입한 길드 목록 조회
+GET {{host_url}}/guilds
+Authorization: {{access_token}}
+
+### 1.2 랜덤 길드 목록 조회
+GET {{host_url}}/guilds/rand?limit=10
+Authorization: {{access_token}}
+
+### 1.3 특정 길드 조회
+GET {{host_url}}/guilds/{{guild.API_1_3_READ.guildId}}
+Authorization: {{access_token}}
+
+### 1.4 길드 수정
+PATCH {{host_url}}/guilds/{{guild.API_1_4_UPDATE.guildId}}
+Authorization: {{access_token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="name"
+Content-Type: text/plain
+
+{{guild.API_1_4_UPDATE.name}}
+
+--boundary
+Content-Disposition: form-data; name="isPrivate"
+Content-Type: text/plain
+
+{{guild.API_1_4_UPDATE.isPrivate}}
+
+--boundary
+Content-Disposition: form-data; name="profileImage"; filename="test.png"
+Content-Type: image/png
+
+< ./test.png
+
+### 1.5 길드 삭제
+DELETE {{host_url}}/guilds/{{guild.API_1_5_DELETE.guildId}}
+Authorization: {{access_token}}
+
+### 2.0 길드 초대 보내기
+POST {{host_url}}/guilds/{{guild.API_2_0_INVITE.guildId}}/invitations?targetUserId={{user.API_2_0_INVITE.targetUserId}}
+Authorization: {{access_token}}
+
+### 2.1 길드 초대 수락
+PATCH {{host_url}}/guilds/{{guild.API_2_1_ACCEPT.guildId}}/invitations/accept
+Authorization: {{access_token}}
+
+### 2.2 길드 초대 거절
+PATCH {{host_url}}/guilds/{{guild.API_2_2_REJECT.guildId}}/invitations/reject
+Authorization: {{access_token}}
+
+### 2.3 길드 초대 취소
+DELETE {{host_url}}/guilds/{{guild.API_2_3_CANCEL.guildId}}/invitations
+Authorization: {{access_token}}
+

@@ -1,0 +1,20 @@
+### 변수 설정
+@host_url = http://localhost:8080
+@access_token = token
+
+
+### 1.0 카테고리 생성
+POST {{host_url}}/category
+Authorization: {{access_token}}
+Content-Type: application/json
+
+{
+  "name": "New Category",
+  "guildId": "guild-123",
+  "isPrivate": false
+}
+
+
+### 1.1 카테고리 삭제
+DELETE {{host_url}}/category/guild-id/category-id
+Authorization: {{access_token}}
