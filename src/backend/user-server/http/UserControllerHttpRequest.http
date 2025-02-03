@@ -1,0 +1,78 @@
+### 0.0 health check
+// @no-log
+GET {{host_url}}/health
+
+### 1.0 임시 회원가입
+// @no-log
+POST {{host_url}}/sign-up
+Content-Type: application/json
+
+{
+  "email": "{{user.API_1_0_SIGNUP.email}}",
+  "password": "{{user.API_1_0_SIGNUP.password}}",
+  "name": "{{user.API_1_0_SIGNUP.name}}",
+  "nickname": "{{user.API_1_0_SIGNUP.nickname}}",
+  "birth": "{{user.API_1_0_SIGNUP.birth}}"
+}
+
+
+### 1.1 로그인
+// @no-log
+POST {{host_url}}/sign-in
+Content-Type: application/json
+
+{
+  "email": "{{user.API_1_1_SIGNIN.email}}",
+  "password": "{{user.API_1_1_SIGNIN.password}}"
+}
+
+
+### 1.2 인증코드 인증
+// @no-log
+POST {{host_url}}/validation/authentication-code
+Content-Type: application/json
+
+{
+  "email": "{{user.API_1_2_AUTHENTICATION_CODE.email}}",
+  "authentication_code": "{{user.API_1_2_AUTHENTICATION_CODE.authentication_code}}"
+}
+
+### 1.3 이메일 중복 검사
+// @no-log
+POST {{host_url}}/validation/email?email={{user.API_1_3_DUPLICATE_EMAIL.email}}
+
+### 1.4 디바이스 토큰 등록
+// @no-log
+PATCH {{host_url}}/device-token
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+{
+  "device_token": "{{user.API_1_4_UPDATE_DEVICE_TOKEN.device_token}}"
+}
+
+### 1.5 사용자 정보 수정
+// @no-log
+PATCH {{host_url}}/info
+Authorization: Bearer {{access_token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="profile_img"; filename="image.png"
+Content-Type: image/png
+
+< /Users/eunji/Desktop/profile2.png
+
+--boundary
+Content-Disposition: form-data; name="body"
+Content-Type: application/json
+
+{
+	"name" : "{{user.API_1_5_UPDATE_USERINFO.name}}",
+	"nickname" : "{{user.API_1_5_UPDATE_USERINFO.nickname}}"
+}
+
+### 1.6 회원 탈퇴
+// @no-log
+DELETE {{host_url}}/auth
+Authorization: Bearer {{access_token}}
