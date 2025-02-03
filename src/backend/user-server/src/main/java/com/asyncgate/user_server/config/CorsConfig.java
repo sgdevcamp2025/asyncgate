@@ -28,6 +28,7 @@ public class CorsConfig {
         allowedHttpMethods.add("PUT");
         allowedHttpMethods.add("PATCH");
         allowedHttpMethods.add("DELETE");
+        allowedHttpMethods.add("OPTIONS");
         configuration.setAllowedMethods(allowedHttpMethods);
 
         configuration.setAllowedHeaders(Collections.singletonList("*"));

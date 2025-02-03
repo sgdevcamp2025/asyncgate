@@ -5,7 +5,6 @@ import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,8 +28,7 @@ public class JsonWebTokenUtil implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
     // token 생성 메서드
@@ -62,6 +60,7 @@ public class JsonWebTokenUtil implements InitializingBean {
         return Jwts.builder()
                 .setHeaderParam(Header.JWT_TYPE, Header.JWT_TYPE)
                 .setClaims(claims)
+                .setSubject(identifier)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirePeriod))
                 .signWith(key, SignatureAlgorithm.HS256)
