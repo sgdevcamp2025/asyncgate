@@ -1,4 +1,4 @@
-package com.asyncgate.chat_server.utility
+package com.asyncgate.chat_server.support.utility
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -35,11 +35,11 @@ class S3Util(
 
             "$bucketUrl$fileName"
         } catch (e: SdkClientException) {
-            throw ChatServerException(FailType._UPLOAD_FILE_ERROR)
+            throw ChatServerException(FailType.X_UPLOAD_FILE_ERROR)
         } catch (e: IOException) {
-            throw ChatServerException(FailType._UPLOAD_FILE_ERROR)
+            throw ChatServerException(FailType.X_UPLOAD_FILE_ERROR)
         } catch (e: Exception) {
-            throw ChatServerException(FailType._UNKNOWN_ERROR)
+            throw ChatServerException(FailType.X_UNKNOWN_ERROR)
         }
     }
 
@@ -53,14 +53,14 @@ class S3Util(
             val fileExists = amazonS3Client.doesObjectExist(bucketName, fileName)
 
             if (!fileExists) {
-                throw ChatServerException(FailType._FILE_NOT_FOUND)
+                throw ChatServerException(FailType.X_FILE_NOT_FOUND)
             }
 
             amazonS3Client.deleteObject(bucketName, fileName)
         } catch (e: SdkClientException) {
-            throw ChatServerException(FailType._DELETE_FILE_ERROR)
+            throw ChatServerException(FailType.X_DELETE_FILE_ERROR)
         } catch (e: Exception) {
-            throw ChatServerException(FailType._UNKNOWN_ERROR)
+            throw ChatServerException(FailType.X_UNKNOWN_ERROR)
         }
     }
 }
