@@ -21,5 +21,5 @@ data class DirectMessage(
 
     val parentId: String? = null,
     val parentName: String? = null,
-    val parentContent: String? = null
+    val parentContent: String? = null,
 )

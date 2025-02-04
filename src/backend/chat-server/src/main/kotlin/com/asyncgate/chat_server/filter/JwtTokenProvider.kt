@@ -35,7 +35,7 @@ class JwtTokenProvider {
             if (subject.isNullOrBlank()) {
                 throw ChatServerException(FailType.JWT_INVALID_TOKEN)
             }
-            
+
             return true
         } catch (e: SignatureException) {
             throw ChatServerException(FailType.JWT_INVALID_SIGNATURE)
@@ -74,5 +74,4 @@ class JwtTokenProvider {
             throw ChatServerException(FailType.JWT_INVALID_TOKEN)
         }
     }
-
 }

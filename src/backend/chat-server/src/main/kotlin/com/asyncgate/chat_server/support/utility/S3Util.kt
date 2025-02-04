@@ -1,23 +1,22 @@
 package com.asyncgate.chat_server.support.utility
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.asyncgate.chat_server.exception.FailType;
-import com.asyncgate.chat_server.exception.ChatServerException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.UUID;
+import com.amazonaws.SdkClientException
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.asyncgate.chat_server.exception.ChatServerException
+import com.asyncgate.chat_server.exception.FailType
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.multipart.MultipartFile
+import java.io.IOException
+import java.util.UUID
 
 @Configuration
 class S3Util(
     private val amazonS3Client: AmazonS3Client,
     @Value("\${cloud.aws.s3.bucket}") private val bucketName: String,
-    @Value("\${cloud.aws.s3.url}") private val bucketUrl: String
+    @Value("\${cloud.aws.s3.url}") private val bucketUrl: String,
 ) {
 
     // S3 이미지 업로드

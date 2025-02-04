@@ -12,6 +12,6 @@ interface GuildClient {
 
     @GetMapping
     fun getGuildIds(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) jwtToken: String
+        @RequestHeader(HttpHeaders.AUTHORIZATION) jwtToken: String,
     ): List<String>
 }

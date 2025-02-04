@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class DirectMessageRepositoryImpl(
-    private val directMessageMongoRepository: DirectMessageMongoRepository
-): DirectMessageRepository {
-    
+    private val directMessageMongoRepository: DirectMessageMongoRepository,
+) : DirectMessageRepository {
+
     override fun save(directMessageEntity: DirectMessageEntity): DirectMessage {
         return directMessageMongoRepository.save(directMessageEntity).toDomain()
     }

@@ -26,5 +26,5 @@ class DirectMessageEntity(
 
     val parentId: String? = null,
     val parentName: String? = null,
-    val parentContent: String? = null
+    val parentContent: String? = null,
 )
