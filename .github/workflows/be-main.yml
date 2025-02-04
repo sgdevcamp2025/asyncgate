@@ -175,6 +175,12 @@ jobs:
     if: ${{ needs.check-folder-change.outputs.msa_discovery_changed == 'true' }}
     runs-on: ubuntu-latest
     steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Print current working directory
+        run: pwd
+
       - name: Build & Push MSA Discovery
         uses: ./.github/actions/ecr-push
         with:
