@@ -3,9 +3,11 @@ FROM amazoncorretto:17-alpine AS builder
 
 WORKDIR /app
 
+# Gradle 설치
+RUN apk add --no-cache gradle
+
 COPY . /app
 
-RUN chmod +x ./gradlew
 RUN ./gradlew clean build -x test
 
 # 실행 단계
