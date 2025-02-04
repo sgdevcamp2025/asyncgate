@@ -1,0 +1,6 @@
+framework module Pods_asyncgate_iOS {
+  umbrella header "Pods-asyncgate_iOS-umbrella.h"
+
+  export *
+  module * { export * }
+}
