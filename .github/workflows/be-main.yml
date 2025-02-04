@@ -45,8 +45,8 @@ jobs:
       - name: Check for changes in MSA - Discovery
         id: check_msa_discovery
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/discovery-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/discovery-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -60,8 +60,8 @@ jobs:
       - name: Check for changes in MSA - Config
         id: check_msa_config
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/config-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/config-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -74,8 +74,8 @@ jobs:
       - name: Check for changes in MSA - API Gateway
         id: check_msa_apigateway
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/apigateway-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/apigateway-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -88,8 +88,8 @@ jobs:
       - name: Check for changes in Service - User
         id: check_service_user
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/user-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/user-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -102,8 +102,8 @@ jobs:
       - name: Check for changes in Service - Chat
         id: check_service_chat
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/chat-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/chat-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -116,8 +116,8 @@ jobs:
       - name: Check for changes in Service - State
         id: check_service_state
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/state-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/state-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -130,8 +130,8 @@ jobs:
       - name: Check for changes in Service - Guild
         id: check_service_guild
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/guild-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/guild-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -144,8 +144,8 @@ jobs:
       - name: Check for changes in Service - Notification
         id: check_service_notification
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/notification-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/notification-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
@@ -158,8 +158,8 @@ jobs:
       - name: Check for changes in Service - Signaling
         id: check_service_signaling
         run: |
-          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
-            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/signaling-server/"; then
+          if git rev-parse --verify origin/be/setting/24 >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24...HEAD | grep -q "^src/backend/signaling-server/"; then
               echo "changed=true" >> $GITHUB_ENV
             else
               echo "changed=false" >> $GITHUB_ENV
