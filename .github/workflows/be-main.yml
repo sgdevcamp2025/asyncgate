@@ -4,7 +4,7 @@ on:
   push:
     # 임시 테스트 브랜치
     branches:
-      - be/setting/24-test
+      - be/setting/24-ecr
 
 env:
   NAMESPACE_MSA: "msa"
