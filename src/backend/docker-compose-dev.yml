@@ -1,0 +1,60 @@
+services:
+  discovery-service:
+    build:
+      context: discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    networks:
+      - msa-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://discovery-service:8761/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2 
+  apigateway-service:
+    build:
+      context: apigateway-server
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://apigateway-service:8000/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+    depends_on:
+      - config-service
+    networks:
+      - msa-network
+    restart: on-failure
+  config-service:
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - 8888:8888
+    networks:
+      - msa-network
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://config-service:8888/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+    depends_on:
+      - discovery-service
+  user-service:
+    build:
+      context: user-server
+      dockerfile: Dockerfile
+    expose:
+      - 1000 # 내부 컨테이너 포트만 노출
+    depends_on:
+      - apigateway-service
+    networks:
+      - msa-network
+    restart: on-failure
+
+networks:
+  msa-network:
