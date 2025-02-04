@@ -1,7 +1,7 @@
 eureka:
   client:
     service-url:
-      defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
+      defaultZone: '{cipher}2b2a25eaeb6db79453d3b95377b02f0f95bfe4d3afe515dbbea80564d9c0fd5f05cd609214234b8606653776cc7c7c091aaf00076866e883ba9fe7daf6b0ff1b'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
   temporary-token-expire-period: 900000
