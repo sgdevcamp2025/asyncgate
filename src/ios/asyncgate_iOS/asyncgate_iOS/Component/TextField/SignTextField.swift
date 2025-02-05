@@ -19,10 +19,11 @@ struct SignTextField: View {
                 .foregroundColor(Color.colorDart400)
             
             TextField(stepCaption, text: $text)
-                .foregroundStyle(Color.colorWhite)
                 .padding()
+                .foregroundColor(.white)
                 .background(Color.colorDart500)
                 .cornerRadius(4)
         }
     }
 }
+
