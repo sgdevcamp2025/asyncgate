@@ -9,10 +9,12 @@ const colors = {
     600: '#2E3035',
     500: '#383A40',
     400: '#80848E',
+    300: '#B5BAC1',
   },
   red: '#FF595E',
   green: '#248045',
   blue: '#5765F2',
+  link: '#069BE3',
 };
 
 const typography = {
