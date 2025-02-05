@@ -1,5 +1,5 @@
 //
-//  Authentication.swift
+//  AuthenticationViewModel.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -8,7 +8,7 @@
 import KeychainAccess
 
 // MARK: 로그인 후 엑세스 토큰 KeyChain에 저장
-class Authentication: ObservableObject {
+class AccessTokenViewModel: ObservableObject {
     let keychain = Keychain(service: "kk.asyncgate-iOS")
     
     @Published var accessToken: String?

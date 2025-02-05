@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 - 생년월일 설정 View
 struct SignBirthView: View {
-    @ObservedObject var signUpModel: SignUpModel
+    @ObservedObject var signUpModel: SignUpViewModel
     var date: Date = Date()
     
     var body: some View {
@@ -40,8 +40,7 @@ struct SignBirthView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
         .navigationDestination(isPresented: $signUpModel.isSignUpSuccessful) {
-            // FIXME: 수정 예정
-                    Text("회원가입 성공!")
+            VerifyAuthenticationView(signUpModel: signUpModel)
                 }
     }
     

@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 로그인 화면
 struct SignInView: View {
-    @StateObject var signInModel = SignInModel()
+    @StateObject var signInModel = SignInViewModel()
     
     var body: some View {
         VStack {

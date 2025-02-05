@@ -1,5 +1,5 @@
 //
-//  Sign.swift
+//  ResponseAndRequest.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -18,4 +18,9 @@ struct SignInRequest: Codable {
 struct SignUPResponse: Codable {
     let success: Bool
     let message: String
+}
+
+struct AuthenticationResponse: Decodable {
+    let success: Bool
+    let message: String?
 }

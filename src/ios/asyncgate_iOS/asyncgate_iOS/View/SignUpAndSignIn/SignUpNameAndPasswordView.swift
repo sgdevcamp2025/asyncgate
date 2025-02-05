@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 - 사용자명 및 비밀번호 설정 View
 struct SignUpNameAndPasswordView: View {
-    @ObservedObject var signUpModel: SignUpModel
+    @ObservedObject var signUpModel: SignUpViewModel
     
     var body: some View {
         VStack {
