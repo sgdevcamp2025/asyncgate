@@ -22,8 +22,15 @@ struct SignBirthView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             
-            NavigationLink(destination: SignUpNameAndPasswordView(signUpModel: signUpModel)) {
+            Button {
+                signUpModel.registerUser()
+            } label: {
                 SignButton(text: "계정 만들기")
+            }
+            
+            if let errorMessage = signUpModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
             }
             
             Spacer()
@@ -32,6 +39,10 @@ struct SignBirthView: View {
         .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
+        .navigationDestination(isPresented: $signUpModel.isSignUpSuccessful) {
+            // FIXME: 수정 예정
+                    Text("회원가입 성공!")
+                }
     }
     
 }

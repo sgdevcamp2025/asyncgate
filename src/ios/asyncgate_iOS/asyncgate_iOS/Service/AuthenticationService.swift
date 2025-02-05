@@ -8,8 +8,8 @@
 import Alamofire
 
 // MARK: 함수 - 회원가입 함수
-func signUp(hostUrl: String, email: String, password: String, name: String, nickname: String, birth: String, completion: @escaping (Bool, String?) -> Void) {
-    let url = "\(hostUrl)/sign-up"
+func signUp(email: String, password: String, name: String, nickname: String, birth: String, completion: @escaping (Bool, String?) -> Void) {
+    let url = "(hostUrl)/sign-up"
     
     let parameters: [String: Any] = [
         "email": email,

@@ -13,4 +13,19 @@ class SignUpModel: ObservableObject {
     @Published var name: String = ""
     @Published var nickname: String = ""
     @Published var birth: String = ""
+    
+    @Published var errorMessage: String?
+    @Published var isSignUpSuccessful: Bool = false
+    
+    func registerUser() {
+        signUp(email: email, password: password, name: name, nickname: nickname, birth: birth) { success, message in
+            DispatchQueue.main.async {
+                if success {
+                    self.isSignUpSuccessful = true
+                } else {
+                    self.errorMessage = message
+                }
+            }
+        }
+    }
 }
