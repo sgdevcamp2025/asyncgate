@@ -51,7 +51,7 @@ func signIn(hostUrl: String, email: String, password: String, completion: @escap
             case .success(let data):
                 completion(data.result.accessToken)
                 
-            case .failure(let error):
+            case .failure(_):
                 completion(nil)
             }
         }
