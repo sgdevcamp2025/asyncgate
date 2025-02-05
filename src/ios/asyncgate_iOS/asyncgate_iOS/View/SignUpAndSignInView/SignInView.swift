@@ -9,8 +9,7 @@ import SwiftUI
 
 // MARK: View - 로그인 화면
 struct SignInView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
+    @StateObject var signInModel = SignInModel()
     
     var body: some View {
         VStack {
@@ -22,7 +21,7 @@ struct SignInView: View {
                 .font(Font.pretendardBold(size: 16))
                 .foregroundColor(Color.colorWhite)
           
-            SignTextField(stepCaption: "계정정보", text: $email)
+            SignTextField(stepCaption: "계정정보", text: $signInModel.email)
                 .padding(.top, 24)
                 .padding(.bottom, 10)
             
@@ -31,13 +30,15 @@ struct SignInView: View {
                     .font(Font.pretendardSemiBold(size: 16))
                     .foregroundColor(Color.colorDart400)
                 
-                PasswordField(password: $password)
+                PasswordField(password: $signInModel.password)
             }
                 .padding(.bottom, 30)
             
-//            NavigationLink(destination: SignBirthView(signUpModel: signUpModel)) {
-//                SignButton(text: "로그인")
-//            }
+            Button {
+                signInModel.logInInUser()
+            } label: {
+                SignButton(text: "로그인")
+            }
             
             Spacer()
         }
