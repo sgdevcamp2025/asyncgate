@@ -15,6 +15,8 @@ struct SignUpView: View {
         NavigationStack {
             SignUpEmailView(signUpModel: signUpModel)
                 .applyBackground()
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: BackButton(color: .white))
         }
     }
 }

@@ -17,7 +17,7 @@ struct SignUpNickNameView: View {
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
             
-            SignTextField(stepCaption: "별명", text: $signUpModel.nickname)
+            SignTextField(stepCaption: "별명", placeholder: "", text: $signUpModel.nickname)
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             

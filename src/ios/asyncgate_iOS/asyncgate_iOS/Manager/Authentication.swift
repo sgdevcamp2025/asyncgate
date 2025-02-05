@@ -7,6 +7,7 @@
 
 import KeychainAccess
 
+// MARK: 로그인 후 엑세스 토큰 KeyChain에 저장
 class Authentication: ObservableObject {
     let keychain = Keychain(service: "kk.asyncgate-iOS")
     

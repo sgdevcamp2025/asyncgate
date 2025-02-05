@@ -24,10 +24,20 @@ struct SignUpEmailView: View {
                 
                 TextField("이메일", text: $signUpModel.email)
                     .keyboardType(.emailAddress)
-                    .foregroundStyle(Color.colorWhite)
+                    .foregroundColor(.white)
                     .padding()
                     .background(Color.colorDart500)
                     .cornerRadius(4)
+                    .overlay(
+                        Group {
+                            if signUpModel.email.isEmpty {
+                                Text("이메일")
+                                    .foregroundStyle(Color.colorDart400)
+                                    .padding(.leading, 10)
+                            }
+                        }
+                        , alignment: .leading
+                    )
             }
                 .padding(.top, 24)
                 .padding(.bottom, 30)

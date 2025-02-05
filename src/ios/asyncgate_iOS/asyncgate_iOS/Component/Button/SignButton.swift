@@ -14,7 +14,7 @@ struct SignButton: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 4)
-                .foregroundStyle(Color.colorMain)
+                .foregroundStyle(Color.colorBlurple)
                 .frame(height: 40)
             
             Text(text)

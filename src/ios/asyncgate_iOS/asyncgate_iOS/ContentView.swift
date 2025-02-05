@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("폰트 이름 출력하기")
+        SignInView()
     }
 }
 

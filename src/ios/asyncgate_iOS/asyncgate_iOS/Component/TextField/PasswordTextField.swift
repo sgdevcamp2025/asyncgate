@@ -15,10 +15,23 @@ struct PasswordField: View {
     var body: some View {
         HStack {
             if isSecure {
-                SecureField("비밀번호", text: $password)
-                
+                SecureField("", text: $password)
+                    .foregroundColor(.white)
+                    .background(Color.colorDart500)
+                    .cornerRadius(4)
+                    .overlay(
+                        Group {
+                            if password.isEmpty {
+                                Text("비밀번호")
+                                    .foregroundStyle(Color.colorDart400)
+                                    .padding(.leading, 5)
+                            }
+                        }
+                        , alignment: .leading
+                    )
             } else {
                 TextField("비밀번호", text: $password)
+                
             }
             
             Button {
