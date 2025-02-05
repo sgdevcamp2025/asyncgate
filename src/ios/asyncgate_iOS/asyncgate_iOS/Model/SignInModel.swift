@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: 이메일, 패스워드로 로그인용 Class
 class SignInModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""

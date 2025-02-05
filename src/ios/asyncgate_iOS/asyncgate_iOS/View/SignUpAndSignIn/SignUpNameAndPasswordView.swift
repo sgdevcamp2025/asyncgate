@@ -17,7 +17,7 @@ struct SignUpNameAndPasswordView: View {
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
             
-            SignTextField(stepCaption: "사용자명", text: $signUpModel.name)
+            SignTextField(stepCaption: "사용자명", placeholder: "", text: $signUpModel.name)
                 .padding(.top, 24)
                 .padding(.bottom, 10)
             

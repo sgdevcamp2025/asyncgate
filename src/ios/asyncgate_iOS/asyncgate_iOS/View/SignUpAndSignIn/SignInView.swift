@@ -16,22 +16,19 @@ struct SignInView: View {
             Text("돌아오신 것을 환영해요!")
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
+                .padding(.bottom, 5)
             
             Text("다시 만나다니 너무 반가워요!")
                 .font(Font.pretendardBold(size: 16))
                 .foregroundColor(Color.colorWhite)
-          
-            SignTextField(stepCaption: "계정정보", text: $signInModel.email)
+            
+            SignTextField(stepCaption: "계정 정보", placeholder: "이메일 또는 전화번호", text: $signInModel.email)
                 .padding(.top, 24)
                 .padding(.bottom, 10)
             
-            VStack(alignment: .leading) {
-                Text("비밀번호")
-                    .font(Font.pretendardSemiBold(size: 16))
-                    .foregroundColor(Color.colorDart400)
-                
-                PasswordField(password: $signInModel.password)
-            }
+            
+            PasswordField(password: $signInModel.password)
+            
                 .padding(.bottom, 30)
             
             Button {
@@ -47,4 +44,8 @@ struct SignInView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
     }
+}
+
+#Preview {
+    SignInView()
 }

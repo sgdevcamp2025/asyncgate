@@ -18,7 +18,7 @@ struct SignBirthView: View {
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
             
-            SignTextField(stepCaption: "생년월일", text: $signUpModel.birth)
+            SignTextField(stepCaption: "생년월일", placeholder: formattedDate, text: $signUpModel.birth)
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             
@@ -43,6 +43,12 @@ struct SignBirthView: View {
             // FIXME: 수정 예정
                     Text("회원가입 성공!")
                 }
+    }
+    
+    var formattedDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy.MM.dd"
+        return dateFormatter.string(from: date)
     }
     
 }

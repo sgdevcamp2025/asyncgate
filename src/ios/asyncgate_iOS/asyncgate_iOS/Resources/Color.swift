@@ -34,4 +34,11 @@ extension Color {
     static let colorDart400 = Color(hex: "#80848E")
     static let colorWhite = Color(hex: "#FFFFFF")
     static let colorMain = Color(hex: "#5865F2")
+    static let colorBlue = Color(hex: "#161CBC")
+    static let colorBlurple = Color(hex: "#5865F2")
+    static let colorGreen = Color(hex: "#57F287")
+    static let colorYellow = Color(hex: "#FEE75C")
+    static let colorFuchsia = Color(hex: "#EB459E")
+    static let colorRed = Color(hex: "#ED4245")
+    
 }
