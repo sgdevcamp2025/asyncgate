@@ -1,10 +1,8 @@
 package com.asyncgate.chat_server.domain
 
-import org.springframework.data.annotation.Id
 import java.time.LocalDateTime
 
-data class DirectMessage(
-    @Id
+class DirectMessage(
     val id: String? = null,
 
     val channelId: String,
@@ -17,9 +15,10 @@ data class DirectMessage(
     val content: String,
     val thumbnail: String? = null,
 
-    val localDateTime: LocalDateTime = LocalDateTime.now(),
-
     val parentId: String? = null,
     val parentName: String? = null,
     val parentContent: String? = null,
+
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
 )
