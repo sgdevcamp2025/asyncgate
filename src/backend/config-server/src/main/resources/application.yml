@@ -12,9 +12,9 @@ spring:
         git:
           uri: https://github.com/sgdevcamp2025/asyncgate
           # ToDo 테스트 후 변경
-#          default-label: be/setting/24-test
+          default-label: be/setting/24-test
 #          default-label: dev
-          default-label: main
+#          default-label: main
           search-paths:
             - "config"
 

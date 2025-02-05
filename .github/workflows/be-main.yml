@@ -1,0 +1,335 @@
+name: ECR actions for multiple folders
+
+on:
+  push:
+    # 임시 테스트 브랜치
+    branches:
+      - be/setting/24-ecr
+
+env:
+  NAMESPACE_MSA: "msa"
+  NAMESPACE_SERVICE: "service"
+
+jobs:
+  # 변경 사항 감지 Job (각 서비스별로 실행)
+  check-folder-change:
+    runs-on: ubuntu-latest
+
+    outputs:
+      msa_discovery_changed: ${{ steps.check_msa_discovery.outputs.changed }}
+      msa_config_changed: ${{ steps.check_msa_config.outputs.changed }}
+      msa_apigateway_changed: ${{ steps.check_msa_apigateway.outputs.changed }}
+      service_user_changed: ${{ steps.check_service_user.outputs.changed }}
+      service_chat_changed: ${{ steps.check_service_chat.outputs.changed }}
+      service_state_changed: ${{ steps.check_service_state.outputs.changed }}
+      service_guild_changed: ${{ steps.check_service_guild.outputs.changed }}
+      service_notification_changed: ${{ steps.check_service_notification.outputs.changed }}
+      service_signaling_changed: ${{ steps.check_service_signaling.outputs.changed }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # 모든 브랜치의 전체 히스토리 가져오기
+        
+        # 브랜치 확인
+      - name: Debug Git Branches
+        run: |
+          echo "Fetching all branches..."
+          git fetch --all
+          echo "Available remote branches:"
+          git branch -r
+          echo "Current branch:"
+          git branch
+
+      - name: Check for changes in MSA - Discovery
+        id: check_msa_discovery
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/discovery-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      
+
+      - name: Check for changes in MSA - Config
+        id: check_msa_config
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/config-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in MSA - API Gateway
+        id: check_msa_apigateway
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/apigateway-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - User
+        id: check_service_user
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/user-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - Chat
+        id: check_service_chat
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/chat-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - State
+        id: check_service_state
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/state-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - Guild
+        id: check_service_guild
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/guild-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - Notification
+        id: check_service_notification
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/notification-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check for changes in Service - Signaling
+        id: check_service_signaling
+        run: |
+          if git rev-parse --verify origin/be/setting/24-test >/dev/null 2>&1; then
+            if git diff --name-only origin/be/setting/24-test...HEAD | grep -q "^src/backend/signaling-server/"; then
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "First PR: marking as changed"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  # MSA 빌드 및 푸시
+  build-msa-discovery:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_discovery_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push MSA Discovery
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_MSA }}
+          folder: "src/backend/discovery-server"
+          ecr_repo: "discovery"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-msa-config:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_config_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push MSA Config
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_MSA }}
+          folder: "src/backend/config-server"
+          ecr_repo: "config"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-msa-apigateway:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.msa_apigateway_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push MSA API Gateway
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_MSA }}
+          folder: "src/backend/apigateway-server"
+          ecr_repo: "apigateway"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  # Service 빌드 및 푸시
+  build-service-user:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_user_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service User
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/user-server"
+          ecr_repo: "user"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-service-chat:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_chat_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service Chat
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/chat-server"
+          ecr_repo: "chat"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-service-state:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_state_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service State
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/state-server"
+          ecr_repo: "state"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-service-guild:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_guild_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service Guild
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/guild-server"
+          ecr_repo: "guild"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-service-notification:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_notification_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service Notification
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/notification-server"
+          ecr_repo: "notification"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+
+  build-service-signaling:
+    needs: check-folder-change
+    if: ${{ needs.check-folder-change.outputs.service_signaling_changed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+        # 레포 가져오기
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build & Push Service Signaling
+        uses: ./.github/actions/ecr-push
+        with:
+          namespace: ${{ env.NAMESPACE_SERVICE }}
+          folder: "src/backend/signaling-server"
+          ecr_repo: "media"
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 

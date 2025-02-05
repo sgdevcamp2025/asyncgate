@@ -1,0 +1,62 @@
+# msa actions
+
+name: "ECR Build & Push Action"
+description: "Builds a Docker image and pushes it to Amazon ECR"
+
+# be-main.yml에게 값을 받아와 사용 (with)
+inputs:
+  namespace:
+    description: "ECR namespace (msa or service)"
+    required: true
+  folder:
+    description: "Path to the project folder"
+    required: true
+  ecr_repo:
+    description: "ECR repository name"
+    required: true
+  aws_access_key_id:
+    description: "AWS Access Key ID"
+    required: true
+  aws_secret_access_key:
+    description: "AWS Secret Access Key"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    # 리포지토리 체크아웃
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # AWS 인증 설정
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ inputs.aws_access_key_id }}
+        aws-secret-access-key: ${{ inputs.aws_secret_access_key }}
+        aws-region: ap-northeast-2
+
+    # Amazon ECR 로그인
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    # Docker 빌드 및 ECR에 푸시
+    - name: Build and push Docker image to Amazon ECR
+      shell: bash
+      # github commit hash를 이미지 태그로
+      run: |
+        ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG=${{ github.sha }}
+        FULL_ECR_PATH=${{ steps.login-ecr.outputs.registry }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}
+
+        echo "Moving to project folder: ${{ inputs.folder }}"
+        cd ${{ inputs.folder }}
+
+        echo "Building Docker image..."
+        docker build -t $FULL_ECR_PATH:$IMAGE_TAG .
+
+        echo "Pushing image to Amazon ECR..."
+        docker push $FULL_ECR_PATH:$IMAGE_TAG
+
+        echo "Build & Push completed!"
