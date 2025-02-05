@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "21C193E766AFE9E6B1D31363951D8FC4"
-               BuildableName = "Pods_asyncgate_iOSTests.framework"
-               BlueprintName = "Pods-asyncgate_iOSTests"
+               BlueprintIdentifier = "615C831BCE925ED486B225B87E44926D"
+               BuildableName = "KeychainAccess.framework"
+               BlueprintName = "KeychainAccess"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

@@ -36,8 +36,8 @@ func signUp(email: String, password: String, name: String, nickname: String, bir
 }
 
 // MARK: 함수 - 로그인 함수
-func signIn(hostUrl: String, email: String, password: String, completion: @escaping (String?) -> Void) {
-    let url = "\(hostUrl)/sign-in"
+func signIn(email: String, password: String, completion: @escaping (String?) -> Void) {
+    let url = "hostUrl/sign-in"
     
     let parameters: [String: Any] = [
         "email": email,
