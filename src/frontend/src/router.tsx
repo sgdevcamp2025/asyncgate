@@ -9,30 +9,31 @@ import RegisterPage from './pages/RegisterPage';
 
 const router = createBrowserRouter([
   {
-    element: <FullLayout/>,
+    element: <FullLayout />,
     children: [
       {
-        path: '/', element: <LandingPage />
-      }
-    ]
+        path: '/',
+        element: <LandingPage />,
+      },
+    ],
   },
   {
-    element: <PublicOnlyLayout/>,
+    element: <PublicOnlyLayout />,
     children: [
       {
-        path: '/login', element: <LoginPage/>
+        path: '/login',
+        element: <LoginPage />,
       },
       {
-        path: '/register', element: <RegisterPage/>
-      }
-    ]
+        path: '/register',
+        element: <RegisterPage />,
+      },
+    ],
   },
   {
-    element: <AuthFullLayout/>,
-    children: [
-      
-    ]
-  }
+    element: <AuthFullLayout />,
+    children: [],
+  },
 ]);
 
 export default router;
