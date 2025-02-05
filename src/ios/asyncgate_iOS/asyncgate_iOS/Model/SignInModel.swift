@@ -14,6 +14,8 @@ class SignInModel: ObservableObject {
     private let auth = Authentication()
     
     func logInInUser() {
+        print("로그인 시도: \(email), \(password)")
+        
         signIn(email: email, password: password) { token in
             if let token = token {
                 print("로그인 성공, token: \(token)")

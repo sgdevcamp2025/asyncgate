@@ -32,6 +32,7 @@ class Authentication: ObservableObject {
             }
         } catch {
             print("Keychain load error: \(error)")
+            self.accessToken = nil
         }
     }
     
