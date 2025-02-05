@@ -7,8 +7,6 @@
   
   "types": ["jest", "@testing-library/jest-dom"],
   "compilerOptions": {
-    "paths":{
-      "@/*": ["./src/*"]
-    }
+    
   }
 }
