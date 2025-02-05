@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 - 닉네임 설정 View
 struct SignUpNickNameView: View {
-    @ObservedObject var signUpModel: SignUpModel
+    @ObservedObject var signUpModel: SignUpViewModel
     
     var body: some View {
         VStack {

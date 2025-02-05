@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 Main View
 struct SignUpView: View {
-    @StateObject var signUpModel = SignUpModel()
+    @StateObject var signUpModel = SignUpViewModel()
     
     var body: some View {
         NavigationStack {

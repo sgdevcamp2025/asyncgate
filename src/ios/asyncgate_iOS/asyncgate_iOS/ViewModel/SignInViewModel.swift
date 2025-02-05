@@ -1,5 +1,5 @@
 //
-//  SignInModel.swift
+//  SignInViewModel.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -8,11 +8,11 @@
 import SwiftUI
 
 // MARK: 이메일, 패스워드로 로그인용 Class
-class SignInModel: ObservableObject {
+class SignInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     
-    private let auth = Authentication()
+    private let auth = AccessTokenViewModel()
     
     func logInInUser() {
         print("로그인 시도: \(email), \(password)")
