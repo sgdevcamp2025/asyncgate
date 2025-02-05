@@ -22,6 +22,7 @@ public class MemberCommandController {
     private final DeleteUserUseCase DeleteUserUseCase;
     private final UpdateDeviceTokenUseCase UpdateDeviceTokenUseCase;
 
+    // 사소한 주석 추가
     /**
      * 1.0 임시 회원가입
      */
