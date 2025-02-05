@@ -47,22 +47,16 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = asyncgate_iOS;
 			sourceTree = "<group>";
 		};
 		42D3DCC62D51DA2A00BC3E8F /* asyncgate_iOSTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = asyncgate_iOSTests;
 			sourceTree = "<group>";
 		};
 		42D3DCD02D51DA2A00BC3E8F /* asyncgate_iOSUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = asyncgate_iOSUITests;
 			sourceTree = "<group>";
 		};
@@ -128,7 +122,6 @@
 				873203A342B3FC3281345FC0 /* Pods-asyncgate_iOSTests.debug.xcconfig */,
 				FB737C475DC06ED0484798E8 /* Pods-asyncgate_iOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
