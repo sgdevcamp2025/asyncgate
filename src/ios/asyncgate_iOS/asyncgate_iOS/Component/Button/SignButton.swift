@@ -18,7 +18,7 @@ struct SignButton: View {
                 .frame(height: 40)
             
             Text(text)
-                .font(Font.pretendardSemiBold(size: 14))
+                .font(Font.pretendardSemiBold(size: 15))
                 .foregroundStyle(Color.colorWhite)
         }
     }
