@@ -22,7 +22,6 @@ class WebSocketConfig(
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
         registry.setApplicationDestinationPrefixes("/kafka")
-        registry.enableSimpleBroker("/topic/")
     }
 
     override fun configureClientInboundChannel(registration: ChannelRegistration) {
