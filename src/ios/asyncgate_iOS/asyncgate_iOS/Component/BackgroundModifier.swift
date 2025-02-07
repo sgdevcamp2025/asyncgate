@@ -11,7 +11,7 @@ import SwiftUI
 struct BackgroundModifier: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
-            Color.colorBlack
+            Color(hex: "#1C1D23")
                 .ignoresSafeArea()
             
             content

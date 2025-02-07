@@ -14,6 +14,7 @@ class SignInViewModel: ObservableObject {
     
     private let auth = AccessTokenViewModel()
     
+    // MARK: 함수 - 로그인 시도
     func logInInUser() {
         print("로그인 시도: \(email), \(password)")
         
