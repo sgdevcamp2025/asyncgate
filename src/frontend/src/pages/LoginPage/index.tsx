@@ -1,4 +1,3 @@
-import LogoIcon from '@/assets/logo.svg';
 import AuthInput from '@/components/common/AuthInput';
 
 import * as S from './styles';
@@ -7,10 +6,6 @@ const LoginPage = () => {
   return (
     <>
       <S.PageContainer>
-        <S.Background />
-        <S.Logo>
-          <img src={LogoIcon} alt=""></img>
-        </S.Logo>
         <S.ContentWrapper>
           <S.LoginFormContainer>
             <S.MainLoginContainer>
