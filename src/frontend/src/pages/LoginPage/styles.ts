@@ -4,10 +4,20 @@ import {
   BodyMediumText,
   BodyRegularText,
   CaptionText,
+  ChipText,
   HeaderText,
   MediumButtonText,
   TitleText1,
 } from '@/styles/Typography';
+
+// 공통 링크 버튼 텍스트
+export const LinkText = styled(ChipText)`
+  color: ${({ theme }) => theme.colors.link};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 export const Background = styled.div`
   position: fixed;
@@ -87,11 +97,6 @@ export const ForgotPasswordButton = styled.button`
   display: flex;
   justify-content: flex-start;
   margin: 0.4rem 0 2rem;
-  color: ${({ theme }) => theme.colors.link};
-
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
 export const LoginButton = styled.button`
@@ -120,11 +125,6 @@ export const RegisterText = styled(CaptionText)`
 
 export const RegisterButton = styled.button`
   margin-left: 0.4rem;
-  color: ${({ theme }) => theme.colors.link};
-
-  :hover {
-    text-decoration: underline;
-  }
 `;
 
 export const QRCodeLoginContainer = styled.div`
@@ -169,5 +169,4 @@ export const QRCodeLoginLabel = styled(BodyRegularText)`
 
 export const PassKeyLoginButton = styled.button`
   height: 4.4rem;
-  color: ${({ theme }) => theme.colors.link};
 `;
