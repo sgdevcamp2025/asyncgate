@@ -12,6 +12,7 @@ import {
 
 // 공통 링크 버튼 텍스트
 export const LinkText = styled(ChipText)`
+  line-height: 1.6rem;
   color: ${({ theme }) => theme.colors.link};
 
   &:hover {
