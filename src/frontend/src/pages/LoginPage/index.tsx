@@ -29,7 +29,7 @@ const LoginPage = () => {
                 <S.LoginText>로그인</S.LoginText>
               </S.LoginButton>
               <S.ToggleRegisterContainer>
-                <S.RegisterText>계정이 필요한가요?</S.RegisterText>
+                <S.RegisterLabel>계정이 필요한가요?</S.RegisterLabel>
                 <S.RegisterButton>
                   <S.LinkText>가입하기</S.LinkText>
                 </S.RegisterButton>

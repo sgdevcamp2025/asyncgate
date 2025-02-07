@@ -97,12 +97,16 @@ export const InputContainer = styled.div`
 export const ForgotPasswordButton = styled.button`
   display: flex;
   justify-content: flex-start;
+
+  width: fit-content;
+  height: 1.8rem;
   margin: 0.4rem 0 2rem;
 `;
 
 export const LoginButton = styled.button`
   width: 100%;
   height: 4.4rem;
+  margin-bottom: 0.8rem;
   border-radius: 0.3rem;
 
   color: ${({ theme }) => theme.colors.white};
@@ -116,11 +120,12 @@ export const LoginText = styled(MediumButtonText)`
 
 export const ToggleRegisterContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: flex-start;
-  margin-top: 0.4rem;
+  height: 1.8rem;
 `;
 
-export const RegisterText = styled(CaptionText)`
+export const RegisterLabel = styled(CaptionText)`
   color: ${({ theme }) => theme.colors.dark[300]};
 `;
 
@@ -144,6 +149,7 @@ export const QRCodeWrapper = styled.div`
   width: 17.6rem;
   height: 17.6rem;
   margin-bottom: 3.2rem;
+  padding: 0.8rem;
   border-radius: 0.4rem;
 
   background-color: ${({ theme }) => theme.colors.white};

@@ -9,6 +9,7 @@ export const InputContainer = styled.div`
 `;
 
 export const InputLabel = styled(SmallText)`
+  height: 1.6rem;
   color: ${({ theme }) => theme.colors.dark[300]};
 `;
 
