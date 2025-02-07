@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: 회원가입용 class
 class SignUpViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
@@ -17,6 +18,7 @@ class SignUpViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isSignUpSuccessful: Bool = false
     
+    // MARK: 함수 - 회원가입 진행
     func registerUser() {
         signUp(email: email, password: password, name: name, nickname: nickname, birth: birth) { success, message in
             DispatchQueue.main.async {

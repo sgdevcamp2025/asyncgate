@@ -29,7 +29,7 @@ struct SignTextField: View {
                         if text.isEmpty {
                             Text(placeholder)
                                 .foregroundStyle(Color.colorDart400)
-                                .padding(.leading, 10)
+                                .padding(.leading, 15)
                         }
                     }
                     , alignment: .leading

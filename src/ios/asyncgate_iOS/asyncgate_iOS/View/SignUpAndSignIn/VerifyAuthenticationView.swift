@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 이메일 인증 코드 확인 View
 struct VerifyAuthenticationView: View {
     @ObservedObject var signUpModel: SignUpViewModel
     @StateObject var authViewModel = AuthenticationViewModel()
@@ -19,6 +20,7 @@ struct VerifyAuthenticationView: View {
             Text("이메일로 전송받은 인증 코드를 입력하세요")
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
+                .multilineTextAlignment(.center)
             
             SignTextField(stepCaption: "인증 코드", placeholder: "", text: $authenticationCode)
                 .padding(.top, 24)
@@ -48,3 +50,4 @@ struct VerifyAuthenticationView: View {
         .navigationBarItems(leading: BackButton(color: .white))
     }
 }
+

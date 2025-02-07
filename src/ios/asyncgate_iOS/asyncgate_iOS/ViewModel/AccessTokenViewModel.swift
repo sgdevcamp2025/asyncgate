@@ -17,6 +17,7 @@ class AccessTokenViewModel: ObservableObject {
         loadToken()
     }
     
+    // MARK: 함수 - 엑세스 토큰 KeyChain에 저장
     func saveToken(_ token: String) {
         do {
             try keychain.set(token, key: "accessToken")
@@ -26,6 +27,7 @@ class AccessTokenViewModel: ObservableObject {
         }
     }
     
+    // MARK: 함수 - 엑세스 토큰 가져오기
     func loadToken() {
         do {
             if let token = try keychain.getString("accessToken") {
@@ -37,6 +39,7 @@ class AccessTokenViewModel: ObservableObject {
         }
     }
     
+    // MARK: 함수 - 엑세스 토큰 삭제
     func deleteToken() {
         do {
             try keychain.remove("accessToken")

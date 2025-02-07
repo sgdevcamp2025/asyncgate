@@ -8,6 +8,7 @@
 import SwiftUI
 import Alamofire
 
+// MARK: 이메일 인증코드 일치여부 확인 class
 class AuthenticationViewModel: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var errorMessage: String? = nil
