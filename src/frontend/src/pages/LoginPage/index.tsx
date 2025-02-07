@@ -1,5 +1,5 @@
 import LogoIcon from '@/assets/logo.svg';
-import Input from '@/components/common/Input';
+import AuthInput from '@/components/common/AuthInput';
 
 import * as S from './styles';
 
@@ -19,8 +19,8 @@ const LoginPage = () => {
                 <S.HeaderSubtitle>다시 만나다니 너무 반가워요!</S.HeaderSubtitle>
               </S.LoginFormHeader>
               <S.InputContainer>
-                <Input label="이메일 또는 전화번호" isRequired={true} />
-                <Input label="비밀번호" type="password" isRequired={true} />
+                <AuthInput label="이메일 또는 전화번호" isRequired={true} />
+                <AuthInput label="비밀번호" type="password" isRequired={true} />
               </S.InputContainer>
               <S.ForgotPasswordButton>비밀번호를 잊으셨나요?</S.ForgotPasswordButton>
               <S.LoginButton>

@@ -8,7 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string;
 }
 
-const Input = ({ label, isRequired, error, type = 'text', value, ...props }: InputProps) => {
+const AuthInput = ({ label, isRequired, error, type = 'text', value, ...props }: InputProps) => {
   return (
     <S.InputContainer>
       <S.InputLabel>
@@ -20,4 +20,4 @@ const Input = ({ label, isRequired, error, type = 'text', value, ...props }: Inp
   );
 };
 
-export default Input;
+export default AuthInput;
