@@ -14,8 +14,8 @@ const LoginPage = () => {
                 <S.HeaderSubtitle>다시 만나다니 너무 반가워요!</S.HeaderSubtitle>
               </S.LoginFormHeader>
               <S.InputContainer>
-                <AuthInput label="이메일 또는 전화번호" isRequired={true} />
-                <AuthInput label="비밀번호" type="password" isRequired={true} />
+                <AuthInput id="email" label="이메일 또는 전화번호" isRequired={true} />
+                <AuthInput id="password" label="비밀번호" type="password" isRequired={true} />
               </S.InputContainer>
               <S.ForgotPasswordButton>
                 <S.LinkText>비밀번호를 잊으셨나요?</S.LinkText>

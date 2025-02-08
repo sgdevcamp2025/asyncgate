@@ -1,6 +1,7 @@
 import * as S from './styles';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  id: string;
   label: string;
   isRequired?: boolean;
   error?: string;
@@ -8,9 +9,9 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value?: string;
 }
 
-const AuthInput = ({ label, isRequired, error, type = 'text', value, ...props }: InputProps) => {
+const AuthInput = ({ id, label, isRequired = false, error, type = 'text', value, ...props }: InputProps) => {
   return (
-    <S.InputContainer>
+    <S.InputContainer id={id}>
       <S.InputLabel>
         {label} {isRequired && <S.RequiredMark>*</S.RequiredMark>}
       </S.InputLabel>
