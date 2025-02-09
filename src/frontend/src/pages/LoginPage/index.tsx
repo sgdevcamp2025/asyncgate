@@ -1,8 +1,16 @@
+import { useNavigate } from 'react-router-dom';
+
 import AuthInput from '@/components/common/AuthInput';
 
 import * as S from './styles';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
+  const handleRegisterButtonClick = () => {
+    navigate('/register');
+  };
+
   return (
     <>
       <S.PageContainer>
@@ -25,7 +33,7 @@ const LoginPage = () => {
               </S.LoginButton>
               <S.ToggleRegisterContainer>
                 <S.RegisterLabel>계정이 필요한가요?</S.RegisterLabel>
-                <S.RegisterButton>
+                <S.RegisterButton onClick={handleRegisterButtonClick}>
                   <S.LinkText>가입하기</S.LinkText>
                 </S.RegisterButton>
               </S.ToggleRegisterContainer>

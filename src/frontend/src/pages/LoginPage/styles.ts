@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import {
   BodyMediumText,
@@ -33,6 +33,21 @@ export const ContentWrapper = styled.div`
   transform: translate(-50%, -50%);
 `;
 
+const fadeInDown = keyframes`
+  0% {
+      opacity: 0;
+      transform: translate3d(0, -100%, 0);
+  }
+  50%{
+    opacity: 0;
+    transform: translate3d(0, -100%, -50%);
+  }
+  to {
+      opacity: 1;
+      transform: translateZ(0);
+  }
+`;
+
 export const LoginFormContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -43,6 +58,8 @@ export const LoginFormContainer = styled.div`
   border-radius: 0.5rem;
 
   background-color: ${({ theme }) => theme.colors.dark[600]};
+
+  animation: ${fadeInDown} 0.5s;
 `;
 
 export const MainLoginContainer = styled.div`

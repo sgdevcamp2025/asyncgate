@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import AuthCheckbox from '@/components/common/AuthCheckbox';
 import AuthDateInput from '@/components/common/AuthDateInput';
 import AuthInput from '@/components/common/AuthInput';
@@ -5,6 +7,12 @@ import AuthInput from '@/components/common/AuthInput';
 import * as S from './styles';
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+
+  const handleLoginButtonClick = () => {
+    navigate('/login');
+  };
+
   return (
     <S.PageContainer>
       <S.ContentWrapper>
@@ -33,7 +41,7 @@ const RegisterPage = () => {
               등록하는 순간 AsyncGate의 <S.LinkButton>서비스 이용 약관</S.LinkButton>과
               <S.LinkButton>개인정보 보호 정책</S.LinkButton>에 동의하게 됩니다.
             </S.PrivacyPolicyLabel>
-            <S.ToggleLoginButton>
+            <S.ToggleLoginButton onClick={handleLoginButtonClick}>
               <S.LoginText>이미 계정이 있으신가요?</S.LoginText>
             </S.ToggleLoginButton>
           </S.FormBody>
