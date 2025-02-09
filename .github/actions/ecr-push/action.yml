@@ -71,29 +71,29 @@ runs:
     # Amazon ECR 로그인
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@v2
 
     - name: Generate dynamic bootstrap.yml & application.yml
       shell: bash
       run: |
         if [[ "${{ inputs.container_name }}" == "config-server" ]]; then
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-          encrypt:
-            key: ${{ inputs.config_private_ip }}
-          EOF
+encrypt:
+  key: ${{ inputs.config_private_ip }}
+EOF
 
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
           
         else
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-          spring:
-            application:
-              name: ${{ inputs.container_name }}
-            cloud:
-              config:
-                uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
-          EOF
+spring:
+  application:
+    name: ${{ inputs.container_name }}
+  cloud:
+    config:
+      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
+EOF
         fi
 
     # Docker 빌드 및 ECR에 푸시
