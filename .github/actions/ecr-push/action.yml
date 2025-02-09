@@ -80,7 +80,7 @@ runs:
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
           encrypt:
             key: ${{ inputs.config_private_ip }}
-EOF
+          EOF
 
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
@@ -93,7 +93,7 @@ EOF
             cloud:
               config:
                 uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
-EOF
+          EOF
         fi
 
     # Docker 빌드 및 ECR에 푸시
