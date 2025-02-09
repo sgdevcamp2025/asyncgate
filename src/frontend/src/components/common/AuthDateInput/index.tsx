@@ -1,5 +1,3 @@
-import { useRef, useState } from 'react';
-
 import DropdownInput from '../DropdownInput';
 
 import * as S from './styles';
@@ -12,27 +10,19 @@ interface AuthDateInputProps {
 }
 
 const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
-  const { years, months, days } = useDateInput();
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
-
-  const monthRef = useRef<HTMLInputElement>(null);
-  const dayRef = useRef<HTMLInputElement>(null);
-
-  const handleYearSelect = (year: string) => {
-    setSelectedYear(year);
-    monthRef.current?.focus();
-  };
-
-  const handleMonthSelect = (month: string) => {
-    setSelectedMonth(month);
-    dayRef.current?.focus();
-  };
-
-  const handleDaySelect = (day: string) => {
-    setSelectedDay(day);
-  };
+  const {
+    years,
+    months,
+    days,
+    selectedYear,
+    selectedMonth,
+    selectedDay,
+    monthRef,
+    dayRef,
+    handleYearSelect,
+    handleMonthSelect,
+    handleDaySelect,
+  } = useDateInput();
 
   return (
     <S.DateInputContainer>
