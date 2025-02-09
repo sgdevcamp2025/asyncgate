@@ -41,6 +41,16 @@ inputs:
   container_port:
     description: "AWS EC2 container port"
     required: true
+  config_private_ip:
+    description: "Config private ip"
+    required: true
+  config_port:
+    description: "Config default port"
+    required: true
+  config_application_yml:
+    description: "Config application.yml"
+    required: true
+
 
 
 runs:
@@ -63,6 +73,34 @@ runs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
 
+    - name: Generate dynamic bootstrap.yml & application.yml
+      shell: bash
+      run: |
+        if [[ "${{ inputs.container_name }}" == "config-server" ]]; then
+          # Config Server용 bootstrap.yml 생성 (private_ip는 암호화 key)
+          cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+encrypt:
+  key: ${{ inputs.config_private_ip }}
+EOF
+
+          # Config Server의 application.yml 생성 (Base64 디코딩)
+          rm -f ${{ inputs.folder }}/src/main/resources/application.yml
+          echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
+        else
+          # 일반 서비스용 bootstrap.yml 생성
+          cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+spring:
+  application:
+    name: ${{ inputs.container_name }}
+  cloud:
+    config:
+      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
+EOF
+        fi
+
+
+
+
     # Docker 빌드 및 ECR에 푸시
     - name: Build and push Docker image to Amazon ECR
       shell: bash
@@ -80,6 +118,9 @@ runs:
 
         echo "Pushing image to Amazon ECR..."
         docker push $FULL_ECR_PATH:$IMAGE_TAG
+
+        echo "Cleaning up sensitive file..."
+        rm -f src/main/resources/bootstrap.yml
 
         echo "Build & Push completed!"
 

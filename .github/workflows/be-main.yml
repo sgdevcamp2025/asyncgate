@@ -192,8 +192,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_DISCOVERY_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
-          container_name: "discovery-container"
-          container_port: ${{ secrets.DISCOVERY_PORT}}
+          container_name: "discovery-server"
+          container_port: ${{ secrets.DISCOVERY_PORT }}
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
 
   build-msa-config:
@@ -219,8 +222,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_CONFIG_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
-          container_name: "config-container"
-          container_port: ${{ secrets.CONFIG_PORT}} 
+          container_name: "config-server"
+          container_port: ${{ secrets.CONFIG_PORT }} 
+          config_private_ip: ${{ secrets.CONFIG_ENCRYPT_KEY }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ${{ secrets.CONFIG_APPLICATION_YML }}
 
   build-msa-apigateway:
     needs: check-folder-change
@@ -244,8 +250,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_APIGATEWAY_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
-          container_name: "apigateway-container"
-          container_port: ${{ secrets.APIGATEWAY_PORT}} 
+          container_name: "apigateway-server"
+          container_port: ${{ secrets.APIGATEWAY_PORT }} 
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   # Service 빌드 및 푸시
   build-service-user:
@@ -270,8 +279,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_USER_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
-          container_name: "user-container"
+          container_name: "user-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   build-service-chat:
     needs: check-folder-change
@@ -295,8 +307,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_CHAT_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_CHAT_SSH_KEY }}
-          container_name: "chat-container"
+          container_name: "chat-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   build-service-state:
     needs: check-folder-change
@@ -320,8 +335,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_STATE_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
-          container_name: "state-container"
+          container_name: "state-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   build-service-guild:
     needs: check-folder-change
@@ -345,8 +363,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_GUILD_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
-          container_name: "guild-container"
+          container_name: "guild-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   build-service-notification:
     needs: check-folder-change
@@ -370,8 +391,11 @@ jobs:
           ec2_ip: ${{ secrets.AWS_NOTIFICATION_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
-          container_name: "notification-container"
+          container_name: "notification-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
 
   build-service-signaling:
     needs: check-folder-change
@@ -395,5 +419,8 @@ jobs:
           ec2_ip: ${{ secrets.AWS_SIGNALING_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
-          container_name: "signaling-container"
+          container_name: "signaling-server"
           container_port: 0
+          config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
+          config_port: ${{ secrets.CONFIG_PORT }}
+          config_application_yml: ""
