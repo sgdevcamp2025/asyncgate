@@ -1,15 +1,17 @@
+import { YearMonthDay } from '@/types';
+
 import DropdownInput from '../DropdownInput';
 
 import * as S from './styles';
 import useDateInput from './useDateInput';
-
 interface AuthDateInputProps {
-  id: string;
   label: string;
   isRequired?: boolean;
+  initialValue: YearMonthDay;
+  handleChange: (value: YearMonthDay) => void;
 }
 
-const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
+const AuthDateInput = ({ label, isRequired, initialValue, handleChange }: AuthDateInputProps) => {
   const {
     years,
     months,
@@ -22,7 +24,7 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
     handleYearSelect,
     handleMonthSelect,
     handleDaySelect,
-  } = useDateInput();
+  } = useDateInput({ initialValue, handleChange });
 
   return (
     <S.DateInputContainer>
@@ -31,10 +33,17 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
       </S.Label>
       <S.InputContainer>
         <S.YearInput>
-          <DropdownInput items={years} placeholder="년" selectedItem={selectedYear} handleSelect={handleYearSelect} />
+          <DropdownInput
+            id="year"
+            items={years}
+            placeholder="년"
+            selectedItem={selectedYear}
+            handleSelect={handleYearSelect}
+          />
         </S.YearInput>
         <S.MonthInput>
           <DropdownInput
+            id="month"
             ref={monthRef}
             items={months}
             placeholder="월"
@@ -44,6 +53,7 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
         </S.MonthInput>
         <S.DayInput>
           <DropdownInput
+            id="day"
             ref={dayRef}
             items={days}
             placeholder="일"

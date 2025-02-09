@@ -9,6 +9,7 @@ import useDropdownInput from './useDropdownInput';
 export type DropdownInputItem = string;
 
 interface DropdownInputProps {
+  id: string;
   items: DropdownInputItem[];
   selectedItem: DropdownInputItem | null;
   handleSelect: (item: DropdownInputItem) => void;
@@ -16,7 +17,7 @@ interface DropdownInputProps {
 }
 
 const DropdownInput = (
-  { items, selectedItem, handleSelect, placeholder }: DropdownInputProps,
+  { id, items, selectedItem, handleSelect, placeholder }: DropdownInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) => {
   const { isOpened, dropdownRef, toggleDropdown, closeDropdown } = useDropdown();
@@ -41,7 +42,7 @@ const DropdownInput = (
   };
 
   return (
-    <S.DropdownContainer ref={dropdownRef}>
+    <S.DropdownContainer id={id} ref={dropdownRef}>
       <S.DropdownBody onClick={toggleDropdown}>
         {!inputText && <S.SelectedItem>{selectedText}</S.SelectedItem>}
         <S.DropdownInput

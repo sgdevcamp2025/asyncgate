@@ -4,12 +4,18 @@ import { useNavigate } from 'react-router-dom';
 import AuthCheckbox from '@/components/common/AuthCheckbox';
 import AuthDateInput from '@/components/common/AuthDateInput';
 import AuthInput from '@/components/common/AuthInput';
+import { YearMonthDay } from '@/types';
 
 import * as S from './styles';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const [isOptIn, setIsOptIn] = useState(false);
+  const [email, setEmail] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [birthday, setBirthday] = useState<YearMonthDay>({ year: '', month: '', day: '' });
 
   const handleLoginButtonClick = () => {
     navigate('/login');
@@ -20,6 +26,26 @@ const RegisterPage = () => {
     setIsOptIn((prev) => !prev);
   };
 
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
+  };
+
+  const handleNicknameChange = (value: string) => {
+    setNickname(value);
+  };
+
+  const handleUsernameChange = (value: string) => {
+    setUsername(value);
+  };
+
+  const handlePasswordChange = (value: string) => {
+    setPassword(value);
+  };
+
+  const handleBirthdayChange = (value: YearMonthDay) => {
+    setBirthday(value);
+  };
+
   return (
     <S.PageContainer>
       <S.ContentWrapper>
@@ -27,11 +53,29 @@ const RegisterPage = () => {
           <S.FormTitle>계정 만들기</S.FormTitle>
           <S.FormBody>
             <S.InputContainer>
-              <AuthInput id="email" label="이메일" isRequired={true} />
-              <AuthInput id="nickname" label="별명" />
-              <AuthInput id="username" label="사용자명" isRequired={true} />
-              <AuthInput id="password" label="비밀번호" type="password" isRequired={true} />
-              <AuthDateInput id="birthdate" label="생년월일" isRequired={true} />
+              <AuthInput id="email" label="이메일" value={email} isRequired={true} handleChange={handleEmailChange} />
+              <AuthInput id="nickname" label="별명" value={nickname} handleChange={handleNicknameChange} />
+              <AuthInput
+                id="username"
+                label="사용자명"
+                value={username}
+                isRequired={true}
+                handleChange={handleUsernameChange}
+              />
+              <AuthInput
+                id="password"
+                label="비밀번호"
+                type="password"
+                value={password}
+                isRequired={true}
+                handleChange={handlePasswordChange}
+              />
+              <AuthDateInput
+                label="생년월일"
+                isRequired={true}
+                initialValue={birthday}
+                handleChange={handleBirthdayChange}
+              />
             </S.InputContainer>
             <S.EmailOptInContainer>
               <AuthCheckbox

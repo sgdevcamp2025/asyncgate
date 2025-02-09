@@ -1,18 +1,25 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-const useDateInput = () => {
+import { YearMonthDay } from '@/types';
+
+interface UseDateInputProps {
+  initialValue: YearMonthDay;
+  handleChange: (value: YearMonthDay) => void;
+}
+
+const useDateInput = ({ initialValue, handleChange }: UseDateInputProps) => {
   const MAX_AGE = 150;
   const MAX_MONTH = 12;
   const MAX_DAY = 31;
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: MAX_AGE }, (_, index) => String(currentYear - index));
-  const months = Array.from({ length: MAX_MONTH }, (_, index) => String(index + 1) + '월');
+  const months = Array.from({ length: MAX_MONTH }, (_, index) => String(index + 1));
   const days = Array.from({ length: MAX_DAY }, (_, index) => String(index + 1));
 
-  const [selectedYear, setSelectedYear] = useState('');
-  const [selectedMonth, setSelectedMonth] = useState('');
-  const [selectedDay, setSelectedDay] = useState('');
+  const [selectedYear, setSelectedYear] = useState(initialValue.year);
+  const [selectedMonth, setSelectedMonth] = useState(initialValue.month);
+  const [selectedDay, setSelectedDay] = useState(initialValue.day);
 
   const monthRef = useRef<HTMLInputElement>(null);
   const dayRef = useRef<HTMLInputElement>(null);
@@ -30,6 +37,10 @@ const useDateInput = () => {
   const handleDaySelect = (day: string) => {
     setSelectedDay(day);
   };
+
+  useEffect(() => {
+    handleChange({ year: selectedYear, month: selectedMonth, day: selectedDay });
+  }, [selectedYear, selectedMonth, selectedDay]);
 
   return {
     years,
