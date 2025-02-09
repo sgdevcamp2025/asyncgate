@@ -271,7 +271,7 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
           container_name: "user-container"
-          container_port: "0"
+          container_port: 0
 
   build-service-chat:
     needs: check-folder-change
@@ -296,7 +296,7 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_CHAT_SSH_KEY }}
           container_name: "chat-container"
-          container_port: "0"
+          container_port: 0
 
   build-service-state:
     needs: check-folder-change
@@ -321,7 +321,7 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
           container_name: "state-container"
-          container_port: "0"
+          container_port: 0
 
   build-service-guild:
     needs: check-folder-change
@@ -346,7 +346,7 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
           container_name: "guild-container"
-          container_port: "0"
+          container_port: 0
 
   build-service-notification:
     needs: check-folder-change
@@ -371,7 +371,7 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
           container_name: "notification-container"
-          container_port: "0"
+          container_port: 0
 
   build-service-signaling:
     needs: check-folder-change
@@ -396,4 +396,4 @@ jobs:
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
           container_name: "signaling-container"
-          container_port: "0"
+          container_port: 0
