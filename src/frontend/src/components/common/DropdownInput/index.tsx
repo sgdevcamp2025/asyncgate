@@ -1,4 +1,5 @@
 import DownArrowIcon from '@/assets/downArrow.svg';
+import useDropdown from '@/hooks/useDropdown';
 
 import * as S from './styles';
 import useDropdownInput from './useDropdownInput';
@@ -13,17 +14,11 @@ interface DropdownProps {
 }
 
 const DropdownInput = ({ items, selectedItem, handleSelect, placeholder }: DropdownProps) => {
-  const {
-    isOpened,
-    selectedText,
-    inputText,
-    handleInputChange,
-    handleDropdownButtonClick,
-    handleItemClick,
-    dropdownRef,
-  } = useDropdownInput({
+  const { isOpened, dropdownRef, toggleDropdown, closeDropdown } = useDropdown();
+  const { selectedText, inputText, handleInputChange, handleItemClick } = useDropdownInput({
     handleSelect,
     selectedItem,
+    closeDropdown,
   });
 
   const filteredItems = items.filter((item) => item.includes(inputText));
@@ -42,7 +37,7 @@ const DropdownInput = ({ items, selectedItem, handleSelect, placeholder }: Dropd
 
   return (
     <S.DropdownContainer ref={dropdownRef}>
-      <S.DropdownBody onClick={handleDropdownButtonClick}>
+      <S.DropdownBody onClick={toggleDropdown}>
         {!inputText && <S.SelectedItem>{selectedText}</S.SelectedItem>}
         <S.DropdownInput
           value={inputText}
