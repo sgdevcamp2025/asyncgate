@@ -20,6 +20,28 @@ inputs:
   aws_secret_access_key:
     description: "AWS Secret Access Key"
     required: true
+  aws_region:
+    description: "AWS ECR region"
+    required: true
+  ecr_uri:
+    description: "AWS ECR uri"
+    required: true
+  ec2_ip:
+    description: "AWS EC2 public ip"
+    required: true
+  ec2_username:
+    description: "AWS EC2 usename"
+    required: true
+  ec2_ssh_key:
+    description: "AWS EC2 ssh key"
+    required: true
+  container_name:
+    description: "AWS EC2 container name"
+    required: true
+  container_port:
+    description: "AWS EC2 container port"
+    required: true
+
 
 runs:
   using: "composite"
@@ -60,3 +82,72 @@ runs:
         docker push $FULL_ECR_PATH:$IMAGE_TAG
 
         echo "Build & Push completed!"
+
+    - name: EC2에서 ECR에 로그인하기
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | sudo docker login --username AWS --password-stdin ${{ inputs.ECR_URI }}
+
+    - name: 기존 EC2에서 실행중인 컨테이너 종료
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker ps -q | xargs -r docker stop
+    
+    - name: 기존 EC2에 존재하는 모든 컨테이너 삭제
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker ps -asq | xargs -r docker rm
+
+    - name: 기존 EC2에 저장되어있는 이미지 삭제
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker images -q | xargs -r docker rmi
+
+    - name: EC2에서 도커에서 사용하지 않는 자원 삭제처리
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker system prune -af
+
+    - name: EC2에서 도커 이미지를 가져오기
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker pull ${{ inputs.ECR_URI }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+
+  - name: ECR에서 불러온 이미지를 도커에서 실행
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.EC2_IP }}
+        username: ${{ inputs.EC2_USERNAME }}
+        key: ${{ inputs.EC2_SSH_KEY }}
+        script: |
+          sudo docker stop ${{ inputs.container_name }} || true
+          sudo docker rm ${{ inputs.container_name }} || true
+          if [ "${{ inputs.container_port }}" -eq "0" ]; then
+            sudo docker run -d --name ${{ inputs.container_name }} ${{ inputs.ECR_URI }}:${{ github.sha }}
+          else
+            sudo docker run -d --name ${{ inputs.container_name }} -p ${{ inputs.container_port }}:${{ inputs.container_port }} ${{ inputs.ECR_URI }}:${{ github.sha }}
+          fi

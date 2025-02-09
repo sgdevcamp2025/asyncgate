@@ -187,6 +187,14 @@ jobs:
           ecr_repo: "discovery"
           aws_access_key_id: ${{ secrets.AWS_MSA_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_MSA_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_MSA_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_DISCOVERY_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
+          container_name: "discovery-container"
+          container_port: ${{ secrets.DISCOVERY_PORT}}
+
 
   build-msa-config:
     needs: check-folder-change
@@ -205,7 +213,14 @@ jobs:
           folder: "src/backend/config-server"
           ecr_repo: "config"
           aws_access_key_id: ${{ secrets.AWS_MSA_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_MSA_SECRET_ACCESS_KEY }} 
+          aws_secret_access_key: ${{ secrets.AWS_MSA_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_MSA_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_CONFIG_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
+          container_name: "config-container"
+          container_port: ${{ secrets.CONFIG_PORT}} 
 
   build-msa-apigateway:
     needs: check-folder-change
@@ -224,6 +239,13 @@ jobs:
           ecr_repo: "apigateway"
           aws_access_key_id: ${{ secrets.AWS_MSA_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_MSA_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_APIGATEWAY_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
+          container_name: "apigateway-container"
+          container_port: ${{ secrets.APIGATEWAY_PORT}} 
 
   # Service 빌드 및 푸시
   build-service-user:
@@ -243,6 +265,13 @@ jobs:
           ecr_repo: "user"
           aws_access_key_id: ${{ secrets.AWS_SERVICE_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SERVICE_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_USER_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
+          container_name: "user-container"
+          container_port: "0"
 
   build-service-chat:
     needs: check-folder-change
@@ -260,7 +289,14 @@ jobs:
           folder: "src/backend/chat-server"
           ecr_repo: "chat"
           aws_access_key_id: ${{ secrets.AWS_CHAT_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_CHAT_SECRET_ACCESS_KEY }} 
+          aws_secret_access_key: ${{ secrets.AWS_CHAT_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_CHAT_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_CHAT_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_CHAT_SSH_KEY }}
+          container_name: "chat-container"
+          container_port: "0"
 
   build-service-state:
     needs: check-folder-change
@@ -279,6 +315,13 @@ jobs:
           ecr_repo: "state"
           aws_access_key_id: ${{ secrets.AWS_SERVICE_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SERVICE_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_STATE_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
+          container_name: "state-container"
+          container_port: "0"
 
   build-service-guild:
     needs: check-folder-change
@@ -297,6 +340,13 @@ jobs:
           ecr_repo: "guild"
           aws_access_key_id: ${{ secrets.AWS_SERVICE_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SERVICE_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_GUILD_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
+          container_name: "guild-container"
+          container_port: "0"
 
   build-service-notification:
     needs: check-folder-change
@@ -315,6 +365,13 @@ jobs:
           ecr_repo: "notification"
           aws_access_key_id: ${{ secrets.AWS_SERVICE_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SERVICE_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_NOTIFICATION_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
+          container_name: "notification-container"
+          container_port: "0"
 
   build-service-signaling:
     needs: check-folder-change
@@ -333,3 +390,10 @@ jobs:
           ecr_repo: "media"
           aws_access_key_id: ${{ secrets.AWS_SERVICE_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SERVICE_SECRET_ACCESS_KEY }} 
+          aws_region: ${{ secrets.AWS_ECR_REGION }}
+          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ec2_ip: ${{ secrets.AWS_SIGNALING_EC2_IP }}
+          ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
+          ec2_ssh_key: ${{ secrets.AWS_SERVICE_SSH_KEY }}
+          container_name: "signaling-container"
+          container_port: "0"
