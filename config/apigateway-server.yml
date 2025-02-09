@@ -1,6 +1,6 @@
 eureka:
   client:
     service-url:
-      defaultZone: '{cipher}2b2a25eaeb6db79453d3b95377b02f0f95bfe4d3afe515dbbea80564d9c0fd5f05cd609214234b8606653776cc7c7c091aaf00076866e883ba9fe7daf6b0ff1b'
+      defaultZone: '{cipher}5c5642531fcd651d5755d315ca284bcbed9a5c02ca0f7f30be48b6fdd6324b1b38f4859460ff6d0f5b355b0b30eb1b49b2f30faaa39160cb05f02049d8251ca4'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
