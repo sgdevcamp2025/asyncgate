@@ -24,11 +24,16 @@ export const DropdownBody = styled.div`
 `;
 
 export const SelectedItem = styled.div`
+  pointer-events: none;
+  cursor: default;
+
   position: absolute;
+  z-index: 0;
   top: 50%;
   left: 0;
   transform: translate(0, -50%);
 
+  width: fit-content;
   max-width: calc(100% - 0.8rem);
   padding: 0.2rem 0.8rem;
 
@@ -54,6 +59,7 @@ export const DropdownInput = styled.input`
 `;
 
 export const ArrowIcon = styled.img`
+  cursor: pointer;
   width: 2rem;
   height: 2rem;
   margin: 0.8rem 0.8rem 0.8rem 0;
