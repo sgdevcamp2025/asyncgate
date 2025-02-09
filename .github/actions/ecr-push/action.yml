@@ -78,8 +78,8 @@ runs:
       run: |
         if [[ "${{ inputs.container_name }}" == "config-server" ]]; then
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-encrypt:
-  key: ${{ inputs.config_private_ip }}
+          encrypt:
+            key: ${{ inputs.config_private_ip }}
 EOF
 
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
@@ -87,12 +87,12 @@ EOF
           
         else
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-spring:
-  application:
-    name: ${{ inputs.container_name }}
-  cloud:
-    config:
-      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
+          spring:
+            application:
+              name: ${{ inputs.container_name }}
+            cloud:
+              config:
+                uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
 EOF
         fi
 
