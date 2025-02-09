@@ -1,49 +1,26 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AuthCheckbox from '@/components/common/AuthCheckbox';
 import AuthDateInput from '@/components/common/AuthDateInput';
 import AuthInput from '@/components/common/AuthInput';
-import { YearMonthDay } from '@/types';
 
 import * as S from './styles';
+import useRegister from './useRegister';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [isOptIn, setIsOptIn] = useState(false);
-  const [email, setEmail] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [birthday, setBirthday] = useState<YearMonthDay>({ year: '', month: '', day: '' });
+  const {
+    userData,
+    handleEmailChange,
+    handleNicknameChange,
+    handleUsernameChange,
+    handlePasswordChange,
+    handleBirthdayChange,
+    handleOptInCheckboxClick,
+  } = useRegister();
 
   const handleLoginButtonClick = () => {
     navigate('/login');
-  };
-
-  const handleOptInCheckboxClick = () => {
-    console.log(isOptIn);
-    setIsOptIn((prev) => !prev);
-  };
-
-  const handleEmailChange = (value: string) => {
-    setEmail(value);
-  };
-
-  const handleNicknameChange = (value: string) => {
-    setNickname(value);
-  };
-
-  const handleUsernameChange = (value: string) => {
-    setUsername(value);
-  };
-
-  const handlePasswordChange = (value: string) => {
-    setPassword(value);
-  };
-
-  const handleBirthdayChange = (value: YearMonthDay) => {
-    setBirthday(value);
   };
 
   return (
@@ -53,12 +30,18 @@ const RegisterPage = () => {
           <S.FormTitle>계정 만들기</S.FormTitle>
           <S.FormBody>
             <S.InputContainer>
-              <AuthInput id="email" label="이메일" value={email} isRequired={true} handleChange={handleEmailChange} />
-              <AuthInput id="nickname" label="별명" value={nickname} handleChange={handleNicknameChange} />
+              <AuthInput
+                id="email"
+                label="이메일"
+                value={userData.email}
+                isRequired={true}
+                handleChange={handleEmailChange}
+              />
+              <AuthInput id="nickname" label="별명" value={userData.nickname} handleChange={handleNicknameChange} />
               <AuthInput
                 id="username"
                 label="사용자명"
-                value={username}
+                value={userData.username}
                 isRequired={true}
                 handleChange={handleUsernameChange}
               />
@@ -66,21 +49,21 @@ const RegisterPage = () => {
                 id="password"
                 label="비밀번호"
                 type="password"
-                value={password}
+                value={userData.password}
                 isRequired={true}
                 handleChange={handlePasswordChange}
               />
               <AuthDateInput
                 label="생년월일"
                 isRequired={true}
-                initialValue={birthday}
+                initialValue={userData.birthday}
                 handleChange={handleBirthdayChange}
               />
             </S.InputContainer>
             <S.EmailOptInContainer>
               <AuthCheckbox
                 id="optIn"
-                isChecked={isOptIn}
+                isChecked={userData.isOptIn}
                 handleChange={handleOptInCheckboxClick}
                 label="(선택사항) AsyncGate 소식, 도움말, 특별 할인을 이메일로 보내주세요.
               언제든지 취소하실 수 있어요."
