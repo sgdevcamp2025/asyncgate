@@ -77,16 +77,16 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.container_name }}" == "config-server" ]]; then
-          cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          cat <<'EOF' > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
     encrypt:
       key: ${{ inputs.config_private_ip }}
     EOF
 
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
-          
+      
         else
-          cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          cat <<'EOF' > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
     spring:
       application:
         name: ${{ inputs.container_name }}
