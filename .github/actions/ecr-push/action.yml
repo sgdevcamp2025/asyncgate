@@ -83,11 +83,10 @@ encrypt:
   key: ${{ inputs.config_private_ip }}
 EOF
 
-          # Config Server의 application.yml 생성 (Base64 디코딩)
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
+          
         else
-          # 일반 서비스용 bootstrap.yml 생성
           cat <<EOF > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
 spring:
   application:
