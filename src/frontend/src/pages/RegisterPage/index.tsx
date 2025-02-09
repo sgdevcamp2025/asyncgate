@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import AuthCheckbox from '@/components/common/AuthCheckbox';
@@ -8,9 +9,15 @@ import * as S from './styles';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const [isOptIn, setIsOptIn] = useState(false);
 
   const handleLoginButtonClick = () => {
     navigate('/login');
+  };
+
+  const handleOptInCheckboxClick = () => {
+    console.log(isOptIn);
+    setIsOptIn((prev) => !prev);
   };
 
   return (
@@ -29,7 +36,8 @@ const RegisterPage = () => {
             <S.EmailOptInContainer>
               <AuthCheckbox
                 id="optIn"
-                isChecked={true}
+                isChecked={isOptIn}
+                handleChange={handleOptInCheckboxClick}
                 label="(선택사항) AsyncGate 소식, 도움말, 특별 할인을 이메일로 보내주세요.
               언제든지 취소하실 수 있어요."
               />
