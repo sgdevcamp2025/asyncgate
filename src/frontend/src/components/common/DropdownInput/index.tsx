@@ -1,3 +1,5 @@
+import { ForwardedRef, forwardRef } from 'react';
+
 import DownArrowIcon from '@/assets/downArrow.svg';
 import useDropdown from '@/hooks/useDropdown';
 
@@ -6,14 +8,17 @@ import useDropdownInput from './useDropdownInput';
 
 export type DropdownInputItem = string;
 
-interface DropdownProps {
+interface DropdownInputProps {
   items: DropdownInputItem[];
   selectedItem: DropdownInputItem | null;
   handleSelect: (item: DropdownInputItem) => void;
   placeholder?: string;
 }
 
-const DropdownInput = ({ items, selectedItem, handleSelect, placeholder }: DropdownProps) => {
+const DropdownInput = (
+  { items, selectedItem, handleSelect, placeholder }: DropdownInputProps,
+  ref: ForwardedRef<HTMLInputElement>,
+) => {
   const { isOpened, dropdownRef, toggleDropdown, closeDropdown } = useDropdown();
   const { selectedText, inputText, handleInputChange, handleItemClick } = useDropdownInput({
     handleSelect,
@@ -40,6 +45,7 @@ const DropdownInput = ({ items, selectedItem, handleSelect, placeholder }: Dropd
       <S.DropdownBody onClick={toggleDropdown}>
         {!inputText && <S.SelectedItem>{selectedText}</S.SelectedItem>}
         <S.DropdownInput
+          ref={ref}
           value={inputText}
           onChange={(event) => handleInputChange(event.target.value)}
           placeholder={selectedText ? '' : placeholder}
@@ -51,4 +57,4 @@ const DropdownInput = ({ items, selectedItem, handleSelect, placeholder }: Dropd
   );
 };
 
-export default DropdownInput;
+export default forwardRef<HTMLInputElement, DropdownInputProps>(DropdownInput);

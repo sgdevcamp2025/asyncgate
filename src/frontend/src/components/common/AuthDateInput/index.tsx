@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import DropdownInput from '../DropdownInput';
 
@@ -17,12 +17,17 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
   const [selectedMonth, setSelectedMonth] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
 
+  const monthRef = useRef<HTMLInputElement>(null);
+  const dayRef = useRef<HTMLInputElement>(null);
+
   const handleYearSelect = (year: string) => {
     setSelectedYear(year);
+    monthRef.current?.focus();
   };
 
   const handleMonthSelect = (month: string) => {
     setSelectedMonth(month);
+    dayRef.current?.focus();
   };
 
   const handleDaySelect = (day: string) => {
@@ -40,6 +45,7 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
         </S.YearInput>
         <S.MonthInput>
           <DropdownInput
+            ref={monthRef}
             items={months}
             placeholder="월"
             selectedItem={selectedMonth}
@@ -47,7 +53,13 @@ const AuthDateInput = ({ label, isRequired }: AuthDateInputProps) => {
           />
         </S.MonthInput>
         <S.DayInput>
-          <DropdownInput items={days} placeholder="일" selectedItem={selectedDay} handleSelect={handleDaySelect} />
+          <DropdownInput
+            ref={dayRef}
+            items={days}
+            placeholder="일"
+            selectedItem={selectedDay}
+            handleSelect={handleDaySelect}
+          />
         </S.DayInput>
       </S.InputContainer>
     </S.DateInputContainer>
