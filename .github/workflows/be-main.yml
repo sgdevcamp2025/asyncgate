@@ -240,7 +240,7 @@ jobs:
           aws_access_key_id: ${{ secrets.AWS_MSA_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_MSA_SECRET_ACCESS_KEY }} 
           aws_region: ${{ secrets.AWS_ECR_REGION }}
-          ecr_uri: ${{ secrets.AWS_SERVICE_ECR_URI }}
+          ecr_uri: ${{ secrets.AWS_MSA_ECR_URI }}
           ec2_ip: ${{ secrets.AWS_APIGATEWAY_EC2_IP }}
           ec2_username: ${{ secrets.AWS_EC2_USERNAME }}
           ec2_ssh_key: ${{ secrets.AWS_MSA_SSH_KEY }}
