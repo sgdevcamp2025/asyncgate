@@ -82,6 +82,16 @@ runs:
         docker push $FULL_ECR_PATH:$IMAGE_TAG
 
         echo "Build & Push completed!"
+    
+    - name: Debug AWS Credentials
+      run: aws sts get-caller-identity
+    
+    - name: Manually Set AWS Credentials
+      run: |
+        export AWS_ACCESS_KEY_ID=${{ inputs.aws_access_key_id }}
+        export AWS_SECRET_ACCESS_KEY=${{ inputs.aws_secret_access_key }}
+        export AWS_REGION=${{ inputs.aws_region }}
+        aws sts get-caller-identity
 
     - name: EC2에서 ECR에 로그인하기
       uses: appleboy/ssh-action@master
@@ -89,7 +99,6 @@ runs:
         host: ${{ inputs.ec2_ip }}
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
-        port: 22
         script: |
           aws ecr get-login-password --region ${{ inputs.aws_region }} | sudo docker login --username AWS --password-stdin ${{ inputs.ecr_uri }}
 
