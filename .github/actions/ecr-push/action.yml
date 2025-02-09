@@ -77,23 +77,22 @@ runs:
       shell: bash
       run: |
         if [[ "${{ inputs.container_name }}" == "config-server" ]]; then
-          cat <<'EOF' > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-    encrypt:
-      key: ${{ inputs.config_private_ip }}
-    EOF
+          # Generate bootstrap.yml for config-server
+          echo "encrypt:" > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "  key: ${{ inputs.config_private_ip }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
 
+          # Generate application.yml
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
-      
+
         else
-          cat <<'EOF' > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-    spring:
-      application:
-        name: ${{ inputs.container_name }}
-      cloud:
-        config:
-          uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}
-    EOF
+          # Generate bootstrap.yml for other services
+          echo "spring:" > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "  application:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "    name: ${{ inputs.container_name }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "  cloud:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "    config:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
         fi
 
     # Docker 빌드 및 ECR에 푸시
