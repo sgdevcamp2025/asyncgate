@@ -149,16 +149,21 @@ runs:
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          sudo docker stop ${{ inputs.container_name }} || true
-          sudo docker rm ${{ inputs.container_name }} || true
-
-          # 컨테이너 포트 기본값 설정 (8080)
-          CONTAINER_PORT=${{ inputs.container_port }}
-          if [[ -z "$CONTAINER_PORT" || ! "$CONTAINER_PORT" =~ ^[0-9]+$ ]]; then
-            CONTAINER_PORT=8080
+          # 기존 컨테이너가 존재하면 중지 후 삭제
+          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
+            sudo docker stop ${{ inputs.container_name }}
+            sudo docker rm ${{ inputs.container_name }}
           fi
 
-          echo "Using container port: $CONTAINER_PORT"
+          CONTAINER_PORT="${{ inputs.container_port }}"
 
-          sudo docker run -d --name ${{ inputs.container_name }} -p $CONTAINER_PORT:$CONTAINER_PORT ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+          # container_port가 0이면 포트 매핑 없이 실행
+          if [ "$CONTAINER_PORT" -eq 0 ]; then
+            sudo docker run -d --name ${{ inputs.container_name }} \
+              ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+          else
+            sudo docker run -d --name ${{ inputs.container_name }} -p "$CONTAINER_PORT:$CONTAINER_PORT" \
+              ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+          fi
+
 
