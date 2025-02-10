@@ -134,16 +134,20 @@ runs:
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          sudo docker ps -q | xargs -r docker stop
+          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
+            sudo docker stop ${{ inputs.container_name }}
+          fi
     
-    - name: 기존 EC2에 존재하는 모든 컨테이너 삭제
+    - name: 기존 EC2에 존재하는 컨테이너 삭제
       uses: appleboy/ssh-action@master
       with:
         host: ${{ inputs.ec2_ip }}
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          sudo docker ps -asq | xargs -r docker rm
+          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
+            sudo docker rm ${{ inputs.container_name }}
+          fi
 
     - name: 기존 EC2에 저장되어있는 이미지 삭제
       uses: appleboy/ssh-action@master
@@ -184,12 +188,6 @@ runs:
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          # 기존 컨테이너가 존재하면 중지 후 삭제
-          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
-            sudo docker stop ${{ inputs.container_name }}
-            sudo docker rm ${{ inputs.container_name }}
-          fi
-
           CONTAINER_PORT="${{ inputs.container_port }}"
 
           # container_port가 0이면 포트 매핑 없이 실행
