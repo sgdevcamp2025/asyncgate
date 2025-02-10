@@ -73,7 +73,7 @@ const RegisterPage = () => {
               <S.ContinueText>계속하기</S.ContinueText>
             </S.ContinueButton>
             <S.PrivacyPolicyLabel>
-              등록하는 순간 AsyncGate의 <S.LinkButton>서비스 이용 약관</S.LinkButton>과
+              등록하는 순간 AsyncGate의 <S.LinkButton>서비스 이용 약관</S.LinkButton>과{' '}
               <S.LinkButton>개인정보 보호 정책</S.LinkButton>에 동의하게 됩니다.
             </S.PrivacyPolicyLabel>
             <S.ToggleLoginButton onClick={handleLoginButtonClick}>
