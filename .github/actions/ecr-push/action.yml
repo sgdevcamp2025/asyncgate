@@ -178,6 +178,15 @@ runs:
             echo "      - \"1000\"" >> docker-compose.yml
             echo "    restart: unless-stopped" >> docker-compose.yml
 
+            if [ "${{ inputs.container_name }}" == "user-server" ]; then
+              echo "  redis:" >> docker-compose.yml
+              echo "    image: redis:latest" >> docker-compose.yml
+              echo "    container_name: redis" >> docker-compose.yml
+              echo "    ports:" >> docker-compose.yml
+              echo "      - \"6379:6379\"" >> docker-compose.yml
+              echo "    restart: unless-stopped" >> docker-compose.yml
+            fi
+
           else
             echo "Unknown namespace: ${{ inputs.namespace }}"
             exit 1
