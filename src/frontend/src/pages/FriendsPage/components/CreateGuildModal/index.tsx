@@ -1,11 +1,16 @@
 import { TbChevronRight } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
+import { CreateGuildStep } from '../../../../components/guild/GuildList';
 import { BodyMediumText, CaptionText, SmallButtonText } from '../../../../styles/Typography';
 
 import * as S from './styles';
 
-const CreateGuildModal = () => {
+interface CreateGuildModalProps {
+  setCurrentModal: React.Dispatch<React.SetStateAction<CreateGuildStep | null>>;
+}
+
+const CreateGuildModal = ({ setCurrentModal }: CreateGuildModalProps) => {
   return (
     <S.CreateGuildModal>
       <Modal name="basic">
@@ -18,7 +23,7 @@ const CreateGuildModal = () => {
             서버인가요?
           </CaptionText>
         </Modal.Content>
-        <S.CreateButtons>
+        <S.CreateButtons onClick={() => setCurrentModal('customize')}>
           <S.CreatePrivateGuild>
             <SmallButtonText>나와 친구들을 위한 서버</SmallButtonText>
             <TbChevronRight size={24} />
