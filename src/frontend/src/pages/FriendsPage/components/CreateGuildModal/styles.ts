@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const CreateGuildModal = styled.div`
   display: flex;
-  border: 1px solid red;
 `;
 
 export const CreateButtons = styled.div`
