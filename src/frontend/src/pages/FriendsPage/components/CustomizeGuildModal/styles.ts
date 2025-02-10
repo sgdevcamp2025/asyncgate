@@ -4,7 +4,6 @@ import { CaptionText } from '../../../../styles/Typography';
 
 export const CustomizeGuildModal = styled.div`
   display: flex;
-  background-color: pink;
 `;
 
 export const ContentContainer = styled.div`
@@ -75,4 +74,31 @@ export const GuildNameInput = styled.input`
 
 export const Caption = styled(CaptionText)`
   color: ${({ theme }) => theme.colors.dark[400]};
+`;
+
+export const FooterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 5.4rem;
+  padding: 0 2rem;
+
+  background-color: ${({ theme }) => theme.colors.dark[600]};
+`;
+
+export const BackButton = styled.button`
+  color: ${({ theme }) => theme.colors.white};
+  background-color: transparent;
+`;
+
+export const CreateButton = styled.button`
+  width: 11rem;
+  height: 4rem;
+  border-radius: 0.8rem;
+
+  color: ${({ theme }) => theme.colors.white};
+
+  background-color: ${({ theme }) => theme.colors.blue};
 `;

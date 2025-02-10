@@ -45,7 +45,10 @@ const CustomizeGuildModal = () => {
             </S.GuildNameWrapper>
           </S.ContentContainer>
         </Modal.Content>
-        <Modal.Footer>버튼</Modal.Footer>
+        <S.FooterContainer>
+          <S.BackButton>뒤로가기</S.BackButton>
+          <S.CreateButton>만들기</S.CreateButton>
+        </S.FooterContainer>
       </Modal>
     </S.CustomizeGuildModal>
   );
