@@ -127,76 +127,73 @@ runs:
         script: |
           aws ecr get-login-password --region ${{ inputs.aws_region }} | sudo docker login --username AWS --password-stdin ${{ inputs.ecr_uri }}
 
-    - name: 기존 EC2에서 실행중인 컨테이너 종료
+    - name: 기존 EC2에서 실행중인 컨테이너 종료 및 삭제
       uses: appleboy/ssh-action@master
       with:
         host: ${{ inputs.ec2_ip }}
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
-            sudo docker stop ${{ inputs.container_name }}
-          fi
-    
-    - name: 기존 EC2에 존재하는 컨테이너 삭제
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ inputs.ec2_ip }}
-        username: ${{ inputs.ec2_username }}
-        key: ${{ inputs.ec2_ssh_key }}
-        script: |
-          if sudo docker ps -aq -f name=${{ inputs.container_name }} | grep -q .; then
-            sudo docker rm ${{ inputs.container_name }}
+          # docker-compose.yml 파일이 있는 경우만 실행
+          if [ -f "docker-compose.yml" ]; then
+            cd $COMPOSE_DIR
+            sudo docker compose down --rmi all
+          else
+            echo "No docker-compose.yml found. Skipping docker compose down."
           fi
 
-    - name: 기존 EC2에 저장되어있는 이미지 삭제
+
+    - name: Generate docker-compose.yml for EC2 based on namespace
       uses: appleboy/ssh-action@master
       with:
         host: ${{ inputs.ec2_ip }}
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          sudo docker images -q | xargs -r docker rmi
+          if [ "${{ inputs.namespace }}" == "msa" ]; then
+            echo "Generating docker-compose.yml for MSA architecture..."
+            cat <<EOF > docker-compose.yml
+            version: '3.8'
 
-    - name: EC2에서 도커에서 사용하지 않는 자원 삭제처리
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ inputs.ec2_ip }}
-        username: ${{ inputs.ec2_username }}
-        key: ${{ inputs.ec2_ssh_key }}
-        script: |
-          sudo docker system prune -af
+            services:
+              apigateway-server:
+                image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+                ports:
+                  - "${{ inputs.container_port }}:${{ inputs.container_port }}"
+                healthcheck:
+                  test: ["CMD-SHELL", "curl -f http://${{ inputs.container_name }}:${{ inputs.container_port }}/actuator/health || exit 1"]
+                  interval: 10s
+                  timeout: 5s
+                  retries: 2
+                restart: unless-stopped
+            EOF
+          elif [ "${{ inputs.namespace }}" == "service" ]; then
+            echo "Generating docker-compose.yml for Service architecture..."
+            cat <<EOF > docker-compose.yml
+            version: '3.8'
 
-    - name: EC2에서 도커 이미지를 가져오기
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ inputs.ec2_ip }}
-        username: ${{ inputs.ec2_username }}
-        key: ${{ inputs.ec2_ssh_key }}
-        script: |
-          sudo docker pull ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
-
-    - name: Debugging container port
-      shell: bash
-      run: |
-        echo "Container Port: ${{ inputs.container_port }}"
+            services:
+              ${{ inputs.container_name }}:
+                build:
+                  context: ${{ inputs.container_name }}
+                  dockerfile: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
+                expose:
+                  - "1000"
+                restart: unless-stopped
+            EOF
+          else
+            echo "Unknown namespace: ${{ inputs.namespace }}"
+            exit 1
+          fi
 
     - name: ECR에서 불러온 이미지를 도커에서 실행
+    - name: Start container using Docker Compose
       uses: appleboy/ssh-action@master
       with:
         host: ${{ inputs.ec2_ip }}
         username: ${{ inputs.ec2_username }}
         key: ${{ inputs.ec2_ssh_key }}
         script: |
-          CONTAINER_PORT="${{ inputs.container_port }}"
-
-          # container_port가 0이면 포트 매핑 없이 실행
-          if [ "$CONTAINER_PORT" -eq 0 ]; then
-            sudo docker run -d --name ${{ inputs.container_name }} \
-              ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
-          else
-            sudo docker run -d --name ${{ inputs.container_name }} -p "$CONTAINER_PORT:$CONTAINER_PORT" \
-              ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
-          fi
+          sudo docker compose up -d
 
 
