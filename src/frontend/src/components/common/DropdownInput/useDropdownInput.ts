@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { DropdownInputItem } from '@/components/common/DropdownInput';
 
@@ -22,11 +22,8 @@ const useDropdownInput = ({ selectedItem, handleSelect, openDropdown, closeDropd
 
   const handleInputChange = (value: string) => {
     setInputText(value.trim());
+    openDropdown();
   };
-
-  useEffect(() => {
-    if (inputText.length > 0) openDropdown();
-  }, [inputText, openDropdown]);
 
   return {
     selectedText,
