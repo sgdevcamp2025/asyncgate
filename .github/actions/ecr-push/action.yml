@@ -109,7 +109,7 @@ runs:
 
         echo "Building Docker image..."
         docker build -t $FULL_ECR_PATH:$IMAGE_TAG .
-        
+
         echo "Pushing image to Amazon ECR..."
         docker push $FULL_ECR_PATH:$IMAGE_TAG
 
@@ -142,7 +142,6 @@ runs:
             echo "No docker-compose.yml found. Skipping docker compose down."
           fi
 
-
     - name: Generate docker-compose.yml for EC2 based on namespace
       uses: appleboy/ssh-action@master
       with:
@@ -152,35 +151,33 @@ runs:
         script: |
           if [ "${{ inputs.namespace }}" == "msa" ]; then
             echo "Generating docker-compose.yml for MSA architecture..."
-            cat <<EOF > docker-compose.yml
-            version: '3.8'
+            echo "version: '3.8'" > docker-compose.yml
+            echo "" >> docker-compose.yml
+            echo "services:" >> docker-compose.yml
+            echo "  apigateway-server:" >> docker-compose.yml
+            echo "    image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
+            echo "    ports:" >> docker-compose.yml
+            echo "      - \"${{ inputs.container_port }}:${{ inputs.container_port }}\"" >> docker-compose.yml
+            echo "    healthcheck:" >> docker-compose.yml
+            echo "      test: [\"CMD-SHELL\", \"curl -f http://${{ inputs.container_name }}:${{ inputs.container_port }}/actuator/health || exit 1\"]" >> docker-compose.yml
+            echo "      interval: 10s" >> docker-compose.yml
+            echo "      timeout: 5s" >> docker-compose.yml
+            echo "      retries: 2" >> docker-compose.yml
+            echo "    restart: unless-stopped" >> docker-compose.yml
 
-            services:
-              apigateway-server:
-                image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
-                ports:
-                  - "${{ inputs.container_port }}:${{ inputs.container_port }}"
-                healthcheck:
-                  test: ["CMD-SHELL", "curl -f http://${{ inputs.container_name }}:${{ inputs.container_port }}/actuator/health || exit 1"]
-                  interval: 10s
-                  timeout: 5s
-                  retries: 2
-                restart: unless-stopped
-            EOF
           elif [ "${{ inputs.namespace }}" == "service" ]; then
             echo "Generating docker-compose.yml for Service architecture..."
-            cat <<EOF > docker-compose.yml
-            version: '3.8'
+            echo "version: '3.8'" > docker-compose.yml
+            echo "" >> docker-compose.yml
+            echo "services:" >> docker-compose.yml
+            echo "  ${{ inputs.container_name }}:" >> docker-compose.yml
+            echo "    build:" >> docker-compose.yml
+            echo "      context: ${{ inputs.container_name }}" >> docker-compose.yml
+            echo "      dockerfile: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
+            echo "    expose:" >> docker-compose.yml
+            echo "      - \"1000\"" >> docker-compose.yml
+            echo "    restart: unless-stopped" >> docker-compose.yml
 
-            services:
-              ${{ inputs.container_name }}:
-                build:
-                  context: ${{ inputs.container_name }}
-                  dockerfile: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}
-                expose:
-                  - "1000"
-                restart: unless-stopped
-            EOF
           else
             echo "Unknown namespace: ${{ inputs.namespace }}"
             exit 1
