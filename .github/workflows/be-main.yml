@@ -1,10 +1,10 @@
 name: ECR actions for multiple folders
 
 on:
-  pull_request:
+  push:
     # 임시 테스트 브랜치
     branches:
-      - main
+      - be/setting/24-ecr
 
 env:
   NAMESPACE_MSA: "msa"
