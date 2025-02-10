@@ -1,0 +1,8 @@
+services:
+  guild-service:
+    build:
+      context: guild-server
+      dockerfile: Dockerfile
+    expose:
+      - 1000 # 내부 컨테이너 포트만 노출
+    restart: unless-stopped

@@ -1,0 +1,13 @@
+services:
+  apigateway-server:
+    build:
+      context: apigateway-server
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://apigateway-server:8000/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2 
+    restart: unless-stopped

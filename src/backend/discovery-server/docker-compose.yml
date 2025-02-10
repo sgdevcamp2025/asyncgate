@@ -1,0 +1,13 @@
+services:
+  discovery-server:
+    build:
+      context: discovery-server
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://discovery-server:8761/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2 
+    restart: unless-stopped

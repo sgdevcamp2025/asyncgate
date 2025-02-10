@@ -1,3 +1,4 @@
+# local 실행용 docker compose
 services:
   discovery-service:
     build:

@@ -1,0 +1,13 @@
+services:
+  config-server:
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - 8888:8888
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://config-server:8888/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2 
+    restart: unless-stopped
