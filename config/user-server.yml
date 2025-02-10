@@ -24,7 +24,7 @@ cloud:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/user?useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://user-db:3306/user?useSSL=false&serverTimezone=Asia/Seoul
     username: '{cipher}56d454dea6f1332e8d9b5656400700369e6024c027fbc51e372dd64ff7ecb6a4'
     password: '{cipher}1e4d1a106597d4b9efd8a80f25ccb4cec28a08b2f02d9b4c3b1ff3ffae90ad83'
     hikari:
