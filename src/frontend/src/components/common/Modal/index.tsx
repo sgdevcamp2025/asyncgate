@@ -22,14 +22,14 @@ interface ModalProps {
 }
 
 const Modal = ({ children, name }: ModalProps) => {
-  const { closeModal } = useModalStore();
+  const { closeModal, closeAllModal } = useModalStore();
 
   return (
     <>
       <S.Overlay onClick={() => closeModal(name, 'close-modal')} />
       <S.ModalContainer>
         <S.CloseButton>
-          <S.CloseIcon size={28} onClick={() => closeModal('basic', 'create-server')} />
+          <S.CloseIcon size={28} onClick={() => closeAllModal()} />
         </S.CloseButton>
         {children}
       </S.ModalContainer>
