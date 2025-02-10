@@ -8,6 +8,10 @@ const useDropdown = () => {
     setIsOpened((prev) => !prev);
   };
 
+  const openDropdown = () => {
+    setIsOpened(true);
+  };
+
   const closeDropdown = () => {
     setIsOpened(false);
   };
@@ -30,6 +34,7 @@ const useDropdown = () => {
     isOpened,
     dropdownRef,
     toggleDropdown,
+    openDropdown,
     closeDropdown,
   };
 };

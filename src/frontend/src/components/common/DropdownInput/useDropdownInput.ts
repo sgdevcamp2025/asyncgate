@@ -1,14 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { DropdownInputItem } from '@/components/common/DropdownInput';
 
 interface UseDropdownInputProps {
   selectedItem: DropdownInputItem | null;
   handleSelect: (item: DropdownInputItem) => void;
+  openDropdown: () => void;
   closeDropdown: () => void;
 }
 
-const useDropdownInput = ({ selectedItem, handleSelect, closeDropdown }: UseDropdownInputProps) => {
+const useDropdownInput = ({ selectedItem, handleSelect, openDropdown, closeDropdown }: UseDropdownInputProps) => {
   const [selectedText, setSelectedText] = useState(selectedItem);
   const [inputText, setInputText] = useState<string>('');
 
@@ -20,8 +21,12 @@ const useDropdownInput = ({ selectedItem, handleSelect, closeDropdown }: UseDrop
   };
 
   const handleInputChange = (value: string) => {
-    setInputText(value);
+    setInputText(value.trim());
   };
+
+  useEffect(() => {
+    if (inputText.length > 0) openDropdown();
+  }, [inputText, openDropdown]);
 
   return {
     selectedText,

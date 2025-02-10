@@ -20,10 +20,11 @@ const DropdownInput = (
   { id, items, selectedItem, handleSelect, placeholder }: DropdownInputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) => {
-  const { isOpened, dropdownRef, toggleDropdown, closeDropdown } = useDropdown();
+  const { isOpened, dropdownRef, toggleDropdown, openDropdown, closeDropdown } = useDropdown();
   const { selectedText, inputText, handleInputChange, handleItemClick } = useDropdownInput({
     handleSelect,
     selectedItem,
+    openDropdown,
     closeDropdown,
   });
 
