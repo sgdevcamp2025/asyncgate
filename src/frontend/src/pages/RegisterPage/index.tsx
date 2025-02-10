@@ -4,8 +4,8 @@ import AuthCheckbox from '@/components/common/AuthCheckbox';
 import AuthDateInput from '@/components/common/AuthDateInput';
 import AuthInput from '@/components/common/AuthInput';
 
+import useRegister from './hooks/useRegister';
 import * as S from './styles';
-import useRegister from './useRegister';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
