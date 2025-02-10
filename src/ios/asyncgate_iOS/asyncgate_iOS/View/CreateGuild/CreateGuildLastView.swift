@@ -21,14 +21,30 @@ struct CreateGuildLastView: View {
                 .font(Font.pretendardSemiBold(size: 14))
                 .foregroundColor(Color.colorDart400)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 30)
+                .padding(.bottom, 37)
             
             Button {
                 
             } label: {
-                Circle()
-                    .foregroundStyle(Color.white)
-                    .frame(width: 80, height: 80)
+                ZStack {
+                    Circle()
+                        .stroke(
+                                Color.colorGray,
+                                style: StrokeStyle(lineWidth: 2, dash: [6, 8])
+                            )
+                        .foregroundStyle(Color.colorBG)
+                        .frame(width: 80, height: 80)
+                    
+                    VStack {
+                        Image(systemName: "camera.fill")
+                            .foregroundStyle(Color.colorGray)
+                            .padding(.bottom, 2)
+                        
+                        Text("올리기")
+                            .foregroundStyle(Color.colorGray)
+                            .font(Font.pretendardRegular(size: 12))
+                    }
+                }
             }
             
             VStack(alignment: .leading) {
@@ -52,6 +68,7 @@ struct CreateGuildLastView: View {
                         , alignment: .leading
                     )
             }
+            .padding(.top, 13)
             .padding(.bottom, 30)
             
             Button {
@@ -65,6 +82,8 @@ struct CreateGuildLastView: View {
         }
         .padding()
         .applyBackground()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton(color: .white))
     }
 }
 

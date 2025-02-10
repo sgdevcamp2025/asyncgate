@@ -22,22 +22,20 @@ struct ChoiceGuildTypeView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 30)
             
-            Button {
-                // FIXME: 수정 예정
-            } label: {
-                CreateGuildButton(imageName: "person.2.wave.2.fill",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 30, imageHeight: 20)
+            NavigationLink(destination: CreateGuildLastView()) {
+                CreateGuildButton(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
             }
             
-            Button {
-                // FIXME: 수정 예정
-            } label: {
-                CreateGuildButton(imageName: "person.3.fill", text: "나와 친구들을 위한 서버", imageWidth: 30, imageHeight: 20)
+            NavigationLink(destination: CreateGuildLastView()) {
+                CreateGuildButton(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
             }
             
             Spacer()
         }
         .padding()
         .applyBackground()
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: BackButton(color: .white))
     }
 }
 

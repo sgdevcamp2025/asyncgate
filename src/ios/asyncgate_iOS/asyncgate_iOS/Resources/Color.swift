@@ -40,5 +40,9 @@ extension Color {
     static let colorYellow = Color(hex: "#FEE75C")
     static let colorFuchsia = Color(hex: "#EB459E")
     static let colorRed = Color(hex: "#ED4245")
+    static let colorBG = Color(hex: "#1C1D23")
+    static let colorGray = Color(hex: "#B9BBBE")
+    static let colorGrayCaption = Color(hex: "#E4E5E8")
+    static let colorNewGuildButton = Color(hex: "#26272F")
     
 }
