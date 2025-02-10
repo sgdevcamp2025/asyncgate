@@ -107,11 +107,11 @@ runs:
         echo "Moving to project folder: ${{ inputs.folder }}"
         cd ${{ inputs.folder }}
 
-        echo "Building Docker image with docker-compose..."
-        docker-compose build
-
-        echo "Tagging Docker image..."
-        docker tag app:latest $FULL_ECR_PATH:$IMAGE_TAG
+        echo "Building Docker image..."
+        docker build -t $FULL_ECR_PATH:$IMAGE_TAG .
+        
+        echo "Pushing image to Amazon ECR..."
+        docker push $FULL_ECR_PATH:$IMAGE_TAG
 
         echo "Cleaning up sensitive file..."
         rm -f src/main/resources/bootstrap.yml
