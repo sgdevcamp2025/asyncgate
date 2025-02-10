@@ -1,7 +1,7 @@
 import { TbChevronRight } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
-import { CreateGuildStep } from '../../../../components/guild/GuildList';
+import { CreateGuildStep } from '../../../../components/guild/types';
 import { BodyMediumText, CaptionText, SmallButtonText } from '../../../../styles/Typography';
 
 import * as S from './styles';

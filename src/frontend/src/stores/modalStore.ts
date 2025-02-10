@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-import { BaseModalData, ModalType } from '../components/common/Modal';
+import { BaseModalData, ModalType } from '../types';
 
 type ModalState = {
   modal: { [K in ModalType]?: { [key: string]: BaseModalData } };

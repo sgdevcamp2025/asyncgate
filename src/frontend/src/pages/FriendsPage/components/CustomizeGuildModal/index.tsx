@@ -3,7 +3,7 @@ import { LuCamera } from 'react-icons/lu';
 import { TbPlus } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
-import { CreateGuildStep } from '../../../../components/guild/GuildList';
+import { CreateGuildStep } from '../../../../components/guild/types';
 import { BodyMediumText, CaptionText, ChipText, SmallText } from '../../../../styles/Typography';
 
 import * as S from './styles';

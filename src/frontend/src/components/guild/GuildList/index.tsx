@@ -3,10 +3,9 @@ import { useEffect, useState } from 'react';
 import CreateGuildModal from '../../../pages/FriendsPage/components/CreateGuildModal';
 import CustomizeGuildModal from '../../../pages/FriendsPage/components/CustomizeGuildModal';
 import useModalStore from '../../../stores/modalStore';
+import { CreateGuildStep } from '../types';
 
 import * as S from './styles';
-
-export type CreateGuildStep = 'initial' | 'customize';
 
 const GuildList = () => {
   const { openModal } = useModalStore();
