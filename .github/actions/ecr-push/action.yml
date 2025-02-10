@@ -156,6 +156,7 @@ runs:
             echo "services:" >> docker-compose.yml
             echo "  apigateway-server:" >> docker-compose.yml
             echo "    image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
+            echo "    container_name: ${{ inputs.container_name }}" >> docker-compose.yml
             echo "    ports:" >> docker-compose.yml
             echo "      - \"${{ inputs.container_port }}:${{ inputs.container_port }}\"" >> docker-compose.yml
             echo "    healthcheck:" >> docker-compose.yml
@@ -172,6 +173,7 @@ runs:
             echo "services:" >> docker-compose.yml
             echo "  ${{ inputs.container_name }}:" >> docker-compose.yml
             echo "    image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
+            echo "    container_name: ${{ inputs.container_name }}" >> docker-compose.yml
             echo "    expose:" >> docker-compose.yml
             echo "      - \"1000\"" >> docker-compose.yml
             echo "    restart: unless-stopped" >> docker-compose.yml
