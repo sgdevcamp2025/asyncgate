@@ -11,8 +11,8 @@ const GuildList = () => {
   const { openModal } = useModalStore();
   const [currentModal, setCurrentModal] = useState<CreateGuildStep | null>(null);
 
-  const handleChangeModal = (key: string, modal: React.ReactNode) => {
-    openModal('basic', key, modal);
+  const handleChangeModal = (modal: React.ReactNode) => {
+    openModal('basic', modal);
   };
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const GuildList = () => {
 
     switch (currentModal) {
       case 'initial':
-        handleChangeModal('create-server', <CreateGuildModal setCurrentModal={setCurrentModal} />);
+        handleChangeModal(<CreateGuildModal setCurrentModal={setCurrentModal} />);
         break;
       case 'customize':
-        handleChangeModal('customize-server', <CustomizeGuildModal setCurrentModal={setCurrentModal} />);
+        handleChangeModal(<CustomizeGuildModal setCurrentModal={setCurrentModal} />);
         break;
     }
   }, [currentModal]);

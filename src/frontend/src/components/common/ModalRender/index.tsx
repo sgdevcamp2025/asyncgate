@@ -17,10 +17,8 @@ const ModalRenderer = () => {
 
   const renderModals = () => {
     return Object.entries(modal).flatMap(([type, typeModals]) => {
-      if (!typeModals) return [];
-      return Object.entries(typeModals).map(([key, { content }]) => (
-        <Fragment key={`${type}-${key}`}>{content}</Fragment>
-      ));
+      if (!typeModals) return null;
+      return <Fragment key={type}>{typeModals.content}</Fragment>;
     });
   };
 

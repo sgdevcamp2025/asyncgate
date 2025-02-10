@@ -4,11 +4,11 @@ import { immer } from 'zustand/middleware/immer';
 import { BaseModalData, ModalType } from '../types';
 
 type ModalState = {
-  modal: { [K in ModalType]?: { [key: string]: BaseModalData } };
+  modal: { [K in ModalType]?: BaseModalData };
 };
 
 type ModalActions = {
-  openModal: <T extends ModalType>(type: T, key: string, content: React.ReactNode) => void;
+  openModal: <T extends ModalType>(type: T, content: React.ReactNode) => void;
   closeModal: (type: ModalType, key: string) => void;
   closeAllModal: () => void;
 };
@@ -16,22 +16,19 @@ type ModalActions = {
 export const useModalStore = create<ModalState & ModalActions>()(
   immer((set) => ({
     modal: {},
-    openModal: (type, key, content) => {
+    openModal: (type, content) => {
       document.body.style.overflow = 'hidden';
       set((state) => {
-        if (!state.modal[type]) {
-          state.modal[type] = {};
-        }
-        state.modal[type]![key] = {
+        state.modal[type] = {
           content,
         };
       });
     },
-    closeModal: (type, key) => {
+    closeModal: (type) => {
       document.body.style.overflow = 'unset';
       set((state) => {
-        if (state.modal[type]?.[key]) {
-          delete state.modal[type]![key];
+        if (state.modal[type]) {
+          delete state.modal[type];
         }
       });
     },
