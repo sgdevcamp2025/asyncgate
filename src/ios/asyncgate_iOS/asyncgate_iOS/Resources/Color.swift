@@ -44,5 +44,5 @@ extension Color {
     static let colorGray = Color(hex: "#B9BBBE")
     static let colorGrayCaption = Color(hex: "#E4E5E8")
     static let colorNewGuildButton = Color(hex: "#26272F")
-    
+    static let colorGrayImage = Color(hex: "#C7C8CE")
 }
