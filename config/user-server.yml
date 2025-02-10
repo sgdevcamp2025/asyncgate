@@ -36,6 +36,10 @@ spring:
       maximum-pool-size: 5
       data-source-properties:
         rewriteBatchedStatements: true
+  cloud:
+    inetutils:
+      ignored-interfaces: docker0, eth1*  # 불필요한 네트워크 인터페이스 제외
+      preferred-networks: 172.31
 
   jpa:
     hibernate:
