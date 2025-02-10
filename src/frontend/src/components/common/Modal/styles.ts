@@ -20,10 +20,6 @@ export const ModalContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
   min-width: 49rem;
   min-height: 36rem;
   border-radius: 0.4rem;
