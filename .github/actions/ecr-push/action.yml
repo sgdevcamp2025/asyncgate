@@ -186,7 +186,6 @@ runs:
             exit 1
           fi
 
-    - name: ECR에서 불러온 이미지를 도커에서 실행
     - name: Start container using Docker Compose
       uses: appleboy/ssh-action@master
       with:
