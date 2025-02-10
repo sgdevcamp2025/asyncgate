@@ -26,7 +26,7 @@ data class ReadStatus(
             userId: String,
             channelId: String,
         ): ReadStatus {
-            ReadStatus(
+            return ReadStatus(
                 id = UUIDGenerator.generate(),
                 userId = userId,
                 channelId = channelId,

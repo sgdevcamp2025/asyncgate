@@ -3,7 +3,6 @@ package com.asyncgate.chat_server.kafka
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.exception.ChatServerException
 import com.asyncgate.chat_server.exception.FailType
-import com.asyncgate.chat_server.service.DirectService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.messaging.simp.SimpMessagingTemplate

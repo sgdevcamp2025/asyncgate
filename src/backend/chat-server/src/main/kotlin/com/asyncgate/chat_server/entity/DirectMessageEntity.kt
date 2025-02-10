@@ -12,7 +12,7 @@ class DirectMessageEntity(
     val userId: String,
     val profileImage: String,
 
-    val read: Boolean,
+    val read: Map<Long, Boolean>? = null,
 
     val name: String,
     val content: String,
