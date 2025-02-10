@@ -16,15 +16,15 @@ struct CreateGuildButton: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(Color.colorDart600)
+                .foregroundStyle(Color(hex: "#26272F"))
                 .frame(height: 70)
             
             HStack {
-                Image(systemName: imageName)
+                Image(imageName)
                     .resizable()
                     .foregroundStyle(Color.colorWhite)
                     .frame(width: imageWidth, height: imageHeight)
-                    .padding(.trailing, 5)
+                    .padding(.trailing, 2)
                 
                 Text(text)
                     .font(Font.pretendardSemiBold(size: 16))
