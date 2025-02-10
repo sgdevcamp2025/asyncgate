@@ -1,12 +1,19 @@
+import { useState } from 'react';
 import { LuCamera } from 'react-icons/lu';
 import { TbPlus } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
-import { BodyMediumText, CaptionText, SmallText } from '../../../../styles/Typography';
+import { BodyMediumText, CaptionText, ChipText, SmallText } from '../../../../styles/Typography';
 
 import * as S from './styles';
 
 const CustomizeGuildModal = () => {
+  const [inputValue, setInputValue] = useState('');
+
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+  };
+
   return (
     <S.CustomizeGuildModal>
       <Modal name="basic">
@@ -27,6 +34,15 @@ const CustomizeGuildModal = () => {
                 <TbPlus size={18} />
               </S.PlusIcon>
             </S.ImageUpLoad>
+            <S.GuildNameWrapper>
+              <ChipText>서버 이름</ChipText>
+              <S.GuildNameInput
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e.target.value)}
+                value={inputValue}
+                placeholder="서버이름을 입력해주세요"
+              />
+              <S.Caption>서버를 만들면 Discord의 커뮤니티 지침에 동의하게 됩니다.</S.Caption>
+            </S.GuildNameWrapper>
           </S.ContentContainer>
         </Modal.Content>
         <Modal.Footer>버튼</Modal.Footer>

@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { CaptionText } from '../../../../styles/Typography';
+
 export const CustomizeGuildModal = styled.div`
   display: flex;
   background-color: pink;
@@ -45,4 +47,32 @@ export const PlusIcon = styled.div`
   border-radius: 100%;
 
   background-color: ${({ theme }) => theme.colors.blue};
+`;
+export const GuildNameWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: start;
+
+  width: 100%;
+`;
+
+export const GuildNameInput = styled.input`
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 3rem;
+  padding: 0.4rem 0 0.4rem 0.8rem;
+  border: none;
+  border-radius: 0.4rem;
+
+  color: ${({ theme }) => theme.colors.white};
+
+  background-color: ${({ theme }) => theme.colors.dark[700]};
+  outline: none;
+`;
+
+export const Caption = styled(CaptionText)`
+  color: ${({ theme }) => theme.colors.dark[400]};
 `;
