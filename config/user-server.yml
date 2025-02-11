@@ -1,8 +1,8 @@
 eureka:
   instance:
     prefer-ip-address: true
-    ip-address: '{cipher}76eb44bb3603b3862eec90a97d85cc2194388d80b68f3310a58010eeb954e1a1'
-    host-name: '{cipher}76eb44bb3603b3862eec90a97d85cc2194388d80b68f3310a58010eeb954e1a1'
+    hostname: user-server
+    ip-address: '{cipher}32c793041fbe1cfd094762a7ea4243c0388aa4c6dc6c03134650eefc9864bb4b'
   client:
     service-url:
       defaultZone: '{cipher}f0d4232ceb8d3d476ebc0895b8ef4530a1a8992acaa373a904e559c3ac3f7b6054801cb979d0b481124de1cee9dd6633'
@@ -36,10 +36,6 @@ spring:
       maximum-pool-size: 5
       data-source-properties:
         rewriteBatchedStatements: true
-  cloud:
-    inetutils:
-      ignored-interfaces: docker0, eth1*  # 불필요한 네트워크 인터페이스 제외
-      preferred-networks: 172.31
 
   jpa:
     hibernate:
