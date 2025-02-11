@@ -50,9 +50,6 @@ inputs:
   config_application_yml:
     description: "Config application.yml"
     required: true
-  apigateway_application_yml:
-    description: "Apigateway application.yml"
-    required: true
 
 
 
@@ -96,10 +93,6 @@ runs:
           echo "  cloud:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
           echo "    config:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
           echo "      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
-
-          # Generate application.yml for API Gateway
-          # rm -f ${{ inputs.folder }}/src/main/resources/application.yml
-          # echo "${{ inputs.apigateway_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
 
         else
           # Generate bootstrap.yml for other services

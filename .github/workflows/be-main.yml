@@ -197,7 +197,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
 
   build-msa-config:
@@ -228,7 +227,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_ENCRYPT_KEY }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ${{ secrets.CONFIG_APPLICATION_YML }}
-          apigateway_application_yml: ""
 
   build-msa-apigateway:
     needs: check-folder-change
@@ -257,7 +255,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ${{ secrets.APIGATEWAY_APPLICATION_YML }}
 
   # Service 빌드 및 푸시
   build-service-user:
@@ -287,7 +284,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
   build-service-chat:
     needs: check-folder-change
@@ -316,7 +312,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
   build-service-state:
     needs: check-folder-change
@@ -345,7 +340,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
   build-service-guild:
     needs: check-folder-change
@@ -374,7 +368,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
   build-service-notification:
     needs: check-folder-change
@@ -403,7 +396,6 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
 
   build-service-signaling:
     needs: check-folder-change
@@ -432,4 +424,3 @@ jobs:
           config_private_ip: ${{ secrets.CONFIG_PRIVATE_IP }}
           config_port: ${{ secrets.CONFIG_PORT }}
           config_application_yml: ""
-          apigateway_application_yml: ""
