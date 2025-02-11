@@ -43,7 +43,7 @@ export const CircleButton = styled.button`
   background-color: ${({ theme }) => theme.colors.dark[600]};
 `;
 
-export const AddServerButton = styled(CircleButton)`
+export const AddGuildButton = styled(CircleButton)`
   /* 버튼별 역할 구별을 위해 분리 */
 `;
 export const SearchCommunityButton = styled(CircleButton)`

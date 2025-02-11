@@ -34,9 +34,9 @@ const GuildList = () => {
         <S.DiscordIcon size={32} />
       </S.DMButton>
       {/* 서버 리스트 추가 예정 */}
-      <S.AddServerButton onClick={() => setCurrentModal('initial')}>
+      <S.AddGuildButton onClick={() => setCurrentModal('initial')}>
         <S.PlusIcon size={24} />
-      </S.AddServerButton>
+      </S.AddGuildButton>
       <S.SearchCommunityButton>
         <S.CompassIcon size={36} />
       </S.SearchCommunityButton>
