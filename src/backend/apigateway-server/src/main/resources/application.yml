@@ -11,10 +11,6 @@ spring:
     name: apigateway-server
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true 
-          lower-case-service-id: true
       routes:
         - id: guild-server
           uri: lb://GUILD-SERVER
@@ -71,4 +67,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, gateway, info
+        include: refresh, health, beans, info
