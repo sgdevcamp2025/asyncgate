@@ -138,6 +138,8 @@ runs:
           if [ -f "docker-compose.yml" ]; then
             cd $COMPOSE_DIR
             sudo docker compose down --rmi all
+            sudo docker volume prune -f
+            sudo docker network prune -f
           else
             echo "No docker-compose.yml found. Skipping docker compose down."
           fi
