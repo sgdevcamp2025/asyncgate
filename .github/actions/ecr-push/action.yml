@@ -174,9 +174,9 @@ runs:
             echo "  ${{ inputs.container_name }}:" >> docker-compose.yml
             echo "    image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
             echo "    container_name: ${{ inputs.container_name }}" >> docker-compose.yml
-            echo "    expose:" >> docker-compose.yml
-            echo "      - \"1000\"" >> docker-compose.yml
+            echo "    network_mode: host" >> docker-compose.yml  # EC2 네트워크 사용
             echo "    restart: unless-stopped" >> docker-compose.yml
+
 
             if [ "${{ inputs.container_name }}" == "user-server" ]; then
               echo "  redis:" >> docker-compose.yml
