@@ -35,7 +35,7 @@ data class DirectMessageCreate(
     val parentName: String? = null,
     val parentContent: String? = null,
 ) {
-    fun toDirectMessage(userId: String): DirectMessage {
+    fun toDomain(userId: String): DirectMessage {
         return DirectMessage(
             channelId = channelId,
             userId = userId,

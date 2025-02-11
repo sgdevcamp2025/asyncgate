@@ -1,10 +1,9 @@
-package com.asyncgate.chat_server.config
+package com.asyncgate.chat_server.kafka
 
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.domain.ReadStatus
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.annotation.EnableKafka
@@ -15,14 +14,13 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 
 @EnableKafka
 @Configuration
-class KafkaProducerConfig {
+class KafkaProducerConfig(
+    private val kafkaProperties: KafkaProperties, // KafkaProperties 주입
+) {
 
-    @Value("\${spring.kafka.bootstrap-servers}")
-    private lateinit var bootstrapServers: String
-
-    fun producerConfigurations(): Map<String, Any> {
+    private fun producerConfigurations(): Map<String, Any> {
         return mapOf(
-            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
+            ProducerConfig.BOOTSTRAP_SERVERS_CONFIG to kafkaProperties.bootstrapServers,
             ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG to StringSerializer::class.java,
             ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG to JsonSerializer::class.java
         )

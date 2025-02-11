@@ -22,8 +22,8 @@ class DirectController(
     fun direct(@Payload directMessageCreate: DirectMessageCreate, message: Message<*>) {
         val jwtToken = StompSecurityContext.extractJwtToken(message)
         val userId = jwtTokenProvider.extract(jwtToken)
-        val directMessage = directMessageCreate.toDirectMessage(userId)
-        directService.send(directMessage, jwtToken)
+        val directMessage = directMessageCreate.toDomain(userId)
+        directService.send(directMessage)
     }
 
     @MessageMapping("/read-message")
