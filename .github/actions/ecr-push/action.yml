@@ -207,7 +207,6 @@ runs:
               echo "  redis:" >> docker-compose.yml
               echo "    image: redis:latest" >> docker-compose.yml
               echo "    container_name: redis" >> docker-compose.yml
-              echo "    host: host.docker.internal" >> docker-compose.yml
               echo "    ports:" >> docker-compose.yml
               echo "      - \"6379:6379\"" >> docker-compose.yml
               echo "    restart: unless-stopped" >> docker-compose.yml
