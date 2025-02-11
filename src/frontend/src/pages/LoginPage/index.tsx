@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import AuthInput from '@/components/common/AuthInput';
+import { FormDropVarients } from '@/styles/motions';
 
 import useLogin from './hooks/useLogin';
 import * as S from './styles';
@@ -17,7 +18,7 @@ const LoginPage = () => {
     <>
       <S.PageContainer>
         <S.ContentWrapper>
-          <S.LoginFormContainer>
+          <S.LoginFormContainer variants={FormDropVarients} initial="hidden" animate="visible">
             <S.MainLoginContainer>
               <S.LoginFormHeader>
                 <S.HeaderTitle>돌아오신 것을 환영해요!</S.HeaderTitle>

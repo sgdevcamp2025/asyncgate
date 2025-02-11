@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AuthCheckbox from '@/components/common/AuthCheckbox';
 import AuthDateInput from '@/components/common/AuthDateInput';
 import AuthInput from '@/components/common/AuthInput';
+import { FormDropVarients } from '@/styles/motions';
 
 import useRegister from './hooks/useRegister';
 import * as S from './styles';
@@ -26,7 +27,7 @@ const RegisterPage = () => {
   return (
     <S.PageContainer>
       <S.ContentWrapper>
-        <S.RegisterFormContainer>
+        <S.RegisterFormContainer variants={FormDropVarients} initial="hidden" animate="visible">
           <S.FormTitle>계정 만들기</S.FormTitle>
           <S.FormBody>
             <S.InputContainer>
