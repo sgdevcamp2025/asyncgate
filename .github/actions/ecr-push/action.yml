@@ -98,8 +98,8 @@ runs:
           echo "      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
 
           # Generate application.yml for API Gateway
-          rm -f ${{ inputs.folder }}/src/main/resources/application.yml
-          echo "${{ inputs.apigateway_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
+          # rm -f ${{ inputs.folder }}/src/main/resources/application.yml
+          # echo "${{ inputs.apigateway_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
 
         else
           # Generate bootstrap.yml for other services
@@ -157,6 +157,12 @@ runs:
             sudo docker compose down --rmi all
             sudo docker volume prune -f
             sudo docker network prune -f
+
+            # docker-compose.yml 파일 삭제
+            echo "docker-compose.yml 파일 삭제 중..."
+            rm -f docker-compose.yml
+            echo "docker-compose.yml 파일 삭제 완료."
+
           else
             echo "No docker-compose.yml found. Skipping docker compose down."
           fi
