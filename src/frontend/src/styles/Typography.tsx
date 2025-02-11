@@ -6,8 +6,8 @@ type TypoVariant = keyof typeof theme.typography;
 
 const typographyStyle = (variant: TypoVariant) => css`
   font-size: ${theme.typography[variant].size};
-  line-height: ${theme.typography[variant].lineHeight};
   font-weight: ${theme.typography[variant].weight};
+  line-height: ${theme.typography[variant].lineHeight};
 `;
 
 const createTypographyComponent = (htmlTag: keyof JSX.IntrinsicElements, variant: TypoVariant) => {
