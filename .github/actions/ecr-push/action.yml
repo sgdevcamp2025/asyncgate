@@ -50,6 +50,9 @@ inputs:
   config_application_yml:
     description: "Config application.yml"
     required: true
+  apigateway_application_yml:
+    description: "Apigateway application.yml"
+    required: true
 
 
 
@@ -85,6 +88,19 @@ runs:
           rm -f ${{ inputs.folder }}/src/main/resources/application.yml
           echo "${{ inputs.config_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
 
+        elif [[ "${{ inputs.container_name }}" == "apigateway-server" ]]; then
+          # Generate bootstrap.yml for API Gateway
+          echo "spring:" > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "  application:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "    name: ${{ inputs.container_name }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "  cloud:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "    config:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+          echo "      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
+
+          # Generate application.yml for API Gateway
+          rm -f ${{ inputs.folder }}/src/main/resources/application.yml
+          echo "${{ inputs.apigateway_application_yml }}" | base64 --decode > ${{ inputs.folder }}/src/main/resources/application.yml
+
         else
           # Generate bootstrap.yml for other services
           echo "spring:" > ${{ inputs.folder }}/src/main/resources/bootstrap.yml
@@ -94,6 +110,7 @@ runs:
           echo "    config:" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
           echo "      uri: http://${{ inputs.config_private_ip }}:${{ inputs.config_port }}" >> ${{ inputs.folder }}/src/main/resources/bootstrap.yml
         fi
+
 
     # Docker 빌드 및 ECR에 푸시
     - name: Build and push Docker image to Amazon ECR
@@ -176,7 +193,8 @@ runs:
             echo "  ${{ inputs.container_name }}:" >> docker-compose.yml
             echo "    image: ${{ inputs.ecr_uri }}/${{ inputs.namespace }}/${{ inputs.ecr_repo }}:${{ github.sha }}" >> docker-compose.yml
             echo "    container_name: ${{ inputs.container_name }}" >> docker-compose.yml
-            echo "    network_mode: host" >> docker-compose.yml  # EC2 네트워크 사용
+            echo "    ports:" >> docker-compose.yml
+            echo "      - \"${{ inputs.container_port }}:${{ inputs.container_port }}\"" >> docker-compose.yml
             echo "    restart: unless-stopped" >> docker-compose.yml
 
 
