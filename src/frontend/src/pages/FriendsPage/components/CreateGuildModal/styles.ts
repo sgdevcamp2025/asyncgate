@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { BodyMediumText } from '../../../../styles/Typography';
+
 export const CreateGuildModal = styled.div`
   display: flex;
 `;
@@ -29,4 +31,8 @@ export const CreatePrivateGuild = styled(BaseGuildButton)`
 
 export const CreatePublicGuild = styled(BaseGuildButton)`
   /* 버튼별 역할 구별을 위해 분리 */
+`;
+
+export const HeaderText = styled(BodyMediumText)`
+  font-size: 1.8rem;
 `;

@@ -2,7 +2,7 @@ import { TbChevronRight } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
 import { CreateGuildStep } from '../../../../components/guild/types';
-import { BodyMediumText, CaptionText, SmallButtonText } from '../../../../styles/Typography';
+import { CaptionText, SmallButtonText } from '../../../../styles/Typography';
 
 import * as S from './styles';
 
@@ -15,7 +15,7 @@ const CreateGuildModal = ({ setCurrentModal }: CreateGuildModalProps) => {
     <S.CreateGuildModal>
       <Modal name="basic">
         <Modal.Header>
-          <BodyMediumText>이 서버에 대해 더 자세히 말해주세요</BodyMediumText>
+          <S.HeaderText>이 서버에 대해 더 자세히 말해주세요</S.HeaderText>
         </Modal.Header>
         <Modal.Content>
           <CaptionText>
