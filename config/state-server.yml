@@ -2,7 +2,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: state-server
-    ip-address: '{cipher}32c793041fbe1cfd094762a7ea4243c0388aa4c6dc6c03134650eefc9864bb4b'
+    ip-address: '{cipher}3fba508b7887a2dc786fcc422902af658e486690dc8b261d940047c033982d41'
   client:
     service-url:
       defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'

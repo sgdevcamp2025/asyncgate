@@ -1,4 +1,8 @@
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: notification-server
+    ip-address: '{cipher}57bb18dfa1c3c3a5ade9260e2a4257a85fb0d9d426168232e3e21be01df2b511'
   client:
     service-url:
       defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'

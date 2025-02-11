@@ -1,4 +1,8 @@
 eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: guild-server
+    ip-address: '{cipher}a826bbebe95e697cb505c82ead1b6201c2aaea3d5970d2d6929aa1e1f4cf81b6'
   client:
     service-url:
       defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'
