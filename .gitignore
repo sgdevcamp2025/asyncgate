@@ -65,3 +65,6 @@ src/backend/**/generated/
 
 # http env
 src/backend/**/http/http-client.private.env.json
+
+# docker-compose env
+src/backend/.env
