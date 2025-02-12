@@ -24,5 +24,7 @@ enum class FailType(
 
     X_DIRECT_INTERNAL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DirectMessage_5001", "DirectMessage id는 null일 수 없습니다."),
 
+    // DirectMessage
+    DIRECT_MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "DirectMessage_4041", "DirectMessage를 찾을 수 없습니다."),
     ;
 }

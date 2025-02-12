@@ -5,7 +5,7 @@ import com.asyncgate.chat_server.entity.ReadStatusEntity
 
 fun ReadStatus.toEntity(): ReadStatusEntity {
     return ReadStatusEntity(
-        id = id ?: UUIDGenerator.generate(),
+        id = id ?: IdGenerator.generate(),
         userId = userId,
         channelId = channelId,
         lastReadMessageId = lastReadMessageId

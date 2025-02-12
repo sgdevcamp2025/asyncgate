@@ -15,7 +15,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer
 @EnableKafka
 @Configuration
 class KafkaProducerConfig(
-    private val kafkaProperties: KafkaProperties, // KafkaProperties 주입
+    private val kafkaProperties: KafkaProperties,
 ) {
 
     private fun producerConfigurations(): Map<String, Any> {

@@ -12,6 +12,7 @@ class KafkaProperties {
 
     class TopicProperties {
         lateinit var directMessage: String
+        lateinit var directAction: String
         lateinit var readStatus: String
     }
 

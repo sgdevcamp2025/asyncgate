@@ -1,6 +1,6 @@
 package com.asyncgate.chat_server.domain
 
-import com.asyncgate.chat_server.support.utility.UUIDGenerator
+import com.asyncgate.chat_server.support.utility.IdGenerator
 import java.time.LocalDateTime
 
 data class ReadStatus(
@@ -27,7 +27,7 @@ data class ReadStatus(
             channelId: String,
         ): ReadStatus {
             return ReadStatus(
-                id = UUIDGenerator.generate(),
+                id = IdGenerator.generate(),
                 userId = userId,
                 channelId = channelId,
                 lastReadMessageId = null

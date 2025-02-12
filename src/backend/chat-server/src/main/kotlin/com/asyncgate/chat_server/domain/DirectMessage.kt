@@ -7,12 +7,14 @@ class DirectMessage(
 
     val channelId: String,
     val userId: String,
-    val profileImage: String,
+    val type: DirectMessageType,
+
+    val profileImage: String? = null,
 
     val read: Map<Long, Boolean>? = null,
 
-    val name: String,
-    val content: String,
+    val name: String? = null,
+    val content: String? = null,
     val thumbnail: String? = null,
 
     val parentId: String? = null,
@@ -22,6 +24,13 @@ class DirectMessage(
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null,
 )
+
+enum class DirectMessageType {
+    CREATE,
+    EDIT,
+    DELETE,
+    TYPING,
+}
 
 data class DirectMessageCreate(
     val channelId: String,
@@ -39,6 +48,7 @@ data class DirectMessageCreate(
         return DirectMessage(
             channelId = channelId,
             userId = userId,
+            type = DirectMessageType.CREATE,
             profileImage = profileImage,
             name = name,
             content = content,
@@ -46,6 +56,41 @@ data class DirectMessageCreate(
             parentId = parentId,
             parentName = parentName,
             parentContent = parentContent
+        )
+    }
+}
+
+data class DirectMessageEdit(
+    val id: String,
+    val channelId: String,
+    val name: String,
+    val content: String,
+) {
+    fun toDomain(userId: String): DirectMessage {
+        return DirectMessage(
+            channelId = channelId,
+            userId = userId,
+            type = DirectMessageType.EDIT,
+            name = name,
+            content = content
+        )
+    }
+}
+
+data class DirectMessageDelete(
+    val channelId: String,
+    val id: String,
+)
+
+data class DirectMessageTyping(
+    val channelId: String,
+    val content: String,
+) {
+    fun toDomain(userId: String): DirectMessage {
+        return DirectMessage(
+            channelId = channelId,
+            userId = userId,
+            type = DirectMessageType.TYPING
         )
     }
 }

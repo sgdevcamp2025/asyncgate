@@ -1,6 +1,8 @@
 package com.asyncgate.chat_server.controller
 
 import com.asyncgate.chat_server.domain.DirectMessageCreate
+import com.asyncgate.chat_server.domain.DirectMessageEdit
+import com.asyncgate.chat_server.domain.DirectMessageTyping
 import com.asyncgate.chat_server.domain.ReadStatus
 import com.asyncgate.chat_server.filter.JwtTokenProvider
 import com.asyncgate.chat_server.service.DirectService
@@ -26,8 +28,24 @@ class DirectController(
         directService.send(directMessage)
     }
 
-    @MessageMapping("/read-message")
-    fun readDirectMessage(@Payload readStatus: ReadStatus) {
+    @MessageMapping("/read")
+    fun read(@Payload readStatus: ReadStatus) {
         directService.updateReadStatus(readStatus)
+    }
+
+    @MessageMapping("/typing")
+    fun typing(@Payload directTyping: DirectMessageTyping, message: Message<*>) {
+        val jwtToken = StompSecurityContext.extractJwtToken(message)
+        val userId = jwtTokenProvider.extract(jwtToken)
+        val directMessage = directTyping.toDomain(userId)
+        directService.typing(directMessage)
+    }
+
+    @MessageMapping("/edit")
+    fun edit(@Payload directEdit: DirectMessageEdit, message: Message<*>) {
+        val jwtToken = StompSecurityContext.extractJwtToken(message)
+        val userId = jwtTokenProvider.extract(jwtToken)
+        val directMessage = directEdit.toDomain(userId)
+        directService.edit(directMessage)
     }
 }

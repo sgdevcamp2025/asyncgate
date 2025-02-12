@@ -3,19 +3,21 @@ package com.asyncgate.chat_server.support.utility
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.entity.DirectMessageEntity
 
-fun DirectMessage.toEntity(): DirectMessageEntity {
+fun DirectMessage.toEntity(existingEntity: DirectMessageEntity? = null): DirectMessageEntity {
     return DirectMessageEntity(
-        id = id ?: UUIDGenerator.generate(),
+        id = id ?: IdGenerator.generate(),
         channelId = channelId,
         userId = userId,
         profileImage = profileImage,
+        type = type,
         read = read,
         name = name,
         content = content,
         thumbnail = thumbnail,
         parentId = parentId,
         parentName = parentName,
-        parentContent = parentContent
+        parentContent = parentContent,
+        isDeleted = existingEntity?.isDeleted ?: false
     )
 }
 
@@ -33,6 +35,7 @@ fun DirectMessageEntity.toDomain(): DirectMessage {
         parentName = parentName,
         parentContent = parentContent,
         createdAt = createdAt,
-        updatedAt = updatedAt
+        updatedAt = updatedAt,
+        type = type
     )
 }
