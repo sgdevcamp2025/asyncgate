@@ -1,8 +1,5 @@
 package com.asyncgate.chat_server.controller
 
-import com.asyncgate.chat_server.domain.DirectMessageCreate
-import com.asyncgate.chat_server.domain.DirectMessageEdit
-import com.asyncgate.chat_server.domain.DirectMessageTyping
 import com.asyncgate.chat_server.domain.ReadStatus
 import com.asyncgate.chat_server.filter.JwtTokenProvider
 import com.asyncgate.chat_server.service.DirectService
@@ -47,5 +44,13 @@ class DirectController(
         val userId = jwtTokenProvider.extract(jwtToken)
         val directMessage = directEdit.toDomain(userId)
         directService.edit(directMessage)
+    }
+
+    @MessageMapping("/delete")
+    fun sendDeleteMessage(@Payload directDelete: DirectMessageDelete, message: Message<*>) {
+        val jwtToken = StompSecurityContext.extractJwtToken(message)
+        val userId = jwtTokenProvider.extract(jwtToken)
+        val directMessage = directDelete.toDomain(userId)
+        directService.delete(directMessage)
     }
 }

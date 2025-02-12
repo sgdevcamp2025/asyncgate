@@ -26,5 +26,7 @@ enum class FailType(
 
     // DirectMessage
     DIRECT_MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "DirectMessage_4041", "DirectMessage를 찾을 수 없습니다."),
+    DIRECT_MESSAGE_FORBIDDEN(HttpStatus.FORBIDDEN, "DirectMessage_4031", "DirectMessage를 수정 or 삭제할 권한이 없습니다."),
+
     ;
 }

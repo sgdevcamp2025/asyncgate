@@ -8,10 +8,10 @@ import com.asyncgate.chat_server.exception.FailType
 import com.asyncgate.chat_server.kafka.KafkaProperties
 import com.asyncgate.chat_server.repository.DirectMessageRepository
 import com.asyncgate.chat_server.repository.ReadStatusRepository
+import com.asyncgate.chat_server.support.utility.IdGenerator
 import com.asyncgate.chat_server.support.utility.toDomain
 import com.asyncgate.chat_server.support.utility.toEntity
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.bson.types.ObjectId
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -23,6 +23,7 @@ interface DirectService {
     fun updateReadStatus(readStatus: ReadStatus)
     fun typing(directMessage: DirectMessage)
     fun edit(directMessage: DirectMessage)
+    fun delete(directMessage: DirectMessage)
 }
 
 @Service
@@ -52,7 +53,7 @@ class DirectServiceImpl(
         groupId = "\${spring.kafka.consumer.group-id.direct}",
         containerFactory = "directFactory"
     )
-    fun directMessageListener(directMessage: DirectMessage) {
+    fun dmCreateListener(directMessage: DirectMessage) {
         val msg = HashMap<String, String>()
         msg["type"] = DirectMessageType.CREATE.toString().lowercase()
         msg["userId"] = java.lang.String.valueOf(directMessage.userId)
@@ -98,7 +99,7 @@ class DirectServiceImpl(
         groupId = "\${spring.kafka.consumer.group-id.read-status}",
         containerFactory = "readStatusFactory"
     )
-    fun readStatusListener(readStatus: ReadStatus) {
+    fun dmReadListener(readStatus: ReadStatus) {
         // ToDo 캐싱 도입
 
         val msg = mapOf(
@@ -129,11 +130,13 @@ class DirectServiceImpl(
             "Logic error: 이미 Null Check 완료"
         }
 
+        validPermission(directMessage, pastMessage)
+
         val deletedEntity = pastMessage.toEntity().copy(isDeleted = true)
         directMessageRepository.save(deletedEntity.toDomain())
 
         val updatedMessage = pastMessage.toEntity().copy(
-            id = ObjectId.get().toHexString(),
+            id = IdGenerator.generate(),
             name = directMessage.name,
             content = directMessage.content,
             type = DirectMessageType.EDIT
@@ -142,5 +145,66 @@ class DirectServiceImpl(
 
         val key = directMessage.channelId
         kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directAction, key, directMessage)
+    }
+
+    @Transactional
+    override fun delete(directMessage: DirectMessage) {
+        checkNotNull(directMessage.id) {
+            "Logic error: 삭제시에는 id가 필수이므로 존재하지 않을 수 없음"
+        }
+
+        val findMessage = directMessageRepository.findById(directMessage.id)
+
+        checkNotNull(findMessage) {
+            "Logic error: 삭제시에는 전달 받음"
+        }
+
+        validPermission(directMessage, findMessage)
+        directMessageRepository.delete(findMessage)
+
+        val key = directMessage.channelId
+        kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directAction, key, directMessage)
+    }
+
+    private fun validPermission(
+        directMessage: DirectMessage,
+        findMessage: DirectMessage,
+    ) {
+        if (directMessage.userId != findMessage.userId) {
+            throw ChatServerException(FailType.DIRECT_MESSAGE_FORBIDDEN)
+        }
+    }
+
+    @KafkaListener(
+        topics = ["\${spring.kafka.topic.direct-action}"],
+        groupId = "\${spring.kafka.consumer.group-id.direct-action}",
+        containerFactory = "directActionFactory"
+    )
+    fun dmActionListener(directMessage: DirectMessage) {
+        val msg = HashMap<String, String>()
+
+        when (directMessage.type) {
+            DirectMessageType.EDIT -> {
+                msg["type"] = DirectMessageType.EDIT.toString()
+                msg["userId"] = directMessage.userId
+                msg["channelId"] = directMessage.channelId
+                msg["content"] = directMessage.content ?: ""
+            }
+            DirectMessageType.DELETE -> {
+                msg["id"] = directMessage.id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
+                msg["type"] = DirectMessageType.DELETE.toString()
+                msg["userId"] = directMessage.userId
+                msg["channelId"] = directMessage.channelId
+            }
+            DirectMessageType.TYPING -> {
+                msg["type"] = DirectMessageType.TYPING.toString()
+                msg["userId"] = directMessage.userId
+                msg["channelId"] = directMessage.channelId
+            }
+            else -> return
+        }
+
+        val serializable = objectMapper.writeValueAsString(msg)
+        template.convertAndSend("/topic/direct-message/" + directMessage.channelId, serializable)
     }
 }

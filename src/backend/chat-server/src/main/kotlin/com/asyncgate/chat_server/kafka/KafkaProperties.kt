@@ -22,6 +22,7 @@ class KafkaProperties {
         class GroupIdProperties {
             lateinit var direct: String
             lateinit var readStatus: String
+            lateinit var directAction: String
         }
     }
 }

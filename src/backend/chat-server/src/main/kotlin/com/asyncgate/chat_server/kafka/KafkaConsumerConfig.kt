@@ -39,12 +39,17 @@ class KafkaConsumerConfig(
         )
     }
 
+    private fun directActionConsumerConfigurations(): Map<String, Any> {
+        return baseConsumerConfigurations() + mapOf(
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.directAction
+        )
+    }
+
     @Bean
     fun consumerFactoryForDirect(): ConsumerFactory<String, DirectMessage> {
         val deserializer = JsonDeserializer(DirectMessage::class.java).apply {
             this.addTrustedPackages("*")
         }
-
         return DefaultKafkaConsumerFactory(
             directMessageConsumerConfigurations(),
             StringDeserializer(),
@@ -57,9 +62,20 @@ class KafkaConsumerConfig(
         val deserializer = JsonDeserializer(ReadStatus::class.java).apply {
             this.addTrustedPackages("*")
         }
-
         return DefaultKafkaConsumerFactory(
             readStatusConsumerConfigurations(),
+            StringDeserializer(),
+            deserializer
+        )
+    }
+
+    @Bean
+    fun consumerFactoryForDirectAction(): ConsumerFactory<String, DirectMessage> {
+        val deserializer = JsonDeserializer(DirectMessage::class.java).apply {
+            this.addTrustedPackages("*")
+        }
+        return DefaultKafkaConsumerFactory(
+            directActionConsumerConfigurations(),
             StringDeserializer(),
             deserializer
         )
@@ -77,6 +93,14 @@ class KafkaConsumerConfig(
     fun readStatusFactory(): ConcurrentKafkaListenerContainerFactory<String, ReadStatus> {
         return ConcurrentKafkaListenerContainerFactory<String, ReadStatus>().apply {
             this.consumerFactory = consumerFactoryForReadStatus()
+            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        }
+    }
+
+    @Bean
+    fun directActionFactory(): ConcurrentKafkaListenerContainerFactory<String, DirectMessage> {
+        return ConcurrentKafkaListenerContainerFactory<String, DirectMessage>().apply {
+            this.consumerFactory = consumerFactoryForDirectAction()
             this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         }
     }
