@@ -14,6 +14,7 @@ import com.asyncgate.chat_server.support.utility.toEntity
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.support.Acknowledgment
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -53,7 +54,7 @@ class DirectServiceImpl(
         groupId = "\${spring.kafka.consumer.group-id.direct}",
         containerFactory = "directFactory"
     )
-    fun dmCreateListener(directMessage: DirectMessage) {
+    fun dmCreateListener(directMessage: DirectMessage, ack: Acknowledgment) {
         val msg = HashMap<String, String>()
         msg["type"] = DirectMessageType.CREATE.toString().lowercase()
         msg["userId"] = java.lang.String.valueOf(directMessage.userId)
@@ -65,6 +66,12 @@ class DirectServiceImpl(
 
         val serializable = objectMapper.writeValueAsString(msg)
         template.convertAndSend("/topic/direct-message/" + directMessage.channelId, serializable)
+        
+        try {
+            ack.acknowledge()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     @Transactional
@@ -99,7 +106,7 @@ class DirectServiceImpl(
         groupId = "\${spring.kafka.consumer.group-id.read-status}",
         containerFactory = "readStatusFactory"
     )
-    fun dmReadListener(readStatus: ReadStatus) {
+    fun dmReadListener(readStatus: ReadStatus, ack: Acknowledgment) {
         // ToDo 캐싱 도입
 
         val msg = mapOf(
@@ -111,6 +118,12 @@ class DirectServiceImpl(
 
         val serializable = objectMapper.writeValueAsString(msg)
         template.convertAndSend("/topic/read-status/" + readStatus.channelId, serializable)
+
+        try {
+            ack.acknowledge()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun typing(directMessage: DirectMessage) {
@@ -180,7 +193,7 @@ class DirectServiceImpl(
         groupId = "\${spring.kafka.consumer.group-id.direct-action}",
         containerFactory = "directActionFactory"
     )
-    fun dmActionListener(directMessage: DirectMessage) {
+    fun dmActionListener(directMessage: DirectMessage, ack: Acknowledgment) {
         val msg = HashMap<String, String>()
 
         when (directMessage.type) {
@@ -206,5 +219,11 @@ class DirectServiceImpl(
 
         val serializable = objectMapper.writeValueAsString(msg)
         template.convertAndSend("/topic/direct-message/" + directMessage.channelId, serializable)
+
+        try {
+            ack.acknowledge()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
