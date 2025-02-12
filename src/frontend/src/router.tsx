@@ -1,13 +1,13 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 
+import ModalRenderer from './components/common/ModalRender';
 import AuthFullLayout from './components/layout/AuthFullLayout';
 import FullLayout from './components/layout/FullLayout';
 import PublicOnlyLayout from './components/layout/PublicOnlyLayout';
+import FriendsPage from './pages/FriendsPage';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import ModalRenderer from './components/common/ModalRender';
-import FriendsPage from './pages/FriendsPage';
 
 const router = createBrowserRouter([
   {
