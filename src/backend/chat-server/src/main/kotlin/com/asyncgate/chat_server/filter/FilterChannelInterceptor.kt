@@ -1,7 +1,7 @@
 package com.asyncgate.chat_server.filter
 
-import com.asyncgate.chat_server.client.GuildClient
-import org.springframework.beans.factory.annotation.Value
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
@@ -15,12 +15,17 @@ import java.io.Serializable
 @Component
 class FilterChannelInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
-    private val guildClient: GuildClient,
 ) : ChannelInterceptor {
 
+    /*
     @Value("\${spring.kafka.consumer.state-topic}")
     private lateinit var stateTopic: String
+     */
 
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
+    }
+    
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
         val headerAccessor = StompHeaderAccessor.wrap(message)
         if (StompCommand.CONNECT == headerAccessor.command) {
@@ -37,32 +42,13 @@ class FilterChannelInterceptor(
         val accessor = StompHeaderAccessor.wrap(message)
         when (accessor.command) {
             StompCommand.CONNECT -> handleConnect(accessor)
-            StompCommand.DISCONNECT -> handleDisConnect(accessor)
+            StompCommand.DISCONNECT -> handleDisconnect()
             else -> {}
         }
     }
 
-    private fun handleDisConnect(accessor: StompHeaderAccessor) {
-        val currentSessionId = accessor.sessionId
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        val jwtToken = accessor.getFirstNativeHeader("jwt-token")
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
-        val currentUserId = jwtTokenProvider.extract(jwtToken)
-
-        val logOutSessionRequest = LoginSessionRequest(
-            type = LoginType.LOGOUT,
-            sessionId = currentSessionId,
-            userId = currentUserId
-        )
-
-        // ToDo
-        // 상태관리 서버에 로그아웃 전달
-        // 시그널링 서버에 전달
-        val stateRequest = StateRequest(
-            StatusType.DISCONNECT,
-            userId = currentUserId
-        )
-        // directServiceImpl.signaling(stateTopic, stateRequest)
+    private fun handleDisconnect() {
+        log.info("WebSocket 연결 해제")
     }
 
     private fun handleConnect(accessor: StompHeaderAccessor) {
@@ -77,14 +63,14 @@ class FilterChannelInterceptor(
             sessionId = currentSessionId,
             userId = currentUserId
         )
-
-        // ToDo 상태관리 서버에 로그인 전달
-        val guildIds = guildClient.getGuildIds(jwtToken)
+//
+//        // ToDo 상태관리 서버에 로그인 전달
+//        val guildIds = guildClient.getGuildIds(jwtToken)
 
         val stateRequest = StateRequest(
             StatusType.CONNECT,
-            userId = currentUserId,
-            guildIds = guildIds
+            userId = currentUserId
+//            guildIds = guildIds
         )
 
         // 시그널링 서버에 전달
