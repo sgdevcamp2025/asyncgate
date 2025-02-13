@@ -23,7 +23,11 @@ class DirectMessage(
 
     val createdAt: LocalDateTime? = null,
     val updatedAt: LocalDateTime? = null,
-)
+) {
+    override fun toString(): String {
+        return "DirectMessage(id=$id, channelId='$channelId', userId='$userId', type=$type, profileImage=$profileImage, read=$read, name=$name, content=$content, thumbnail=$thumbnail, parentId=$parentId, parentName=$parentName, parentContent=$parentContent, createdAt=$createdAt, updatedAt=$updatedAt)"
+    }
+}
 
 enum class DirectMessageType {
     CREATE,

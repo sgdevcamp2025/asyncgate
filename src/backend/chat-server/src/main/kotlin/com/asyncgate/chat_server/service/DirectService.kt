@@ -12,6 +12,8 @@ import com.asyncgate.chat_server.support.utility.IdGenerator
 import com.asyncgate.chat_server.support.utility.toDomain
 import com.asyncgate.chat_server.support.utility.toEntity
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
@@ -40,13 +42,19 @@ class DirectServiceImpl(
     private val template: SimpMessagingTemplate,
 ) : DirectService {
 
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(DirectServiceImpl::class.java)
+    }
+
     @Transactional
     override fun send(directMessage: DirectMessage) {
+        log.info("📌 DirectServiceImpl.send")
         val key = directMessage.channelId
-        kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directMessage, key, directMessage)
 
         // ToDo 추후 저장 서버 분리
-        directMessageRepository.save(directMessage)
+        val saveDirectMessage = directMessageRepository.save(directMessage)
+
+        kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directMessage, key, saveDirectMessage)
     }
 
     @KafkaListener(
@@ -55,6 +63,8 @@ class DirectServiceImpl(
         containerFactory = "directFactory"
     )
     fun dmCreateListener(directMessage: DirectMessage, ack: Acknowledgment) {
+        log.info("directMessage = $directMessage")
+
         val msg = HashMap<String, String>()
         msg["type"] = DirectMessageType.CREATE.toString().lowercase()
         msg["userId"] = java.lang.String.valueOf(directMessage.userId)
@@ -66,7 +76,7 @@ class DirectServiceImpl(
 
         val serializable = objectMapper.writeValueAsString(msg)
         template.convertAndSend("/topic/direct-message/" + directMessage.channelId, serializable)
-        
+
         try {
             ack.acknowledge()
         } catch (e: Exception) {
