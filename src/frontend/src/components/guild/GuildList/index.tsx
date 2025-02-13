@@ -8,12 +8,18 @@ import { CreateGuildStep } from '../types';
 import * as S from './styles';
 
 const GuildList = () => {
-  const { openModal } = useModalStore();
+  const { openModal, modal } = useModalStore();
   const [currentModal, setCurrentModal] = useState<CreateGuildStep | null>(null);
 
   const handleChangeModal = (modal: React.ReactNode) => {
     openModal('basic', modal);
   };
+
+  useEffect(() => {
+    if (!modal.basic) {
+      setCurrentModal(null);
+    }
+  }, [modal]);
 
   useEffect(() => {
     if (currentModal === null) return;
