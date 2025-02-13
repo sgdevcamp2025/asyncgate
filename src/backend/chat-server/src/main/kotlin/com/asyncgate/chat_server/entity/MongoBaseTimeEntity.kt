@@ -7,10 +7,8 @@ import java.time.LocalDateTime
 abstract class MongoBaseTimeEntity {
 
     @CreatedDate
-    lateinit var createdAt: LocalDateTime
-        private set
+    var createdAt: LocalDateTime? = null
 
     @LastModifiedDate
-    lateinit var updatedAt: LocalDateTime
-        private set
+    var updatedAt: LocalDateTime? = null
 }
