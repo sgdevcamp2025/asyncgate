@@ -1,5 +1,6 @@
 package com.asyncgate.chat_server.service
 
+import com.asyncgate.chat_server.controller.DirectPagingResponse
 import com.asyncgate.chat_server.controller.FileRequest
 import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
@@ -15,6 +16,7 @@ import com.asyncgate.chat_server.support.utility.S3Util
 import com.asyncgate.chat_server.support.utility.toDomain
 import com.asyncgate.chat_server.support.utility.toEntity
 import com.asyncgate.chat_server.support.utility.toFileResponse
+import com.asyncgate.chat_server.support.utility.toPagingResponse
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
@@ -28,6 +30,7 @@ interface DirectService {
     fun edit(directMessage: DirectMessage)
     fun delete(directMessage: DirectMessage)
     fun upload(fileRequest: FileRequest, userId: String): FileUploadResponse
+    fun readPaging(channelId: String, page: Int, size: Int): DirectPagingResponse
 }
 
 @Service
@@ -175,6 +178,11 @@ class DirectServiceImpl(
 
             else -> throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
         }
+    }
+
+    @Transactional(readOnly = true)
+    override fun readPaging(channelId: String, page: Int, size: Int): DirectPagingResponse {
+        return directMessageRepository.findByChannelId(channelId, page, size).toPagingResponse()
     }
 
     private fun uploadMultipartFile(

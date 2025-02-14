@@ -1,11 +1,14 @@
 package com.asyncgate.chat_server.support.utility
 
+import com.asyncgate.chat_server.controller.DirectPagingResponse
+import com.asyncgate.chat_server.controller.DirectSingleResponse
 import com.asyncgate.chat_server.controller.FileRequest
 import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.entity.DirectMessageEntity
 import com.asyncgate.chat_server.exception.ChatServerException
 import com.asyncgate.chat_server.exception.FailType
+import org.springframework.data.domain.Page
 
 fun DirectMessage.toEntity(existingEntity: DirectMessageEntity? = null): DirectMessageEntity {
     return DirectMessageEntity(
@@ -60,4 +63,33 @@ fun DirectMessage.toFileResponse(
         time = domain.createdAt ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
     )
     return response
+}
+
+fun DirectMessage.toSingleResponse(): DirectSingleResponse {
+    return DirectSingleResponse(
+        id = id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
+        channelId = channelId,
+        userId = userId,
+        type = type,
+        profileImage = profileImage,
+        name = name,
+        content = content,
+        thumbnail = thumbnail,
+        parentId = parentId,
+        parentName = parentName,
+        parentContent = parentContent,
+        createdAt = createdAt ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
+    )
+}
+
+fun Page<DirectMessage>.toPagingResponse(): DirectPagingResponse {
+    return DirectPagingResponse(
+        isFirst = isFirst,
+        isLast = isLast,
+        totalCount = totalElements.toInt(),
+        totalPages = totalPages,
+        currentPage = number + 1,
+        pageSize = size,
+        directMessages = content.map { it.toSingleResponse() }
+    )
 }

@@ -10,8 +10,10 @@ import org.springframework.messaging.Message
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
@@ -58,11 +60,22 @@ class DirectController(
     }
 
     @ResponseBody
-    @PostMapping("/file")
+    @PostMapping("/chat/direct/file")
     fun uploadFile(@ModelAttribute fileRequest: FileRequest, servletRequest: HttpServletRequest): SuccessResponse<FileUploadResponse> {
         val jwtToken = CustomSecurityContext.extractJwtTokenForHttp(servletRequest)
         val userId = jwtTokenProvider.extract(jwtToken)
         val response = directService.upload(fileRequest, userId)
         return SuccessResponse.created(response)
+    }
+
+    @ResponseBody
+    @GetMapping("chat/direct")
+    fun readPaging(
+        @RequestParam("page", defaultValue = "0") page: Int,
+        @RequestParam("size", defaultValue = "10") size: Int,
+        @RequestParam("channel-id") channelId: String,
+    ): SuccessResponse<DirectPagingResponse> {
+        val response = directService.readPaging(channelId, page, size)
+        return SuccessResponse.ok(response)
     }
 }
