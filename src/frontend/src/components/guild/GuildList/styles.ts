@@ -1,5 +1,6 @@
 import { BiCompass } from 'react-icons/bi';
 import { BsDiscord } from 'react-icons/bs';
+import { TbPlus } from 'react-icons/tb';
 import styled from 'styled-components';
 
 export const GuildList = styled.nav`
@@ -30,7 +31,7 @@ export const DiscordIcon = styled(BsDiscord)`
   color: ${({ theme }) => theme.colors.white};
 `;
 
-export const SearchCommunityButton = styled.button`
+export const CircleButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,6 +41,17 @@ export const SearchCommunityButton = styled.button`
   border-radius: 100%;
 
   background-color: ${({ theme }) => theme.colors.dark[600]};
+`;
+
+export const AddGuildButton = styled(CircleButton)`
+  /* 버튼별 역할 구별을 위해 분리 */
+`;
+export const SearchCommunityButton = styled(CircleButton)`
+  /* 버튼별 역할 구별을 위해 분리 */
+`;
+
+export const PlusIcon = styled(TbPlus)`
+  color: ${({ theme }) => theme.colors.dark[400]};
 `;
 
 export const CompassIcon = styled(BiCompass)`
