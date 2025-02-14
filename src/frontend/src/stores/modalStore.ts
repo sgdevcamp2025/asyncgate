@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-import { BaseModalData, ModalType } from '../types';
+import { BasePopUpData, BottomSheetType, ModalType } from '../types';
 
 type ModalState = {
-  modal: { [K in ModalType]?: BaseModalData };
+  modal: { [K in ModalType]?: BasePopUpData };
+  bottomSheet?: { [K in BottomSheetType]?: BasePopUpData };
 };
 
 type ModalActions = {
