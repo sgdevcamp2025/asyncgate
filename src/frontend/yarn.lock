@@ -3583,6 +3583,11 @@ ignore@^7.0.3:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-7.0.3.tgz#397ef9315dfe0595671eefe8b633fec6943ab733"
   integrity sha512-bAH5jbK/F3T3Jls4I0SO1hmPR0dKU0a7+SY6n1yzRtG54FLO8d6w/nxLFX2Nb7dBu6cCWXPaAME6cYqFUMmuCA==
 
+immer@^10.1.1:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-10.1.1.tgz#206f344ea372d8ea176891545ee53ccc062db7bc"
+  integrity sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==
+
 import-fresh@^3.2.1, import-fresh@^3.3.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.1.tgz#9cecb56503c0ada1f2741dbbd6546e4b13b57ccf"
@@ -5007,6 +5012,11 @@ react-dom@^18.3.1:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
+
+react-icons@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.4.0.tgz#443000f6e5123ee1b21ea8c0a716f6e7797f7416"
+  integrity sha512-7eltJxgVt7X64oHh6wSWNwwbKTCtMfK35hcjvJS0yxEAhPM8oUKdS3+kqaW1vicIltw+kR2unHaa12S9pPALoQ==
 
 react-is@^16.13.1:
   version "16.13.1"
