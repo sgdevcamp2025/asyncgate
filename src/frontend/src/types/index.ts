@@ -4,7 +4,7 @@ export interface YearMonthDay {
   day: string;
 }
 
-export const PopupTypes = {
+export const ModalTypes = {
   modal: {
     basic: 'basic',
     withFooter: 'withFooter',
@@ -16,8 +16,8 @@ export const PopupTypes = {
 
 type ValueOf<T> = T[keyof T];
 
-export type ModalType = ValueOf<typeof PopupTypes.modal>;
-export type BottomSheetType = ValueOf<typeof PopupTypes.bottomSheet>;
+export type ModalType = ValueOf<typeof ModalTypes.modal>;
+export type BottomSheetType = ValueOf<typeof ModalTypes.bottomSheet>;
 export type PopupType = ModalType | BottomSheetType;
 
 export interface BasePopUpData {
