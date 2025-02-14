@@ -23,7 +23,7 @@ class WebSocketDisconnectController(
     companion object {
         private val log: Logger = LoggerFactory.getLogger(WebSocketDisconnectController::class.java)
     }
-    
+
     @MessageMapping("/disconnect")
     fun handleDisconnect(message: Message<*>) {
         val accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor::class.java)
