@@ -3,15 +3,14 @@ import { LuCamera } from 'react-icons/lu';
 import { TbPlus } from 'react-icons/tb';
 
 import Modal from '../../../../components/common/Modal';
-import { CreateGuildStep } from '../../../../components/guild/types';
 import { BodyMediumText, CaptionText, ChipText, SmallText } from '../../../../styles/Typography';
 
 import * as S from './styles';
 
 interface CustomizeGuildModalProps {
-  setCurrentModal: React.Dispatch<React.SetStateAction<CreateGuildStep | null>>;
+  onPrev: () => void;
 }
-const CustomizeGuildModal = ({ setCurrentModal }: CustomizeGuildModalProps) => {
+const CustomizeGuildModal = ({ onPrev }: CustomizeGuildModalProps) => {
   const [inputValue, setInputValue] = useState('');
 
   const handleInputChange = (value: string) => {
@@ -50,7 +49,7 @@ const CustomizeGuildModal = ({ setCurrentModal }: CustomizeGuildModalProps) => {
           </S.ContentContainer>
         </Modal.Content>
         <S.FooterContainer>
-          <S.BackButton onClick={() => setCurrentModal('initial')}>뒤로가기</S.BackButton>
+          <S.BackButton onClick={onPrev}>뒤로가기</S.BackButton>
           <S.CreateButton>만들기</S.CreateButton>
         </S.FooterContainer>
       </Modal>
