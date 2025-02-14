@@ -1,5 +1,6 @@
 package com.asyncgate.chat_server.kafka
 
+import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.domain.ReadStatus
 import org.apache.kafka.clients.producer.ProducerConfig
@@ -41,6 +42,15 @@ class KafkaProducerConfig(
     }
 
     fun producerFactoryForReadStatus(): ProducerFactory<String, ReadStatus> {
+        return DefaultKafkaProducerFactory(producerConfigurations())
+    }
+
+    @Bean
+    fun kafkaTemplateForUpload(): KafkaTemplate<String, FileUploadResponse> {
+        return KafkaTemplate(producerFactoryForUpload())
+    }
+
+    fun producerFactoryForUpload(): ProducerFactory<String, FileUploadResponse> {
         return DefaultKafkaProducerFactory(producerConfigurations())
     }
 }

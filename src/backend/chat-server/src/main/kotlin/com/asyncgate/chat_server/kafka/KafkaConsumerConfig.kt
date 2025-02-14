@@ -1,5 +1,6 @@
 package com.asyncgate.chat_server.kafka
 
+import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.domain.ReadStatus
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -27,21 +28,12 @@ class KafkaConsumerConfig(
         )
     }
 
+    /**
+     * ✅ 1. Direct Message 관련 설정
+     */
     private fun directMessageConsumerConfigurations(): Map<String, Any> {
         return baseConsumerConfigurations() + mapOf(
-            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.direct
-        )
-    }
-
-    private fun readStatusConsumerConfigurations(): Map<String, Any> {
-        return baseConsumerConfigurations() + mapOf(
-            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.readStatus
-        )
-    }
-
-    private fun directActionConsumerConfigurations(): Map<String, Any> {
-        return baseConsumerConfigurations() + mapOf(
-            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.directAction
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.directMessage
         )
     }
 
@@ -58,6 +50,23 @@ class KafkaConsumerConfig(
     }
 
     @Bean
+    fun directFactory(): ConcurrentKafkaListenerContainerFactory<String, DirectMessage> {
+        return ConcurrentKafkaListenerContainerFactory<String, DirectMessage>().apply {
+            this.consumerFactory = consumerFactoryForDirect()
+            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        }
+    }
+
+    /**
+     * ✅ 2. Read Status 관련 설정
+     */
+    private fun readStatusConsumerConfigurations(): Map<String, Any> {
+        return baseConsumerConfigurations() + mapOf(
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.readStatus
+        )
+    }
+
+    @Bean
     fun consumerFactoryForReadStatus(): ConsumerFactory<String, ReadStatus> {
         val deserializer = JsonDeserializer(ReadStatus::class.java).apply {
             this.addTrustedPackages("*")
@@ -66,6 +75,23 @@ class KafkaConsumerConfig(
             readStatusConsumerConfigurations(),
             StringDeserializer(),
             deserializer
+        )
+    }
+
+    @Bean
+    fun readStatusFactory(): ConcurrentKafkaListenerContainerFactory<String, ReadStatus> {
+        return ConcurrentKafkaListenerContainerFactory<String, ReadStatus>().apply {
+            this.consumerFactory = consumerFactoryForReadStatus()
+            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        }
+    }
+
+    /**
+     * ✅ 3. Direct Action 관련 설정 (DirectMessage와 같은 타입 사용)
+     */
+    private fun directActionConsumerConfigurations(): Map<String, Any> {
+        return baseConsumerConfigurations() + mapOf(
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.directAction
         )
     }
 
@@ -82,25 +108,38 @@ class KafkaConsumerConfig(
     }
 
     @Bean
-    fun directFactory(): ConcurrentKafkaListenerContainerFactory<String, DirectMessage> {
-        return ConcurrentKafkaListenerContainerFactory<String, DirectMessage>().apply {
-            this.consumerFactory = consumerFactoryForDirect()
-            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
-        }
-    }
-
-    @Bean
-    fun readStatusFactory(): ConcurrentKafkaListenerContainerFactory<String, ReadStatus> {
-        return ConcurrentKafkaListenerContainerFactory<String, ReadStatus>().apply {
-            this.consumerFactory = consumerFactoryForReadStatus()
-            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
-        }
-    }
-
-    @Bean
     fun directActionFactory(): ConcurrentKafkaListenerContainerFactory<String, DirectMessage> {
         return ConcurrentKafkaListenerContainerFactory<String, DirectMessage>().apply {
             this.consumerFactory = consumerFactoryForDirectAction()
+            this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        }
+    }
+
+    /**
+     * ✅ 4. File Upload 관련 설정
+     */
+    private fun uploadConsumerConfigurations(): Map<String, Any> {
+        return baseConsumerConfigurations() + mapOf(
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.directUpload
+        )
+    }
+
+    @Bean
+    fun consumerFactoryForUpload(): ConsumerFactory<String, FileUploadResponse> {
+        val deserializer = JsonDeserializer(FileUploadResponse::class.java).apply {
+            this.addTrustedPackages("*")
+        }
+        return DefaultKafkaConsumerFactory(
+            uploadConsumerConfigurations(),
+            StringDeserializer(),
+            deserializer
+        )
+    }
+
+    @Bean
+    fun uploadFactory(): ConcurrentKafkaListenerContainerFactory<String, FileUploadResponse> {
+        return ConcurrentKafkaListenerContainerFactory<String, FileUploadResponse>().apply {
+            this.consumerFactory = consumerFactoryForUpload()
             this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         }
     }

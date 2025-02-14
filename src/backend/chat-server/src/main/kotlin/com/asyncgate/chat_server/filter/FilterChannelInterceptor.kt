@@ -25,7 +25,7 @@ class FilterChannelInterceptor(
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
     }
-    
+
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
         val headerAccessor = StompHeaderAccessor.wrap(message)
         if (StompCommand.CONNECT == headerAccessor.command) {

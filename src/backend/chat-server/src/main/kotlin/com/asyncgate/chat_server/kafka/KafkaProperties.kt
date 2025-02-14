@@ -14,15 +14,17 @@ class KafkaProperties {
         lateinit var directMessage: String
         lateinit var directAction: String
         lateinit var readStatus: String
+        lateinit var directUpload: String
     }
 
     class ConsumerProperties {
         lateinit var groupId: GroupIdProperties
 
         class GroupIdProperties {
-            lateinit var direct: String
-            lateinit var readStatus: String
+            lateinit var directMessage: String
             lateinit var directAction: String
+            lateinit var readStatus: String
+            lateinit var directUpload: String
         }
     }
 }
