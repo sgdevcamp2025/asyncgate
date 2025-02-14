@@ -6,7 +6,6 @@ export interface YearMonthDay {
 
 type ValueOf<T> = T[keyof T];
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ModalTypes = {
   BASIC: 'basic',
   WITH_FOOTER: 'withFooter',
