@@ -11,9 +11,6 @@ eureka:
 spring:
   application:
     name: user-server
-  redis:
-    host: host.docker.internal
-    port: 6379
 
 
 management:

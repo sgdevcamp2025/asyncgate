@@ -1,10 +1,6 @@
 eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: apigateway-server
-    ip-address: '{cipher}ad7e7c606de6ff14b6e802cacba30955e1235ced73568df69e5410dc63204ce1'
   client:
     service-url:
-      defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'
+      defaultZone: localhost:8761/eureka
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
