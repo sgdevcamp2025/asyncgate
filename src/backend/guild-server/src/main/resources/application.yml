@@ -18,6 +18,11 @@ management:
       exposure:
         include: refresh, health, beans, refresh
 
-logging:
-  level:
-    com.asyncgate.guild_server: DEBUG
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true

@@ -12,6 +12,12 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: swagger-ui
+          uri: http://localhost:8000
+          predicates:
+            - Path=/swagger-ui/**, /v3/api-docs/**, /swagger-resources/**, /webjars/**
+          filters:
+            - RemoveRequestHeader=Cookie
         - id: guild-server
           uri: lb://GUILD-SERVER
           predicates:
@@ -68,3 +74,22 @@ management:
     web:
       exposure:
         include: refresh, health, beans, info
+
+springdoc:
+  api-docs:
+    enabled: true
+    version: openapi_3_0
+  swagger-ui:
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+    operationsSorter: method
+  group-configs:
+    - group: consolidated
+      paths-to-match:
+        - "/users/**"
+        - "/guilds/**"
+      packages-to-scan: com.asyncgate
+
+  override-with-gateway-path: true
+  show-actuator: true
+
