@@ -1,6 +1,5 @@
 package com.asyncgate.guild_server.dto.response;
 
-import com.asyncgate.guild_server.domain.ChannelType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
@@ -63,7 +62,7 @@ public record GuildInfoResponse(
             String topic,
 
             @Schema(description = "채널 타입 (VOICE 또는 TEXT)", example = "TEXT")
-            ChannelType channelType,
+            String channelType,
 
             @Schema(description = "비공개 여부", example = "false")
             boolean isPrivate

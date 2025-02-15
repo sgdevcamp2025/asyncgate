@@ -65,9 +65,8 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0") {
-		exclude group: "io.swagger.core.v3", module: "swagger-annotations"
-	}
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+
 }
 
 dependencyManagement {

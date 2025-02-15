@@ -14,6 +14,9 @@ public record ChannelResponse(
         @Schema(description = "채널 이름", example = "General Chat")
         String name,
 
+        @Schema(description = "채널 설명", example = "This Channel is ~ ")
+        String topic,
+
         @Schema(description = "비공개 여부", example = "false")
         boolean isPrivate,
 
@@ -30,6 +33,7 @@ public record ChannelResponse(
         return new ChannelResponse(
                 channel.getId(),
                 channel.getName(),
+                channel.getTopic(),
                 channel.isPrivate(),
                 channel.getGuildId(),
                 channel.getCategoryId(),
