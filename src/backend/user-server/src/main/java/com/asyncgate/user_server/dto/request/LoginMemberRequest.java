@@ -1,11 +1,13 @@
 package com.asyncgate.user_server.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
 public record LoginMemberRequest(
 
+        @Schema(description = "이메일", example = "email@gmail.com")
         @JsonProperty("email")
         @NotBlank(message = "이메일을 입력해주세요.")
         @Pattern(
@@ -14,6 +16,7 @@ public record LoginMemberRequest(
         )
         String email,
 
+        @Schema(description = "비밀번호", example = "Password1!")
         @JsonProperty("password")
         @NotBlank(message = "비밀번호를 입력해주세요.")
         @Pattern(

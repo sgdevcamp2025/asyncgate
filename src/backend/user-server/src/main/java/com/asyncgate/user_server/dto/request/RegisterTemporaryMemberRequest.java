@@ -1,5 +1,6 @@
 package com.asyncgate.user_server.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Pattern;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 
 public record RegisterTemporaryMemberRequest(
 
+        @Schema(description = "이메일", example = "email@gmail.com")
         @JsonProperty("email")
         @NotBlank(message = "이메일을 입력해주세요.")
         @Pattern(
@@ -16,6 +18,7 @@ public record RegisterTemporaryMemberRequest(
         )
         String email,
 
+        @Schema(description = "비밀번호", example = "Password1!")
         @JsonProperty("password")
         @NotBlank(message = "비밀번호를 입력해주세요.")
         @Pattern(
@@ -24,13 +27,16 @@ public record RegisterTemporaryMemberRequest(
         )
         String password,
 
+        @Schema(description = "이름", example = "홍길동")
         @JsonProperty("name")
         String name,
 
+        @Schema(description = "닉네임", example = "asyncgate")
         @JsonProperty("nickname")
         @NotBlank(message = "닉네임을 입력해주세요.")
         String nickname,
 
+        @Schema(description = "생년월일", example = "2000-01-01")
         @JsonProperty("birth")
         @NotBlank(message = "생년월일을 입력해주세요.")
         LocalDate birth
