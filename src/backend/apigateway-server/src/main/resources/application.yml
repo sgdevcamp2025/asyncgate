@@ -1,5 +1,6 @@
 server:
   port: 8000
+  max-http-request-header-size: 16KB
 
 eureka:
   client:
@@ -26,6 +27,9 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/guilds/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+            - RemoveRequestHeader=Forwarded
+            - RemoveRequestHeader=X-Forwarded-For
+            - RemoveRequestHeader=X-Forwarded-Proto
 
         - id: user-server
           uri: lb://USER-SERVER
