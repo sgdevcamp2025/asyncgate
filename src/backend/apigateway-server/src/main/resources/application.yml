@@ -86,15 +86,11 @@ springdoc:
     version: openapi_3_0
   swagger-ui:
     config-url: /v3/api-docs/swagger-config
-    url: /v3/api-docs
     operationsSorter: method
-  group-configs:
-    - group: consolidated
-      paths-to-match:
-        - "/users/**"
-        - "/guilds/**"
-      packages-to-scan: com.asyncgate
-
+    urls:
+      - name: Guild Service
+        url: /guilds/v3/api-docs
+      - name: User Service
+        url: /users/v3/api-docs
   override-with-gateway-path: true
   show-actuator: true
-
