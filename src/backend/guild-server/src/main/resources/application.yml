@@ -23,6 +23,8 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+    config-url: /guilds/v3/api-docs/swagger-config
+    url: /guilds/v3/api-docs
     operationsSorter: method
     tagsSorter: alpha
     tryItOutEnabled: true
