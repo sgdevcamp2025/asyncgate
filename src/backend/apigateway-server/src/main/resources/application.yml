@@ -15,51 +15,51 @@ spring:
         - id: guild-server
           uri: lb://GUILD-SERVER
           predicates:
-            - Path=/guild/**
+            - Path=/guilds/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
-        # ToDo 유저 서버 개발 후 활성화
-        - id: user-server
-          uri: lb://USER-SERVER
-          predicates:
-            - Path=/user/sign-up
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
 
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/sign-in
+            - Path=/users/sign-up
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/users/sign-in
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
         
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/validation/authentication-code
+            - Path=/users/validation/authentication-code
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
 
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/validation/email
+            - Path=/users/validation/email
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
           
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/**
+            - Path=/users/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
             
 
