@@ -1,5 +1,5 @@
 //
-//  SignButton.swift
+//  SignButtonStyle.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// MARK: Button - 회원가입/로그인 시 사용되는 버튼 컴포넌트
-struct SignButton: View {
+// MARK: ButtonStyle - 회원가입/로그인 시 사용되는 버튼 스타일
+struct SignButtonStyle: View {
     var text: String
     
     var body: some View {

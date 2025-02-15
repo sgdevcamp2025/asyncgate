@@ -1,5 +1,5 @@
 //
-//  GuildButton.swift
+//  SecondaryActionButtonStyle.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GuildButton: View {
+struct SecondaryActionButtonStyle: View {
     var imageName: String
     var color: Color
     
@@ -23,3 +23,4 @@ struct GuildButton: View {
         }
     }
 }
+

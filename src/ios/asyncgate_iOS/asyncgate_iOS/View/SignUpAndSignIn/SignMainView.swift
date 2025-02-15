@@ -35,12 +35,12 @@ struct SignMainView: View {
                 
                 VStack {
                     NavigationLink(destination: SignUpView()) {
-                        UsingButton(text: "가입하기", backgroundColor: Color.colorWhite, textColor: Color.colorBlack, size: 15)
+                                        UsingButtonStyle(text: "가입하기", backgroundColor: Color.colorWhite, textColor: Color.colorBlack, size: 15)
                     }
                     .padding(.bottom, 13)
                     
                     NavigationLink(destination: SignInView()) {
-                        UsingButton(text: "로그인", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 15)
+                                        UsingButtonStyle(text: "로그인", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 15)
                     }
                 }
                 .padding(.bottom, 25)

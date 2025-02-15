@@ -43,7 +43,7 @@ struct SignUpEmailView: View {
                 .padding(.bottom, 30)
             
             NavigationLink(destination: SignUpNickNameView(signUpModel: signUpModel)) {
-                SignButton(text: "다음")
+                SignButtonStyle(text: "다음")
             }
             
             Spacer()

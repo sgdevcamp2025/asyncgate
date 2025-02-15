@@ -29,7 +29,7 @@ struct VerifyAuthenticationView: View {
             Button {
                 authViewModel.verifyAuthenticationCode(email: signUpModel.email, authenticationCode: authenticationCode)
             } label: {
-                SignButton(text: "확인")
+                SignButtonStyle(text: "확인")
             }
             
             if authViewModel.isAuthenticated {

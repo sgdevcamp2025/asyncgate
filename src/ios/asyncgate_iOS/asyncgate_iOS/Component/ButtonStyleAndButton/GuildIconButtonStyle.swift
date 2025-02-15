@@ -1,5 +1,5 @@
 //
-//  GuildIconButton.swift
+//  GuildIconButtonStyle.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/10/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GuildIconButton: View {
+struct GuildIconButtonStyle: View {
     var imageName: String
     var width: CGFloat
     var height: CGFloat

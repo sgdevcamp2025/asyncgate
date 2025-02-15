@@ -18,9 +18,9 @@ struct GuildMainView: View {
                     ScrollView {
                         VStack(alignment: .center) {
                             Button {
-                                //
+                            
                             } label: {
-                                GuildButton(imageName: "message.fill", color: Color.colorGrayImage)
+                                SecondaryActionButtonStyle(imageName: "message.fill", color: Color.colorGrayImage)
                             }
                             
                             Rectangle()
@@ -29,11 +29,14 @@ struct GuildMainView: View {
                             
                             // FIXME: 길드 채널 목록 보여주기
                             
+                            NavigationLink(destination: ChattingView()) {
+                                GuildButtonStyle(text: "아")
+                            }
                             
                             Button {
                                 isShowCreateGuildView.toggle()
                             } label: {
-                                GuildButton(imageName: "plus", color: Color.colorGreen)
+                                SecondaryActionButtonStyle(imageName: "plus", color: Color.colorGreen)
                             }
                         }
                     }
@@ -64,19 +67,19 @@ struct GuildMainView: View {
                                 Button {
                                     
                                 } label: {
-                                    GuildSerachButton
+                                    GuildSerachButtonStyle
                                 }
                                 
                                 Button {
                                     
                                 } label: {
-                                    GuildIconButton(imageName: "person.2.badge.plus.fill", width: 20, height: 14)
+                                    GuildIconButtonStyle(imageName: "person.2.badge.plus.fill", width: 20, height: 14)
                                 }
                                 
                                 Button {
                                     
                                 } label: {
-                                    GuildIconButton(imageName: "calendar", width: 16, height: 16)
+                                    GuildIconButtonStyle(imageName: "calendar", width: 16, height: 16)
                                 }
                             }
                             
@@ -113,7 +116,7 @@ struct GuildMainView: View {
     
     
     // ButtonStyle - '검색하기' 버튼 스타일
-    var GuildSerachButton: some View {
+    var GuildSerachButtonStyle: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .frame(height: 32)
@@ -173,6 +176,7 @@ struct GuildMainView: View {
             }
         }
     }
+    
 }
 
 #Preview {
