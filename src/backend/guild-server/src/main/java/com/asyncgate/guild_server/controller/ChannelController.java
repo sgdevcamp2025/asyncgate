@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.controller;
 
+import com.asyncgate.guild_server.controller.docs.ChannelControllerDocs;
 import com.asyncgate.guild_server.dto.request.ChannelCreateRequest;
 import com.asyncgate.guild_server.dto.request.ChannelUpdateRequest;
 import com.asyncgate.guild_server.dto.response.ChannelResponse;
@@ -12,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/channel")
-public class ChannelController {
+public class ChannelController implements ChannelControllerDocs {
 
     private final ChannelService channelService;
 
+    @Override
     @PostMapping
     public SuccessResponse<ChannelResponse> create(
             final @AuthenticationPrincipal String userId,
@@ -25,6 +27,7 @@ public class ChannelController {
         return SuccessResponse.created(response);
     }
 
+    @Override
     @DeleteMapping("/{guildId}/{categoryId}/{channelId}")
     public SuccessResponse<String> delete(
             final @AuthenticationPrincipal String userId,
@@ -41,6 +44,7 @@ public class ChannelController {
         );
     }
 
+    @Override
     @PatchMapping("/{guildId}/{categoryId}/{channelId}")
     public SuccessResponse<ChannelResponse> update(
             final @AuthenticationPrincipal String userId,

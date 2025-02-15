@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.controller;
 
+import com.asyncgate.guild_server.controller.docs.GuildControllerDocs;
 import com.asyncgate.guild_server.dto.request.GuildRequest;
 import com.asyncgate.guild_server.dto.response.GuildInfoResponse;
 import com.asyncgate.guild_server.dto.response.GuildResponse;
@@ -13,10 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/guilds")
-public class GuildController {
+public class GuildController implements GuildControllerDocs {
 
     private final GuildService guildService;
 
+    @Override
     @PostMapping
     public SuccessResponse<GuildResponse> create(
             final @AuthenticationPrincipal String userId,
@@ -26,6 +28,7 @@ public class GuildController {
         return SuccessResponse.created(response);
     }
 
+    @Override
     @GetMapping
     public SuccessResponse<GuildResponses> getMyGuilds(
             final @AuthenticationPrincipal String userId
@@ -34,6 +37,7 @@ public class GuildController {
         return SuccessResponse.created(guildResponses);
     }
 
+    @Override
     @GetMapping("/rand")
     public SuccessResponse<GuildResponses> getRand(
             final @AuthenticationPrincipal String userId,
@@ -43,8 +47,9 @@ public class GuildController {
         return SuccessResponse.created(guildResponses);
     }
 
+    @Override
     @GetMapping("/{guildId}")
-    public SuccessResponse<GuildInfoResponse> raedOne(
+    public SuccessResponse<GuildInfoResponse> readOne(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId
     ) {
@@ -52,6 +57,7 @@ public class GuildController {
         return SuccessResponse.ok(response);
     }
 
+    @Override
     @PatchMapping("/{guildId}")
     public SuccessResponse<GuildResponse> update(
             final @AuthenticationPrincipal String userId,
@@ -62,6 +68,7 @@ public class GuildController {
         return SuccessResponse.ok(response);
     }
 
+    @Override
     @DeleteMapping("/{guildId}")
     public SuccessResponse<String> delete(
             final @AuthenticationPrincipal String userId,
