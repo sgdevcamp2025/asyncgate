@@ -74,7 +74,7 @@ struct CreateGuildLastView: View {
             Button {
                 // FIXME: 수정 예정
             } label: {
-                UsingButton(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
+                UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
             }
             
             Spacer()

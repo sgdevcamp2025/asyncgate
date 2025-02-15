@@ -1,5 +1,5 @@
 //
-//  UsingButton.swift
+//  UsingButtonStyle.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// MARK: Button - 반복적으로 사용되는 버튼 스타일 컴포넌트
-struct UsingButton: View {
+// MARK: ButtonStyle - 반복적으로 사용되는 버튼 스타일
+struct UsingButtonStyle: View {
     var text: String
     var backgroundColor: Color
     var textColor: Color

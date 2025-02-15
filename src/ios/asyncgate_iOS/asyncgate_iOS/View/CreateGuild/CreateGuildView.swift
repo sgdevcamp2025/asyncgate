@@ -25,7 +25,7 @@ struct CreateGuildView: View {
                     .padding(.bottom, 30)
                 
                 NavigationLink(destination: ChoiceGuildTypeView()) {
-                    CreateGuildButton(imageName: "keyGrab",text: "직접 만들기", imageWidth: 48, imageHeight: 44)
+                    CreateGuildButtonStyle(imageName: "keyGrab",text: "직접 만들기", imageWidth: 48, imageHeight: 44)
                 }
                 
                 Spacer()
@@ -39,7 +39,7 @@ struct CreateGuildView: View {
                     Button {
                         // FIXME: 수정 예정
                     } label: {
-                        UsingButton(text: "서버 참가하기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
+                                        UsingButtonStyle(text: "서버 참가하기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
                     }
                 }
                 

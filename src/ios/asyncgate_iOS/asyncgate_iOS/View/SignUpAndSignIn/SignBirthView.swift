@@ -25,7 +25,7 @@ struct SignBirthView: View {
             Button {
                 signUpModel.registerUser()
             } label: {
-                SignButton(text: "계정 만들기")
+                SignButtonStyle(text: "계정 만들기")
             }
             
             if let errorMessage = signUpModel.errorMessage {

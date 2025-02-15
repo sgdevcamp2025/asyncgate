@@ -23,11 +23,11 @@ struct ChoiceGuildTypeView: View {
                 .padding(.bottom, 30)
             
             NavigationLink(destination: CreateGuildLastView()) {
-                CreateGuildButton(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
+                CreateGuildButtonStyle(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
             }
             
             NavigationLink(destination: CreateGuildLastView()) {
-                CreateGuildButton(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
+                CreateGuildButtonStyle(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
             }
             
             Spacer()

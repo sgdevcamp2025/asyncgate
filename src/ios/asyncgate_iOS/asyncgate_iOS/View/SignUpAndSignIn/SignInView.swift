@@ -34,7 +34,7 @@ struct SignInView: View {
             Button {
                 signInModel.logInInUser()
             } label: {
-                SignButton(text: "로그인")
+                SignButtonStyle(text: "로그인")
             }
             
             Spacer()

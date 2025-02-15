@@ -31,7 +31,7 @@ struct SignUpNameAndPasswordView: View {
                 .padding(.bottom, 30)
             
             NavigationLink(destination: SignBirthView(signUpModel: signUpModel)) {
-                SignButton(text: "다음")
+                SignButtonStyle(text: "다음")
             }
             
             Spacer()

@@ -22,7 +22,7 @@ struct SignUpNickNameView: View {
                 .padding(.bottom, 30)
             
             NavigationLink(destination: SignUpNameAndPasswordView(signUpModel: signUpModel)) {
-                SignButton(text: "다음")
+                SignButtonStyle(text: "다음")
             }
             
             Spacer()
