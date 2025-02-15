@@ -1,5 +1,6 @@
 package com.asyncgate.user_server.controller;
 
+import com.asyncgate.user_server.controller.docs.MemberControllerDocs;
 import com.asyncgate.user_server.dto.request.*;
 import com.asyncgate.user_server.dto.response.CheckEmailDuplicateResponse;
 import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
@@ -12,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-public class MemberCommandController {
+public class MemberCommandController implements MemberControllerDocs {
 
     private final RegisterTemporaryMemberUseCase RegisterTemporaryMemberUseCase;
     private final LoginMemberUsecase LoginMemberUsecase;
@@ -26,6 +27,7 @@ public class MemberCommandController {
     /**
      * 1.0 임시 회원가입
      */
+    @Override
     @PostMapping("/sign-up")
     public SuccessResponse<?> signUp(
             @RequestBody final RegisterTemporaryMemberRequest request
@@ -37,6 +39,7 @@ public class MemberCommandController {
     /**
      * 1.1 로그인
      */
+    @Override
     @PostMapping("/sign-in")
     public SuccessResponse<DefaultJsonWebTokenResponse> signIn(
             @RequestBody final LoginMemberRequest request
@@ -49,6 +52,7 @@ public class MemberCommandController {
     /**
      * 1.2 인증번호 인증
      */
+    @Override
     @PostMapping("/validation/authentication-code")
     public SuccessResponse<?> validateAuthentication(
             @RequestBody final ValidateAuthenticationCodeRequest request
@@ -60,6 +64,7 @@ public class MemberCommandController {
     /**
      * 1.3 이메일 중복 검사
      */
+    @Override
     @PostMapping("/validation/email")
     public SuccessResponse<CheckEmailDuplicateResponse> checkEmailDuplicate(
             @RequestParam("email") final String email
@@ -72,6 +77,7 @@ public class MemberCommandController {
     /**
      * 1.4 디바이스 토큰 업데이트
      */
+    @Override
     @PatchMapping("/device-token")
     public SuccessResponse<?> updateDeviceToken(
             @MemberID final String userId,
@@ -84,6 +90,7 @@ public class MemberCommandController {
     /**
      * 1.5 유저 정보 수정
      */
+    @Override
     @PatchMapping("/info")
     public SuccessResponse<?> updateUserInfo(
             @MemberID final String userId,
@@ -98,6 +105,7 @@ public class MemberCommandController {
     /**
      * 1.6 회원탈퇴
      */
+    @Override
     @DeleteMapping("/auth")
     public SuccessResponse<?> deleteUser(@MemberID final String userId) {
         DeleteUserUseCase.execute(userId);
