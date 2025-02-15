@@ -13,12 +13,22 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: swagger-ui
-          uri: http://localhost:8000
+        - id: guild-server-swagger
+          uri: lb://GUILD-SERVER
           predicates:
-            - Path=/swagger-ui/**, /v3/api-docs/**, /swagger-resources/**, /webjars/**
+            - Path=/guilds/swagger-ui/**, /guilds/v3/api-docs/**, /guilds/swagger-resources/**, /guilds/webjars/**
           filters:
             - RemoveRequestHeader=Cookie
+            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
+
+        - id: user-server-swagger
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/users/swagger-ui/**, /users/v3/api-docs/**, /users/swagger-resources/**, /users/webjars/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
         - id: guild-server
           uri: lb://GUILD-SERVER
           predicates:
@@ -79,18 +89,3 @@ management:
     web:
       exposure:
         include: refresh, health, beans, info
-
-springdoc:
-  api-docs:
-    enabled: true
-    version: openapi_3_0
-  swagger-ui:
-    config-url: /v3/api-docs/swagger-config
-    operationsSorter: method
-    urls:
-      - name: Guild Service
-        url: /guilds/v3/api-docs
-      - name: User Service
-        url: /users/v3/api-docs
-  override-with-gateway-path: true
-  show-actuator: true
