@@ -1,5 +1,6 @@
 server:
   port: 8000
+  max-http-request-header-size: 64KB
 
 eureka:
   client:
@@ -12,12 +13,22 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: swagger-ui
-          uri: http://localhost:8000
+        - id: guild-server-swagger
+          uri: lb://GUILD-SERVER
           predicates:
-            - Path=/swagger-ui/**, /v3/api-docs/**, /swagger-resources/**, /webjars/**
+            - Path=/guilds/swagger-ui/**, /guilds/v3/api-docs/**, /guilds/swagger-resources/**, /guilds/webjars/**
           filters:
             - RemoveRequestHeader=Cookie
+            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
+
+        - id: user-server-swagger
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/users/swagger-ui/**, /users/v3/api-docs/**, /users/swagger-resources/**, /users/webjars/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
         - id: guild-server
           uri: lb://GUILD-SERVER
           predicates:
@@ -26,6 +37,10 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/guilds/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
+            - RemoveRequestHeader=X-Forwarded-For
+            - RemoveRequestHeader=X-Forwarded-Proto
+            - RemoveRequestHeader=X-Forwarded-Port
+            - RemoveRequestHeader=Forwarded
 
         - id: user-server
           uri: lb://USER-SERVER
@@ -74,22 +89,3 @@ management:
     web:
       exposure:
         include: refresh, health, beans, info
-
-springdoc:
-  api-docs:
-    enabled: true
-    version: openapi_3_0
-  swagger-ui:
-    config-url: /v3/api-docs/swagger-config
-    url: /v3/api-docs
-    operationsSorter: method
-  group-configs:
-    - group: consolidated
-      paths-to-match:
-        - "/users/**"
-        - "/guilds/**"
-      packages-to-scan: com.asyncgate
-
-  override-with-gateway-path: true
-  show-actuator: true
-
