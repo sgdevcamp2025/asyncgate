@@ -26,7 +26,13 @@ public class JwtFilter extends OncePerRequestFilter {
             final @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
+
+        System.out.println("==== JwtFilter Start ====");
+        System.out.println("requestURI = " + requestURI);
+        System.out.println("Thread: " + Thread.currentThread().getName());
+
         if (isPublicUri(requestURI)) {
+            System.out.println("public!");
             filterChain.doFilter(request, response);
             return;
         }

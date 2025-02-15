@@ -1,5 +1,6 @@
 server:
   port: 8000
+  max-http-request-header-size: 64KB
 
 eureka:
   client:
@@ -12,54 +13,74 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: guild-server-swagger
+          uri: lb://GUILD-SERVER
+          predicates:
+            - Path=/guilds/swagger-ui/**, /guilds/v3/api-docs/**, /guilds/swagger-resources/**, /guilds/webjars/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
+
+        - id: user-server-swagger
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/users/swagger-ui/**, /users/v3/api-docs/**, /users/swagger-resources/**, /users/webjars/**
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
         - id: guild-server
           uri: lb://GUILD-SERVER
           predicates:
-            - Path=/guild/**
+            - Path=/guilds/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
-        # ToDo 유저 서버 개발 후 활성화
-        - id: user-server
-          uri: lb://USER-SERVER
-          predicates:
-            - Path=/user/sign-up
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RemoveRequestHeader=X-Forwarded-For
+            - RemoveRequestHeader=X-Forwarded-Proto
+            - RemoveRequestHeader=X-Forwarded-Port
+            - RemoveRequestHeader=Forwarded
 
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/sign-in
+            - Path=/users/sign-up
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
+
+        - id: user-server
+          uri: lb://USER-SERVER
+          predicates:
+            - Path=/users/sign-in
+          filters:
+            - RemoveRequestHeader=Cookie
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
         
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/validation/authentication-code
+            - Path=/users/validation/authentication-code
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
 
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/validation/email
+            - Path=/users/validation/email
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
           
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
-            - Path=/user/**
+            - Path=/users/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
             
 
@@ -67,4 +88,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans
+        include: refresh, health, beans, info

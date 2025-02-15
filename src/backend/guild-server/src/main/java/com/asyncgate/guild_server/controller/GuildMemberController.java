@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.controller;
 
+import com.asyncgate.guild_server.controller.docs.GuildMemberControllerDocs;
 import com.asyncgate.guild_server.service.GuildMemberService;
 import com.asyncgate.guild_server.support.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,13 +10,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/guilds")
 @RequiredArgsConstructor
-public class GuildMemberController {
+public class GuildMemberController implements GuildMemberControllerDocs {
 
     private final GuildMemberService guildMemberService;
 
     /**
      * 초대 생성 (길드 관리자가 특정 유저에게 초대 전송)
      */
+    @Override
     @PostMapping("/{guildId}/invitations")
     public SuccessResponse<String> sendInvitation(
             final @AuthenticationPrincipal String adminUserId,
@@ -29,6 +31,8 @@ public class GuildMemberController {
     /**
      *  초대 수락 (사용자가 초대를 수락하여 길드 가입)
      */
+
+    @Override
     @PatchMapping("/{guildId}/invitations/accept")
     public SuccessResponse<String> acceptInvitation(
             final @AuthenticationPrincipal String userId,
@@ -41,6 +45,8 @@ public class GuildMemberController {
     /**
      *  초대 거절 (사용자가 초대를 거절)
      */
+
+    @Override
     @PatchMapping("/{guildId}/invitations/reject")
     public SuccessResponse<String> rejectInvitation(
             final @AuthenticationPrincipal String userId,
@@ -53,6 +59,8 @@ public class GuildMemberController {
     /**
      *  초대 취소 (길드 관리자가 초대를 취소)
      */
+
+    @Override
     @DeleteMapping("/{guildId}/invitations")
     public SuccessResponse<String> cancelInvitation(
             final @AuthenticationPrincipal String adminUserId,

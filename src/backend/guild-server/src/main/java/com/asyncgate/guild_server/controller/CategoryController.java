@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.controller;
 
+import com.asyncgate.guild_server.controller.docs.CategoryControllerDocs;
 import com.asyncgate.guild_server.dto.request.CategoryRequest;
 import com.asyncgate.guild_server.dto.response.CategoryResponse;
 import com.asyncgate.guild_server.service.CategoryService;
@@ -11,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/category")
-public class CategoryController {
+public class CategoryController implements CategoryControllerDocs {
 
     private final CategoryService categoryService;
 
+    @Override
     @PostMapping
     public SuccessResponse<CategoryResponse> create(
             final @AuthenticationPrincipal String userId,
@@ -24,6 +26,7 @@ public class CategoryController {
         return SuccessResponse.created(response);
     }
 
+    @Override
     @DeleteMapping("/{guildId}/{categoryId}")
     public SuccessResponse<String> delete(
             final @AuthenticationPrincipal String userId,

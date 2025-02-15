@@ -1,25 +1,43 @@
 package com.asyncgate.guild_server.dto.response;
 
 import com.asyncgate.guild_server.domain.Channel;
-import com.asyncgate.guild_server.domain.ChannelType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
+@Schema(description = "채널 응답 DTO")
 public record ChannelResponse(
-        String channelId, String guildId, String categoryId, String name,
-        String topic, ChannelType channelType, boolean isPrivate
-) {
+        @Schema(description = "채널 ID", example = "channel-56789")
+        String channelId,
 
+        @Schema(description = "채널 이름", example = "General Chat")
+        String name,
+
+        @Schema(description = "채널 설명", example = "This Channel is ~ ")
+        String topic,
+
+        @Schema(description = "비공개 여부", example = "false")
+        boolean isPrivate,
+
+        @Schema(description = "길드 ID", example = "guild-12345")
+        String guildId,
+
+        @Schema(description = "카테고리 ID", example = "category-67890")
+        String categoryId,
+
+        @Schema(description = "채널 타입 (VOICE 또는 TEXT)", example = "TEXT")
+        String channelType
+) {
     public static ChannelResponse from(final Channel channel) {
-        return ChannelResponse.builder()
-                .channelId(channel.getId())
-                .guildId(channel.getGuildId())
-                .categoryId(channel.getCategoryId())
-                .name(channel.getName())
-                .topic(channel.getTopic())
-                .channelType(channel.getChannelType())
-                .isPrivate(channel.isPrivate())
-                .build();
+        return new ChannelResponse(
+                channel.getId(),
+                channel.getName(),
+                channel.getTopic(),
+                channel.isPrivate(),
+                channel.getGuildId(),
+                channel.getCategoryId(),
+                channel.getChannelType().name()
+        );
     }
 }
