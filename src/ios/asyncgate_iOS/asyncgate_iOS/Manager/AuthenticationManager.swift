@@ -29,6 +29,7 @@ func signUp(email: String, password: String, name: String, nickname: String, bir
                 } else {
                     completion(false, signUpResponse.message)
                 }
+                
             case .failure(let error):
                 completion(false, error.localizedDescription)
             }
