@@ -22,6 +22,7 @@ class AccessTokenViewModel: ObservableObject {
         do {
             try keychain.set(token, key: "accessToken")
             self.accessToken = token
+            
         } catch {
             print("Keychain save error: \(error)")
         }
@@ -33,6 +34,7 @@ class AccessTokenViewModel: ObservableObject {
             if let token = try keychain.getString("accessToken") {
                 self.accessToken = token
             }
+            
         } catch {
             print("Keychain load error: \(error)")
             self.accessToken = nil
@@ -44,6 +46,7 @@ class AccessTokenViewModel: ObservableObject {
         do {
             try keychain.remove("accessToken")
             self.accessToken = nil
+            
         } catch {
             print("Keychain remove error: \(error)")
         }

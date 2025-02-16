@@ -33,6 +33,7 @@ class AuthenticationViewModel: ObservableObject {
                         print("이메일 인증 실패: \(authenticationResponse.message ?? "에러")")
                         self.isAuthenticated = false
                     }
+                    
                 case .failure(let error):
                     print("이메일 인증 에러 발생: \(error.localizedDescription)")
                     self.isAuthenticated = false

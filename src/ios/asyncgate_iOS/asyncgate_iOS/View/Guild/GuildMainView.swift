@@ -30,7 +30,7 @@ struct GuildMainView: View {
                             // FIXME: 길드 채널 목록 보여주기
                             
                             NavigationLink(destination: ChattingView()) {
-                                GuildButtonStyle(text: "아")
+                                GuildButtonStyle(text: "우리길드이름은뭘까요")
                             }
                             
                             Button {
@@ -52,14 +52,7 @@ struct GuildMainView: View {
                             Button {
                                 
                             } label: {
-                                Text("중꺽마")
-                                    .foregroundStyle(Color.colorWhite)
-                                    .font(Font.pretendardBold(size: 17))
-                                
-                                Image(systemName: "chevron.right")
-                                    .resizable()
-                                    .frame(width: 5, height: 6)
-                                    .foregroundColor(Color(hex: "#9597A3"))
+                                channelNameButtonStyle(channelName: "중꺽마")
                             }
                             .padding(.top, 20)
                             
