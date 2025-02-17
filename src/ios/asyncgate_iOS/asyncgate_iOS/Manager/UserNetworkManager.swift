@@ -11,7 +11,7 @@ class UserNetworkManager {
     static let shared = UserNetworkManager()
     
     // MARK: 함수 - 회원가입 함수
-    func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SignUpResponse, SignUpErrorResponse>) -> Void) {
+    func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SignUpResponse, SignErrorResponse>) -> Void) {
         let url = "hostUrl/sign-up"
         
         let parameters: [String: Any] = [
@@ -32,20 +32,20 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignUpErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 오류 발생", requestId: "")))
+                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
     // MARK: 함수 - 이메일 중복 확인 함수
-    func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, SignUpErrorResponse>) -> Void) {
+    func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, SignErrorResponse>) -> Void) {
         let url = "hostUrl/sign-up"
         
         let parameters: [String: Any] = [
@@ -62,20 +62,20 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignUpErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
+                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
     // MARK: 함수 - 이메일 인증 함수
-    func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SignUpResponse, SignUpErrorResponse>) -> Void) {
+    func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SignUpResponse, SignErrorResponse>) -> Void) {
         let url = "hostUrl/sign-up"
         
         let parameters: [String: Any] = [
@@ -93,21 +93,21 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignUpErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
+                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
     // MARK: 함수 - 로그인 함수
-    func signIn(email: String, passWord: String, completion: @escaping (Result<SignUpResponse, SignUpErrorResponse>) -> Void) {
-        let url = "hostUrl/sign-up"
+    func signIn(email: String, passWord: String, completion: @escaping (Result<SignInResponse, SignErrorResponse>) -> Void) {
+        let url = "hostUrl/sign-in"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -116,24 +116,23 @@ class UserNetworkManager {
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
-            .responseDecodable(of: SignUpResponse.self) { response in
+            .responseDecodable(of: SignInResponse.self) { response in
                 switch response.result {
-                case .success(let signUpResponse):
-                    completion(.success(signUpResponse))
+                case .success(let signInResponse):
+                    completion(.success(signInResponse))
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignUpErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
+                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignUpErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
-    
 }

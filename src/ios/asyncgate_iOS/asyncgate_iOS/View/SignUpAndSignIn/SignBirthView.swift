@@ -23,7 +23,7 @@ struct SignBirthView: View {
                 .padding(.bottom, 30)
             
             Button {
-                signUpViewModel.signupUser()
+                signUpViewModel.signUpUser()
             } label: {
                 SignButtonStyle(text: "계정 만들기")
             }

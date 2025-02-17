@@ -22,7 +22,7 @@ struct SignUpEmailView: View {
                     .font(Font.pretendardSemiBold(size: 16))
                     .foregroundColor(Color.colorDart400)
                 
-                TextField("이메일", text: $signUpViewModel.email)
+                TextField("", text: $signUpViewModel.email)
                     .keyboardType(.emailAddress)
                     .foregroundColor(.white)
                     .padding()
@@ -39,9 +39,9 @@ struct SignUpEmailView: View {
                         , alignment: .leading
                     )
                 
-                if signUpViewModel.isNotEmailDuplicated == false {
-                    Text("중복된 이메일입니다.")
-                        .font(Font.pretendardBold(size: 12))
+                if let meesage = signUpViewModel.emailRequestMessage {
+                    Text(meesage)
+                        .font(Font.pretendardBold(size: 13))
                         .foregroundColor(Color.colorRed)
                 }
             }

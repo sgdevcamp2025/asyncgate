@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 로그인 화면
 struct SignInView: View {
-    @StateObject var signInModel = SignInViewModel()
+    @StateObject var signInViewModel = SignInViewModel()
     
     var body: some View {
         VStack {
@@ -22,20 +22,22 @@ struct SignInView: View {
                 .font(Font.pretendardBold(size: 16))
                 .foregroundColor(Color.colorWhite)
             
-            SignTextField(stepCaption: "계정 정보", placeholder: "이메일 또는 전화번호", text: $signInModel.email)
+            SignTextField(stepCaption: "계정 정보", placeholder: "이메일 또는 전화번호", text: $signInViewModel.email)
                 .padding(.top, 24)
                 .padding(.bottom, 10)
             
             
-            PasswordField(password: $signInModel.password)
+            PasswordField(password: $signInViewModel.password)
             
                 .padding(.bottom, 30)
             
-            Button {
-                signInModel.logInInUser()
-            } label: {
-                SignButtonStyle(text: "로그인")
-            }
+            SignButtonStyle(text: "로그인")
+                .onTapGesture {
+                    signInViewModel.signInUser()
+                }
+                .navigationDestination(isPresented: $signInViewModel.isSignInSuccess) {
+                    ContentView()
+                }
             
             Spacer()
         }
