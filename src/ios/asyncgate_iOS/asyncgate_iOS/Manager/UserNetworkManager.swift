@@ -7,12 +7,42 @@
 
 import Alamofire
 
+// MARK: Manager - User Service API 매니저
 class UserNetworkManager {
     static let shared = UserNetworkManager()
     
-    // MARK: 함수 - 회원가입 함수
-    func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SignUpResponse, SignErrorResponse>) -> Void) {
-        let url = "hostUrl/sign-up"
+    // ViewModel 호출 - 엑세스 토큰 사용
+    private let accessTokenViewModel = AccessTokenViewModel()
+    
+    // MARK: 함수 - 서버 연동 확인
+    func health(completion: @escaping (Result<HealthResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/health"
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodable(of: HealthResponse.self) { response in
+                switch response.result {
+                case .success(let healthResponse):
+                    completion(.success(healthResponse))
+                    
+                case .failure(_):
+                    if let data = response.data {
+                        do {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                            completion(.failure(errorResponse))
+                        } catch {
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 오류 발생", requestId: "")))
+                        }
+                    } else {
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 서버 응답 없음", requestId: "")))
+                    }
+                }
+            }
+    }
+    
+    // MARK: 함수 - 회원가입
+    func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/sign-up"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -24,7 +54,7 @@ class UserNetworkManager {
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
-            .responseDecodable(of: SignUpResponse.self) { response in
+            .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
@@ -32,21 +62,21 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 회원가입 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
-    // MARK: 함수 - 이메일 중복 확인 함수
-    func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, SignErrorResponse>) -> Void) {
-        let url = "hostUrl/sign-up"
+    // MARK: 함수 - 이메일 중복 확인
+    func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, ErrorResponse>) -> Void) {
+        let url = "/users/validation/email"
         
         let parameters: [String: Any] = [
             "email": email
@@ -62,21 +92,21 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
-    // MARK: 함수 - 이메일 인증 함수
-    func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SignUpResponse, SignErrorResponse>) -> Void) {
-        let url = "hostUrl/sign-up"
+    // MARK: 함수 - 이메일 인증
+    func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/sign-up"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -85,7 +115,7 @@ class UserNetworkManager {
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
-            .responseDecodable(of: SignUpResponse.self) { response in
+            .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
@@ -93,21 +123,21 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
     }
     
-    // MARK: 함수 - 로그인 함수
-    func signIn(email: String, passWord: String, completion: @escaping (Result<SignInResponse, SignErrorResponse>) -> Void) {
-        let url = "hostUrl/sign-in"
+    // MARK: 함수 - 로그인
+    func signIn(email: String, passWord: String, completion: @escaping (Result<SignInResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/sign-in"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -124,15 +154,88 @@ class UserNetworkManager {
                 case .failure(_):
                     if let data = response.data {
                         do {
-                            let errorResponse = try JSONDecoder().decode(SignErrorResponse.self, from: data)
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 오류 발생", requestId: "")))
                         }
                     } else {
-                        completion(.failure(SignErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 서버 응답 없음", requestId: "")))
                     }
                 }
             }
+    }
+    
+    // MARK: 함수 - 유저 정보 수정
+    func updateUserInfo(name: String, nickName: String, profileImage: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/info"
+        
+        let parameters: [String: Any] = [
+            "name": name,
+            "nickname": nickName,
+            "profile_image": profileImage,
+        ]
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            var headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
+                    switch response.result {
+                    case .success(let signUpResponse):
+                        completion(.success(signUpResponse))
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저정보 수정 - 오류 발생", requestId: "")))
+                            }
+                        } else {
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저정보 수정 - 서버 응답 없음", requestId: "")))
+                        }
+                    }
+                }
+        }
+        else {
+            print("UserNetworkManager - updateUserInfo - accessToken 없음!")
+        }
+    }
+    
+    // MARK: 함수 - 회원 탈퇴
+    func deleteUser(completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "hostUrl/users/auth"
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            var headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request(url, method: .delete, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
+                    switch response.result {
+                    case .success(let successResponse):
+                        completion(.success(successResponse))
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원 탈퇴 - 오류 발생", requestId: "")))
+                            }
+                        } else {
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원 탈퇴 - 서버 응답 없음", requestId: "")))
+                        }
+                    }
+                }
+        }
     }
 }
