@@ -7,26 +7,38 @@
 
 import SwiftUI
 
-// MARK: 이메일, 패스워드로 로그인용 Class
+// MARK: ViewModel - 로그인
 class SignInViewModel: ObservableObject {
+    // Request 변수
     @Published var email: String = ""
     @Published var password: String = ""
     
+    // Response 변수
+    @Published var errorMessage: String?
+    
+    @Published var isSignInSuccess: Bool = false
+    
+    // ViewModel - 엑세스 토큰 저장
     private let auth = AccessTokenViewModel()
     
-//    // MARK: 함수 - 로그인 시도
-//    func logInInUser() {
-//        print("로그인 시도: \(email), \(password)")
-//        
-//        signIn(email: email, password: password) { token in
-//            if let token = token {
-//                print("로그인 성공, token: \(token)")
-//                
-//                self.auth.saveToken(token)
-//                
-//            } else {
-//                print("로그인 실패")
-//            }
-//        }
-//    }
+    // MARK: 함수 - 로그인 시도
+    func signInUser() {
+        print("로그인 시도: \(email), \(password)")
+        
+        UserNetworkManager.shared.signIn(email: email, passWord: password) { result in
+            switch result {
+            case .success(let signInResponse):
+                DispatchQueue.main.async {
+                    self.auth.saveToken(signInResponse.result.accessToken)
+                    self.isSignInSuccess = true
+                }
+                
+            case .failure(let signInErrorResponse):
+                DispatchQueue.main.async {
+                    self.errorMessage = signInErrorResponse.error
+                }
+                print("SignInViewModel - signInUser() error : \(signInErrorResponse)")
+            }
+        }
+    }
 }

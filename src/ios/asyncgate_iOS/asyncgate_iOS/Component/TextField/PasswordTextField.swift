@@ -24,7 +24,7 @@ struct PasswordField: View {
                             if password.isEmpty {
                                 Text("비밀번호")
                                     .foregroundStyle(Color.colorDart400)
-                                    .padding(.leading, 15)
+                                    .padding(.leading, 2)
                             }
                         }
                         , alignment: .leading

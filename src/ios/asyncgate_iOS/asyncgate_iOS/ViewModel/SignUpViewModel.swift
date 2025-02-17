@@ -24,20 +24,20 @@ class SignUpViewModel: ObservableObject {
     
     
     // MARK: 함수 - 회원가입 진행
-    func signupUser() {
+    func signUpUser() {
         UserNetworkManager.shared.signUp(email: email, passWord: passWord, name: name, nickName: nickName, birth: birth) { result in
             switch result {
-                case .success(let signUpResponse):
+                case .success(_):
                 DispatchQueue.main.async {
                     self.isVerificationCodeRequested = true
                     self.emailRequestMessage = "인증번호가 발송되었습니다."
                 }
                 
-            case .failure(let SignUpErrorResponse):
+            case .failure(let signUpErrorResponse):
                 DispatchQueue.main.async {
-                    self.errorMessage = SignUpErrorResponse.error
+                    self.errorMessage = signUpErrorResponse.error
                 }
-                print("SignUpViewModel - signupUser() error : \(SignUpErrorResponse)")
+                print("SignUpViewModel - signUpUser() error : \(signUpErrorResponse)")
             }
         }
     }
@@ -54,6 +54,7 @@ class SignUpViewModel: ObservableObject {
                 } else {
                     DispatchQueue.main.async {
                         self.isNotEmailDuplicated = true
+                        self.emailRequestMessage = "중복된 이메일입니다."
                     }
                 }
                
