@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// FIXME: UI만 만들어놓음
 struct ChattingView: View {
     
     var body: some View {

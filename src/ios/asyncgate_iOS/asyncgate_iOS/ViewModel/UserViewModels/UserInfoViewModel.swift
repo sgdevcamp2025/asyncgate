@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: ViewModel - 유저 정보 수정
+// MARK: ViewModel - 유저 정보
 class UserInfoViewModel: ObservableObject {
     // Request 변수
     @Published var name: String = ""

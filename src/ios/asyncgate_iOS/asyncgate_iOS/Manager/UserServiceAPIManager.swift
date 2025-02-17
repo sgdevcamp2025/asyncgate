@@ -1,5 +1,5 @@
 //
-//  UserNetworkManager.swift
+//  UserServiceAPIManager.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/5/25.
@@ -12,7 +12,7 @@ class UserNetworkManager {
     static let shared = UserNetworkManager()
     
     // ViewModel 호출 - 엑세스 토큰 사용
-    private let accessTokenViewModel = AccessTokenViewModel()
+    private let accessTokenViewModel = AccessTokenViewModel.shared
     
     // MARK: 함수 - 서버 연동 확인
     func health(completion: @escaping (Result<HealthResponse, ErrorResponse>) -> Void) {
@@ -179,8 +179,10 @@ class UserNetworkManager {
         if let accessToken = accessTokenViewModel.accessToken {
             var headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)"
+                // FIXME: 이미지 전달 가능한 값으로 수정
             ]
             
+            // FIXME: 추후 이미지 전달 가능하게 수정
             AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .validate()
                 .responseDecodable(of: SuccessEmptyResultResponse.self) { response in

@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-
 // MARK: View - 디스코드 초기 접속 View
 struct SignMainView: View {
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {

@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+// FIXME: UI만 만들어놓음
 struct NotificationView: View {
+    
     var body: some View {
         VStack {
             HStack {

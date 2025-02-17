@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: 길드 타입 설정 View
+// MARK: View - 길드 타입 설정
 struct ChoiceGuildTypeView: View {
     var body: some View {
         VStack {
