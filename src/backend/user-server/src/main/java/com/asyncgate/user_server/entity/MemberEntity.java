@@ -26,7 +26,7 @@ public class MemberEntity extends BaseEntity {
     /* -------------------------------------------- */
     /* Security Column ---------------------------- */
     /* -------------------------------------------- */
-    @Column(name = "email", length = 100, nullable = false, updatable = false)
+    @Column(name = "email", length = 100, nullable = false, updatable = false, unique = true)
     private String email;
 
     @Column(name = "password", length = 320, nullable = false)
