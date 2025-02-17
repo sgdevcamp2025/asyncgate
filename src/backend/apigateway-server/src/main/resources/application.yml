@@ -83,9 +83,6 @@ spring:
             - RewritePath=/users/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
-      default-filters:
-        - name: GlobalCorsFilter
-
 management:
   endpoints:
     web:
