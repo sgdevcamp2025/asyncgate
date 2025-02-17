@@ -49,5 +49,4 @@ struct SignBirthView: View {
         dateFormatter.dateFormat = "yyyy.MM.dd"
         return dateFormatter.string(from: date)
     }
-    
 }

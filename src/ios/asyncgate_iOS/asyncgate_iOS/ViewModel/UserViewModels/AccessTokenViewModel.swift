@@ -8,13 +8,15 @@
 import KeychainAccess
 import SwiftUI
 
-// MARK: ViewModel - 로그인 후 엑세스 토큰 KeyChain에 저장
+// MARK: ViewModel - 엑세스 토큰을 KeyChain으로 관리
 class AccessTokenViewModel: ObservableObject {
+    static let shared = AccessTokenViewModel()
+    
     let keychain = Keychain(service: "kk.asyncgate-iOS")
     
     @Published var accessToken: String?
 
-    init() {
+    private init() {
         loadToken()
     }
     

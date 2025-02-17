@@ -9,11 +9,11 @@ import SwiftUI
 
 // MARK: ViewModel - 이메일 인증
 class AuthEmailCodeViewModel: ObservableObject {
-    // Request 변수들 - 이메일, 인증코드
+    // Request 변수 - 이메일, 인증코드
     @Published var email: String = ""
     @Published var authenticationCode: String = ""
     
-    // Response 변수들 - 에러 메시지(String?), 인증코드 일치여부 확인(Bool)
+    // Response 변수 - 에러 메시지(String?), 인증코드 일치여부 확인(Bool)
     @Published var errorMessage: String?
     @Published var isEmailCodeAuthenticated: Bool = false
     

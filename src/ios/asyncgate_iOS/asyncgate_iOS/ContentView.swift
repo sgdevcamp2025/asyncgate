@@ -22,7 +22,7 @@ struct ContentView: View {
               Text("알림")
             }
             
-          Text("The Last Tab")
+            UserInfoView()
             .tabItem {
               Image(systemName: "person.fill")
               Text("나")

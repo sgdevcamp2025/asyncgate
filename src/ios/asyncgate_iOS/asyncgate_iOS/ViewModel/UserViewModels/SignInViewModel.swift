@@ -19,7 +19,7 @@ class SignInViewModel: ObservableObject {
     @Published var isSignInSuccess: Bool = false
     
     // ViewModel - 엑세스 토큰
-    private let auth = AccessTokenViewModel()
+    private let auth = AccessTokenViewModel.shared
     
     // MARK: 함수 - 로그인 시도
     func signInUser() {
