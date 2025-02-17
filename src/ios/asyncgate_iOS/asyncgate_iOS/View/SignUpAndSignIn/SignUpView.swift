@@ -9,11 +9,11 @@ import SwiftUI
 
 // MARK: View - 회원가입 Main View
 struct SignUpView: View {
-    @StateObject var signUpModel = SignUpViewModel()
+    @StateObject var signUpViewModel = SignUpViewModel()
     
     var body: some View {
         NavigationStack {
-            SignUpEmailView(signUpModel: signUpModel)
+            SignUpEmailView(signUpViewModel: signUpViewModel)
                 .applyBackground()
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(leading: BackButton(color: .white))

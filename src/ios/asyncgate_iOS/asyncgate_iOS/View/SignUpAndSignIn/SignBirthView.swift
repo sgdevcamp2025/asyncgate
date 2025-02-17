@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 - 생년월일 설정 View
 struct SignBirthView: View {
-    @ObservedObject var signUpModel: SignUpViewModel
+    @ObservedObject var signUpViewModel: SignUpViewModel
     var date: Date = Date()
     
     var body: some View {
@@ -18,17 +18,17 @@ struct SignBirthView: View {
                 .font(Font.pretendardBold(size: 28))
                 .foregroundColor(Color.colorWhite)
             
-            SignTextField(stepCaption: "생년월일", placeholder: formattedDate, text: $signUpModel.birth)
+            SignTextField(stepCaption: "생년월일", placeholder: formattedDate, text: $signUpViewModel.birth)
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             
             Button {
-                signUpModel.registerUser()
+                signUpViewModel.signupUser()
             } label: {
                 SignButtonStyle(text: "계정 만들기")
             }
             
-            if let errorMessage = signUpModel.errorMessage {
+            if let errorMessage = signUpViewModel.errorMessage {
                 Text(errorMessage)
                     .foregroundColor(.red)
             }
@@ -39,8 +39,8 @@ struct SignBirthView: View {
         .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
-        .navigationDestination(isPresented: $signUpModel.isSignUpSuccessful) {
-            VerifyAuthenticationView(signUpModel: signUpModel)
+        .navigationDestination(isPresented: $signUpViewModel.isVerificationCodeRequested) {
+            AuthEmailCodeView(signUpViewModel: signUpViewModel)
                 }
     }
     

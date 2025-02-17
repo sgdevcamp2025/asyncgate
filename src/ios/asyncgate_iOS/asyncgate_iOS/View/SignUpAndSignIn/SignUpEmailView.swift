@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 회원가입 - 이메일 설정 View
 struct SignUpEmailView: View {
-    @ObservedObject var signUpModel: SignUpViewModel
+    @ObservedObject var signUpViewModel: SignUpViewModel
     
     var body: some View {
         VStack {
@@ -22,7 +22,7 @@ struct SignUpEmailView: View {
                     .font(Font.pretendardSemiBold(size: 16))
                     .foregroundColor(Color.colorDart400)
                 
-                TextField("이메일", text: $signUpModel.email)
+                TextField("이메일", text: $signUpViewModel.email)
                     .keyboardType(.emailAddress)
                     .foregroundColor(.white)
                     .padding()
@@ -30,7 +30,7 @@ struct SignUpEmailView: View {
                     .cornerRadius(4)
                     .overlay(
                         Group {
-                            if signUpModel.email.isEmpty {
+                            if signUpViewModel.email.isEmpty {
                                 Text("이메일")
                                     .foregroundStyle(Color.colorDart400)
                                     .padding(.leading, 10)
@@ -38,13 +38,23 @@ struct SignUpEmailView: View {
                         }
                         , alignment: .leading
                     )
+                
+                if signUpViewModel.isNotEmailDuplicated == false {
+                    Text("중복된 이메일입니다.")
+                        .font(Font.pretendardBold(size: 12))
+                        .foregroundColor(Color.colorRed)
+                }
             }
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             
-            NavigationLink(destination: SignUpNickNameView(signUpModel: signUpModel)) {
-                SignButtonStyle(text: "다음")
-            }
+            SignButtonStyle(text: "다음")
+                .onTapGesture {
+                    signUpViewModel.isDuplicatedEmail()
+                }
+                .navigationDestination(isPresented: $signUpViewModel.isNotEmailDuplicated) {
+                    SignUpNickNameView(signUpViewModel: signUpViewModel)
+                }
             
             Spacer()
         }
