@@ -18,13 +18,11 @@ class SignInViewModel: ObservableObject {
     
     @Published var isSignInSuccess: Bool = false
     
-    // ViewModel - 엑세스 토큰 저장
+    // ViewModel - 엑세스 토큰
     private let auth = AccessTokenViewModel()
     
     // MARK: 함수 - 로그인 시도
     func signInUser() {
-        print("로그인 시도: \(email), \(password)")
-        
         UserNetworkManager.shared.signIn(email: email, passWord: password) { result in
             switch result {
             case .success(let signInResponse):
