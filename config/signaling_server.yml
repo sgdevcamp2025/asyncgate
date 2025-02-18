@@ -1,11 +1,7 @@
 eureka:
-  instance:
-    prefer-ip-address: true
-    hostname: signaling-server
-    ip-address: '{cipher}52869f07a616cbb703d228900597bd2d08f7138667e0e839737cf0cad27e2913'
   client:
     service-url:
-      defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'
+      defaultZone: '{cipher}f6f2540926f3eeb0616a6900c67fd7e4a078eaa04dc2190562d086e3ab91692b67be5104497d9f2c96fcc14f58950a35'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
 
