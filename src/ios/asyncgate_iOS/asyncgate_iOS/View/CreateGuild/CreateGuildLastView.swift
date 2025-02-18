@@ -58,9 +58,19 @@ struct CreateGuildLastView: View {
             .padding(.bottom, 30)
             
             Button {
-                // FIXME: 수정 예정
+                createGuildViewModel.createGuild()
             } label: {
                 UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
+            }
+            .navigationDestination(isPresented: $createGuildViewModel.isCreatedGuild) {
+                ContentView()
+            }
+            
+            if let errorMessage = createGuildViewModel.errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .font(Font.pretendardRegular(size: 14))
+                    .padding(.top, 10)
             }
             
             Spacer()

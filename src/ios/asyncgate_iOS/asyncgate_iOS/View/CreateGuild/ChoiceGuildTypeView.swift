@@ -36,6 +36,9 @@ struct ChoiceGuildTypeView: View {
             NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel)) {
                 CreateGuildButtonStyle(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                createGuildViewModel.isPrivate = true
+            })
             
             Spacer()
         }
