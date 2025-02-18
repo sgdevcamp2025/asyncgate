@@ -39,7 +39,7 @@ struct CreateGuildView: View {
                     Button {
                         // FIXME: 수정 예정
                     } label: {
-                                        UsingButtonStyle(text: "서버 참가하기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
+                        UsingButtonStyle(text: "서버 참가하기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
                     }
                 }
                 

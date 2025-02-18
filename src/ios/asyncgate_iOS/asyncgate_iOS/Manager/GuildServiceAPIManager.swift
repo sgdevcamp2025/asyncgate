@@ -53,5 +53,40 @@ class GuildServiceAPIManager {
             }
         }
     }
+    
+    
+    // MARK: Guild API
+    
+    // MARK: 함수 - 내 길드 목록 조회
+    func loadMyGuildList(completion: @escaping (Result<SuccessLoadGuildListResponse, OnlyHttpStatusResponse>) -> Void) {
+        let url = "hostUrl/guilds/guilds"
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+            ]
+            
+            AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: SuccessLoadGuildListResponse.self) { response in
+                    switch response.result {
+                    case .success(let successResponse):
+                        completion(.success(successResponse))
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            }
+                        } else {
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                        }
+                    }
+                }
+        }
+    }
 }
 

@@ -24,8 +24,6 @@ struct ChoiceGuildTypeView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 30)
             
-            
-            
             NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel)) {
                 CreateGuildButtonStyle(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
             }

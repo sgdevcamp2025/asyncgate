@@ -65,39 +65,22 @@ struct CreateGuildResponse: Codable {
     let profileImageUrl: String
 }
 
-// MARK: USER API RESPONSE (USER API에서만 사용됨)
-
-// MARK: 응답 - 엑세스 토큰을 받는 응답
-struct SignInResponse: Decodable {
+// MARK: 응답 - 내 길드 목록 조회 시 받는 응답
+struct SuccessLoadGuildListResponse: Codable {
     let httpStatus: Int
     let message: String
     let time: String
-    let result: AccessTokenResponse
+    let result: LoadGuildListResponse
 }
 
-// SignInResponse -> 엑세스 토큰을 받아옴
-struct AccessTokenResponse: Decodable {
-    let accessToken: String
-    
-    enum CodingKeys: String, CodingKey {
-        case accessToken = "access_token"
-    }
+// SuccessLoadGuildListResponse -> 길드 배열
+struct LoadGuildListResponse: Codable {
+    let responses: [Guild]
 }
 
-// MARK: 응답 - 이메일 중복 확인 후 받을 응답
-struct CheckDuplicatedEmailResponse: Decodable {
-    let httpStatus: Int
-    let message: String
-    let time: String
-    let result: DuplicateEmailResponse
+// SuccessLoadGuildListResponse/LoadGuildListResponse -> 길드 한개
+struct Guild: Codable, Hashable {
+    let guildId: String
+    let name: String
+    let profileImageUrl: String?
 }
-
-// CheckDuplicatedEmailResponse -> 이메일 중복 여부를 받아옴
-struct DuplicateEmailResponse: Decodable {
-    let isDuplicate: Bool
-    
-    enum CodingKeys: String, CodingKey {
-        case isDuplicate = "is_duplicate"
-    }
-}
-

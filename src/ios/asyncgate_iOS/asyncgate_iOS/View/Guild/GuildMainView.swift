@@ -9,6 +9,8 @@ import SwiftUI
 
 // MARK: MainView - 길드 메인 화면
 struct GuildMainView: View {
+    @StateObject var guildListViewModel = GuildListViewModel()
+    
     @State private var isShowCreateGuildView: Bool = false
     
     var body: some View {
@@ -27,10 +29,12 @@ struct GuildMainView: View {
                                 .frame(width: 40, height: 1)
                                 .foregroundStyle(Color(hex: "#282930"))
                             
-                            // FIXME: 길드 채널 목록 보여주기
-                            
-                            NavigationLink(destination: ChattingView()) {
-                                GuildButtonStyle(text: "우리길드이름은뭘까요")
+                            ForEach(guildListViewModel.myGuildList, id: \.self) { guild in
+                                Button {
+                                    // FIXME: 길드 ID 전달
+                                } label: {
+                                    GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl)
+                                }
                             }
                             
                             Button {
