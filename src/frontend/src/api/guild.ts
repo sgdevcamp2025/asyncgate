@@ -17,6 +17,6 @@ export const createGuild = async (data: CreateGuildRequest) => {
 };
 
 export const getGuilds = async () => {
-  const { data } = await tokenAxios.get<GetGuildsResponse>(`/guilds${endPoint.guilds.GET_GUILDS}`);
+  const { data } = await tokenAxios.get<GetGuildsResponse>(endPoint.guilds.GET_GUILDS);
   return data;
 };
