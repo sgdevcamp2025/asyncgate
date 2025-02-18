@@ -103,7 +103,7 @@ iOSInjectionProject/
 !*.xcodeproj/xcshareddata/
 !*.xcodeproj/project.xcworkspace/
 !*.xcworkspace/contents.xcworkspacedata
-.xcconfig.xcconfig
+*.xcconfig.xcconfig
 /*.gcno
 **/xcshareddata/WorkspaceSettings.xcsettings
 
