@@ -9,17 +9,28 @@ import SwiftUI
 
 struct GuildButtonStyle: View {
     let maxLength: Int = 3
-    var text: String
+    
+    var name: String
+    var profileImageUrl: String?
     
     var body: some View {
         ZStack {
-            Circle()
-                .frame(width: 46, height: 46)
-                .foregroundStyle(Color.colorNewGuildButton)
-            
-            Text(text.count > maxLength ? text.prefix(maxLength) + "..." : text)
-                .font(Font.pretendardSemiBold(size: 12))
-                .foregroundStyle(Color.colorWhite)
+            if let imageUrlString = profileImageUrl, let imageUrl = URL(string: imageUrlString) {
+                AsyncImage(url: imageUrl) { image in
+                    image.image?.resizable()
+                        .clipShape(Circle())
+                        .frame(width: 46, height: 46)
+                }
+                
+            } else {
+                Circle()
+                    .frame(width: 46, height: 46)
+                    .foregroundStyle(Color.colorNewGuildButton)
+                
+                Text(name.count > maxLength ? name.prefix(maxLength) + "..." : name)
+                    .font(Font.pretendardSemiBold(size: 12))
+                    .foregroundStyle(Color.colorWhite)
+            }
         }
     }
 }

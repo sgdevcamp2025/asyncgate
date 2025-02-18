@@ -14,72 +14,74 @@ struct CreateGuildLastView: View {
     @State var selectedPhoto: PhotosPickerItem?
     
     var body: some View {
-        VStack {
-            Text("서버를 만들어보세요")
-                .font(Font.pretendardBold(size: 28))
-                .foregroundColor(Color.colorWhite)
-                .padding(.bottom, 10)
-            
-            Text("서버는 나와 친구들이 함께 어울리는 공간입니다.\n 내 서버를 만들고 대화를 시작해보세요.")
-                .font(Font.pretendardSemiBold(size: 14))
-                .foregroundColor(Color.colorDart400)
-                .multilineTextAlignment(.center)
-                .padding(.bottom, 37)
-            
-            PhotosPicker(
-                selection: $selectedPhoto,
-                matching: .images
-            ) {
-                choiceImageButtonStyle
-            }
-            
-            VStack(alignment: .leading) {
-                Text("서버 이름")
-                    .font(Font.pretendardSemiBold(size: 16))
-                    .foregroundColor(Color.colorDart400)
+        NavigationStack {
+            VStack {
+                Text("서버를 만들어보세요")
+                    .font(Font.pretendardBold(size: 28))
+                    .foregroundColor(Color.colorWhite)
+                    .padding(.bottom, 10)
                 
-                TextField("", text: $createGuildViewModel.name)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color(hex: "#111216"))
-                    .cornerRadius(20)
-                    .overlay(
-                        Group {
-                            if createGuildViewModel.name == "" {
-                                Text("서버 이름")
-                                    .foregroundStyle(Color.colorDart400)
-                                    .padding(.leading, 15)
+                Text("서버는 나와 친구들이 함께 어울리는 공간입니다.\n 내 서버를 만들고 대화를 시작해보세요.")
+                    .font(Font.pretendardSemiBold(size: 14))
+                    .foregroundColor(Color.colorDart400)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 37)
+                
+                PhotosPicker(
+                    selection: $selectedPhoto,
+                    matching: .images
+                ) {
+                    choiceImageButtonStyle
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("서버 이름")
+                        .font(Font.pretendardSemiBold(size: 16))
+                        .foregroundColor(Color.colorDart400)
+                    
+                    TextField("", text: $createGuildViewModel.name)
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color(hex: "#111216"))
+                        .cornerRadius(20)
+                        .overlay(
+                            Group {
+                                if createGuildViewModel.name == "" {
+                                    Text("서버 이름")
+                                        .foregroundStyle(Color.colorDart400)
+                                        .padding(.leading, 15)
+                                }
                             }
-                        }
-                        , alignment: .leading
-                    )
+                            , alignment: .leading
+                        )
+                }
+                .padding(.top, 13)
+                .padding(.bottom, 30)
+                
+                Button {
+                    createGuildViewModel.createGuild()
+                } label: {
+                    UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
+                }
+                .navigationDestination(isPresented: $createGuildViewModel.isCreatedGuild) {
+                    ContentView()
+                }
+                
+                if let errorMessage = createGuildViewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(Font.pretendardRegular(size: 14))
+                        .padding(.top, 10)
+                }
+                
+                Spacer()
             }
-            .padding(.top, 13)
-            .padding(.bottom, 30)
-            
-            Button {
-                createGuildViewModel.createGuild()
-            } label: {
-                UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
-            }
-            .navigationDestination(isPresented: $createGuildViewModel.isCreatedGuild) {
-                ContentView()
-            }
-            
-            if let errorMessage = createGuildViewModel.errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .font(Font.pretendardRegular(size: 14))
-                    .padding(.top, 10)
-            }
-            
-            Spacer()
         }
+        .applyBackground()
         .onChange(of: selectedPhoto) { _, newValue in
             loadPhoto(from: newValue)
         }
         .padding()
-        .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
     }

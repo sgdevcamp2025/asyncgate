@@ -177,7 +177,7 @@ class UserNetworkManager {
         ]
         
         if let accessToken = accessTokenViewModel.accessToken {
-            var headers: HTTPHeaders = [
+            let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)"
                 // FIXME: 이미지 전달 가능한 값으로 수정
             ]
@@ -214,7 +214,7 @@ class UserNetworkManager {
         let url = "hostUrl/users/auth"
         
         if let accessToken = accessTokenViewModel.accessToken {
-            var headers: HTTPHeaders = [
+            let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)"
             ]
             
