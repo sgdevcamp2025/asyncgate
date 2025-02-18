@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct asyncgate_iOSApp: App {
+    @StateObject var createGuildViewModel = CreateGuildViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CreateGuildLastView(createGuildViewModel: createGuildViewModel)
         }
     }
 }

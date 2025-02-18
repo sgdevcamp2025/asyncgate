@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 // MARK: View - 서버 이름 및 이미지 선택 후 길드 생성
 struct CreateGuildLastView: View {
     @ObservedObject var createGuildViewModel: CreateGuildViewModel
+    @State var selectedPhoto: PhotosPickerItem?
     
     var body: some View {
         VStack {
@@ -24,9 +26,10 @@ struct CreateGuildLastView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 37)
             
-            Button {
-                
-            } label: {
+            PhotosPicker(
+                selection: $selectedPhoto,
+                matching: .images
+            ) {
                 choiceImageButtonStyle
             }
             
@@ -62,31 +65,55 @@ struct CreateGuildLastView: View {
             
             Spacer()
         }
+        .onChange(of: selectedPhoto) { _, newValue in
+            loadPhoto(from: newValue)
+        }
         .padding()
         .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
     }
     
+    // 함수 - PhotosPickerItem 타입의 이미지를 UIImage로 변경하는 함수
+    private func loadPhoto(from photo: PhotosPickerItem?) {
+        guard let photo = photo else { return }
+        
+        photo.loadTransferable(type: Data.self) { result in
+            if case .success(let data) = result, let data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    createGuildViewModel.profileImage = image
+                }
+            }
+        }
+    }
+    
     // ButtonStyle - 이미지 선택하기 버튼 스타일
     var choiceImageButtonStyle: some View {
         ZStack {
-            Circle()
-                .stroke(
-                        Color.colorGray,
-                        style: StrokeStyle(lineWidth: 2, dash: [6, 8])
-                    )
-                .foregroundStyle(Color.colorBG)
-                .frame(width: 80, height: 80)
-            
-            VStack {
-                Image(systemName: "camera.fill")
-                    .foregroundStyle(Color.colorGray)
-                    .padding(.bottom, 2)
+            if let image = createGuildViewModel.profileImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .clipShape(Circle())
+                    .frame(width: 80, height: 80)
                 
-                Text("올리기")
-                    .foregroundStyle(Color.colorGray)
-                    .font(Font.pretendardRegular(size: 12))
+            } else {
+                Circle()
+                    .stroke(
+                            Color.colorGray,
+                            style: StrokeStyle(lineWidth: 2, dash: [6, 8])
+                        )
+                    .foregroundStyle(Color.colorBG)
+                    .frame(width: 80, height: 80)
+                
+                VStack {
+                    Image(systemName: "camera.fill")
+                        .foregroundStyle(Color.colorGray)
+                        .padding(.bottom, 2)
+                    
+                    Text("올리기")
+                        .foregroundStyle(Color.colorGray)
+                        .font(Font.pretendardRegular(size: 12))
+                }
             }
         }
     }
