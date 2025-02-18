@@ -17,6 +17,17 @@ class CreateGuildViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var isCreatedGuild: Bool = false
     
+    @Published var guildId: String = ""
+    
+    // 변수 초기화
+    func reset() {
+        self.name = ""
+        self.isPrivate = true
+        self.profileImage = nil
+        self.errorMessage = nil
+        self.isCreatedGuild = false
+    }
+    
     // MARK: 함수 - 길드 생성하기
     func createGuild() {
         GuildServiceAPIManager.shared.createGuild(name: name, isPrivate: isPrivate, profileImage: profileImage) { result in
@@ -24,7 +35,10 @@ class CreateGuildViewModel: ObservableObject {
             case .success(let successResponse):
                 DispatchQueue.main.async {
                     self.isCreatedGuild = true
+                    self.errorMessage = nil
                 }
+                self.reset()
+                
                 print("CreateGuildViewModel - createGuild() - 길드 생성 성공 \(successResponse)")
                 
             case .failure(let errorResponse):
@@ -32,6 +46,45 @@ class CreateGuildViewModel: ObservableObject {
                     self.errorMessage = "길드를 생성하지 못했습니다."
                 }
                 print("CreateGuildViewModel - createGuild() - 에러 발생 \(errorResponse)")
+            }
+        }
+    }
+    
+    // MARK: 함수 - 길드 수정하기
+    func patchGuild() {
+        GuildServiceAPIManager.shared.updateGuild(guildId: guildId, name: name, isPrivate: isPrivate, profileImage: profileImage) { result in
+            switch result {
+            case .success(let successResponse):
+                DispatchQueue.main.async {
+                    self.isCreatedGuild = true
+                    self.errorMessage = nil
+                }
+                self.reset()
+                
+                print("CreateGuildViewModel - patchGuild() - 길드 수정 성공 \(successResponse)")
+                
+            case .failure(let errorResponse):
+                DispatchQueue.main.async {
+                    self.errorMessage = "길드 수정을 실패했습니다."
+                }
+                print("CreateGuildViewModel - patchGuild() - 에러 발생 \(errorResponse)")
+            }
+        }
+    }
+    
+    // MARK: 함수 - 길드 삭제하기
+    func deleteGuildDetail() {
+        GuildServiceAPIManager.shared.deleteGuild(guildId: guildId) { result in
+            switch result {
+            case .success(let susscessResponse):
+                self.reset()
+                print("GuildDetailViewModel - deleteGuildDetail() - 길드 삭제 성공")
+                
+            case .failure(let errorResponse):
+                DispatchQueue.main.async {
+                    self.errorMessage = errorResponse.localizedDescription
+                }
+                print("GuildDetailViewModel - deleteGuildDetail() - 에러 발생: \(errorResponse)")
             }
         }
     }

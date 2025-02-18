@@ -10,8 +10,10 @@ import SwiftUI
 // MARK: MainView - 길드 메인 화면
 struct GuildMainView: View {
     @StateObject var guildListViewModel = GuildListViewModel()
+    @StateObject var guildDetailViewModel = GuildDetailViewModel()
     
     @State private var isShowCreateGuildView: Bool = false
+    @State private var isShowGuildModalView: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -31,7 +33,7 @@ struct GuildMainView: View {
                             
                             ForEach(guildListViewModel.myGuildList, id: \.self) { guild in
                                 Button {
-                                    // FIXME: 길드 ID 전달
+                                    guildDetailViewModel.guildId = guild.guildId
                                 } label: {
                                     GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl)
                                 }
@@ -54,9 +56,9 @@ struct GuildMainView: View {
                         
                         VStack(alignment: .leading) {
                             Button {
-                                
+                                isShowGuildModalView.toggle()
                             } label: {
-                                channelNameButtonStyle(channelName: "중꺽마")
+                                channelNameButtonStyle(channelName: guildDetailViewModel.guild?.name ?? "")
                             }
                             .padding(.top, 20)
                             
@@ -83,34 +85,37 @@ struct GuildMainView: View {
                             Divider()
                             
                             ScrollView {
-                                
-                                Button {
-                                    
-                                } label: {
-                                    categoryButtonStyle
+                                ForEach(guildDetailViewModel.categories, id: \.self) { category in
+                                    Button {
+                                       
+                                    } label: {
+                                        CategoryButtonStyle(categoryName: category.name)
+                                    }
                                 }
                                 
-                                Button {
-                                    
-                                } label: {
-                                    channelButtonStyle
+                                ForEach(guildDetailViewModel.channels, id: \.self) { channel in
+                                    Button {
+                                       
+                                    } label: {
+                                        ChannelButtonStyle(channelName: channel.name)
+                                    }
                                 }
                                 
                             }
                         }
                         .padding()
-                        
                     }
-                    
                 }
                 .applyGuildBackground()
             }
             .fullScreenCover(isPresented: $isShowCreateGuildView) {
                 CreateGuildView()
             }
+            .sheet(isPresented: $isShowGuildModalView) {
+                GuildModalView(guildDetailViewModel: guildDetailViewModel)
+            }
         }
     }
-    
     
     // ButtonStyle - '검색하기' 버튼 스타일
     var GuildSerachButtonStyle: some View {
@@ -130,50 +135,6 @@ struct GuildMainView: View {
             }
         }
     }
-    
-    // ButtonStyle - 카테고리 버튼 스타일
-    var categoryButtonStyle: some View {
-        ZStack {
-            Rectangle()
-                .frame(width: 300, height: 30)
-                .foregroundStyle(Color.colorBG)
-            
-            HStack {
-                Image(systemName: "chevron.down")
-                // chevron.right로 누르면 수정
-                    .resizable()
-                    .frame(width: 6, height: 4)
-                    .foregroundStyle(Color.colorWhite)
-                
-                Text("Notice")
-                    .foregroundStyle(Color.colorGrayImage)
-                    .font(Font.pretendardSemiBold(size: 14))
-                
-                Spacer()
-            }
-        }
-    }
-    
-    // ButtonStyle - 채널 버튼 스타일
-    var channelButtonStyle: some View {
-        ZStack {
-            Rectangle()
-                .frame(width: 300, height: 30)
-                .foregroundStyle(Color.colorBG)
-            
-            HStack {
-                Text("#")
-                    .font(Font.pretendardSemiBold(size: 16))
-                
-                Text("Notice")
-                    .foregroundStyle(Color.colorGrayImage)
-                    .font(Font.pretendardSemiBold(size: 14))
-                
-                Spacer()
-            }
-        }
-    }
-    
 }
 
 #Preview {

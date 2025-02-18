@@ -14,6 +14,7 @@ class GuildServiceAPIManager {
     // ViewModel 호출 - 엑세스 토큰 사용
     private let accessTokenViewModel = AccessTokenViewModel.shared
     
+    
     // MARK: 함수 - 길드 생성
     func createGuild(name: String, isPrivate: Bool, profileImage: UIImage?, completion: @escaping (Result<SuccessCreateGuildResponse, OnlyHttpStatusResponse>) -> Void) {
         let url = "hostUrl/guilds/guilds"
@@ -54,6 +55,77 @@ class GuildServiceAPIManager {
         }
     }
     
+    // MARK: 함수 - 길드 수정
+    func updateGuild(guildId: String, name: String, isPrivate: Bool, profileImage: UIImage?, completion: @escaping (Result<SuccessCreateGuildResponse, OnlyHttpStatusResponse>) -> Void) {
+        let url = "hostUrl/guilds/guilds/\(guildId)"
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+                "Content-Type": "multipart/form-data"
+            ]
+            
+            AF.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(name.data(using: .utf8)!, withName: "name")
+                multipartFormData.append("\(isPrivate)".data(using: .utf8)!, withName: "isPrivate")
+                
+                if let image = profileImage?.pngData() {
+                    multipartFormData.append(image, withName: "profileImage", fileName: "\(image).png", mimeType: "image/png")
+                }
+            }, to: url, usingThreshold: UInt64.init(), method: .patch, headers: headers)
+            .validate()
+            .responseDecodable(of: SuccessCreateGuildResponse.self) { response in
+                switch response.result {
+                case .success(let successResponse):
+                    completion(.success(successResponse))
+                    
+                case .failure(_):
+                    if let data = response.data {
+                        do {
+                            let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
+                            completion(.failure(errorResponse))
+                        } catch {
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                        }
+                    } else {
+                        completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: 함수 - 길드 삭제
+    func deleteGuild(guildId: String, completion: @escaping (Result<SuccessResultStringResponse, OnlyHttpStatusResponse>) -> Void) {
+        let url = "hostUrl/guilds/guilds/\(guildId)"
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+            ]
+            
+            AF.request(url, method: .delete, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: SuccessResultStringResponse.self) { response in
+                    switch response.result {
+                    case .success(let successResponse):
+                        completion(.success(successResponse))
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            }
+                        } else {
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                        }
+                    }
+                }
+        }
+    }
     
     // MARK: Guild API
     
@@ -87,6 +159,32 @@ class GuildServiceAPIManager {
                     }
                 }
         }
+    }
+    
+    // MARK: 함수 - 길드 단일 조회
+    func fetchGuildInfo(guildId: String, completion: @escaping (Result<GuildDetailResponse, FourErrorResponse>) -> Void) {
+        let url = "hostUrl/guilds/guilds/\(guildId)"
+        
+        AF.request(url, method: .get, encoding: JSONEncoding.default)
+            .validate()
+            .responseDecodable(of: GuildDetailResponse.self) { response in
+                switch response.result {
+                case .success(let successResponse):
+                    completion(.success(successResponse))
+                    
+                case .failure(_):
+                    if let data = response.data {
+                        do {
+                            let errorResponse = try JSONDecoder().decode(FourErrorResponse.self, from: data)
+                            completion(.failure(errorResponse))
+                        } catch {
+                            completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 오류 발생", path: "")))
+                        }
+                    } else {
+                        completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 서버 응답 없음", path: "")))
+                    }
+                }
+            }
     }
 }
 
