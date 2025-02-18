@@ -7,8 +7,9 @@
 
 import SwiftUI
 
+// MARK: View - 서버 이름 및 이미지 선택 후 길드 생성
 struct CreateGuildLastView: View {
-    @State private var guildName: String = ""
+    @ObservedObject var createGuildViewModel: CreateGuildViewModel
     
     var body: some View {
         VStack {
@@ -26,25 +27,7 @@ struct CreateGuildLastView: View {
             Button {
                 
             } label: {
-                ZStack {
-                    Circle()
-                        .stroke(
-                                Color.colorGray,
-                                style: StrokeStyle(lineWidth: 2, dash: [6, 8])
-                            )
-                        .foregroundStyle(Color.colorBG)
-                        .frame(width: 80, height: 80)
-                    
-                    VStack {
-                        Image(systemName: "camera.fill")
-                            .foregroundStyle(Color.colorGray)
-                            .padding(.bottom, 2)
-                        
-                        Text("올리기")
-                            .foregroundStyle(Color.colorGray)
-                            .font(Font.pretendardRegular(size: 12))
-                    }
-                }
+                choiceImageButtonStyle
             }
             
             VStack(alignment: .leading) {
@@ -52,14 +35,14 @@ struct CreateGuildLastView: View {
                     .font(Font.pretendardSemiBold(size: 16))
                     .foregroundColor(Color.colorDart400)
                 
-                TextField("", text: $guildName)
+                TextField("", text: $createGuildViewModel.name)
                     .foregroundColor(.white)
                     .padding()
                     .background(Color(hex: "#111216"))
                     .cornerRadius(20)
                     .overlay(
                         Group {
-                            if guildName.isEmpty {
+                            if createGuildViewModel.name == "" {
                                 Text("서버 이름")
                                     .foregroundStyle(Color.colorDart400)
                                     .padding(.leading, 15)
@@ -78,15 +61,38 @@ struct CreateGuildLastView: View {
             }
             
             Spacer()
-            
         }
         .padding()
         .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
     }
+    
+    // ButtonStyle - 이미지 선택하기 버튼 스타일
+    var choiceImageButtonStyle: some View {
+        ZStack {
+            Circle()
+                .stroke(
+                        Color.colorGray,
+                        style: StrokeStyle(lineWidth: 2, dash: [6, 8])
+                    )
+                .foregroundStyle(Color.colorBG)
+                .frame(width: 80, height: 80)
+            
+            VStack {
+                Image(systemName: "camera.fill")
+                    .foregroundStyle(Color.colorGray)
+                    .padding(.bottom, 2)
+                
+                Text("올리기")
+                    .foregroundStyle(Color.colorGray)
+                    .font(Font.pretendardRegular(size: 12))
+            }
+        }
+    }
 }
 
 #Preview {
-    CreateGuildLastView()
+    @Previewable @StateObject var createGuildViewModel = CreateGuildViewModel()
+    CreateGuildLastView(createGuildViewModel: createGuildViewModel)
 }

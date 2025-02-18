@@ -31,13 +31,14 @@ struct SignInView: View {
             
                 .padding(.bottom, 30)
             
-            SignButtonStyle(text: "로그인")
-                .onTapGesture {
-                    signInViewModel.signInUser()
-                }
-                .navigationDestination(isPresented: $signInViewModel.isSignInSuccess) {
-                    ContentView()
-                }
+            Button {
+                signInViewModel.signInUser()
+            } label: {
+                SignButtonStyle(text: "로그인")
+            }
+            .navigationDestination(isPresented: $signInViewModel.isSignInSuccess) {
+                ContentView()
+            }
             
             Spacer()
         }
