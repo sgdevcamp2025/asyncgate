@@ -13,7 +13,8 @@ struct asyncgate_iOSApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CreateGuildLastView(createGuildViewModel: createGuildViewModel)
+//            CreateGuildLastView(createGuildViewModel: createGuildViewModel)
+            GuildMainView()
         }
     }
 }

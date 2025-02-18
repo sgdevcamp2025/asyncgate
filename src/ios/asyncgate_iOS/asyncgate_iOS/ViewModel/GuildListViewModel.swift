@@ -9,15 +9,15 @@ import SwiftUI
 
 // MARK: ViewModel - 내 길드 목록
 class GuildListViewModel: ObservableObject {
-    @Published var myGuildList: [Guild] = []
+    @Published var myGuildList: [GuildInList] = []
     
     @Published var errorMessage: String?
     
-    // 더미 데이터 예시
-    let dummyGuildData: [Guild] = [
-        Guild(guildId: "guild-12345", name: "Knight's Order", profileImageUrl: "https://velog.velcdn.com/images/dbqls200/post/4f90cb9e-7ea9-43dd-9d28-ae3918f95a0d/image.png"),
-        Guild(guildId: "guild-67890", name: "Warrior's Clan", profileImageUrl: nil),
-        Guild(guildId: "guild-54321", name: "Mages Guild", profileImageUrl: nil)
+    // 더미 데이터 테스트
+    let dummyGuildData: [GuildInList] = [
+        GuildInList(guildId: "guild-12345", name: "Knight's Order", profileImageUrl: "https://velog.velcdn.com/images/dbqls200/post/4f90cb9e-7ea9-43dd-9d28-ae3918f95a0d/image.png"),
+        GuildInList(guildId: "guild-67890", name: "Warrior's Clan", profileImageUrl: nil),
+        GuildInList(guildId: "guild-54321", name: "Mages Guild", profileImageUrl: nil)
     ]
     
     // 초기화하여 불러오기

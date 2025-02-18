@@ -15,12 +15,12 @@ class UserNetworkManager {
     private let accessTokenViewModel = AccessTokenViewModel.shared
     
     // MARK: 함수 - 서버 연동 확인
-    func health(completion: @escaping (Result<HealthResponse, ErrorResponse>) -> Void) {
+    func health(completion: @escaping (Result<SuccessResultStringResponse, ErrorResponse>) -> Void) {
         let url = "hostUrl/users/health"
         
         AF.request(url, method: .get, encoding: JSONEncoding.default)
             .validate()
-            .responseDecodable(of: HealthResponse.self) { response in
+            .responseDecodable(of: SuccessResultStringResponse.self) { response in
                 switch response.result {
                 case .success(let healthResponse):
                     completion(.success(healthResponse))
