@@ -1,12 +1,12 @@
 package com.asyncgate.user_server.security.config;
 
-import com.asyncgate.user_server.config.CorsConfig;
 import com.asyncgate.user_server.security.constant.Constants;
 import com.asyncgate.user_server.security.filter.JsonWebTokenAuthenticationFilter;
 import com.asyncgate.user_server.security.usecase.AuthenticateJsonWebTokenUseCase;
 import com.asyncgate.user_server.security.utility.JsonWebTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,9 +27,7 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(cors -> cors
-                        .configurationSource(CorsConfig.corsConfigurationSource())
-                )
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .httpBasic(AbstractHttpConfigurer::disable)
