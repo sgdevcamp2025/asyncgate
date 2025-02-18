@@ -9,6 +9,8 @@ import SwiftUI
 
 // MARK: View - 길드 타입 설정
 struct ChoiceGuildTypeView: View {
+    @StateObject var createGuildViewModel = CreateGuildViewModel()
+    
     var body: some View {
         VStack {
             Text("이 서버에 대해 더 자세히 말해주세요.")
@@ -22,11 +24,16 @@ struct ChoiceGuildTypeView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 30)
             
-            NavigationLink(destination: CreateGuildLastView()) {
+            
+            
+            NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel)) {
                 CreateGuildButtonStyle(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                createGuildViewModel.isPrivate = false
+            })
             
-            NavigationLink(destination: CreateGuildLastView()) {
+            NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel)) {
                 CreateGuildButtonStyle(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
             }
             

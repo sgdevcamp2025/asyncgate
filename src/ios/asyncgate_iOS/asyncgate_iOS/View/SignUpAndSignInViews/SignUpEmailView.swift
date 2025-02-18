@@ -48,13 +48,14 @@ struct SignUpEmailView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 30)
             
-            SignButtonStyle(text: "다음")
-                .onTapGesture {
-                    signUpViewModel.isDuplicatedEmail()
-                }
-                .navigationDestination(isPresented: $signUpViewModel.isNotEmailDuplicated) {
-                    SignUpNickNameView(signUpViewModel: signUpViewModel)
-                }
+            Button {
+                signUpViewModel.isDuplicatedEmail()
+            } label: {
+                SignButtonStyle(text: "다음")
+            }
+            .navigationDestination(isPresented: $signUpViewModel.isNotEmailDuplicated) {
+                SignUpNickNameView(signUpViewModel: signUpViewModel)
+            }
             
             Spacer()
         }

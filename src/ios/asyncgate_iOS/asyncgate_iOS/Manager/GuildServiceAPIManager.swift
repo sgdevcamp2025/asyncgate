@@ -8,8 +8,8 @@
 import Alamofire
 
 // MARK: Manager - Guild Service API 매니저
-class GuildNetworkManager {
-    static let shared = GuildNetworkManager()
+class GuildServiceAPIManager {
+    static let shared = GuildServiceAPIManager()
     
     // ViewModel 호출 - 엑세스 토큰 사용
     private let accessTokenViewModel = AccessTokenViewModel.shared

@@ -50,7 +50,7 @@ struct OnlyHttpStatusResponse: Decodable, Error {
 }
 
 // MARK: 응답 - 길드 생성 시 받는 응답
-struct SuccessCreateGuildResponse: Decodable {
+struct SuccessCreateGuildResponse: Codable {
     let httpStatus: Int
     let message: String
     let time: String
@@ -58,13 +58,12 @@ struct SuccessCreateGuildResponse: Decodable {
 }
 
 // SuccessCreateGuildResponse -> 길드 정보
-struct CreateGuildResponse: Decodable {
+struct CreateGuildResponse: Codable {
     let guildId: String
     let name: String
     let isPrivate: Bool
     let profileImageUrl: String
 }
-
 
 // MARK: USER API RESPONSE (USER API에서만 사용됨)
 
