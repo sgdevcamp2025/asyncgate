@@ -10,7 +10,7 @@ import PhotosUI
 
 // MARK: View - 서버 이름 및 이미지 선택 후 길드 생성
 struct CreateGuildLastView: View {
-    @ObservedObject var createGuildViewModel: CreateGuildViewModel
+    @ObservedObject var createGuildViewModel: CUDGuildViewModel
     @State var selectedPhoto: PhotosPickerItem?
     
     var body: some View {
@@ -132,6 +132,6 @@ struct CreateGuildLastView: View {
 }
 
 #Preview {
-    @Previewable @StateObject var createGuildViewModel = CreateGuildViewModel()
+    @Previewable @StateObject var createGuildViewModel = CUDGuildViewModel()
     CreateGuildLastView(createGuildViewModel: createGuildViewModel)
 }

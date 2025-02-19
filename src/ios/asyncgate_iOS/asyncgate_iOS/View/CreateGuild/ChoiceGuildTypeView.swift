@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 길드 타입 설정
 struct ChoiceGuildTypeView: View {
-    @StateObject var createGuildViewModel = CreateGuildViewModel()
+    @StateObject var createGuildViewModel = CUDGuildViewModel()
     
     var body: some View {
         VStack {

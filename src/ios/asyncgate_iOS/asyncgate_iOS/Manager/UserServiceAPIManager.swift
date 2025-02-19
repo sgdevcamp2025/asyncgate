@@ -271,7 +271,7 @@ class UserNetworkManager {
                 "Authorization": "Bearer \(accessToken)"
             ]
             
-            AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default)
+            AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .validate()
                 .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
                     switch response.result {
@@ -296,5 +296,4 @@ class UserNetworkManager {
                 }
         }
     }
-    
 }

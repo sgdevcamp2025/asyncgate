@@ -11,7 +11,10 @@ struct GuildModalView: View {
     @Environment(\.presentationMode) var presentation
     
     @ObservedObject var guildDetailViewModel: GuildDetailViewModel
-    @StateObject var createGuildViewModel = CreateGuildViewModel()
+    @StateObject var createGuildViewModel = CUDGuildViewModel()
+    
+    @State private var isShowCreateCategoryView: Bool = false
+    @State private var isShowCreateChannelView: Bool = false
     
     let maxLength: Int = 4
     
@@ -24,6 +27,8 @@ struct GuildModalView: View {
                             image.image?.resizable()
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .frame(width: 70, height: 70)
+                            
+                            let _ = print("\(imageUrl)")
                         }
                         
                     } else {
@@ -49,6 +54,18 @@ struct GuildModalView: View {
             }
             
             Button {
+                isShowCreateCategoryView = true
+            } label: {
+                CreateGuildButtonStyle(imageName: "", text: "카테고리 만들기", imageWidth: 0, imageHeight: 0)
+            }
+            
+            Button {
+                isShowCreateChannelView = true
+            } label: {
+                CreateGuildButtonStyle(imageName: "", text: "채널 만들기", imageWidth: 0, imageHeight: 0)
+            }
+            
+            Button {
                 createGuildViewModel.patchGuild()
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 수정하기", imageWidth: 0, imageHeight: 0)
@@ -66,6 +83,12 @@ struct GuildModalView: View {
         .padding()
         .padding(.top, 20)
         .applyBackground()
+        .fullScreenCover(isPresented: $isShowCreateCategoryView) {
+            CreateCategoryView(guildId: guildDetailViewModel.guildId)
+        }
+        .fullScreenCover(isPresented: $isShowCreateChannelView) {
+            CreateChannelView(guildId: guildDetailViewModel.guildId)
+        }
     }
 }
 

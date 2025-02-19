@@ -1,5 +1,5 @@
 //
-//  CreateGuildViewModel.swift
+//  CUDGuildViewModel.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/18/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-// MARK: ViewModel - 길드 생성
-class CreateGuildViewModel: ObservableObject {
+// MARK: ViewModel - 길드 CUD
+class CUDGuildViewModel: ObservableObject {
     // Request 변수
     @Published var name: String = ""
     @Published var isPrivate: Bool = true
@@ -76,7 +76,7 @@ class CreateGuildViewModel: ObservableObject {
     func deleteGuildDetail() {
         GuildServiceAPIManager.shared.deleteGuild(guildId: guildId) { result in
             switch result {
-            case .success(let susscessResponse):
+            case .success(_):
                 self.reset()
                 print("GuildDetailViewModel - deleteGuildDetail() - 길드 삭제 성공")
                 
