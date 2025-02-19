@@ -50,7 +50,7 @@ struct ChattingView: View {
                 .foregroundStyle(Color.colorDart400)
                 .font(Font.pretendardBold(size: 20))
             
-            channelNameButtonStyle(channelName: "중꺽마")
+            ChannelNameButtonStyle(channelName: "중꺽마")
             
         }
     }

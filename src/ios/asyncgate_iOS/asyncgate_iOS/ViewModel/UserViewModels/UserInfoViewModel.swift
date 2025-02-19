@@ -12,7 +12,7 @@ class UserInfoViewModel: ObservableObject {
     // Request 변수
     @Published var name: String = ""
     @Published var nickName: String = ""
-    @Published var profileImage: String = ""
+    @Published var profileImage: UIImage?
     
     // Response 변수
     @Published var errorMessage: String?

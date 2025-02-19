@@ -59,7 +59,7 @@ struct GuildMainView: View {
                             Button {
                                 isShowGuildModalView.toggle()
                             } label: {
-                                channelNameButtonStyle(channelName: guildDetailViewModel.guild?.name ?? "")
+                                ChannelNameButtonStyle(channelName: guildDetailViewModel.guild?.name ?? "")
                             }
                             .padding(.top, 20)
                             

@@ -1,5 +1,5 @@
 //
-//  channelNameButtonStyle.swift
+//  ChannelNameButtonStyle.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/16/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct channelNameButtonStyle: View {
+struct ChannelNameButtonStyle: View {
     var channelName: String
     
     var body: some View {
