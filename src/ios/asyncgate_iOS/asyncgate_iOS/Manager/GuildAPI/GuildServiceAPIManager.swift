@@ -14,10 +14,11 @@ class GuildServiceAPIManager {
     // ViewModel 호출 - 엑세스 토큰 사용
     private let accessTokenViewModel = AccessTokenViewModel.shared
     
+    private let hostUrl = Config.shared.hostUrl
     
     // MARK: 함수 - 길드 생성
     func createGuild(name: String, isPrivate: Bool, profileImage: UIImage?, completion: @escaping (Result<SuccessCreateGuildResponse, OnlyHttpStatusResponse>) -> Void) {
-        let url = "hostUrl/guilds/guilds"
+        let url = "https://\(hostUrl)/guilds/guilds"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
@@ -38,26 +39,30 @@ class GuildServiceAPIManager {
                 switch response.result {
                 case .success(let successResponse):
                     completion(.success(successResponse))
+                    print("Response  code: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                             completion(.failure(errorResponse))
+                            print("Response ㅈㅈㅈ code: \(response)")
                         } catch {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            print("Response ㅁㅁㅁㅁㅁ code: \(response)")
                         }
                     } else {
-                        completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                        completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
+                        print("Response ㄴ린ㅇㄹㅇ널 code: \(response)")
                     }
                 }
             }
         }
     }
     
-    // MARK: 함수 - 길드 수정
+    // MARK: 함수 - 길드 정보 수정
     func updateGuild(guildId: String, name: String, isPrivate: Bool, profileImage: UIImage?, completion: @escaping (Result<SuccessCreateGuildResponse, OnlyHttpStatusResponse>) -> Void) {
-        let url = "hostUrl/guilds/guilds/\(guildId)"
+        let url = "https://\(hostUrl)/guilds/guilds/\(guildId)"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
@@ -97,7 +102,7 @@ class GuildServiceAPIManager {
     
     // MARK: 함수 - 길드 삭제
     func deleteGuild(guildId: String, completion: @escaping (Result<SuccessResultStringResponse, OnlyHttpStatusResponse>) -> Void) {
-        let url = "hostUrl/guilds/guilds/\(guildId)"
+        let url = "https://\(hostUrl)/guilds/guilds/\(guildId)"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
@@ -127,11 +132,9 @@ class GuildServiceAPIManager {
         }
     }
     
-    // MARK: Guild API
-    
     // MARK: 함수 - 내 길드 목록 조회
     func loadMyGuildList(completion: @escaping (Result<SuccessLoadGuildListResponse, OnlyHttpStatusResponse>) -> Void) {
-        let url = "hostUrl/guilds/guilds"
+        let url = "https://\(hostUrl)/guilds/guilds"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
@@ -144,17 +147,57 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
+                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                                 completion(.failure(errorResponse))
+                                print("Response status code: \(response)")
                             } catch {
                                 completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                                print("Response status code: \(response)")
                             }
                         } else {
-                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
+                            print("Response status code: \(response)")
+                        }
+                    }
+                }
+        }
+    }
+    
+    // MARK: 함수 - 랜덤 길드 조회
+    func loadMyGuildListRandom(limit: Int, completion: @escaping (Result<SuccessLoadGuildListResponse, OnlyHttpStatusResponse>) -> Void) {
+        let url = "https://\(hostUrl)/guilds/guilds/rand?limit=\(limit)"
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+            ]
+            
+            AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: SuccessLoadGuildListResponse.self) { response in
+                    switch response.result {
+                    case .success(let successResponse):
+                        completion(.success(successResponse))
+                        print("Response status code: \(response)")
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                                print("Response status code: \(response)")
+                            } catch {
+                                completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                                print("Response status code: \(response)")
+                            }
+                        } else {
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
+                            print("Response status code: \(response)")
                         }
                     }
                 }
@@ -163,28 +206,37 @@ class GuildServiceAPIManager {
     
     // MARK: 함수 - 길드 단일 조회
     func fetchGuildInfo(guildId: String, completion: @escaping (Result<GuildDetailResponse, FourErrorResponse>) -> Void) {
-        let url = "hostUrl/guilds/guilds/\(guildId)"
+        let url = "https://\(hostUrl)/guilds/guilds/\(guildId)"
         
-        AF.request(url, method: .get, encoding: JSONEncoding.default)
-            .validate()
-            .responseDecodable(of: GuildDetailResponse.self) { response in
-                switch response.result {
-                case .success(let successResponse):
-                    completion(.success(successResponse))
-                    
-                case .failure(_):
-                    if let data = response.data {
-                        do {
-                            let errorResponse = try JSONDecoder().decode(FourErrorResponse.self, from: data)
-                            completion(.failure(errorResponse))
-                        } catch {
-                            completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 오류 발생", path: "")))
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)",
+            ]
+            
+            AF.request(url, method: .get, encoding: JSONEncoding.default, headers: headers)
+                .validate()
+                .responseDecodable(of: GuildDetailResponse.self) { response in
+                    switch response.result {
+                    case .success(let successResponse):
+                        completion(.success(successResponse))
+                        print("Response status code: \(response)")
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(FourErrorResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 오류 발생", path: "")))
+                                print("Response status code: \(response)")
+                            }
+                        } else {
+                            completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 서버 응답 없음", path: "")))
+                            print("Response status code: \(response)")
                         }
-                    } else {
-                        completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 서버 응답 없음", path: "")))
                     }
                 }
-            }
+        }
     }
 }
 

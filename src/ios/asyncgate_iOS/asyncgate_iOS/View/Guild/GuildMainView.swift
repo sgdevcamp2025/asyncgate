@@ -34,6 +34,7 @@ struct GuildMainView: View {
                             ForEach(guildListViewModel.myGuildList, id: \.self) { guild in
                                 Button {
                                     guildDetailViewModel.guildId = guild.guildId
+                                    guildDetailViewModel.fetchGuildDetail()
                                 } label: {
                                     GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl)
                                 }
@@ -114,6 +115,7 @@ struct GuildMainView: View {
             .sheet(isPresented: $isShowGuildModalView) {
                 GuildModalView(guildDetailViewModel: guildDetailViewModel)
             }
+            .navigationBarBackButtonHidden(true)
         }
     }
     
