@@ -4,6 +4,8 @@ eureka:
       defaultZone: '{cipher}f6f2540926f3eeb0616a6900c67fd7e4a078eaa04dc2190562d086e3ab91692b67be5104497d9f2c96fcc14f58950a35'
 jwt:
   secret-key: '{cipher}e3ee7c81dedbd05d33e9e934a192a67cca17890d39faebc6645fe3eeb6c7b16034312dad499dd72f869cb03a6f2d6b7498b5204a523412735009f0c8b8f56eb6'
+  temporary-token-expire-period: 900000
+  access-token-expire-period: 1209600000
 
 cloud:
   aws:
@@ -43,3 +45,12 @@ spring:
         order_updates: true
         format_sql: true
     open-in-view: false
+
+turn:
+  server:
+    urls: turn:localhost:3478
+    username: myUsername
+    credential: myPassword
+
+kms:
+  url: ws://localhost:8890/kurento
