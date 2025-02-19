@@ -28,6 +28,20 @@ spring:
       data-source-properties:
         rewriteBatchedStatements: true
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: '{cipher}623b0560db7816d2ffd55845e924030f6acdc6d044abce0a1826e873e268b17d1171767fd2e21614d47fd6cdd9f07ff0cd2a39d7c956e179ad7e850a8a375292'
+        default_batch_fetch_size: 100
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+    open-in-view: false
+
 spring:
   kafka:
     bootstrap-servers: '{cipher}276ada73fdb90a68125e2dcce993b77384c8c80d672a78b26eefda56bf60f808f77d486f86d9f1de94e6cb342711bb6211dd8f6cbf98b01e4ece80b938b40acf1cfef75ec74c910f32e68873b06dd3d5'
