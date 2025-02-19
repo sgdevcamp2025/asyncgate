@@ -14,9 +14,11 @@ class UserNetworkManager {
     // ViewModel 호출 - 엑세스 토큰 사용
     private let accessTokenViewModel = AccessTokenViewModel.shared
     
+    private let hostUrl = Config.shared.hostUrl
+    
     // MARK: 함수 - 서버 연동 확인
     func health(completion: @escaping (Result<SuccessResultStringResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/health"
+        let url = "https://\(hostUrl)/users/health"
         
         AF.request(url, method: .get, encoding: JSONEncoding.default)
             .validate()
@@ -32,9 +34,13 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 오류 발생", requestId: "")))
+                            print("Response status code: \(response)")
+                                                    
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 서버 응답 없음", requestId: "")))
+                        print("Response code: \(response)")
+                                                
                     }
                 }
             }
@@ -42,7 +48,7 @@ class UserNetworkManager {
     
     // MARK: 함수 - 회원가입
     func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/sign-up"
+        let url = "https://\(hostUrl)/users/sign-up"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -58,6 +64,7 @@ class UserNetworkManager {
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
+                    print("알ㄴ알ㅇㄹㅇ: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
@@ -66,9 +73,11 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 오류 발생", requestId: "")))
+                            print("Response ww code: \(response)")
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 서버 응답 없음", requestId: "")))
+                        print("Response ss code: \(response)")
                     }
                 }
             }
@@ -76,7 +85,7 @@ class UserNetworkManager {
     
     // MARK: 함수 - 이메일 중복 확인
     func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, ErrorResponse>) -> Void) {
-        let url = "/users/validation/email"
+        let url = "https://\(hostUrl)/users/validation/email"
         
         let parameters: [String: Any] = [
             "email": email
@@ -88,6 +97,7 @@ class UserNetworkManager {
                 switch response.result {
                 case .success(let checkDuplicatedEmailResponse):
                     completion(.success(checkDuplicatedEmailResponse))
+                    print("ㄴㄴㄴㄴㄴㄴ: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
@@ -96,9 +106,11 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
+                            print("Response wwwwwwwww code: \(response)")
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
+                        print("Response llllllll code: \(response)")
                     }
                 }
             }
@@ -137,7 +149,7 @@ class UserNetworkManager {
     
     // MARK: 함수 - 로그인
     func signIn(email: String, passWord: String, completion: @escaping (Result<SignInResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/sign-in"
+        let url = "https://\(hostUrl)/users/sign-in"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -150,17 +162,21 @@ class UserNetworkManager {
                 switch response.result {
                 case .success(let signInResponse):
                     completion(.success(signInResponse))
+                    print("Response ㅈㅈㅈㅈㅂㅂㅂ code: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
+                            print("Response ㄴㄴㄴ code: \(response)")
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 오류 발생", requestId: "")))
+                            print("Response ㅈㅈㅈ code: \(response)")
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 서버 응답 없음", requestId: "")))
+                        print("Response ㄷㄷㄷ code: \(response)")
                     }
                 }
             }

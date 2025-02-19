@@ -7,4 +7,11 @@
 
 import Foundation
 
-let hostUrl = Bundle.main.infoDictionary?["hostUrl"] as? String ?? ""
+class Config {
+    static let shared = Config()
+    let hostUrl: String
+
+    private init() {
+        hostUrl = Bundle.main.infoDictionary?["hostUrl"] as? String ?? ""
+    }
+}

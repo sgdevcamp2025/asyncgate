@@ -135,3 +135,35 @@ struct GuildChannel: Codable, Hashable {
     let isPrivate: Bool
 }
 
+// MARK: 응답 - 카테고리 관련 응답
+struct CategoryResponse: Codable {
+    let httpStatus: Int
+    let message: String
+    let time: String
+    let result: CategoryInfo
+}
+
+struct CategoryInfo: Codable, Hashable {
+    let categoryId: String
+    let name: String
+    let isPrivate: Bool
+    let guildId: String
+}
+
+// MARK: 응답 - 채널 관련 응답
+struct ChannelResponse: Codable {
+    let httpStatus: Int
+    let message: String
+    let time: String
+    let result: ChannelInfo
+}
+
+struct ChannelInfo: Codable, Hashable {
+    let channelId: String
+    let name: String
+    let topic: String
+    let isPrivate: Bool
+    let guildId: String
+    let categoryId: String
+    let channelType: String
+}

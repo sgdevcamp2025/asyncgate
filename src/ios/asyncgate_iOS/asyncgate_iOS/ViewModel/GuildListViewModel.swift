@@ -13,23 +13,9 @@ class GuildListViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    // 더미 데이터 테스트
-    let dummyGuildData: [GuildInList] = [
-        GuildInList(guildId: "guild-12345", name: "Knight's Order", profileImageUrl: "https://velog.velcdn.com/images/dbqls200/post/4f90cb9e-7ea9-43dd-9d28-ae3918f95a0d/image.png"),
-        GuildInList(guildId: "guild-67890", name: "Warrior's Clan", profileImageUrl: nil),
-        GuildInList(guildId: "guild-54321", name: "Mages Guild", profileImageUrl: nil)
-    ]
-    
     // 초기화하여 불러오기
     init() {
-        dummyData()
-        // fetchMyGuildList()
-    }
-    
-    func dummyData() {
-        DispatchQueue.main.async {
-            self.myGuildList = self.dummyGuildData
-        }
+        fetchMyGuildList()
     }
     
     // MARK: 함수 - 내 길드 목록 조회하기

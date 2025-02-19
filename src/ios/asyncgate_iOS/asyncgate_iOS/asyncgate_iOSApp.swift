@@ -9,12 +9,15 @@ import SwiftUI
 
 @main
 struct asyncgate_iOSApp: App {
-    @StateObject var createGuildViewModel = CreateGuildViewModel()
+    private let accessTokenViewModel = AccessTokenViewModel.shared
     
     var body: some Scene {
         WindowGroup {
-//            CreateGuildLastView(createGuildViewModel: createGuildViewModel)
-            GuildMainView()
+            if accessTokenViewModel.accessToken != nil {
+                ContentView()
+            } else {
+                SignMainView()
+            }
         }
     }
 }

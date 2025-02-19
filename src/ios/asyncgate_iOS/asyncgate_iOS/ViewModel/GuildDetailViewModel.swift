@@ -22,78 +22,8 @@ class GuildDetailViewModel: ObservableObject {
         self.channels = []
     }
     
-    // MARK: 더미 데이터
-    let dummyGuildDetailResponse = GuildDetailResponse(
-        httpStatus: 200,
-        message: "Success",
-        time: "2025-02-18T02:35:11.245Z",
-        result: GuildDetailResponseResult(
-            guild: GuildInfo(
-                guildId: "guild-12345",
-                name: "Knight's Order",
-                isPrivate: false,
-                profileImageUrl: "https://velog.velcdn.com/images/dbqls200/post/4f90cb9e-7ea9-43dd-9d28-ae3918f95a0d/image.png"
-            ),
-            categories: [
-                GuildCategory(
-                    categoryId: "category-67890",
-                    name: "General Discussions",
-                    isPrivate: false
-                ),
-                GuildCategory(
-                    categoryId: "category-12345",
-                    name: "Special Events",
-                    isPrivate: false
-                ),
-                GuildCategory(
-                    categoryId: "category-54321",
-                    name: "Admin Announcements",
-                    isPrivate: true
-                )
-            ],
-            channels: [
-                GuildChannel(
-                    channelId: "channel-56789",
-                    name: "General Chat",
-                    topic: "This is a general discussion channel.",
-                    channelType: "TEXT",
-                    isPrivate: false
-                ),
-                GuildChannel(
-                    channelId: "channel-98765",
-                    name: "Event Planning",
-                    topic: "Plan and discuss upcoming events.",
-                    channelType: "TEXT",
-                    isPrivate: false
-                ),
-                GuildChannel(
-                    channelId: "channel-11223",
-                    name: "Admin Chat",
-                    topic: "Private channel for admin discussions.",
-                    channelType: "TEXT",
-                    isPrivate: true
-                ),
-                GuildChannel(
-                    channelId: "channel-33445",
-                    name: "Game Nights",
-                    topic: "Chat about upcoming game nights and schedules.",
-                    channelType: "TEXT",
-                    isPrivate: false
-                )
-            ]
-        )
-    )
-
-    
     init() {
-//        fetchGuildDetail()
-        dummyData()
-    }
-    
-    func dummyData() {
-        self.guild = dummyGuildDetailResponse.result.guild
-        self.categories = dummyGuildDetailResponse.result.categories
-        self.channels = dummyGuildDetailResponse.result.channels
+        fetchGuildDetail()
     }
     
     // MARK: 함수 - 길드 세부 정보 불러오기

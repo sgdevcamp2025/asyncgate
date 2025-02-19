@@ -8,4 +8,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-hostUrl = https://api.asyncgate.site/
+hostUrl = api.asyncgate.site
+
+
+// "https://api.asyncgate.site/"
