@@ -46,7 +46,7 @@ class UserNetworkManager {
             }
     }
     
-    // MARK: 함수 - 회원가입
+    // MARK: 함수 - 임시 회원가입
     func signUp(email: String, passWord: String, name: String, nickName: String, birth: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
         let url = "https://\(hostUrl)/users/sign-up"
         
@@ -83,7 +83,7 @@ class UserNetworkManager {
             }
     }
     
-    // MARK: 함수 - 이메일 중복 확인
+    // MARK: 함수 - 이메일 중복 검사
     func checkDuplicatedEmail(email: String, completion: @escaping (Result<CheckDuplicatedEmailResponse, ErrorResponse>) -> Void) {
         let url = "https://\(hostUrl)/users/validation/email"
         
@@ -116,9 +116,9 @@ class UserNetworkManager {
             }
     }
     
-    // MARK: 함수 - 이메일 인증
+    // MARK: 함수 - 이메일 인증번호 인증
     func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/sign-up"
+        let url = "https://\(hostUrl)/users/sign-up"
         
         let parameters: [String: Any] = [
             "email": email,
@@ -183,51 +183,52 @@ class UserNetworkManager {
     }
     
     // MARK: 함수 - 유저 정보 수정
-    func updateUserInfo(name: String, nickName: String, profileImage: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/info"
-        
-        let parameters: [String: Any] = [
-            "name": name,
-            "nickname": nickName,
-            "profile_image": profileImage,
-        ]
+    func updateUserInfo(name: String, nickName: String, profileImage: UIImage?, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "https://\(hostUrl)/users/info"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
-                "Authorization": "Bearer \(accessToken)"
-                // FIXME: 이미지 전달 가능한 값으로 수정
+                "Authorization": "Bearer \(accessToken)",
+                "Content-Type": "multipart/form-data"
             ]
             
-            // FIXME: 추후 이미지 전달 가능하게 수정
-            AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
-                .validate()
-                .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
-                    switch response.result {
-                    case .success(let signUpResponse):
-                        completion(.success(signUpResponse))
-                        
-                    case .failure(_):
-                        if let data = response.data {
-                            do {
-                                let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
-                                completion(.failure(errorResponse))
-                            } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저정보 수정 - 오류 발생", requestId: "")))
-                            }
-                        } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저정보 수정 - 서버 응답 없음", requestId: "")))
+            AF.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(name.data(using: .utf8)!, withName: "name")
+                multipartFormData.append(nickName.data(using: .utf8)!, withName: "nickName")
+              
+                if let image = profileImage?.pngData() {
+                    multipartFormData.append(image, withName: "profile_image", fileName: "\(image).png", mimeType: "image/png")
+                }
+            }, to: url, usingThreshold: UInt64.init(), method: .patch, headers: headers)
+            .validate()
+            .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
+                switch response.result {
+                case .success(let successResponse):
+                    completion(.success(successResponse))
+                    print("Response code: \(response)")
+                    
+                case .failure(_):
+                    if let data = response.data {
+                        do {
+                            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                            completion(.failure(errorResponse))
+                            print("Response ㅈㅈㅈ code: \(response)")
+                        } catch {
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저 정보 수정 - 에러 발생", requestId: "")))
+                            print("Response ㅁㅁㅁㅁㅁ code: \(response)")
                         }
+                    } else {
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "유저 정보 수정 - 서버 응답 없음", requestId: "")))
+                        print("Response ㄴ린ㅇㄹㅇ널 code: \(response)")
                     }
                 }
-        }
-        else {
-            print("UserNetworkManager - updateUserInfo - accessToken 없음!")
+            }
         }
     }
     
     // MARK: 함수 - 회원 탈퇴
     func deleteUser(completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
-        let url = "hostUrl/users/auth"
+        let url = "https://\(hostUrl)/users/auth"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
@@ -256,4 +257,44 @@ class UserNetworkManager {
                 }
         }
     }
+    
+    // MARK: 함수 - 디바이스 토큰 업데이트
+    func updateDeviceToken(deviceToken: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
+        let url = "https://\(hostUrl)/users/device-token"
+        
+        let parameters: [String: Any] = [
+            "device_token": deviceToken
+            ]
+        
+        if let accessToken = accessTokenViewModel.accessToken {
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer \(accessToken)"
+            ]
+            
+            AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default)
+                .validate()
+                .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
+                    switch response.result {
+                    case .success(let signUpResponse):
+                        completion(.success(signUpResponse))
+                        print("디바이스 토큰 업데이트: \(response)")
+                        
+                    case .failure(_):
+                        if let data = response.data {
+                            do {
+                                let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
+                                completion(.failure(errorResponse))
+                            } catch {
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "디바이스 토큰 업데이트 - 오류 발생", requestId: "")))
+                                print("Response ww code: \(response)")
+                            }
+                        } else {
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "디바이스 토큰 업데이트 - 서버 응답 없음", requestId: "")))
+                            print("Response ss code: \(response)")
+                        }
+                    }
+                }
+        }
+    }
+    
 }
