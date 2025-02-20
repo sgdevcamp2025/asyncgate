@@ -11,9 +11,14 @@ import SwiftUI
 struct GuildMainView: View {
     @StateObject var guildListViewModel = GuildListViewModel()
     @StateObject var guildDetailViewModel = GuildDetailViewModel()
+    @StateObject var createGuildViewModel = CUDGuildViewModel()
+    @StateObject var guildCategoryViewModel = GuildCategoryViewModel()
+    @StateObject var guildChannelViewModel = GuildChannelViewModel()
     
     @State private var isShowCreateGuildView: Bool = false
     @State private var isShowGuildModalView: Bool = false
+    
+    @State private var needToFetchDetails: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -26,6 +31,7 @@ struct GuildMainView: View {
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "message.fill", color: Color.colorGrayImage)
                             }
+                            .padding(.leading, 4)
                             
                             Rectangle()
                                 .frame(width: 40, height: 1)
@@ -44,10 +50,10 @@ struct GuildMainView: View {
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "plus", color: Color.colorGreen)
                             }
+                            .padding(.leading, 4)
                         }
                     }
                     .padding(5)
-                    .padding(.leading, 5)
                     
                     ZStack {
                         RoundedRectangle(cornerRadius: 20)
@@ -107,21 +113,39 @@ struct GuildMainView: View {
                     }
                 }
                 .applyGuildBackground()
+                .navigationBarBackButtonHidden(true)
             }
             .onChange(of: guildListViewModel.firstGuildId) {
                 guildDetailViewModel.guildId = guildListViewModel.firstGuildId
             }
             .onChange(of: guildDetailViewModel.guildId) {
-                guildDetailViewModel.fetchGuildDetail()
+                needToFetchDetails = true
+            }
+            .onChange(of: createGuildViewModel.isNeedRefresh) {
+                guildListViewModel.fetchMyGuildList()
+                needToFetchDetails = true
+            }
+            .onChange(of: guildCategoryViewModel.isCreatedCategory) {
+                needToFetchDetails = true
+            }
+            .onChange(of: guildChannelViewModel.isCreatedChannel) {
+                needToFetchDetails = true
+            }
+            .onChange(of: needToFetchDetails) {
+                if needToFetchDetails {
+                    guildDetailViewModel.fetchGuildDetail()
+                    needToFetchDetails = false
+                }
             }
             .fullScreenCover(isPresented: $isShowCreateGuildView) {
-                CreateGuildView()
+                CreateGuildView(isShowCreateGuildView: $isShowCreateGuildView)
             }
             .sheet(isPresented: $isShowGuildModalView) {
-                GuildModalView(guildDetailViewModel: guildDetailViewModel)
+                GuildModalView(guildListViewModel: guildListViewModel, guildDetailViewModel: guildDetailViewModel, createGuildViewModel: createGuildViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
             }
-            .navigationBarBackButtonHidden(true)
         }
+        .applyGuildBackground()
+        .navigationBarBackButtonHidden(true)
     }
     
     // ButtonStyle - '검색하기' 버튼 스타일

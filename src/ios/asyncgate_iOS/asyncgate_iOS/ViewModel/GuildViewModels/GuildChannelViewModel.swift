@@ -15,6 +15,7 @@ class GuildChannelViewModel: ObservableObject {
     @Published var isPrivate: Bool = false
     
     @Published var isCreatedChannel: Bool = false
+    @Published var isRefreshing: Bool = false
     
     @Published var errorMessage: String?
     
@@ -33,6 +34,7 @@ class GuildChannelViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isCreatedChannel = true
+                        self.isRefreshing = true
                     }
                     self.reset()
                     

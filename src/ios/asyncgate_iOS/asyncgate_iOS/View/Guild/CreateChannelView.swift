@@ -10,6 +10,7 @@ import SwiftUI
 struct CreateChannelView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var guildChannelViewModel = GuildChannelViewModel()
+    @ObservedObject var guildDetailViewModel: GuildDetailViewModel
     
     var guildId: String?
     
@@ -33,9 +34,10 @@ struct CreateChannelView: View {
                     Spacer()
                     
                     Button {
-                        if let guildId = guildId {
+                        if let guildId = guildDetailViewModel.guildId {
                             guildChannelViewModel.guildId = guildId
                             guildChannelViewModel.createChannel()
+                            guildDetailViewModel.fetchGuildDetail()
                             dismiss()
                         }
                     } label: {
@@ -44,9 +46,10 @@ struct CreateChannelView: View {
                             .foregroundStyle(Color(hex: "#6469A2"))
                     }
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 
                 Divider()
+                    .padding(.bottom, 10)
                 
                 CTextField(stepCaption: "채널 이름", placeholder: "새로운 채널", text: $guildChannelViewModel.name)
                 
@@ -140,8 +143,8 @@ struct CreateChannelView: View {
                 
                 Spacer()
             }
-            .padding()
             .applyBackground()
+            .padding()
             .navigationBarBackButtonHidden(true)
         }
     }
@@ -167,6 +170,3 @@ struct CreateChannelView: View {
     }
 }
 
-#Preview {
-    CreateChannelView()
-}

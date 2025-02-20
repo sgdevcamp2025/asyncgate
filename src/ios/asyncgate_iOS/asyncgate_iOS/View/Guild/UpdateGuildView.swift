@@ -1,32 +1,55 @@
 //
-//  CreateGuildLastView.swift
+//  UpdateGuildView.swift
 //  asyncgate_iOS
 //
-//  Created by kdk on 2/7/25.
+//  Created by kdk on 2/20/25.
 //
 
 import SwiftUI
 import PhotosUI
 
-// MARK: View - 서버 이름 및 이미지 선택 후 길드 생성
-struct CreateGuildLastView: View {
+// MARK: View - 길드 수정 뷰
+struct UpdateGuildView: View {
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var createGuildViewModel: CUDGuildViewModel
+    @ObservedObject var guildListViewModel: GuildListViewModel
+    
     @State var selectedPhoto: PhotosPickerItem?
-    @Binding var isShowCreateGuildView: Bool
+    
+    var currentGuildName: String?
     
     var body: some View {
         NavigationStack {
             VStack {
-                Text("서버를 만들어보세요")
-                    .font(Font.pretendardBold(size: 28))
-                    .foregroundColor(Color.colorWhite)
-                    .padding(.bottom, 10)
+                HStack {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundStyle(Color.colorWhite)
+                    }
+                    Spacer()
+                    
+                    Text("서버 수정하기")
+                        .font(Font.pretendardBold(size: 18))
+                        .foregroundColor(Color.colorWhite)
+            
+                    Spacer()
+                    
+                    Button {
+                        createGuildViewModel.patchGuild()
+                        dismiss()
+                    } label: {
+                        Text("수정하기")
+                            .font(Font.pretendardSemiBold(size: 16))
+                            .foregroundStyle(Color(hex: "#6469A2"))
+                    }
+                }
+                .padding(.bottom, 10)
                 
-                Text("서버는 나와 친구들이 함께 어울리는 공간입니다.\n 내 서버를 만들고 대화를 시작해보세요.")
-                    .font(Font.pretendardSemiBold(size: 14))
-                    .foregroundColor(Color.colorDart400)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom, 37)
+                Divider()
+                    .padding(.bottom, 10)
                 
                 PhotosPicker(
                     selection: $selectedPhoto,
@@ -47,8 +70,8 @@ struct CreateGuildLastView: View {
                         .cornerRadius(20)
                         .overlay(
                             Group {
-                                if createGuildViewModel.name == "" {
-                                    Text("서버 이름")
+                                if let currentGuildName = currentGuildName {
+                                    Text(currentGuildName)
                                         .foregroundStyle(Color.colorDart400)
                                         .padding(.leading, 15)
                                 }
@@ -57,14 +80,10 @@ struct CreateGuildLastView: View {
                         )
                 }
                 .padding(.top, 13)
-                .padding(.bottom, 30)
+                .padding(.bottom, 6)
                 
-                Button {
-                    createGuildViewModel.createGuild()
-                    isShowCreateGuildView = false
-                } label: {
-                    UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
-                }
+                CToggle(text: "개인용 서버 여부", isPrivate: $createGuildViewModel.isPrivate)
+                    .padding(.bottom, 10)
                 
                 if let errorMessage = createGuildViewModel.errorMessage {
                     Text(errorMessage)
@@ -72,7 +91,7 @@ struct CreateGuildLastView: View {
                         .font(Font.pretendardRegular(size: 14))
                         .padding(.top, 10)
                 }
-                
+             
                 Spacer()
             }
             .applyBackground()
@@ -80,10 +99,9 @@ struct CreateGuildLastView: View {
         .onChange(of: selectedPhoto) { _, newValue in
             loadPhoto(from: newValue)
         }
-        .padding()
         .applyBackground()
+        .padding()
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: BackButton(color: .white))
     }
     
     // 함수 - PhotosPickerItem 타입의 이미지를 UIImage로 변경하는 함수
@@ -99,5 +117,4 @@ struct CreateGuildLastView: View {
         }
     }
 }
-
 

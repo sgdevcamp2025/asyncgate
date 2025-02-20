@@ -9,10 +9,9 @@ import SwiftUI
 
 struct CreateCategoryView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var guildCategoryViewModel =  GuildCategoryViewModel()
-    
-    var guildId: String?
-    
+    @ObservedObject var guildCategoryViewModel: GuildCategoryViewModel
+    @ObservedObject var guildDetailViewModel: GuildDetailViewModel
+   
     var body: some View {
         NavigationStack {
             VStack {
@@ -33,7 +32,7 @@ struct CreateCategoryView: View {
                     Spacer()
                     
                     Button {
-                        if let guildId = guildId {
+                        if let guildId = guildDetailViewModel.guildId {
                             guildCategoryViewModel.guildId = guildId
                             guildCategoryViewModel.createCategory()
                             dismiss()
@@ -44,9 +43,10 @@ struct CreateCategoryView: View {
                             .foregroundStyle(Color(hex: "#6469A2"))
                     }
                 }
-                .padding(.bottom, 20)
+                .padding(.bottom, 10)
                 
                 Divider()
+                    .padding(.bottom, 10)
                 
                 CTextField(stepCaption: "카테고리 이름", placeholder: "새로운 카테고리", text: $guildCategoryViewModel.name)
 
@@ -66,8 +66,4 @@ struct CreateCategoryView: View {
             .navigationBarBackButtonHidden(true)
         }
     }
-}
-
-#Preview {
-    CreateCategoryView()
 }
