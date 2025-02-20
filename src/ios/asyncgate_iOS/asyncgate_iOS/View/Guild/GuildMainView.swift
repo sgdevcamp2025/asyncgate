@@ -35,7 +35,7 @@ struct GuildMainView: View {
                                 Button {
                                     guildDetailViewModel.guildId = guild.guildId
                                 } label: {
-                                    GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl)
+                                    GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl, isSelected: guildDetailViewModel.guildId == guild.guildId)
                                 }
                             }
                             
