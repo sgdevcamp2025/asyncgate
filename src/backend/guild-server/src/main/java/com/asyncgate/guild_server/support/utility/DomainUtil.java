@@ -86,23 +86,14 @@ public class DomainUtil {
         }
 
         public static Channel toDomain(final ChannelEntity entity) {
-            String categoryId = getCategoryId(entity.getCategoryId());
             return Channel.builder()
                     .id(entity.getId())
                     .guildId(entity.getGuildId())
-                    .categoryId(categoryId)
+                    .categoryId(entity.getCategoryId())
                     .name(entity.getName())
                     .channelType(entity.getChannelType())
                     .isPrivate(entity.isPrivate())
                     .build();
-        }
-
-        private static String getCategoryId(final String categoryId) {
-            if (!StringUtils.hasText(categoryId)) {
-                return categoryId;
-            } else {
-                return "CATEGORY_ID_IS_NULL";
-            }
         }
     }
 }

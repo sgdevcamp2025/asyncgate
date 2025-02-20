@@ -25,4 +25,17 @@ public class CategoryQueryDslRepository {
                 )
                 .fetch();
     }
+
+    public boolean existsById(final String categoryId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(category)
+                .where(
+                        category.id.eq(categoryId),
+                        category.deleted.isFalse()
+                )
+                .fetchFirst();
+
+        return fetchOne != null;
+    }
 }
