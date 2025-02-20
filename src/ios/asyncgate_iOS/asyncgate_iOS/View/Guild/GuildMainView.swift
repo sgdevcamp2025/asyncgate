@@ -19,6 +19,7 @@ struct GuildMainView: View {
     @State private var isShowGuildModalView: Bool = false
     
     @State private var needToFetchDetails: Bool = false
+    @State private var needToFetchGuildList: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -27,15 +28,15 @@ struct GuildMainView: View {
                     ScrollView {
                         VStack(alignment: .center) {
                             Button {
-                            
+                                
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "message.fill", color: Color.colorGrayImage)
                             }
-                            .padding(.leading, 4)
                             
                             Rectangle()
                                 .frame(width: 40, height: 1)
                                 .foregroundStyle(Color(hex: "#282930"))
+                                .padding(.bottom, 4)
                             
                             ForEach(guildListViewModel.myGuildList, id: \.self) { guild in
                                 Button {
@@ -50,9 +51,9 @@ struct GuildMainView: View {
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "plus", color: Color.colorGreen)
                             }
-                            .padding(.leading, 4)
                         }
                     }
+                    .padding(.leading, 4)
                     .padding(5)
                     
                     ZStack {
@@ -93,7 +94,7 @@ struct GuildMainView: View {
                             ScrollView {
                                 ForEach(guildDetailViewModel.categories, id: \.self) { category in
                                     Button {
-                                       
+                                        
                                     } label: {
                                         CategoryButtonStyle(categoryName: category.name)
                                     }
@@ -101,7 +102,7 @@ struct GuildMainView: View {
                                 
                                 ForEach(guildDetailViewModel.channels, id: \.self) { channel in
                                     Button {
-                                       
+                                        
                                     } label: {
                                         ChannelButtonStyle(channelName: channel.name)
                                     }
@@ -117,24 +118,34 @@ struct GuildMainView: View {
             }
             .onChange(of: guildListViewModel.firstGuildId) {
                 guildDetailViewModel.guildId = guildListViewModel.firstGuildId
+                needToFetchGuildList = true
+                needToFetchDetails = true
             }
             .onChange(of: guildDetailViewModel.guildId) {
                 needToFetchDetails = true
             }
             .onChange(of: createGuildViewModel.isNeedRefresh) {
-                guildListViewModel.fetchMyGuildList()
+                needToFetchGuildList = true
                 needToFetchDetails = true
             }
             .onChange(of: guildCategoryViewModel.isCreatedCategory) {
                 needToFetchDetails = true
             }
+            
             .onChange(of: guildChannelViewModel.isCreatedChannel) {
                 needToFetchDetails = true
             }
-            .onChange(of: needToFetchDetails) {
-                if needToFetchDetails {
-                    guildDetailViewModel.fetchGuildDetail()
-                    needToFetchDetails = false
+            .onChange(of: [needToFetchGuildList, needToFetchDetails]) {
+                DispatchQueue.main.async {
+                    if needToFetchGuildList {
+                        guildListViewModel.fetchMyGuildList()
+                        needToFetchGuildList = false
+                    }
+                    
+                    if needToFetchDetails {
+                        guildDetailViewModel.fetchGuildDetail()
+                        needToFetchDetails = false
+                    }
                 }
             }
             .fullScreenCover(isPresented: $isShowCreateGuildView) {

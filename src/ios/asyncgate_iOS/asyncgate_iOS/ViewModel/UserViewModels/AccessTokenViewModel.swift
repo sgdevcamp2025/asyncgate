@@ -18,7 +18,6 @@ class AccessTokenViewModel: ObservableObject {
 
     private init() {
         loadToken()
-        print("\(accessToken ?? "")")
     }
     
     // MARK: 함수 - 엑세스 토큰 KeyChain에 저장

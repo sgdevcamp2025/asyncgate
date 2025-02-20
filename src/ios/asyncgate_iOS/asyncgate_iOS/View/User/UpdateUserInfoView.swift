@@ -45,7 +45,7 @@ struct UpdateUserInfoView: View {
                 .padding(.bottom, 10)
                 
                 Divider()
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 20)
                 
                 PhotosPicker(
                     selection: $selectedPhoto,

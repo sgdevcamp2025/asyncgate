@@ -99,8 +99,8 @@ struct UpdateGuildView: View {
         .onChange(of: selectedPhoto) { _, newValue in
             loadPhoto(from: newValue)
         }
-        .applyBackground()
         .padding()
+        .applyBackground()
         .navigationBarBackButtonHidden(true)
     }
     
@@ -117,4 +117,3 @@ struct UpdateGuildView: View {
         }
     }
 }
-

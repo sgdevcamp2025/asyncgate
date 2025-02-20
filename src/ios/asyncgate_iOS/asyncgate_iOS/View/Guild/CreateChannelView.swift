@@ -143,8 +143,8 @@ struct CreateChannelView: View {
                 
                 Spacer()
             }
-            .applyBackground()
             .padding()
+            .applyBackground()
             .navigationBarBackButtonHidden(true)
         }
     }
