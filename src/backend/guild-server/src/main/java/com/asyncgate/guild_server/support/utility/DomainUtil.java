@@ -7,7 +7,7 @@ import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.entity.CategoryEntity;
 import com.asyncgate.guild_server.entity.ChannelEntity;
 import com.asyncgate.guild_server.entity.GuildEntity;
-import com.asyncgate.guild_server.entity.GuildMemberEntity;
+import com.asyncgate.guild_server.entity.GuildMemberEntity;import org.springframework.util.StringUtils;
 
 public class DomainUtil {
 
@@ -86,14 +86,23 @@ public class DomainUtil {
         }
 
         public static Channel toDomain(final ChannelEntity entity) {
+            String categoryId = getCategoryId(entity.getCategoryId());
             return Channel.builder()
                     .id(entity.getId())
                     .guildId(entity.getGuildId())
-                    .categoryId(entity.getCategoryId())
+                    .categoryId(categoryId)
                     .name(entity.getName())
                     .channelType(entity.getChannelType())
                     .isPrivate(entity.isPrivate())
                     .build();
+        }
+
+        private static String getCategoryId(final String categoryId) {
+            if (!StringUtils.hasText(categoryId)) {
+                return categoryId;
+            } else {
+                return "CATEGORY_ID_IS_NULL";
+            }
         }
     }
 }
