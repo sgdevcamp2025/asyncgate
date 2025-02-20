@@ -1,6 +1,7 @@
 package com.asyncgate.guild_server.repository;
 
 import com.asyncgate.guild_server.domain.Guild;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ public interface GuildRepository {
     List<Guild> getByIds(List<String> guildIds);
 
     List<Guild> findAllByIds(List<String> guildIds);
+
+    boolean existsById(String guildId);
 }

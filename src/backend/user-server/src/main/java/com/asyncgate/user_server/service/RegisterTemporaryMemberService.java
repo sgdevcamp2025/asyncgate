@@ -34,7 +34,6 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
     @Override
     @Transactional
     public void execute(final RegisterTemporaryMemberRequest request) {
-
         if (isDuplicatedEmail(request.email())) {
             throw new UserServerException(FailType.ALREADY_EXIST_EMAIL);
         }
