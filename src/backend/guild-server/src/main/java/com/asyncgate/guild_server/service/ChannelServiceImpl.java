@@ -18,7 +18,7 @@ public class ChannelServiceImpl implements ChannelService {
     @Override
     @Transactional
     public ChannelResponse create(final String userId, final ChannelCreateRequest request) {
-        validatePermission(userId, request.getGuildId(), request.getCategoryId());
+        validatePermission(userId, request.getGuildId());
         Channel channel = Channel.create(
                 request.getGuildId(),
                 request.getCategoryId(),
@@ -35,26 +35,26 @@ public class ChannelServiceImpl implements ChannelService {
     @Transactional
     public void delete(
             final String userId, final String guildId,
-            final String categoryId, final String channelId
+            final String channelId
     ) {
-        validatePermission(userId, guildId, categoryId);
-        channelRepository.delete(categoryId);
+        validatePermission(userId, guildId);
+        channelRepository.delete(channelId);
     }
 
     @Override
     @Transactional
     public ChannelResponse update(
-            final String userId, final String guildId, final String categoryId,
+            final String userId, final String guildId,
             final String channelId, final ChannelUpdateRequest request
     ) {
-        validatePermission(userId, guildId, categoryId);
+        validatePermission(userId, guildId);
         Channel channel = channelRepository.getById(channelId);
         channel.update(request);
         channelRepository.save(channel);
         return ChannelResponse.from(channel);
     }
 
-    private void validatePermission(final String userId, final String guildId, final String categoryId) {
+    private void validatePermission(final String userId, final String guildId) {
         // ToDo 생성시 validate 추후 권한관리 생성 후 확인
         // Guild, Category, Channel 별로 권한을 생성해야하는가? 혹시 몰라 3개다 받도록 개발
     }
