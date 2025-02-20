@@ -34,7 +34,6 @@ struct GuildMainView: View {
                             ForEach(guildListViewModel.myGuildList, id: \.self) { guild in
                                 Button {
                                     guildDetailViewModel.guildId = guild.guildId
-                                    guildDetailViewModel.fetchGuildDetail()
                                 } label: {
                                     GuildButtonStyle(name: guild.name, profileImageUrl: guild.profileImageUrl)
                                 }
@@ -108,6 +107,12 @@ struct GuildMainView: View {
                     }
                 }
                 .applyGuildBackground()
+            }
+            .onChange(of: guildListViewModel.firstGuildId) {
+                guildDetailViewModel.guildId = guildListViewModel.firstGuildId
+            }
+            .onChange(of: guildDetailViewModel.guildId) {
+                guildDetailViewModel.fetchGuildDetail()
             }
             .fullScreenCover(isPresented: $isShowCreateGuildView) {
                 CreateGuildView()

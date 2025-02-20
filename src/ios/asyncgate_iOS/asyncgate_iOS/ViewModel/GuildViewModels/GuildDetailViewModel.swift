@@ -16,16 +16,6 @@ class GuildDetailViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    func reset() {
-        self.guild = nil
-        self.categories = []
-        self.channels = []
-    }
-    
-    init() {
-        fetchGuildDetail()
-    }
-    
     // MARK: 함수 - 길드 세부 정보 불러오기
     func fetchGuildDetail() {
         if let guildId = guildId {

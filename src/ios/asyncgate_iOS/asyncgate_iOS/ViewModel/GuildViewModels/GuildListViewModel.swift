@@ -11,6 +11,8 @@ import SwiftUI
 class GuildListViewModel: ObservableObject {
     @Published var myGuildList: [GuildInList] = []
     
+    @Published var firstGuildId: String?
+    
     @Published var errorMessage: String?
     
     // 초기화하여 불러오기
@@ -25,7 +27,11 @@ class GuildListViewModel: ObservableObject {
             case .success(let successResponse):
                 DispatchQueue.main.async {
                     self.myGuildList = successResponse.result.responses
+                    if let firstGuildId = self.myGuildList.first {
+                        self.firstGuildId = firstGuildId.guildId
+                    }
                 }
+                
             case .failure(let errorResponse):
                 DispatchQueue.main.async {
                     self.errorMessage = errorResponse.localizedDescription
