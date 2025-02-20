@@ -11,13 +11,17 @@ eureka:
 spring:
   application:
     name: chat-server
+  kafka:
+    topic:
+      direct-chat: direct-chat-topic
+      read-status: read-status-topic
 
 management:
   endpoints:
     web:
       exposure:
         include: refresh, health, beans, refresh
-
+    
 logging:
   level:
     com.asyncgate.chat_server: DEBUG

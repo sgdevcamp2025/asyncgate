@@ -1,23 +1,22 @@
-package com.asyncgate.chat_server.utility
+package com.asyncgate.chat_server.support.utility
 
-import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.asyncgate.chat_server.exception.FailType;
-import com.asyncgate.chat_server.exception.ChatServerException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.UUID;
+import com.amazonaws.SdkClientException
+import com.amazonaws.services.s3.AmazonS3Client
+import com.amazonaws.services.s3.model.ObjectMetadata
+import com.amazonaws.services.s3.model.PutObjectRequest
+import com.asyncgate.chat_server.exception.ChatServerException
+import com.asyncgate.chat_server.exception.FailType
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.multipart.MultipartFile
+import java.io.IOException
+import java.util.UUID
 
 @Configuration
 class S3Util(
     private val amazonS3Client: AmazonS3Client,
     @Value("\${cloud.aws.s3.bucket}") private val bucketName: String,
-    @Value("\${cloud.aws.s3.url}") private val bucketUrl: String
+    @Value("\${cloud.aws.s3.url}") private val bucketUrl: String,
 ) {
 
     // S3 이미지 업로드
@@ -35,11 +34,11 @@ class S3Util(
 
             "$bucketUrl$fileName"
         } catch (e: SdkClientException) {
-            throw ChatServerException(FailType._UPLOAD_FILE_ERROR)
+            throw ChatServerException(FailType.X_UPLOAD_FILE_ERROR)
         } catch (e: IOException) {
-            throw ChatServerException(FailType._UPLOAD_FILE_ERROR)
+            throw ChatServerException(FailType.X_UPLOAD_FILE_ERROR)
         } catch (e: Exception) {
-            throw ChatServerException(FailType._UNKNOWN_ERROR)
+            throw ChatServerException(FailType.X_UNKNOWN_ERROR)
         }
     }
 
@@ -53,14 +52,14 @@ class S3Util(
             val fileExists = amazonS3Client.doesObjectExist(bucketName, fileName)
 
             if (!fileExists) {
-                throw ChatServerException(FailType._FILE_NOT_FOUND)
+                throw ChatServerException(FailType.X_FILE_NOT_FOUND)
             }
 
             amazonS3Client.deleteObject(bucketName, fileName)
         } catch (e: SdkClientException) {
-            throw ChatServerException(FailType._DELETE_FILE_ERROR)
+            throw ChatServerException(FailType.X_DELETE_FILE_ERROR)
         } catch (e: Exception) {
-            throw ChatServerException(FailType._UNKNOWN_ERROR)
+            throw ChatServerException(FailType.X_UNKNOWN_ERROR)
         }
     }
 }

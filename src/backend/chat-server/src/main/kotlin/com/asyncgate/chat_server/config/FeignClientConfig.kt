@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@EnableFeignClients
+@EnableFeignClients(basePackages = ["com.asyncgate.chat_server.client"])
 class FeignClientConfig {
     @Bean
     fun feignLoggerLevel(): Logger.Level {
