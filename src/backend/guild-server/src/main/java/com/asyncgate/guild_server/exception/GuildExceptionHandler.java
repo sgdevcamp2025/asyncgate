@@ -37,9 +37,9 @@ public class GuildExceptionHandler {
     private String getErrorMessage(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult().getFieldErrors().get(0).getDefaultMessage();
         if (StringUtils.isBlank(errorMessage)) {
-            return "유효성 검사에 실패했습니다.";
-        } else {
             return FailType.ARGUMENT_BAD_REQUEST.getMessage();
+        } else {
+            return errorMessage;
         }
     }
 }
