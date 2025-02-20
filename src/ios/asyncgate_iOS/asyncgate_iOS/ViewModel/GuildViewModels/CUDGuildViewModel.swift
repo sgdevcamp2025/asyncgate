@@ -15,7 +15,9 @@ class CUDGuildViewModel: ObservableObject {
     @Published var profileImage: UIImage?
     
     @Published var errorMessage: String?
-    @Published var isCreatedGuild: Bool = false
+
+    @Published var isNeedRefresh: Bool = false
+    @Published var isRefreshing: Bool = false
     
     @Published var guildId: String = ""
     
@@ -25,7 +27,7 @@ class CUDGuildViewModel: ObservableObject {
         self.isPrivate = true
         self.profileImage = nil
         self.errorMessage = nil
-        self.isCreatedGuild = false
+        self.isNeedRefresh = false
     }
     
     // MARK: 함수 - 길드 생성하기
@@ -34,8 +36,9 @@ class CUDGuildViewModel: ObservableObject {
             switch result {
             case .success(let successResponse):
                 DispatchQueue.main.async {
-                    self.isCreatedGuild = true
                     self.errorMessage = nil
+                    self.isNeedRefresh = true
+                    self.isRefreshing = true
                 }
                 self.reset()
                 
@@ -56,8 +59,8 @@ class CUDGuildViewModel: ObservableObject {
             switch result {
             case .success(let successResponse):
                 DispatchQueue.main.async {
-                    self.isCreatedGuild = true
                     self.errorMessage = nil
+                    self.isNeedRefresh = true
                 }
                 self.reset()
                 
@@ -77,6 +80,9 @@ class CUDGuildViewModel: ObservableObject {
         GuildServiceAPIManager.shared.deleteGuild(guildId: guildId) { result in
             switch result {
             case .success(_):
+                DispatchQueue.main.async {
+                    self.isNeedRefresh = true
+                }
                 self.reset()
                 print("GuildDetailViewModel - deleteGuildDetail() - 길드 삭제 성공")
                 

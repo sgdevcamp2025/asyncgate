@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CreateGuildView: View {
     @Environment(\.dismiss) var dismiss
+    @Binding var isShowCreateGuildView: Bool
     
     var body: some View {
         NavigationStack {
@@ -24,7 +25,7 @@ struct CreateGuildView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 30)
                 
-                NavigationLink(destination: ChoiceGuildTypeView()) {
+                NavigationLink(destination: ChoiceGuildTypeView(isShowCreateGuildView: $isShowCreateGuildView)) {
                     CreateGuildButtonStyle(imageName: "keyGrab",text: "직접 만들기", imageWidth: 48, imageHeight: 44)
                 }
                 
@@ -57,8 +58,4 @@ struct CreateGuildView: View {
             })
         }
     }
-}
-
-#Preview {
-    CreateGuildView()
 }

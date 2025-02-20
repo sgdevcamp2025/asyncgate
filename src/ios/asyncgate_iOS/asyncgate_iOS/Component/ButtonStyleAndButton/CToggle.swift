@@ -29,6 +29,7 @@ struct CToggle: View {
                     .padding(.leading, 5)
                 
                 Toggle("", isOn: $isPrivate)
+                    .tint(Color.colorBlurple)
                     .padding()
             }
             .padding()

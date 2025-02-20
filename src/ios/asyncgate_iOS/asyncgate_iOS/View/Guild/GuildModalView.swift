@@ -10,11 +10,15 @@ import SwiftUI
 struct GuildModalView: View {
     @Environment(\.presentationMode) var presentation
     
+    @ObservedObject var guildListViewModel: GuildListViewModel
     @ObservedObject var guildDetailViewModel: GuildDetailViewModel
-    @StateObject var createGuildViewModel = CUDGuildViewModel()
+    @ObservedObject var createGuildViewModel: CUDGuildViewModel
+    @ObservedObject var guildCategoryViewModel: GuildCategoryViewModel
+    @ObservedObject var guildChannelViewModel: GuildChannelViewModel
     
     @State private var isShowCreateCategoryView: Bool = false
     @State private var isShowCreateChannelView: Bool = false
+    @State private var isShowUpdateGuildView: Bool = false
     
     let maxLength: Int = 4
     
@@ -27,8 +31,6 @@ struct GuildModalView: View {
                             image.image?.resizable()
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .frame(width: 70, height: 70)
-                            
-                            let _ = print("\(imageUrl)")
                         }
                         
                     } else {
@@ -53,6 +55,11 @@ struct GuildModalView: View {
                     .padding(.top, 10)
             }
             
+            Text("카테고리 및 채널")
+                .font(Font.pretendardSemiBold(size: 16))
+                .foregroundColor(Color.colorDart400)
+                .padding(.top, 10)
+            
             Button {
                 isShowCreateCategoryView = true
             } label: {
@@ -65,14 +72,27 @@ struct GuildModalView: View {
                 CreateGuildButtonStyle(imageName: "", text: "채널 만들기", imageWidth: 0, imageHeight: 0)
             }
             
+            Text("길드")
+                .font(Font.pretendardSemiBold(size: 16))
+                .foregroundColor(Color.colorDart400)
+                .padding(.top, 10)
+            
             Button {
-                createGuildViewModel.patchGuild()
+                if let guildId = guildDetailViewModel.guildId {
+                    createGuildViewModel.guildId = guildId
+                }
+                isShowUpdateGuildView = true
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 수정하기", imageWidth: 0, imageHeight: 0)
             }
             
             Button {
+                if let guildId = guildDetailViewModel.guildId {
+                    createGuildViewModel.guildId = guildId
+                }
                 createGuildViewModel.deleteGuildDetail()
+                guildListViewModel.fetchMyGuildList()
+                guildDetailViewModel.guildId = nil
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 삭제하기", imageWidth: 0, imageHeight: 0)
             }
@@ -80,20 +100,17 @@ struct GuildModalView: View {
             
             Spacer()
         }
+        .applyBackground()
         .padding()
         .padding(.top, 20)
-        .applyBackground()
         .fullScreenCover(isPresented: $isShowCreateCategoryView) {
-            CreateCategoryView(guildId: guildDetailViewModel.guildId)
+            CreateCategoryView(guildCategoryViewModel: guildCategoryViewModel, guildDetailViewModel: guildDetailViewModel)
         }
         .fullScreenCover(isPresented: $isShowCreateChannelView) {
-            CreateChannelView(guildId: guildDetailViewModel.guildId)
+            CreateChannelView(guildChannelViewModel: guildChannelViewModel, guildDetailViewModel: guildDetailViewModel)
+        }
+        .fullScreenCover(isPresented: $isShowUpdateGuildView) {
+            UpdateGuildView(createGuildViewModel: createGuildViewModel, guildListViewModel: guildListViewModel)
         }
     }
-}
-
-#Preview {
-    @Previewable @StateObject var guildDetailViewModel = GuildDetailViewModel()
-
-    GuildModalView(guildDetailViewModel: guildDetailViewModel)
 }

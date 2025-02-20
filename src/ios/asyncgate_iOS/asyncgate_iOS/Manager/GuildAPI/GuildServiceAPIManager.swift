@@ -83,17 +83,21 @@ class GuildServiceAPIManager {
                 switch response.result {
                 case .success(let successResponse):
                     completion(.success(successResponse))
+                    print("Response status code: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                             completion(.failure(errorResponse))
+                            print("Response status code: \(response)")
                         } catch {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            print("Response status code: \(response)")
                         }
                     } else {
-                        completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                        completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
+                        print("Response status code: \(response)")
                     }
                 }
             }
@@ -115,17 +119,21 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
+                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                                 completion(.failure(errorResponse))
+                                print("Response status code: \(response)")
                             } catch {
                                 completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                                print("Response status code: \(response)")
                             }
                         } else {
-                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
+                            completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
+                            print("Response status code: \(response)")
                         }
                     }
                 }

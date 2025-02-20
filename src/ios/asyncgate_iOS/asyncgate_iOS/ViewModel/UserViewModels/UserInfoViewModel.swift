@@ -35,4 +35,20 @@ class UserInfoViewModel: ObservableObject {
             }
         }
     }
+    
+    // MARK: 함수 - 회원 탈퇴
+    func deleteUserInfo() {
+        UserNetworkManager.shared.deleteUser() { result in
+            switch result {
+            case .success(_):
+                print("UpdateUserInfoViewModel - updateUserInfos() 탈퇴 성공")
+                
+            case .failure(let errorResponse):
+                DispatchQueue.main.async {
+                    self.errorMessage = errorResponse.error
+                }
+                print("UpdateUserInfoViewModel - deleteUserInfo() error : \(errorResponse)")
+            }
+        }
+    }
 }

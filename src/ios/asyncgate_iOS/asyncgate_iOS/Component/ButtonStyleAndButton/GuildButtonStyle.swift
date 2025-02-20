@@ -32,10 +32,11 @@ struct GuildButtonStyle: View {
         }
     }
     
+    // 길드 기본 버튼
     var backgroundShape: some View {
         ZStack {
             if isSelected {
-                RoundedRectangle(cornerRadius: 10)
+                RoundedRectangle(cornerRadius: 14)
                     .frame(width: 46, height: 46)
                     .foregroundStyle(Color(hex: "#5865F2"))
             } else {
@@ -49,4 +50,8 @@ struct GuildButtonStyle: View {
                 .foregroundStyle(Color.colorWhite)
         }
     }
+}
+
+#Preview {
+    GuildButtonStyle(name: "", profileImageUrl: "", isSelected: true)
 }
