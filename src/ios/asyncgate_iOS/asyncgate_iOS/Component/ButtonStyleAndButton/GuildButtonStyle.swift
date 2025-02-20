@@ -16,7 +16,6 @@ struct GuildButtonStyle: View {
     var body: some View {
         ZStack {
           if let imageUrlString = profileImageUrl, let imageUrl = URL(string: imageUrlString), imageUrlString == "https://asyncgate5.s3.ap-northeast-2.amazonaws.com/default/default-profile.png" {
-               
                     AsyncImage(url: imageUrl) { image in
                         image.image?.resizable()
                             .clipShape(Circle())
