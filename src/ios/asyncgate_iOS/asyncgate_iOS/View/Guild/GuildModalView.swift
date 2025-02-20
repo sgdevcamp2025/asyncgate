@@ -89,10 +89,8 @@ struct GuildModalView: View {
             Button {
                 if let guildId = guildDetailViewModel.guildId {
                     createGuildViewModel.guildId = guildId
+                    createGuildViewModel.deleteGuildDetail()
                 }
-                createGuildViewModel.deleteGuildDetail()
-                guildListViewModel.fetchMyGuildList()
-                guildDetailViewModel.guildId = nil
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 삭제하기", imageWidth: 0, imageHeight: 0)
             }
