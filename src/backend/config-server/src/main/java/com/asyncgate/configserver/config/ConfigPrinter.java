@@ -28,6 +28,7 @@ public class ConfigPrinter {
             };
 
             for (String service : services) {
+
                 Environment env = environmentRepository.findOne(service, "default", "main");
 
                 System.out.println("======== " + service + " ========");
