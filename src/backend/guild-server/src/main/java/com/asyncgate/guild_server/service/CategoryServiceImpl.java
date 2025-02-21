@@ -40,6 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     private void validatePermission(final String userId, final String guildId) {
         GuildMember guildMember = guildMemberRepository.findAcceptedMemberByUserIdAndGuildId(userId, guildId);
         // ToDo guildMember에 저장되어있는 카테고리 생성할 수 있는지 권한 확인
+
         if (!guildMember.getGuildRole().equals(GuildRole.ADMIN)) {
         }
     }
