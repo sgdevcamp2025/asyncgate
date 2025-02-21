@@ -18,7 +18,7 @@ struct ChannelButtonStyle: View {
             
             HStack {
                 Text("#")
-                    .font(Font.pretendardSemiBold(size: 16))
+                    .font(Font.pretendardRegular(size: 20))
                 
                 Text(channelName)
                     .foregroundStyle(Color.colorGrayImage)

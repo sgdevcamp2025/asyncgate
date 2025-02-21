@@ -97,7 +97,7 @@ struct LoadGuildListResponse: Codable {
 struct GuildInList: Codable, Hashable {
     let guildId: String
     let name: String
-    let profileImageUrl: String?
+    let profileImageUrl: String
 }
 
 // MARK: 응답 - 길드 단일 조회 시 받는 응답
@@ -118,7 +118,7 @@ struct GuildInfo: Codable, Hashable {
     let guildId: String
     let name: String
     let isPrivate: Bool
-    let profileImageUrl: String?
+    let profileImageUrl: String
 }
 
 struct GuildCategory: Codable, Hashable {
@@ -158,14 +158,4 @@ struct ChannelResponse: Codable {
     let message: String
     let time: String
     let result: GuildChannel
-}
-
-struct ChannelInfo: Codable, Hashable {
-    let channelId: String
-    let name: String
-    let topic: String?
-    let isPrivate: Bool
-    let guildId: String
-    let categoryId: String?
-    let channelType: String
 }
