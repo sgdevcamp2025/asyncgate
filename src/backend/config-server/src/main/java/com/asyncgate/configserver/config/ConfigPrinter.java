@@ -28,7 +28,7 @@ public class ConfigPrinter {
             };
 
             for (String service : services) {
-                Environment env = environmentRepository.findOne(service, "be/feat/22/direct-message", "default");
+                Environment env = environmentRepository.findOne(service, "default", "main");
 
                 System.out.println("======== " + service + " ========");
                 env.getPropertySources().forEach(propertySource -> {
