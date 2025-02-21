@@ -13,6 +13,9 @@ struct CreateGuildButtonStyle: View {
     var imageWidth: CGFloat
     var imageHeight: CGFloat
     
+    var isBehindChevron: Bool = false
+    var isSystemImage: Bool = false
+    
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
@@ -20,11 +23,20 @@ struct CreateGuildButtonStyle: View {
                 .frame(height: 70)
             
             HStack {
-                Image(imageName)
-                    .resizable()
-                    .foregroundStyle(Color.colorWhite)
-                    .frame(width: imageWidth, height: imageHeight)
-                    .padding(.trailing, 2)
+                if isSystemImage {
+                    Image(systemName: imageName)
+                        .resizable()
+                        .foregroundStyle(Color.colorWhite)
+                        .frame(width: imageWidth, height: imageHeight)
+                        .padding(.trailing, 2)
+                } else {
+                    Image(imageName)
+                        .resizable()
+                        .foregroundStyle(Color.colorWhite)
+                        .frame(width: imageWidth, height: imageHeight)
+                        .padding(.trailing, 2)
+                }
+                
                 
                 Text(text)
                     .font(Font.pretendardSemiBold(size: 16))
@@ -32,10 +44,12 @@ struct CreateGuildButtonStyle: View {
                 
                 Spacer()
                 
-                Image(systemName: "chevron.right")
-                    .resizable()
-                    .foregroundStyle(Color.colorWhite)
-                    .frame(width: 5, height: 10)
+                if !isBehindChevron {
+                    Image(systemName: "chevron.right")
+                        .resizable()
+                        .foregroundStyle(Color.colorWhite)
+                        .frame(width: 5, height: 10)
+                }
             }
             .padding()
         }
