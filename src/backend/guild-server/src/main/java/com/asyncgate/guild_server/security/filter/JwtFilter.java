@@ -10,9 +10,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
@@ -27,12 +29,12 @@ public class JwtFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
 
-        System.out.println("==== JwtFilter Start ====");
-        System.out.println("requestURI = " + requestURI);
-        System.out.println("Thread: " + Thread.currentThread().getName());
+        log.info("==== JwtFilter Start ====");
+        log.info("requestURI = {}", requestURI);
+        log.info("Thread: {}", Thread.currentThread().getName());
 
         if (isPublicUri(requestURI)) {
-            System.out.println("public!");
+            log.info("public!");
             filterChain.doFilter(request, response);
             return;
         }

@@ -4,6 +4,7 @@ import com.asyncgate.guild_server.domain.Channel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
+import org.springframework.util.StringUtils;
 
 @Builder(access = AccessLevel.PRIVATE)
 @Schema(description = "채널 응답 DTO")
@@ -30,13 +31,20 @@ public record ChannelResponse(
         String channelType
 ) {
     public static ChannelResponse from(final Channel channel) {
+        String categoryId;
+        if (StringUtils.hasText(channel.getCategoryId())) {
+            categoryId = channel.getCategoryId();
+        } else {
+            categoryId = Channel.CATEGORY_ID_IS_NULL;
+        }
+
         return new ChannelResponse(
                 channel.getId(),
                 channel.getName(),
                 channel.getTopic(),
                 channel.isPrivate(),
                 channel.getGuildId(),
-                channel.getCategoryId(),
+                categoryId,
                 channel.getChannelType().name()
         );
     }

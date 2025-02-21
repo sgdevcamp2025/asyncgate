@@ -11,6 +11,8 @@ public enum FailType {
     JWT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Jwt_4001", "잘못된 JWT Token 타입입니다."),
     _JWT_INVALID_TOKEN(HttpStatus.INTERNAL_SERVER_ERROR, "Jwt5001", "Api GateWay에서 전달된 토큰이 잘못된 토큰입니다."),
 
+    ARGUMENT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Argument_4001", "입력된 값이 잘못되었습니다."),
+
     // 알 수 없는 에러
     _UNKNOWN_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "Server_5000", "알 수 없는 에러가 발생하였습니다."),
 

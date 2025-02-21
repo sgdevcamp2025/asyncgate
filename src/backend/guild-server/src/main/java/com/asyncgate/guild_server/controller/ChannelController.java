@@ -28,33 +28,30 @@ public class ChannelController implements ChannelControllerDocs {
     }
 
     @Override
-    @DeleteMapping("/{guildId}/{categoryId}/{channelId}")
+    @DeleteMapping("/{guildId}/{channelId}")
     public SuccessResponse<String> delete(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId,
-            final @PathVariable String categoryId,
             final @PathVariable String channelId
     ) {
-        channelService.delete(userId, guildId, categoryId, channelId);
+        channelService.delete(userId, guildId, channelId);
         return SuccessResponse.ok(
                 String.format(
-                        "Guild Id[%s]의 Category Id[%s]의 Channel Id[%s]가 삭제 완료되었습니다.",
-                        guildId, categoryId, channelId
+                        "Guild Id[%s]의 Channel Id[%s]가 삭제 완료되었습니다.",
+                        guildId, channelId
                 )
         );
     }
 
     @Override
-    @PatchMapping("/{guildId}/{categoryId}/{channelId}")
+    @PatchMapping("/{guildId}/{channelId}")
     public SuccessResponse<ChannelResponse> update(
             final @AuthenticationPrincipal String userId,
             final @PathVariable String guildId,
-            final @PathVariable String categoryId,
             final @PathVariable String channelId,
             final @RequestBody ChannelUpdateRequest request
-
-            ) {
-        ChannelResponse response = channelService.update(userId, guildId, categoryId, channelId, request);
+    ) {
+        ChannelResponse response = channelService.update(userId, guildId, channelId, request);
         return SuccessResponse.ok(response);
     }
 }

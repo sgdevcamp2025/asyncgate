@@ -29,6 +29,7 @@ public record RegisterTemporaryMemberRequest(
 
         @Schema(description = "이름", example = "홍길동")
         @JsonProperty("name")
+        @NotBlank(message = "이름을 입력해주세요.")
         String name,
 
         @Schema(description = "닉네임", example = "asyncgate")

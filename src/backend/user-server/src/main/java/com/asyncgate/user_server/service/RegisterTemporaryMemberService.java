@@ -3,6 +3,9 @@ package com.asyncgate.user_server.service;
 import com.asyncgate.user_server.domain.AuthenticationCode;
 import com.asyncgate.user_server.domain.TemporaryMember;
 import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
+import com.asyncgate.user_server.exception.FailType;
+import com.asyncgate.user_server.exception.UserServerException;
+import com.asyncgate.user_server.repository.MemberRepository;
 import com.asyncgate.user_server.repository.redis.AuthenticationCodeRepository;
 import com.asyncgate.user_server.repository.redis.TemporaryMemberRepository;
 import com.asyncgate.user_server.support.utility.DomainUtil;
@@ -23,6 +26,7 @@ import java.util.UUID;
 public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUseCase {
 
     private final AuthenticationCodeRepository authenticationCodeRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TemporaryMemberRepository temporaryMemberRepository;
     private final EmailUtil emailUtil;
@@ -30,6 +34,9 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
     @Override
     @Transactional
     public void execute(final RegisterTemporaryMemberRequest request) {
+        if (isDuplicatedEmail(request.email())) {
+            throw new UserServerException(FailType.ALREADY_EXIST_EMAIL);
+        }
 
         // 도메인 객체 생성
         TemporaryMember tempMember = TemporaryMember.builder()
@@ -54,6 +61,12 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
 
         // 메일 전송 (추후 비동기로 변경)
         emailUtil.sendAuthenticationCode(request.email(), code);
+    }
+
+    private Boolean isDuplicatedEmail(
+            final String email
+    ) {
+        return memberRepository.isExistByEmail(email);
     }
 
 }

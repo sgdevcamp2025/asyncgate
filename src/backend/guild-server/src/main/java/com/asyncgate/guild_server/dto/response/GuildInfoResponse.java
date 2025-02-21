@@ -1,6 +1,8 @@
 package com.asyncgate.guild_server.dto.response;
 
+import com.asyncgate.guild_server.domain.Channel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public record GuildInfoResponse(
 
     private static List<InnerChannelResponse> transInnerChannels(List<ChannelResponse> channels) {
         return channels.stream().map(
-                channel -> new InnerChannelResponse(channel.channelId(), channel.name(), channel.topic(), channel.channelType(), channel.isPrivate())
+                channel -> InnerChannelResponse.of(channel.categoryId(), channel.name(), channel.topic(), channel.channelType(), channel.isPrivate())
         ).toList();
     }
 
@@ -55,6 +57,9 @@ public record GuildInfoResponse(
             @Schema(description = "채널 ID", example = "channel-56789")
             String channelId,
 
+            @Schema(description = "카테고리 ID", example = "category-67890")
+            String categoryId,
+
             @Schema(description = "채널 이름", example = "General Chat")
             String name,
 
@@ -66,5 +71,13 @@ public record GuildInfoResponse(
 
             @Schema(description = "비공개 여부", example = "false")
             boolean isPrivate
-    ) {}
+    ) {
+        private static InnerChannelResponse of(String categoryId, String name, String topic, String channelType, boolean isPrivate) {
+            if (StringUtils.hasText(categoryId)) {
+                return new InnerChannelResponse(categoryId, name, categoryId, topic, channelType, isPrivate);
+            } else {
+                return new InnerChannelResponse(categoryId, name, Channel.CATEGORY_ID_IS_NULL, topic, channelType, isPrivate);
+            }
+        }
+    }
 }

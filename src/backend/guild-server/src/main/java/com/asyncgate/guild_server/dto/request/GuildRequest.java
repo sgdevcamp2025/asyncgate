@@ -1,5 +1,6 @@
 package com.asyncgate.guild_server.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,7 @@ public class GuildRequest {
     @Size(min = 3, max = 30, message = "길드 이름은 최소 3자 이상, 최대 30자 이하여야 합니다.")
     private String name;
 
+    @JsonProperty("isPrivate")
     @Schema(description = "비공개 여부", example = "false")
     private boolean isPrivate;
 

@@ -12,4 +12,6 @@ public interface CategoryRepository {
     void deleteAllByGuildId(String guildId);
 
     List<Category> findActiveAllByGuildId(String guildId);
+
+    boolean existsById(String categoryId);
 }

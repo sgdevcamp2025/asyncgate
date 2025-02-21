@@ -45,26 +45,35 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             String path = request.getURI().getPath();
+            HttpHeaders headers = request.getHeaders();
 
-            // user server 특정 url인 경우 filter 제외
+            log.info("API Gateway 요청: [URI={}]", path);
+            log.info("요청 헤더: {}", headers);
+
             if (NO_NEED_URLS.contains(path)) {
                 return chain.filter(exchange);
             }
 
-            if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+            if (!headers.containsKey(HttpHeaders.AUTHORIZATION)) {
+                log.warn("Authorization 헤더 없음");
                 return onError(exchange, FailType.AUTHORIZATION_MISSING_HEADER);
             }
 
-            String authorizationHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+            String authorizationHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+
             if (authorizationHeader == null || !authorizationHeader.startsWith(BEARER_PREFIX)) {
+                log.warn("Authorization 헤더 형식 오류: {}", authorizationHeader);
                 return onError(exchange, FailType.AUTHORIZATION_INVALID_FORMAT);
             }
 
             String jwt = authorizationHeader.replace(BEARER_PREFIX, "");
+            log.info("JWT 토큰: {}", jwt);
 
             try {
                 jwtTokenProvider.validate(jwt);
+                log.info("JWT 유효성 검사 통과");
             } catch (ApiGatewayServerException e) {
+                log.error("JWT 검증 실패: {}", e.getMessage());
                 return onError(exchange, e.getFailType());
             }
 
@@ -80,6 +89,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             );
         };
     }
+
 
     private Mono<Void> onError(
             final ServerWebExchange exchange,

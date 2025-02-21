@@ -46,7 +46,9 @@ public enum FailType {
 
     // Access Denied Error
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "Access_40300", "접근 권한이 없습니다."),
-    NOT_LOGIN_USER(HttpStatus.FORBIDDEN, "Access_40301", "로그인하지 않은 사용자입니다.");
+    NOT_LOGIN_USER(HttpStatus.FORBIDDEN, "Access_40301", "로그인하지 않은 사용자입니다."),
+    ARGUMENT_BAD_REQUEST(HttpStatus.BAD_REQUEST, "Argument_4001", "입력된 값이 잘못되었습니다."),
+    ;
 
     private final HttpStatus status;
     private final String errorCode;

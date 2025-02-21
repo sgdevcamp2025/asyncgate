@@ -25,4 +25,16 @@ public class GuildQuerydslRepository {
                 ).fetch();
     }
 
+    public boolean existsById(final String guildId) {
+        Integer fetchOne = queryFactory
+                .selectOne()
+                .from(guild)
+                .where(
+                        guild.id.eq(guildId),
+                        guild.deleted.isFalse()
+                )
+                .fetchFirst();
+
+        return fetchOne != null;
+    }
 }

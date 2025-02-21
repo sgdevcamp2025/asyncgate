@@ -37,4 +37,9 @@ public class CategoryRepositoryImpl implements CategoryRepository {
                 .map(CategoryMapper::toDomain)
                 .toList();
     }
+
+    @Override
+    public boolean existsById(final String categoryId) {
+        return queryDslRepository.existsById(categoryId);
+    }
 }

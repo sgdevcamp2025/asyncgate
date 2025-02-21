@@ -15,7 +15,7 @@ import java.util.List;
 public class GuildRepositoryImpl implements GuildRepository {
 
     private final GuildJpaRepository jpaRepository;
-    private final GuildQuerydslRepository querydslRepository;
+    private final GuildQuerydslRepository queryDslRepository;
 
     @Override
     public void save(final Guild guild) {
@@ -48,9 +48,14 @@ public class GuildRepositoryImpl implements GuildRepository {
 
     @Override
     public List<Guild> findAllByIds(final List<String> guildIds) {
-        return querydslRepository.findAllByIds(guildIds).stream()
+        return queryDslRepository.findAllByIds(guildIds).stream()
                 .map(DomainUtil.GuildMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public boolean existsById(final String guildId) {
+        return queryDslRepository.existsById(guildId);
     }
 
 }

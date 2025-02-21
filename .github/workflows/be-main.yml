@@ -1,9 +1,9 @@
 name: ECR actions for multiple folders
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - be/refactor/54-config
 
 env:
   NAMESPACE_MSA: "msa"
@@ -60,7 +60,7 @@ jobs:
         id: check_msa_config
         run: |
           if git rev-parse --verify origin/main >/dev/null 2>&1; then
-            if git diff --name-only origin/main...HEAD | grep -q "^src/backend/config-server/"; then
+            if git diff --name-only origin/main...HEAD | grep -q "^config/"; then
               echo "changed=true" >> "$GITHUB_OUTPUT"
             else
               echo "changed=false" >> "$GITHUB_OUTPUT"

@@ -8,7 +8,7 @@ public interface ChannelService {
 
     ChannelResponse create(String userId, ChannelCreateRequest request);
 
-    void delete(String userId, String guildId, String categoryId, String channelId);
+    void delete(String userId, String guildId, String channelId);
 
-    ChannelResponse update(String userId, String guildId, String categoryId, String channelId, ChannelUpdateRequest request);
+    ChannelResponse update(String userId, String guildId, String channelId, ChannelUpdateRequest request);
 }

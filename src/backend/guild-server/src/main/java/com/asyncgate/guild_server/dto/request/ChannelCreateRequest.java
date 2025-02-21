@@ -24,7 +24,6 @@ public class ChannelCreateRequest {
     private String guildId;
 
     @Schema(description = "카테고리 ID", example = "category-67890")
-    @NotBlank(message = "categoryId는 필수입니다.")
     private String categoryId;
 
     @Schema(description = "채널 타입 (VOICE 또는 TEXT)", example = "TEXT")
