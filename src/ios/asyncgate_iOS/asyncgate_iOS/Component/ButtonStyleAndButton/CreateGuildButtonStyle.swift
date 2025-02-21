@@ -15,6 +15,7 @@ struct CreateGuildButtonStyle: View {
     
     var isBehindChevron: Bool = false
     var isSystemImage: Bool = false
+    var isDeleteButton: Bool = false
     
     var body: some View {
         ZStack {
@@ -40,7 +41,7 @@ struct CreateGuildButtonStyle: View {
                 
                 Text(text)
                     .font(Font.pretendardSemiBold(size: 16))
-                    .foregroundStyle(Color.colorWhite)
+                    .foregroundStyle(isDeleteButton ? Color.colorRed : Color.colorWhite)
                 
                 Spacer()
                 

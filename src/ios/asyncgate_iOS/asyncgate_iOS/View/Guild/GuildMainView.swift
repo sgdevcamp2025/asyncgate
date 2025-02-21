@@ -18,6 +18,7 @@ struct GuildMainView: View {
     @State private var isShowCreateGuildView: Bool = false
     @State private var isShowGuildModalView: Bool = false
     @State private var isShowCategoryModalView: Bool = false
+    @State private var isShowChannelModalView: Bool = false
     
     @State private var needToFetchDetails: Bool = false
     @State private var needToFetchGuildList: Bool = false
@@ -101,7 +102,7 @@ struct GuildMainView: View {
                                 if !filteredChannels.isEmpty {
                                     ForEach(filteredChannels, id: \.self) { channel in
                                         Button {
-                                
+                                            isShowChannelModalView = true
                                         } label: {
                                             ChannelButtonStyle(channelName: channel.name)
                                         }
@@ -121,12 +122,19 @@ struct GuildMainView: View {
                                         }
                                     )
                                     
-                                    let filteredChannels = guildDetailViewModel.channels.filter({ $0.categoryId == category.categoryId })
+                                    let filteredChannelList = guildDetailViewModel.channels.filter({ $0.categoryId == category.categoryId })
                                     
-                                    if !filteredChannels.isEmpty {
-                                        ForEach(filteredChannels, id: \.self) { channel in
+                                    if !filteredChannelList.isEmpty {
+                                        ForEach(filteredChannelList, id: \.self) { channel in
                                             Button {
-                                                
+                                                if let guildId = guildDetailViewModel.guildId {
+                                                    guildChannelViewModel.guildId = guildId
+                                                }
+                                                guildChannelViewModel.channelId = channel.channelId
+                                                let _ = print(" guildChannelViewModel.channelId: \( guildChannelViewModel.channelId)")
+                                                guildChannelViewModel.categoryId = category.categoryId
+                                                guildChannelViewModel.name = channel.name
+                                                isShowChannelModalView = true
                                             } label: {
                                                 ChannelButtonStyle(channelName: channel.name)
                                             }
@@ -153,11 +161,10 @@ struct GuildMainView: View {
                 needToFetchGuildList = true
                 needToFetchDetails = true
             }
-            .onChange(of: guildCategoryViewModel.isCreatedCategory) {
+            .onChange(of: guildCategoryViewModel.isNeedRefresh) {
                 needToFetchDetails = true
             }
-            
-            .onChange(of: guildChannelViewModel.isCreatedChannel) {
+            .onChange(of: guildChannelViewModel.isNeedRefresh) {
                 needToFetchDetails = true
             }
             .onChange(of: [needToFetchGuildList, needToFetchDetails]) {
@@ -182,8 +189,14 @@ struct GuildMainView: View {
             .sheet(isPresented: $isShowCategoryModalView) {
                 GuildCategoryModalView(guildDetailViewModel: guildDetailViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
                     .onDisappear {
-                        guildChannelViewModel.categoryId = ""
+                        guildChannelViewModel.reset()
                         guildCategoryViewModel.name = ""
+                    }
+            }
+            .sheet(isPresented: $isShowChannelModalView) {
+                GuildChannelModalView(guildDetailViewModel: guildDetailViewModel, guildChannelViewModel: guildChannelViewModel)
+                    .onDisappear {
+                        guildChannelViewModel.reset()
                     }
             }
         }

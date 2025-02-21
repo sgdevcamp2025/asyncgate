@@ -28,6 +28,7 @@ class CUDGuildViewModel: ObservableObject {
         self.profileImage = nil
         self.errorMessage = nil
         self.isNeedRefresh = false
+        self.isRefreshing = false
     }
     
     // MARK: 함수 - 길드 생성하기
