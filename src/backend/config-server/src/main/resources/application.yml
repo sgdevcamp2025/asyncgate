@@ -25,4 +25,3 @@ logging:
   level:
     org.springframework.cloud.config.server.encryption: DEBUG
     org.springframework.cloud.config.server.decryption: DEBUG
-    org.springframework.security: DEBUG
