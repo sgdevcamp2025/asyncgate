@@ -15,8 +15,6 @@ struct GuildMainView: View {
     @StateObject var guildCategoryViewModel = GuildCategoryViewModel()
     @StateObject var guildChannelViewModel = GuildChannelViewModel()
     
-    @State private var currentCategoryId: String = ""
-    
     @State private var isShowCreateGuildView: Bool = false
     @State private var isShowGuildModalView: Bool = false
     @State private var isShowCategoryModalView: Bool = false
@@ -95,10 +93,15 @@ struct GuildMainView: View {
                             Divider()
                             
                             ScrollView {
-                                if !guildDetailViewModel.channels.filter({ $0.categoryId == nil || $0.categoryId == "" }).isEmpty {
-                                    ForEach(guildDetailViewModel.channels.filter({ $0.categoryId == nil || $0.categoryId == "" }), id: \.self) { channel in
+                                let filteredChannels = guildDetailViewModel.channels.filter {
+                                    guard let categoryId = $0.categoryId else { return true }
+                                    return categoryId == "CATEGORY_ID_IS_NULL"
+                                }
+                                
+                                if !filteredChannels.isEmpty {
+                                    ForEach(filteredChannels, id: \.self) { channel in
                                         Button {
-                                            
+                                
                                         } label: {
                                             ChannelButtonStyle(channelName: channel.name)
                                         }
@@ -107,14 +110,14 @@ struct GuildMainView: View {
                                 
                                 ForEach(guildDetailViewModel.categories, id: \.self) { category in
                                     Button {
-                                        currentCategoryId = category.categoryId
+                                       
                                     } label: {
                                         CategoryButtonStyle(categoryName: category.name)
                                     }
                                     .simultaneousGesture(LongPressGesture().onEnded { _ in
-                                            currentCategoryId = category.categoryId
-                                        let _ = print("currentCategoryId: \(currentCategoryId)")
-                                            isShowCategoryModalView = true
+                                        guildChannelViewModel.categoryId = category.categoryId
+                                        guildCategoryViewModel.name = category.name
+                                        isShowCategoryModalView = true
                                         }
                                     )
                                     
@@ -177,7 +180,11 @@ struct GuildMainView: View {
                 GuildModalView(guildListViewModel: guildListViewModel, guildDetailViewModel: guildDetailViewModel, createGuildViewModel: createGuildViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
             }
             .sheet(isPresented: $isShowCategoryModalView) {
-                GuildCategoryModalView(guildDetailViewModel: guildDetailViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel, categoryId: currentCategoryId)
+                GuildCategoryModalView(guildDetailViewModel: guildDetailViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
+                    .onDisappear {
+                        guildChannelViewModel.categoryId = ""
+                        guildCategoryViewModel.name = ""
+                    }
             }
         }
         .applyGuildBackground()
