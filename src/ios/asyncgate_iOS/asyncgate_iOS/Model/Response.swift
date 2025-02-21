@@ -131,6 +131,8 @@ struct GuildChannel: Codable, Hashable {
     let channelId: String
     let name: String
     let topic: String?
+    let categoryId: String?
+    let guildId: String?
     let channelType: String
     let isPrivate: Bool
 }
@@ -155,7 +157,7 @@ struct ChannelResponse: Codable {
     let httpStatus: Int
     let message: String
     let time: String
-    let result: ChannelInfo
+    let result: GuildChannel
 }
 
 struct ChannelInfo: Codable, Hashable {
@@ -164,6 +166,6 @@ struct ChannelInfo: Codable, Hashable {
     let topic: String?
     let isPrivate: Bool
     let guildId: String
-    let categoryId: String
+    let categoryId: String?
     let channelType: String
 }

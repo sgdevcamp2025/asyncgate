@@ -13,6 +13,7 @@ struct CreateChannelView: View {
     @ObservedObject var guildDetailViewModel: GuildDetailViewModel
     
     var guildId: String?
+    var categoryId: String?
     
     var body: some View {
         NavigationStack {
@@ -33,8 +34,19 @@ struct CreateChannelView: View {
             
                     Spacer()
                     
+                    let _ = print("CreateChannelView!!! - categoryId.categoryId: \(categoryId ?? "NONONONONONONONONONONO")")
+                    
                     Button {
-                        if let guildId = guildDetailViewModel.guildId {
+                        if let guildId = guildDetailViewModel.guildId, let categoryId = categoryId {
+                            guildChannelViewModel.guildId = guildId
+                            let _ = print("CreateChannelView - guildChannelViewModel.categoryId: \(guildChannelViewModel.categoryId)")
+                            guildChannelViewModel.categoryId = categoryId
+                            let _ = print("CreateChannelView - categoryId.categoryId: \(categoryId)")
+                            let _ = print("CreateChannelView - guildChannelViewModel.categoryId: \(guildChannelViewModel.categoryId)")
+                            guildChannelViewModel.createChannel()
+                            dismiss()
+                            
+                        } else if let guildId = guildDetailViewModel.guildId {
                             guildChannelViewModel.guildId = guildId
                             guildChannelViewModel.createChannel()
                             guildDetailViewModel.fetchGuildDetail()
@@ -149,6 +161,7 @@ struct CreateChannelView: View {
         }
     }
     
+    // ButtonStyle - 텍스트/음성 선택 여부 - 선택 O
     var selectedButtonStyle: some View {
         ZStack {
             Circle()
@@ -162,6 +175,7 @@ struct CreateChannelView: View {
         }
     }
     
+    // ButtonStyle - 텍스트/음성 선택 여부 - 선택 X
     var notSelectedButtonStyle: some View {
         Image(systemName: "circle")
             .resizable()
