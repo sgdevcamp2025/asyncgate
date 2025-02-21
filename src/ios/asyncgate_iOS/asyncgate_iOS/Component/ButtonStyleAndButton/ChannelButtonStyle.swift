@@ -28,5 +28,4 @@ struct ChannelButtonStyle: View {
             }
         }
     }
-    
 }

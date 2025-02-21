@@ -15,16 +15,8 @@ class GuildListViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    // 더미 데이터 예시
-//    let dummyGuildData: [GuildInList] = [
-//        GuildInList(guildId: "guild-12345", name: "Knight's Order", profileImageUrl: nil),
-//        GuildInList(guildId: "guild-67890", name: "Warrior's Clan", profileImageUrl: nil),
-//        GuildInList(guildId: "guild-54321", name: "Mages Guild", profileImageUrl: nil)
-//    ]
-    
     // 초기화하여 불러오기
     init() {
-//        self.myGuildList = self.dummyGuildData
         fetchMyGuildList()
     }
     

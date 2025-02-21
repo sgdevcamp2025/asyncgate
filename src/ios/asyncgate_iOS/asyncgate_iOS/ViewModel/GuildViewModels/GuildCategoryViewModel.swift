@@ -12,7 +12,7 @@ class GuildCategoryViewModel: ObservableObject {
     @Published var isPrivate: Bool = false
     @Published var guildId: String?
     
-    @Published var isCreatedCategory: Bool = false
+    @Published var isNeedRefresh: Bool = false
     @Published var isRefreshing: Bool = false
     
     @Published var errorMessage: String?
@@ -21,8 +21,9 @@ class GuildCategoryViewModel: ObservableObject {
         self.name = "새로운 카테고리"
         self.isPrivate = false
         self.guildId = nil
-        self.isCreatedCategory = false
         self.errorMessage = nil
+        self.isNeedRefresh = false
+        self.isRefreshing = false
     }
     
     func createCategory() {
@@ -32,7 +33,7 @@ class GuildCategoryViewModel: ObservableObject {
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
-                        self.isCreatedCategory = true
+                        self.isNeedRefresh = true
                         self.isRefreshing = true
                     }
                     self.reset()
