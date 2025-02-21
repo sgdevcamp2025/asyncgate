@@ -27,30 +27,24 @@ public interface ChannelControllerDocs {
     );
 
     @Operation(summary = "채널 삭제", description = "길드 내 특정 카테고리를 삭제합니다.")
-    @DeleteMapping("/{guildId}/{categoryId}/{channelId}")
+    @DeleteMapping("/{guildId}/{channelId}")
     SuccessResponse<String> delete(
             @AuthenticationPrincipal String userId,
 
             @Parameter(description = "길드 ID", required = true, example = "guild-12345")
             @PathVariable String guildId,
 
-            @Parameter(description = "카테고리 ID", required = true, example = "category-67890")
-            @PathVariable String categoryId,
-
             @Parameter(description = "채널 ID", required = true, example = "channel-56789")
             @PathVariable String channelId
     );
 
     @Operation(summary = "채널 수정", description = "특정 채널의 정보를 수정합니다.")
-    @PatchMapping("/{guildId}/{categoryId}/{channelId}")
+    @PatchMapping("/{guildId}/{channelId}")
     SuccessResponse<ChannelResponse> update(
             @AuthenticationPrincipal String userId,
 
             @Parameter(description = "길드 ID", required = true, example = "guild-12345")
             @PathVariable String guildId,
-
-            @Parameter(description = "카테고리 ID", required = true, example = "category-67890")
-            @PathVariable String categoryId,
 
             @Parameter(description = "채널 ID", required = true, example = "channel-56789")
             @PathVariable String channelId,

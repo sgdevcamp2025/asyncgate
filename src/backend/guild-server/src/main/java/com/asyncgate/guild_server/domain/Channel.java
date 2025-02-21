@@ -1,10 +1,11 @@
 package com.asyncgate.guild_server.domain;
 
 import com.asyncgate.guild_server.dto.request.ChannelUpdateRequest;
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
+
+import java.util.UUID;
 
 @Getter
 public class Channel implements Identifiable {
@@ -43,6 +44,12 @@ public class Channel implements Identifiable {
                 .build();
     }
 
+    public void update(final ChannelUpdateRequest request) {
+        changeName(request.getName());
+        changePrivate(request.isPrivate());
+        changeTopic(request.getTopic());
+    }
+
     private void changeTopic(final String topic) {
         this.topic = topic;
     }
@@ -59,9 +66,5 @@ public class Channel implements Identifiable {
         }
     }
 
-    public void update(final ChannelUpdateRequest request) {
-        changeName(request.getName());
-        changePrivate(request.isPrivate());
-        changeTopic(request.getTopic());
-    }
+    public static String CATEGORY_ID_IS_NULL = "CATEGORY_ID_IS_NULL";
 }

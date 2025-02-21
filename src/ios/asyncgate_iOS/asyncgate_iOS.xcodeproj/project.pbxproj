@@ -36,6 +36,7 @@
 		263BFD25E29DDE3581181D4D /* Pods-asyncgate_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOS.release.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS.release.xcconfig"; sourceTree = "<group>"; };
 		26810480EB084C8998408B13 /* Pods-asyncgate_iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOSTests.release.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOSTests/Pods-asyncgate_iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		3EA7A6DE9C203FFF10094F1E /* Pods-asyncgate_iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOSTests/Pods-asyncgate_iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		425A86F62D645D22009B4512 /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
 		42D3DCB32D51DA2900BC3E8F /* asyncgate_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = asyncgate_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42D3DCC32D51DA2A00BC3E8F /* asyncgate_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = asyncgate_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42D3DCCD2D51DA2A00BC3E8F /* asyncgate_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = asyncgate_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		425A87B12D66E071009B4512 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				425A86F62D645D22009B4512 /* .xcconfig.xcconfig */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		42D3DCAA2D51DA2900BC3E8F = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +108,7 @@
 				42D3DCB42D51DA2900BC3E8F /* Products */,
 				B2DC13B528D33F0397396DF4 /* Pods */,
 				D7EB2A16941B0EA27DEBAC32 /* Frameworks */,
+				425A87B12D66E071009B4512 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -416,6 +426,8 @@
 /* Begin XCBuildConfiguration section */
 		42D3DCD52D51DA2A00BC3E8F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */;
+			baseConfigurationReferenceRelativePath = .xcconfig.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

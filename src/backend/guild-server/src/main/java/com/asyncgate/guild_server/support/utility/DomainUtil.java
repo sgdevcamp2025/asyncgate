@@ -7,7 +7,7 @@ import com.asyncgate.guild_server.domain.GuildMember;
 import com.asyncgate.guild_server.entity.CategoryEntity;
 import com.asyncgate.guild_server.entity.ChannelEntity;
 import com.asyncgate.guild_server.entity.GuildEntity;
-import com.asyncgate.guild_server.entity.GuildMemberEntity;
+import com.asyncgate.guild_server.entity.GuildMemberEntity;import org.springframework.util.StringUtils;
 
 public class DomainUtil {
 

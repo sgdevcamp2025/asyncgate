@@ -57,7 +57,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/users/(?<segment>.*), /$\{segment}
-        
+
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
@@ -73,7 +73,7 @@ spring:
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/users/(?<segment>.*), /$\{segment}
-          
+
         - id: user-server
           uri: lb://USER-SERVER
           predicates:
@@ -82,7 +82,21 @@ spring:
             - RemoveRequestHeader=Cookie
             - RewritePath=/users/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
-            
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins:
+              - 'http://localhost:5173'
+            allow-credentials: true
+            allowed-headers: '*'
+            allowed-methods:
+              - PUT
+              - GET
+              - POST
+              - DELETE
+              - OPTIONS
 
 management:
   endpoints:
