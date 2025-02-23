@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CreateChannelView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var guildChannelViewModel = GuildChannelViewModel()
+    @ObservedObject var guildChannelViewModel: GuildChannelViewModel
     @ObservedObject var guildDetailViewModel: GuildDetailViewModel
     
     var guildId: String?
@@ -37,7 +37,6 @@ struct CreateChannelView: View {
                        if let guildId = guildDetailViewModel.guildId {
                             guildChannelViewModel.guildId = guildId
                             guildChannelViewModel.createChannel()
-                            guildDetailViewModel.fetchGuildDetail()
                             dismiss()
                         }
                     } label: {

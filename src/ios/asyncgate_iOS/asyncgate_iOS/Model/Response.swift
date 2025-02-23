@@ -20,7 +20,7 @@ struct SuccessEmptyResultResponse: Decodable {
     let httpStatus: Int
     let message: String
     let time: String
-    let result: EmptyResponse
+    let result: EmptyResponse?
 }
 
 // SuccessEmptyResultResponse -> 빈 배열의 형태로 받아오므로 빈 상태로 선언

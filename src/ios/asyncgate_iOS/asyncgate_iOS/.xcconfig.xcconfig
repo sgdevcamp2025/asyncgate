@@ -9,6 +9,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 hostUrl = api.asyncgate.site
+bundleId = kk.asyncgate-iOS
 
 
 // "https://api.asyncgate.site/"

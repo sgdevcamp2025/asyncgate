@@ -20,7 +20,7 @@ struct SignMainView: View {
                     .frame(width: 85, height: 65)
                     .padding(.bottom, 27)
                 
-                Text("DISCORD에 오신 걸 환영합니다")
+                Text("ASYNCGATE에 오신 걸 환영합니다")
                     .foregroundStyle(Color.colorWhite)
                     .font(Font.pretendardBold(size: 30))
                     .multilineTextAlignment(.center)

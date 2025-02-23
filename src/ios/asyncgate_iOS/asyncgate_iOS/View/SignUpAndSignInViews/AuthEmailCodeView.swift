@@ -11,7 +11,7 @@ import SwiftUI
 struct AuthEmailCodeView: View {
     @ObservedObject var signUpViewModel: SignUpViewModel
     @StateObject var authEmailCodeViewModel = AuthEmailCodeViewModel()
-   
+    
     var body: some View {
         VStack {
             Text("이메일로 전송받은 인증 코드를 입력하세요")
@@ -24,6 +24,7 @@ struct AuthEmailCodeView: View {
                 .padding(.bottom, 30)
             
             Button {
+                authEmailCodeViewModel.email = signUpViewModel.email
                 authEmailCodeViewModel.isEmailCodeMatched()
             } label: {
                 SignButtonStyle(text: "확인")
@@ -46,6 +47,9 @@ struct AuthEmailCodeView: View {
         .applyBackground()
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: BackButton(color: .white))
+        .fullScreenCover(isPresented: $authEmailCodeViewModel.isEmailCodeAuthenticated) {
+            SignInView()
+        }
     }
 }
 

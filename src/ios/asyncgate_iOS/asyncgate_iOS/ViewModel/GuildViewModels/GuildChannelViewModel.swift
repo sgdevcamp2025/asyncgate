@@ -10,7 +10,7 @@ import SwiftUI
 class GuildChannelViewModel: ObservableObject {
     @Published var name: String = "새로운 채널"
     @Published var guildId: String = ""
-    @Published var categoryId: String = ""
+    @Published var categoryId: String = "CATEGORY_ID_IS_NULL"
     @Published var channelType: String = "TEXT"
     @Published var isPrivate: Bool = false
     
@@ -26,7 +26,7 @@ class GuildChannelViewModel: ObservableObject {
     func reset() {
         self.name = "새로운 채널"
         self.guildId = ""
-        self.categoryId = ""
+        self.categoryId = "CATEGORY_ID_IS_NULL"
         self.channelType = "TEXT"
         self.isPrivate = false
         self.isNeedRefresh = false
@@ -94,7 +94,7 @@ class GuildChannelViewModel: ObservableObject {
                     DispatchQueue.main.async {
                         self.errorMessage = errorResponse.localizedDescription
                     }
-                    print("GuildChannelViewModel - updateChannel() - 에러 발생: \(errorResponse)")
+                    print("GuildChannelViewModel - deleteChannel() - 에러 발생: \(errorResponse)")
                 }
             }
     }

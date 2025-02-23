@@ -14,7 +14,7 @@ struct SignInResponse: Decodable {
     let httpStatus: Int
     let message: String
     let time: String
-    let result: AccessTokenResponse
+    let result: AccessTokenResponse?
 }
 
 // SignInResponse -> 엑세스 토큰을 받아옴

@@ -58,6 +58,7 @@ struct GuildChannelModalView: View {
             
             Button {
                 guildChannelViewModel.deleteChannel()
+                presentation.wrappedValue.dismiss()
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "채널 삭제하기", imageWidth: 0, imageHeight: 0, isBehindChevron: true, isSystemImage: true, isDeleteButton: true)
             }

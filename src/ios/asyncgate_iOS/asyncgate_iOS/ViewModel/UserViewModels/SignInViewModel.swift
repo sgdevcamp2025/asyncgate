@@ -26,9 +26,19 @@ class SignInViewModel: ObservableObject {
         UserNetworkManager.shared.signIn(email: email, passWord: password) { result in
             switch result {
             case .success(let signInResponse):
-                DispatchQueue.main.async {
-                    self.auth.saveToken(signInResponse.result.accessToken)
-                    self.isSignInSuccess = true
+                if (200...299).contains(signInResponse.httpStatus) {
+                    DispatchQueue.main.async {
+                        self.isSignInSuccess = true
+                        if let accessToken = signInResponse.result?.accessToken {
+                            self.auth.saveToken(accessToken)
+                            print("\(self.auth.accessToken ?? "")")
+                            self.isSignInSuccess = true
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.errorMessage = signInResponse.message
+                    }
                 }
                 
             case .failure(let signInErrorResponse):
