@@ -18,7 +18,7 @@ class HealthViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     
     func checkHealth() {
-        UserNetworkManager.shared.health { result in
+        UserServiceAPIManager.shared.health { result in
             switch result {
             case .success(let successResponse):
                 DispatchQueue.main.async {

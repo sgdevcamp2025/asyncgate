@@ -19,7 +19,7 @@ class AuthEmailCodeViewModel: ObservableObject {
     
     // MARK: 함수 - 이메일 인증코드 일치 여부 확인
     func isEmailCodeMatched() {
-        UserNetworkManager.shared.authEmailCode(email: email, authenticationCode: authenticationCode) { result in
+        UserServiceAPIManager.shared.authEmailCode(email: email, authenticationCode: authenticationCode) { result in
             switch result {
             case .success(let response):
                 if (200...299).contains(response.httpStatus) {

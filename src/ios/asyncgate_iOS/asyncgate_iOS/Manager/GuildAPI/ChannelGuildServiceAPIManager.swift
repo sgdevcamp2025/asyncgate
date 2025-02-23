@@ -10,10 +10,10 @@ import Alamofire
 class ChannelGuildServiceAPIManager {
     static let shared = ChannelGuildServiceAPIManager()
     
-    // ViewModel 호출 - 엑세스 토큰 사용
+    // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
-    
     private let hostUrl = Config.shared.hostUrl
+    
     
     // MARK: 함수 - 채널 생성
     func createGuildChannel(name: String, guildId: String, categoryId: String, channelType: String, isPrivate: Bool, completion: @escaping (Result<ChannelResponse, ErrorResponse>) -> Void) {
@@ -51,11 +51,11 @@ class ChannelGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "ChannelGuildServiceAPIManager - createGuildChannel() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "ChannelGuildServiceAPIManager - createGuildChannel() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }
@@ -93,11 +93,11 @@ class ChannelGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - updateGuildChannel() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - updateGuildChannel() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }
@@ -129,11 +129,11 @@ class ChannelGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - createGuildCategory() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - createGuildCategory() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }

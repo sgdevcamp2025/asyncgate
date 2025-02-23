@@ -10,10 +10,10 @@ import Alamofire
 class GuildMemberServiceAPIManager {
     static let shared = GuildServiceAPIManager()
     
-    // ViewModel 호출 - 엑세스 토큰 사용
+    // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
-    
     private let hostUrl = Config.shared.hostUrl
+    
     
     // MARK: 함수 - 길드 초대 전송
     func sendGuildInvitation(guildId: String, targetUserId: String, completion: @escaping (Result<SuccessResultStringResponse, OnlyHttpStatusResponse>) -> Void) {

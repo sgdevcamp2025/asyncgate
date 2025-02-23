@@ -11,9 +11,8 @@ import Alamofire
 class GuildServiceAPIManager {
     static let shared = GuildServiceAPIManager()
     
-    // ViewModel 호출 - 엑세스 토큰 사용
+    // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
-    
     private let hostUrl = Config.shared.hostUrl
     
     // MARK: 함수 - 길드 생성
@@ -235,11 +234,11 @@ class GuildServiceAPIManager {
                                 let errorResponse = try JSONDecoder().decode(FourErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
                             } catch {
-                                completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 오류 발생", path: "")))
+                                completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "오류가 발생했습니다.", path: "")))
                                 print("Response status code: \(response)")
                             }
                         } else {
-                            completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "GuildServiceAPIManager - fetchGuildInfo() - 서버 응답 없음", path: "")))
+                            completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", path: "")))
                             print("Response status code: \(response)")
                         }
                     }

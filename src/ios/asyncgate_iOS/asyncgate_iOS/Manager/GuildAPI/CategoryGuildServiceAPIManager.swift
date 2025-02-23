@@ -10,9 +10,8 @@ import Alamofire
 class CategoryGuildServiceAPIManager {
     static let shared = CategoryGuildServiceAPIManager()
     
-    // ViewModel 호출 - 엑세스 토큰 사용
+    // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
-    
     private let hostUrl = Config.shared.hostUrl
     
     // MARK: 함수 - 카테고리 생성
@@ -45,11 +44,11 @@ class CategoryGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - createGuildCategory() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - createGuildCategory() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }
@@ -81,11 +80,11 @@ class CategoryGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - createGuildCategory() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - createGuildCategory() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }

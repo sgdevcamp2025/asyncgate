@@ -7,6 +7,7 @@
 
 import Foundation
 
+// MARK: API 주소 및 번들ID (.gitignore)
 class Config {
     static let shared = Config()
     let hostUrl: String
