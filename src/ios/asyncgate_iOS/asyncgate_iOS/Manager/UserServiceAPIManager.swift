@@ -26,12 +26,15 @@ class UserNetworkManager {
                 switch response.result {
                 case .success(let healthResponse):
                     completion(.success(healthResponse))
+                    print("Response status code: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
+                            print("Response status code: \(response)")
+                            
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 오류 발생", requestId: "")))
                             print("Response status code: \(response)")
@@ -57,6 +60,8 @@ class UserNetworkManager {
             "nickname": nickName,
             "birth": birth
         ]
+        
+        print("알ㄴ알ㅇㄹㅇ: \(email), \(passWord), \(name), \(nickName), \(birth)")
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
@@ -118,12 +123,15 @@ class UserNetworkManager {
     
     // MARK: 함수 - 이메일 인증번호 인증
     func authEmailCode(email: String, authenticationCode: String, completion: @escaping (Result<SuccessEmptyResultResponse, ErrorResponse>) -> Void) {
-        let url = "https://\(hostUrl)/users/sign-up"
+        let url = "https://\(hostUrl)/users/validation/authentication-code"
         
         let parameters: [String: Any] = [
             "email": email,
             "authentication_code": authenticationCode,
         ]
+        
+        print("email: \(email)")
+        print("authenticationCode: \(authenticationCode)")
         
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
@@ -131,17 +139,21 @@ class UserNetworkManager {
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
-                    
+                    print("Response status code: \(response)")
+                  
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
+                            print("Response status code: \(response)")
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 인증에서 오류가 발생했습니다.", requestId: "")))
+                            print("Response status code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "func 이메일 인증 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버 응답이 없습니다.", requestId: "")))
+                        print("Response status code: \(response)")
                     }
                 }
             }
@@ -241,12 +253,14 @@ class UserNetworkManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
+                        print("Response ㅈㅈㅈ code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
+                                print("Response ㅈㅈㅈ code: \(response)")
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원 탈퇴 - 오류 발생", requestId: "")))
                             }

@@ -12,11 +12,15 @@ import SwiftUI
 class AccessTokenViewModel: ObservableObject {
     static let shared = AccessTokenViewModel()
     
-    let keychain = Keychain(service: "kk.asyncgate-iOS")
-    
     @Published var accessToken: String?
-
+    
+    private let bundleId: String
+    let keychain: Keychain
+    
     private init() {
+        self.bundleId = Config.shared.bundleId
+        self.keychain = Keychain(service: self.bundleId)
+        
         loadToken()
     }
     
@@ -27,7 +31,7 @@ class AccessTokenViewModel: ObservableObject {
             self.accessToken = token
             
         } catch {
-            print("Keychain save error: \(error)")
+            print("AccessTokenViewModel - Keychain save 에러: \(error)")
         }
     }
     
@@ -39,7 +43,7 @@ class AccessTokenViewModel: ObservableObject {
             }
             
         } catch {
-            print("Keychain load error: \(error)")
+            print("AccessTokenViewModel - Keychain load 에러: \(error)")
             self.accessToken = nil
         }
     }
@@ -51,7 +55,7 @@ class AccessTokenViewModel: ObservableObject {
             self.accessToken = nil
             
         } catch {
-            print("Keychain remove error: \(error)")
+            print("AccessTokenViewModel - Keychain delete 에러: \(error)")
         }
     }
 }

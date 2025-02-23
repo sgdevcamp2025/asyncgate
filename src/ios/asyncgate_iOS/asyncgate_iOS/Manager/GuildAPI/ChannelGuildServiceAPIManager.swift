@@ -27,6 +27,10 @@ class ChannelGuildServiceAPIManager {
             "private": isPrivate
         ]
         
+        print("guildId: \(guildId)")
+        print("categoryId: \(categoryId)")
+        print("isPrivate: \(isPrivate)")
+        
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)",
@@ -61,7 +65,7 @@ class ChannelGuildServiceAPIManager {
     
     // MARK: 함수 - 채널 수정
     func updateGuildChannel(guildId: String, categoryId: String, channelId: String, name: String, topic: String, isPrivate: Bool, completion: @escaping (Result<ChannelResponse, ErrorResponse>) -> Void) {
-        let url = "https://\(hostUrl)/guilds/category/\(guildId)/\(categoryId)/\(channelId)"
+        let url = "https://\(hostUrl)/guilds/channel/\(guildId)/\(categoryId)/\(channelId)"
         
         let parameters: [String: Any] = [
             "name": name,
@@ -89,11 +93,11 @@ class ChannelGuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - createGuildCategory() - 에러 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "GuildServiceAPIManager - updateGuildChannel() - 에러 발생", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - createGuildCategory() - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "GuildServiceAPIManager - updateGuildChannel() - 서버 응답 없음", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
                         }
                     }
@@ -103,7 +107,7 @@ class ChannelGuildServiceAPIManager {
     
     // MARK: 함수 - 채널 삭제
     func deleteGuildChannel(guildId: String, categoryId: String, channelId: String, completion: @escaping (Result<SuccessResultStringResponse, ErrorResponse>) -> Void) {
-        let url = "https://\(hostUrl)/guilds/category/\(guildId)/\(categoryId)/\(channelId)"
+        let url = "https://\(hostUrl)/guilds/channel/\(guildId)/\(categoryId)/\(channelId)"
         
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [

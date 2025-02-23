@@ -65,6 +65,10 @@ struct GuildMainView: View {
                         
                         VStack(alignment: .leading) {
                             Button {
+                                if let guildId = guildDetailViewModel.guildId {
+                                    guildChannelViewModel.guildId = guildId
+                                    guildCategoryViewModel.guildId = guildId
+                                }
                                 isShowGuildModalView.toggle()
                             } label: {
                                 ChannelNameButtonStyle(channelName: guildDetailViewModel.guild?.name ?? "")
@@ -102,6 +106,12 @@ struct GuildMainView: View {
                                 if !filteredChannels.isEmpty {
                                     ForEach(filteredChannels, id: \.self) { channel in
                                         Button {
+                                            if let guildId = guildDetailViewModel.guildId {
+                                                guildChannelViewModel.guildId = guildId
+                                            }
+                                            guildChannelViewModel.channelId = channel.channelId
+                                            let _ = print(" guildChannelViewModel.channelId: \( guildChannelViewModel.channelId)")
+                                            guildChannelViewModel.name = channel.name
                                             isShowChannelModalView = true
                                         } label: {
                                             ChannelButtonStyle(channelName: channel.name)

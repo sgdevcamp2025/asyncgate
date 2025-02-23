@@ -50,7 +50,7 @@ struct CreateCategoryView: View {
                 
                 CTextField(stepCaption: "카테고리 이름", placeholder: "새로운 카테고리", text: $guildCategoryViewModel.name)
 
-                Text("카테고리를 비공개로 만들면 서택한 멤버들과 역할만 이 카테고리를 볼 수 있어요. 이 설정은 이 카테고리에 동기화된 채널들에도 자동으로 적용돼요.")
+                Text("카테고리를 비공개로 만들면 선택한 멤버들과 역할만 이 카테고리를 볼 수 있어요. 이 설정은 이 카테고리에 동기화된 채널들에도 자동으로 적용돼요.")
                     .font(Font.pretendardSemiBold(size: 14))
                     .foregroundColor(Color.colorDart400)
                     .multilineTextAlignment(.leading)
@@ -58,6 +58,12 @@ struct CreateCategoryView: View {
                     .padding(.bottom, 10)
                 
                 CToggle(text: "비공개 카테고리", isPrivate: $guildCategoryViewModel.isPrivate)
+                
+                if let error = guildDetailViewModel.errorMessage {
+                    Text(error)
+                        .font(Font.pretendardSemiBold(size: 14))
+                        .foregroundColor(Color.colorRed)
+                }
                 
                 Spacer()
             }

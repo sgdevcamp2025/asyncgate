@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CreateGuildButtonStyle: View {
+public struct CreateGuildButtonStyle: View {
     var imageName: String
     var text: String
     var imageWidth: CGFloat
@@ -17,7 +17,7 @@ struct CreateGuildButtonStyle: View {
     var isSystemImage: Bool = false
     var isDeleteButton: Bool = false
     
-    var body: some View {
+    public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .foregroundStyle(Color(hex: "#26272F"))
@@ -37,7 +37,6 @@ struct CreateGuildButtonStyle: View {
                         .frame(width: imageWidth, height: imageHeight)
                         .padding(.trailing, 2)
                 }
-                
                 
                 Text(text)
                     .font(Font.pretendardSemiBold(size: 16))

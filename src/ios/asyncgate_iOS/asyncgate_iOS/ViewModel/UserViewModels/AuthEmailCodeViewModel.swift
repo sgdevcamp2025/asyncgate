@@ -21,11 +21,17 @@ class AuthEmailCodeViewModel: ObservableObject {
     func isEmailCodeMatched() {
         UserNetworkManager.shared.authEmailCode(email: email, authenticationCode: authenticationCode) { result in
             switch result {
-            case .success(_):
-                DispatchQueue.main.async {
-                    self.isEmailCodeAuthenticated = true
+            case .success(let response):
+                if (200...299).contains(response.httpStatus) {
+                    DispatchQueue.main.async {
+                        self.isEmailCodeAuthenticated = true
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.errorMessage = response.message
+                    }
                 }
-                
+            
             case .failure(let SignUpErrorResponse):
                 DispatchQueue.main.async {
                     self.errorMessage = SignUpErrorResponse.error
