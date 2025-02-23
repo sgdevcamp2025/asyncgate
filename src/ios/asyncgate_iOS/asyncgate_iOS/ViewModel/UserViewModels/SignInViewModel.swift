@@ -23,7 +23,7 @@ class SignInViewModel: ObservableObject {
     
     // MARK: 함수 - 로그인 시도
     func signInUser() {
-        UserNetworkManager.shared.signIn(email: email, passWord: password) { result in
+        UserServiceAPIManager.shared.signIn(email: email, passWord: password) { result in
             switch result {
             case .success(let signInResponse):
                 if (200...299).contains(signInResponse.httpStatus) {

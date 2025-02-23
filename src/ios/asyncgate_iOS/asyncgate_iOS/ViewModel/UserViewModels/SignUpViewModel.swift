@@ -25,7 +25,7 @@ class SignUpViewModel: ObservableObject {
     
     // MARK: 함수 - 회원가입 진행
     func signUpUser() {
-        UserNetworkManager.shared.signUp(email: email, passWord: passWord, name: name, nickName: nickName, birth: birth) { result in
+        UserServiceAPIManager.shared.signUp(email: email, passWord: passWord, name: name, nickName: nickName, birth: birth) { result in
             switch result {
                 case .success(_):
                 DispatchQueue.main.async {
@@ -44,7 +44,7 @@ class SignUpViewModel: ObservableObject {
     
     // MARK: 함수 - 이메일 중복 여부 확인
     func isDuplicatedEmail() {
-        UserNetworkManager.shared.checkDuplicatedEmail(email: email) { result in
+        UserServiceAPIManager.shared.checkDuplicatedEmail(email: email) { result in
             switch result {
                 case .success(let checkDuplicatedEmailResponse):
                 if checkDuplicatedEmailResponse.result.isDuplicate {

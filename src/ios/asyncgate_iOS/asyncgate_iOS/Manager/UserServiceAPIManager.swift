@@ -8,12 +8,11 @@
 import Alamofire
 
 // MARK: Manager - User Service API 매니저
-class UserNetworkManager {
-    static let shared = UserNetworkManager()
+class UserServiceAPIManager {
+    static let shared = UserServiceAPIManager()
 
-    // ViewModel 호출 - 엑세스 토큰 사용
+    // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
-    
     private let hostUrl = Config.shared.hostUrl
     
     // MARK: 함수 - 서버 연동 확인
@@ -36,12 +35,12 @@ class UserNetworkManager {
                             print("Response status code: \(response)")
                             
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response status code: \(response)")
                                                     
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "health - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response code: \(response)")
                                                 
                     }
@@ -60,9 +59,7 @@ class UserNetworkManager {
             "nickname": nickName,
             "birth": birth
         ]
-        
-        print("알ㄴ알ㅇㄹㅇ: \(email), \(passWord), \(name), \(nickName), \(birth)")
-        
+      
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
             .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
@@ -77,11 +74,11 @@ class UserNetworkManager {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response ww code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원가입 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response ss code: \(response)")
                     }
                 }
@@ -110,11 +107,11 @@ class UserNetworkManager {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response wwwwwwwww code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 중복 확인 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response llllllll code: \(response)")
                     }
                 }
@@ -148,11 +145,11 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                             print("Response status code: \(response)")
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "이메일 인증에서 오류가 발생했습니다.", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response status code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버 응답이 없습니다.", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response status code: \(response)")
                     }
                 }
@@ -183,11 +180,11 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                             print("Response ㄴㄴㄴ code: \(response)")
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 오류 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response ㅈㅈㅈ code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "로그인 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response ㄷㄷㄷ code: \(response)")
                     }
                 }
@@ -226,11 +223,11 @@ class UserNetworkManager {
                             completion(.failure(errorResponse))
                             print("Response ㅈㅈㅈ code: \(response)")
                         } catch {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "유저 정보 수정 - 에러 발생", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             print("Response ㅁㅁㅁㅁㅁ code: \(response)")
                         }
                     } else {
-                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "유저 정보 수정 - 서버 응답 없음", requestId: "")))
+                        completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         print("Response ㄴ린ㅇㄹㅇ널 code: \(response)")
                     }
                 }
@@ -262,10 +259,10 @@ class UserNetworkManager {
                                 completion(.failure(errorResponse))
                                 print("Response ㅈㅈㅈ code: \(response)")
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원 탈퇴 - 오류 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "회원 탈퇴 - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                         }
                     }
                 }
@@ -299,11 +296,11 @@ class UserNetworkManager {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
                             } catch {
-                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "디바이스 토큰 업데이트 - 오류 발생", requestId: "")))
+                                completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("Response ww code: \(response)")
                             }
                         } else {
-                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "디바이스 토큰 업데이트 - 서버 응답 없음", requestId: "")))
+                            completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("Response ss code: \(response)")
                         }
                     }

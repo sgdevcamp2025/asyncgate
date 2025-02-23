@@ -23,7 +23,7 @@ class UserInfoViewModel: ObservableObject {
     
     // MARK: 함수 - 유저 정보 업데이트
     func updateUserInfos() {
-        UserNetworkManager.shared.updateUserInfo(name: name, nickName: nickName, profileImage: profileImage) { result in
+        UserServiceAPIManager.shared.updateUserInfo(name: name, nickName: nickName, profileImage: profileImage) { result in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
@@ -41,7 +41,7 @@ class UserInfoViewModel: ObservableObject {
     
     // MARK: 함수 - 회원 탈퇴
     func deleteUserInfo() {
-        UserNetworkManager.shared.deleteUser() { result in
+        UserServiceAPIManager.shared.deleteUser() { result in
             switch result {
             case .success(_):
                 print("UpdateUserInfoViewModel - updateUserInfos() 탈퇴 성공")
