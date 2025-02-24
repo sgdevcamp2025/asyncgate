@@ -11,7 +11,7 @@ import SwiftUI
 struct GuildMainView: View {
     @StateObject var guildListViewModel = GuildListViewModel()
     @StateObject var guildDetailViewModel = GuildDetailViewModel()
-    @StateObject var createGuildViewModel = CUDGuildViewModel()
+    @StateObject var cudGuildViewModel = CUDGuildViewModel()
     @StateObject var guildCategoryViewModel = GuildCategoryViewModel()
     @StateObject var guildChannelViewModel = GuildChannelViewModel()
     
@@ -126,7 +126,11 @@ struct GuildMainView: View {
                                         CategoryButtonStyle(categoryName: category.name)
                                     }
                                     .simultaneousGesture(LongPressGesture().onEnded { _ in
+                                        if let guildId = guildDetailViewModel.guildId {
+                                            guildCategoryViewModel.guildId = guildId
+                                        }
                                         guildChannelViewModel.categoryId = category.categoryId
+                                        guildCategoryViewModel.categoryId = category.categoryId
                                         guildCategoryViewModel.name = category.name
                                         isShowCategoryModalView = true
                                         }
@@ -139,10 +143,12 @@ struct GuildMainView: View {
                                             Button {
                                                 if let guildId = guildDetailViewModel.guildId {
                                                     guildChannelViewModel.guildId = guildId
+                                                    let _ = print("메인뷰에서 전달하는 길드 아이디: \( guildId)")
                                                 }
                                                 guildChannelViewModel.channelId = channel.channelId
-                                                let _ = print(" guildChannelViewModel.channelId: \( guildChannelViewModel.channelId)")
+                                                let _ = print("메인뷰에서 설정하는 채널 아이디: \(guildChannelViewModel.channelId)")
                                                 guildChannelViewModel.categoryId = category.categoryId
+                                                let _ = print("메인뷰에서 설정하는 카테고리 아이디: \(guildChannelViewModel.categoryId)")
                                                 guildChannelViewModel.name = channel.name
                                                 isShowChannelModalView = true
                                             } label: {
@@ -167,7 +173,7 @@ struct GuildMainView: View {
             .onChange(of: guildDetailViewModel.guildId) {
                 needToFetchDetails = true
             }
-            .onChange(of: createGuildViewModel.isNeedRefresh) {
+            .onChange(of: cudGuildViewModel.isNeedRefresh) {
                 needToFetchGuildList = true
                 needToFetchDetails = true
             }
@@ -194,7 +200,7 @@ struct GuildMainView: View {
                 CreateGuildView(isShowCreateGuildView: $isShowCreateGuildView)
             }
             .sheet(isPresented: $isShowGuildModalView) {
-                GuildModalView(guildListViewModel: guildListViewModel, guildDetailViewModel: guildDetailViewModel, createGuildViewModel: createGuildViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
+                GuildModalView(guildListViewModel: guildListViewModel, guildDetailViewModel: guildDetailViewModel, cudGuildViewModel: cudGuildViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
             }
             .sheet(isPresented: $isShowCategoryModalView) {
                 GuildCategoryModalView(guildDetailViewModel: guildDetailViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)

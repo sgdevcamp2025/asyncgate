@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 카테고리 모달 뷰 (편집)
 struct GuildCategoryModalView: View {
     @Environment(\.presentationMode) var presentation
     
@@ -54,25 +55,24 @@ struct GuildCategoryModalView: View {
             .padding(.bottom, 20)
            
             Button {
-                isShowCreateCategoryView = true
-            } label: {
-                CreateGuildButtonStyle(imageName: "gearshape.fill", text: "카테고리 편집하기", imageWidth: 24, imageHeight: 24, isBehindChevron: true, isSystemImage: true)
-            }
-            
-            Button {
                 isShowCreateChannelView = true
             } label: {
                 CreateGuildButtonStyle(imageName: "plus", text: "채널 만들기", imageWidth: 24, imageHeight: 24, isBehindChevron: true, isSystemImage: true)
             }
+            
+            Button {
+                guildCategoryViewModel.deleteCategory()
+                presentation.wrappedValue.dismiss()
+            } label: {
+                CreateGuildButtonStyle(imageName: "xmark", text: "카테고리 삭제하기", imageWidth: 24, imageHeight: 24, isBehindChevron: true, isSystemImage: true)
+            }
+            
            
             Spacer()
         }
         .padding()
         .applyBackground()
         .padding(.top, 20)
-        .fullScreenCover(isPresented: $isShowCreateCategoryView) {
-            CreateCategoryView(guildCategoryViewModel: guildCategoryViewModel, guildDetailViewModel: guildDetailViewModel)
-        }
         .fullScreenCover(isPresented: $isShowCreateChannelView) {
             CreateChannelView(guildChannelViewModel: guildChannelViewModel, guildDetailViewModel: guildDetailViewModel)
         }

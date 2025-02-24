@@ -62,6 +62,7 @@ class CUDGuildViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.errorMessage = nil
                     self.isNeedRefresh = true
+                    self.isRefreshing = true
                 }
                 self.reset()
                 
@@ -83,6 +84,7 @@ class CUDGuildViewModel: ObservableObject {
             case .success(_):
                 DispatchQueue.main.async {
                     self.isNeedRefresh = true
+                    self.isRefreshing = true
                 }
                 self.reset()
                 print("GuildDetailViewModel - deleteGuildDetail() - 길드 삭제 성공")

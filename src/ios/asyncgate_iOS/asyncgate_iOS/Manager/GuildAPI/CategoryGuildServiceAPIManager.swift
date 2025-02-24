@@ -7,6 +7,7 @@
 
 import Alamofire
 
+// MARK: Manager - Guild Category Service API 매니저
 class CategoryGuildServiceAPIManager {
     static let shared = CategoryGuildServiceAPIManager()
     

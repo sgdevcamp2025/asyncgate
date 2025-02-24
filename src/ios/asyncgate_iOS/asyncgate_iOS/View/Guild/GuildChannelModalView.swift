@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 채널 모달 뷰 (편집)
 struct GuildChannelModalView: View {
     @Environment(\.presentationMode) var presentation
     

@@ -15,7 +15,6 @@ class GuildListViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    // 초기화하여 불러오기
     init() {
         fetchMyGuildList()
     }

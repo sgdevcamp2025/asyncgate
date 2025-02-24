@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 채널 생성하기
 struct CreateChannelView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var guildChannelViewModel: GuildChannelViewModel

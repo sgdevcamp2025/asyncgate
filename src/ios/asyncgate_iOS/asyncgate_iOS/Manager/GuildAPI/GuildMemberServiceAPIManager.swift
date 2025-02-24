@@ -7,13 +7,13 @@
 
 import Alamofire
 
+// MARK: Manager - Guild Member Service API 매니저
 class GuildMemberServiceAPIManager {
     static let shared = GuildServiceAPIManager()
     
     // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
     private let hostUrl = Config.shared.hostUrl
-    
     
     // MARK: 함수 - 길드 초대 전송
     func sendGuildInvitation(guildId: String, targetUserId: String, completion: @escaping (Result<SuccessResultStringResponse, OnlyHttpStatusResponse>) -> Void) {
