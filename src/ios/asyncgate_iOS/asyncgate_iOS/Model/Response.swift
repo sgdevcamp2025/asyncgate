@@ -44,7 +44,7 @@ struct ErrorResponse: Decodable, Error {
     }
 }
 
-// MARK: 에러 응답 - 에러 발생 시 받아올 응답
+// MARK: 에러 응답 - 에러 발생 시 받아올 응답 (4개만 존재)
 struct FourErrorResponse: Decodable, Error {
     let timeStamp: String
     let status: Int
@@ -69,15 +69,7 @@ struct SuccessCreateGuildResponse: Codable {
     let httpStatus: Int
     let message: String
     let time: String
-    let result: CreateGuildResponse
-}
-
-// SuccessCreateGuildResponse -> 길드 정보
-struct CreateGuildResponse: Codable {
-    let guildId: String
-    let name: String
-    let isPrivate: Bool
-    let profileImageUrl: String
+    let result: GuildInfo
 }
 
 // MARK: 응답 - 내 길드 목록 조회 시 받는 응답
@@ -88,12 +80,12 @@ struct SuccessLoadGuildListResponse: Codable {
     let result: LoadGuildListResponse
 }
 
-// SuccessLoadGuildListResponse -> 길드 배열
+// 길드 정보 배열
 struct LoadGuildListResponse: Codable {
     let responses: [GuildInList]
 }
 
-// SuccessLoadGuildListResponse/LoadGuildListResponse -> 길드 한개
+// 길드 한개에 대한 정보
 struct GuildInList: Codable, Hashable {
     let guildId: String
     let name: String
@@ -108,12 +100,14 @@ struct GuildDetailResponse: Codable {
     let result: GuildDetailResponseResult
 }
 
+// 단일 조회 시 받아오는 목록
 struct GuildDetailResponseResult: Codable {
     let guild: GuildInfo
     let categories: [GuildCategory]
     let channels: [GuildChannel]
 }
 
+// 길드 정보
 struct GuildInfo: Codable, Hashable {
     let guildId: String
     let name: String
@@ -121,12 +115,14 @@ struct GuildInfo: Codable, Hashable {
     let profileImageUrl: String
 }
 
+// 길드 카테고리
 struct GuildCategory: Codable, Hashable {
     let categoryId: String
     let name: String
     let isPrivate: Bool
 }
 
+// 길드 채널
 struct GuildChannel: Codable, Hashable {
     let channelId: String
     let name: String

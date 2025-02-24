@@ -11,7 +11,7 @@ import PhotosUI
 // MARK: View - 길드 수정 뷰
 struct UpdateGuildView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var createGuildViewModel: CUDGuildViewModel
+    @ObservedObject var cudGuildViewModel: CUDGuildViewModel
     @ObservedObject var guildListViewModel: GuildListViewModel
     
     @State var selectedPhoto: PhotosPickerItem?
@@ -38,7 +38,7 @@ struct UpdateGuildView: View {
                     Spacer()
                     
                     Button {
-                        createGuildViewModel.patchGuild()
+                        cudGuildViewModel.patchGuild()
                         dismiss()
                     } label: {
                         Text("수정하기")
@@ -55,7 +55,7 @@ struct UpdateGuildView: View {
                     selection: $selectedPhoto,
                     matching: .images
                 ) {
-                    ChoiceImageButtonStyle(image: createGuildViewModel.profileImage)
+                    ChoiceImageButtonStyle(image: cudGuildViewModel.profileImage)
                 }
                 
                 VStack(alignment: .leading) {
@@ -63,7 +63,7 @@ struct UpdateGuildView: View {
                         .font(Font.pretendardSemiBold(size: 16))
                         .foregroundColor(Color.colorDart400)
                     
-                    TextField("", text: $createGuildViewModel.name)
+                    TextField("", text: $cudGuildViewModel.name)
                         .foregroundColor(.white)
                         .padding()
                         .background(Color(hex: "#111216"))
@@ -82,10 +82,10 @@ struct UpdateGuildView: View {
                 .padding(.top, 13)
                 .padding(.bottom, 6)
                 
-                CToggle(text: "개인용 서버 여부", isPrivate: $createGuildViewModel.isPrivate)
+                CToggle(text: "개인용 서버 여부", isPrivate: $cudGuildViewModel.isPrivate)
                     .padding(.bottom, 10)
                 
-                if let errorMessage = createGuildViewModel.errorMessage {
+                if let errorMessage = cudGuildViewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .font(Font.pretendardRegular(size: 14))
@@ -111,7 +111,7 @@ struct UpdateGuildView: View {
         photo.loadTransferable(type: Data.self) { result in
             if case .success(let data) = result, let data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    createGuildViewModel.profileImage = image
+                    cudGuildViewModel.profileImage = image
                 }
             }
         }

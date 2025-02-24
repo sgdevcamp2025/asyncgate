@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: View - 길드 타입 설정
 struct ChoiceGuildTypeView: View {
-    @StateObject var createGuildViewModel = CUDGuildViewModel()
+    @StateObject var cudGuildViewModel = CUDGuildViewModel()
     @Binding var isShowCreateGuildView: Bool
     
     var body: some View {
@@ -25,18 +25,18 @@ struct ChoiceGuildTypeView: View {
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 30)
             
-            NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel, isShowCreateGuildView: $isShowCreateGuildView)) {
+            NavigationLink(destination: CreateGuildLastView(cudGuildViewModel: cudGuildViewModel, isShowCreateGuildView: $isShowCreateGuildView)) {
                 CreateGuildButtonStyle(imageName: "club",text: "클럽, 혹은 커뮤니티용 서버", imageWidth: 48, imageHeight: 44)
             }
             .simultaneousGesture(TapGesture().onEnded {
-                createGuildViewModel.isPrivate = false
+                cudGuildViewModel.isPrivate = false
             })
             
-            NavigationLink(destination: CreateGuildLastView(createGuildViewModel: createGuildViewModel, isShowCreateGuildView: $isShowCreateGuildView)) {
+            NavigationLink(destination: CreateGuildLastView(cudGuildViewModel: cudGuildViewModel, isShowCreateGuildView: $isShowCreateGuildView)) {
                 CreateGuildButtonStyle(imageName: "forMe", text: "나와 친구들을 위한 서버", imageWidth: 48, imageHeight: 44)
             }
             .simultaneousGesture(TapGesture().onEnded {
-                createGuildViewModel.isPrivate = true
+                cudGuildViewModel.isPrivate = true
             })
             
             Spacer()

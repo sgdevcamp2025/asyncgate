@@ -7,13 +7,13 @@
 
 import Alamofire
 
+// MARK: Manager - Guild Channel Service API 매니저
 class ChannelGuildServiceAPIManager {
     static let shared = ChannelGuildServiceAPIManager()
     
     // 호출 - 엑세스 토큰 사용 및 API 주소
     private let accessTokenViewModel = AccessTokenViewModel.shared
     private let hostUrl = Config.shared.hostUrl
-    
     
     // MARK: 함수 - 채널 생성
     func createGuildChannel(name: String, guildId: String, categoryId: String, channelType: String, isPrivate: Bool, completion: @escaping (Result<ChannelResponse, ErrorResponse>) -> Void) {
@@ -78,6 +78,16 @@ class ChannelGuildServiceAPIManager {
                 "Authorization": "Bearer \(accessToken)",
             ]
             
+            print("accessToken: \(accessToken)")
+            print("name: \(name)")
+            print("topic: \(topic)")
+            print("isPrivate: \(isPrivate)")
+            print("guildId: \(guildId)")
+            print("categoryId: \(categoryId)")
+            print("channelId: \(channelId)")
+            
+            print("urlurlurl: \(url)")
+            
             AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .validate()
                 .responseDecodable(of: ChannelResponse.self) { response in
@@ -86,19 +96,23 @@ class ChannelGuildServiceAPIManager {
                         completion(.success(successResponse))
                         print("ABOUT RESPONSE: \(response)")
                         
-                    case .failure(_):
+                    case .failure(let e):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
                                 print("ABOUT RESPONSE: \(response)")
+                                print("Error: \(e.localizedDescription)")
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                                 print("ABOUT RESPONSE: \(response)")
+                                print("Error: \(e.localizedDescription)")
                             }
+                            print("Error: \(e.localizedDescription)")
                         } else {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
                             print("ABOUT RESPONSE: \(response)")
+                            print("Error: \(e.localizedDescription)")
                         }
                     }
                 }

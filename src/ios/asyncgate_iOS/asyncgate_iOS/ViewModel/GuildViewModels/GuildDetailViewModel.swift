@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: ViewModel - 길드 세부 정보 (카테고리, 채널 포함)
 class GuildDetailViewModel: ObservableObject {
     @Published var guild: GuildInfo?
     @Published var categories: [GuildCategory] = []

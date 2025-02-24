@@ -10,7 +10,7 @@ import PhotosUI
 
 // MARK: View - 서버 이름 및 이미지 선택 후 길드 생성
 struct CreateGuildLastView: View {
-    @ObservedObject var createGuildViewModel: CUDGuildViewModel
+    @ObservedObject var cudGuildViewModel: CUDGuildViewModel
     @State var selectedPhoto: PhotosPickerItem?
     @Binding var isShowCreateGuildView: Bool
     
@@ -32,7 +32,7 @@ struct CreateGuildLastView: View {
                     selection: $selectedPhoto,
                     matching: .images
                 ) {
-                    ChoiceImageButtonStyle(image: createGuildViewModel.profileImage)
+                    ChoiceImageButtonStyle(image: cudGuildViewModel.profileImage)
                 }
                 
                 VStack(alignment: .leading) {
@@ -40,14 +40,14 @@ struct CreateGuildLastView: View {
                         .font(Font.pretendardSemiBold(size: 16))
                         .foregroundColor(Color.colorDart400)
                     
-                    TextField("", text: $createGuildViewModel.name)
+                    TextField("", text: $cudGuildViewModel.name)
                         .foregroundColor(.white)
                         .padding()
                         .background(Color(hex: "#111216"))
                         .cornerRadius(20)
                         .overlay(
                             Group {
-                                if createGuildViewModel.name == "" {
+                                if cudGuildViewModel.name == "" {
                                     Text("서버 이름")
                                         .foregroundStyle(Color.colorDart400)
                                         .padding(.leading, 15)
@@ -60,13 +60,13 @@ struct CreateGuildLastView: View {
                 .padding(.bottom, 30)
                 
                 Button {
-                    createGuildViewModel.createGuild()
+                    cudGuildViewModel.createGuild()
                     isShowCreateGuildView = false
                 } label: {
                     UsingButtonStyle(text: "서버 만들기", backgroundColor: Color.colorBlurple, textColor: Color.colorWhite, size: 14)
                 }
                 
-                if let errorMessage = createGuildViewModel.errorMessage {
+                if let errorMessage = cudGuildViewModel.errorMessage {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .font(Font.pretendardRegular(size: 14))
@@ -93,7 +93,7 @@ struct CreateGuildLastView: View {
         photo.loadTransferable(type: Data.self) { result in
             if case .success(let data) = result, let data, let image = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    createGuildViewModel.profileImage = image
+                    cudGuildViewModel.profileImage = image
                 }
             }
         }

@@ -1,5 +1,5 @@
 //
-//  Const.swift
+//  Config.swift
 //  asyncgate_iOS
 //
 //  Created by kdk on 2/18/25.

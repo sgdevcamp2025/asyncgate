@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 채널 수정
 struct UpdateChannelView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var guildChannelViewModel: GuildChannelViewModel
@@ -62,8 +63,8 @@ struct UpdateChannelView: View {
                     .cornerRadius(20)
                     .overlay(
                         Group {
-                            if !guildChannelViewModel.topic.isEmpty {
-                                Text(guildChannelViewModel.topic)
+                            if guildChannelViewModel.topic.isEmpty {
+                                Text("채널에 대한 설명을 입력하세요.")
                                     .foregroundStyle(Color.colorDart400)
                                     .padding(.leading, 15)
                             }
@@ -97,8 +98,7 @@ struct UpdateChannelView: View {
                                 guildChannelViewModel.categoryId = category.categoryId
                             } label: {
                                 let isSelected = guildChannelViewModel.categoryId == category.categoryId
-                                let _ = print("111111 guildChannelViewModel.channelId: \(guildChannelViewModel.channelId)")
-                                let _ = print(" 22222 : \(isSelected)")
+                               
                                 Text(category.name)
                                     .padding()
                                     .font(Font.pretendardSemiBold(size: 14))

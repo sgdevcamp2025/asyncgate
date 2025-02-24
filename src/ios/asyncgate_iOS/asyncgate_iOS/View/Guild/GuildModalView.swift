@@ -7,12 +7,13 @@
 
 import SwiftUI
 
+// MARK: View - 길드 모달 뷰 (편집)
 struct GuildModalView: View {
     @Environment(\.presentationMode) var presentation
     
     @ObservedObject var guildListViewModel: GuildListViewModel
     @ObservedObject var guildDetailViewModel: GuildDetailViewModel
-    @ObservedObject var createGuildViewModel: CUDGuildViewModel
+    @ObservedObject var cudGuildViewModel: CUDGuildViewModel
     @ObservedObject var guildCategoryViewModel: GuildCategoryViewModel
     @ObservedObject var guildChannelViewModel: GuildChannelViewModel
     
@@ -79,7 +80,7 @@ struct GuildModalView: View {
             
             Button {
                 if let guildId = guildDetailViewModel.guildId {
-                    createGuildViewModel.guildId = guildId
+                    cudGuildViewModel.guildId = guildId
                 }
                 isShowUpdateGuildView = true
             } label: {
@@ -88,8 +89,8 @@ struct GuildModalView: View {
             
             Button {
                 if let guildId = guildDetailViewModel.guildId {
-                    createGuildViewModel.guildId = guildId
-                    createGuildViewModel.deleteGuildDetail()
+                    cudGuildViewModel.guildId = guildId
+                    cudGuildViewModel.deleteGuildDetail()
                 }
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 삭제하기", imageWidth: 0, imageHeight: 0)
@@ -108,7 +109,7 @@ struct GuildModalView: View {
             CreateChannelView(guildChannelViewModel: guildChannelViewModel, guildDetailViewModel: guildDetailViewModel)
         }
         .fullScreenCover(isPresented: $isShowUpdateGuildView) {
-            UpdateGuildView(createGuildViewModel: createGuildViewModel, guildListViewModel: guildListViewModel)
+            UpdateGuildView(cudGuildViewModel: cudGuildViewModel, guildListViewModel: guildListViewModel)
         }
     }
 }

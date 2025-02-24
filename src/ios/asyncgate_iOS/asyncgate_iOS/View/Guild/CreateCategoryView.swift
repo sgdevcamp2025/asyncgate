@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: View - 카테고리 생성하기
 struct CreateCategoryView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var guildCategoryViewModel: GuildCategoryViewModel

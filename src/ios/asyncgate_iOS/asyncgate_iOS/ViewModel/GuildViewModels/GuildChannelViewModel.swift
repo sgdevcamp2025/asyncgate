@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// MARK: ViewModel - 길드 채널
 class GuildChannelViewModel: ObservableObject {
     @Published var name: String = "새로운 채널"
     @Published var guildId: String = ""
@@ -22,7 +23,6 @@ class GuildChannelViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     
-    // 초기화
     func reset() {
         self.name = "새로운 채널"
         self.guildId = ""
