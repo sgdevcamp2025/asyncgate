@@ -33,7 +33,7 @@ struct ErrorResponse: Decodable, Error {
     let path: String
     let status: Int
     let error: String
-    let requestId: String
+    let requestId: String?
     
     enum CodingKeys: String, CodingKey {
         case timeStamp = "timestamp"

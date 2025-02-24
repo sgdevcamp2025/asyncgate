@@ -30,7 +30,7 @@ struct GuildMainView: View {
                     ScrollView {
                         VStack(alignment: .center) {
                             Button {
-                                
+                                guildChannelViewModel.updateChannel()
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "message.fill", color: Color.colorGrayImage)
                             }
@@ -77,7 +77,7 @@ struct GuildMainView: View {
                             
                             HStack {
                                 Button {
-                                    
+                                    guildChannelViewModel.deleteChannel()
                                 } label: {
                                     GuildSerachButtonStyle
                                 }
@@ -113,7 +113,7 @@ struct GuildMainView: View {
                                             guildChannelViewModel.name = channel.name
                                             isShowChannelModalView = true
                                         } label: {
-                                            ChannelButtonStyle(channelName: channel.name)
+                                            ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
                                         }
                                     }
                                 }
@@ -151,7 +151,7 @@ struct GuildMainView: View {
                                                 guildChannelViewModel.name = channel.name
                                                 isShowChannelModalView = true
                                             } label: {
-                                                ChannelButtonStyle(channelName: channel.name)
+                                                ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
                                             }
                                         }
                                     }

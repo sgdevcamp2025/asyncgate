@@ -16,7 +16,6 @@ class GuildCategoryViewModel: ObservableObject {
     @Published var categoryId: String = ""
     
     @Published var isNeedRefresh: Bool = false
-    @Published var isRefreshing: Bool = false
     
     @Published var errorMessage: String?
     
@@ -27,7 +26,6 @@ class GuildCategoryViewModel: ObservableObject {
         self.guildId = nil
         self.errorMessage = nil
         self.isNeedRefresh = false
-        self.isRefreshing = false
     }
     
     // MARK: 함수 - 카테고리 생성
@@ -39,7 +37,6 @@ class GuildCategoryViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isNeedRefresh = true
-                        self.isRefreshing = true
                     }
                     self.reset()
                     
@@ -63,7 +60,6 @@ class GuildCategoryViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isNeedRefresh = true
-                        self.isRefreshing = true
                     }
                     self.reset()
                     

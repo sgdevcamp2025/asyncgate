@@ -100,6 +100,7 @@ class ChannelGuildServiceAPIManager {
                         
                     case .failure(let e):
                         if let data = response.data {
+                            print("Raw Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid Data")")
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
