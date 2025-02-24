@@ -19,20 +19,26 @@ class GuildChannelViewModel: ObservableObject {
     @Published var topic: String = ""
     
     @Published var isNeedRefresh: Bool = false
-    @Published var isRefreshing: Bool = false
     
     @Published var errorMessage: String?
     
     func reset() {
         self.name = "새로운 채널"
         self.guildId = ""
-        self.categoryId = "CATEGORY_ID_IS_NULL"
+        self.categoryId = ""
         self.channelType = "TEXT"
         self.isPrivate = false
         self.isNeedRefresh = false
-        self.isRefreshing = false
         self.channelId = ""
         self.topic = ""
+    }
+    
+    init() {
+        self.categoryId = "2715874a-858d-4cfb-b169-eadf8a223062"
+        self.guildId = ""
+        self.channelId = "1c71b065-f497-46d6-8416-80f8e636769e"
+        self.topic = "test"
+        self.name = "스윗"
     }
     
     // MARK: 함수 - 새로운 채널 생성
@@ -43,7 +49,6 @@ class GuildChannelViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isNeedRefresh = true
-                        self.isRefreshing = true
                     }
                     self.reset()
                     
@@ -65,7 +70,6 @@ class GuildChannelViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isNeedRefresh = true
-                        self.isRefreshing = true
                     }
                     self.reset()
                     
@@ -86,7 +90,6 @@ class GuildChannelViewModel: ObservableObject {
                 case .success(_):
                     DispatchQueue.main.async {
                         self.isNeedRefresh = true
-                        self.isRefreshing = true
                     }
                     self.reset()
                     
