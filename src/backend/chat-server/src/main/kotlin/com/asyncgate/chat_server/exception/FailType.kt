@@ -28,7 +28,6 @@ enum class FailType(
     DIRECT_MESSAGE_NOT_FOUND(HttpStatus.NOT_FOUND, "DirectMessage_4041", "DirectMessage를 찾을 수 없습니다."),
     DIRECT_MESSAGE_FORBIDDEN(HttpStatus.FORBIDDEN, "DirectMessage_4031", "DirectMessage를 수정 or 삭제할 권한이 없습니다."),
 
-    DIRECT_MESSAGE_FILE_NULL(HttpStatus.BAD_REQUEST, "DirectMessage_4001", "CODE, SNIPPET 타입이 아니므로 MultiPartFile이 필수입니다."),
     DIRECT_MESSAGE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "DirectMessage_4002", "IMAGE가 필수입니다."),
     DIRECT_MESSAGE_CONTENT_NULL(HttpStatus.BAD_REQUEST, "DirectMessage_4002", "CODE, SNIPPET 타입은 content가 필수입니다."),
     ;
