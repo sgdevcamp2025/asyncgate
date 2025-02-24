@@ -217,7 +217,8 @@ runs:
               echo "    volumes:" >> docker-compose.yml
               echo "      - mongo_data:/data/db" >> docker-compose.yml
               echo "    healthcheck:" >> docker-compose.yml
-              echo "      test: [\"CMD-SHELL\", \"curl -f http://localhost:27017 || exit 1\"]" >> docker-compose.yml
+              echo "    healthcheck:" >> docker-compose.yml
+              echo "      test: [\"CMD-SHELL\", \"mongo --eval 'db.adminCommand({ ping: 1 })' localhost:27017 --quiet || exit 1\"]" >> docker-compose.yml
               echo "      interval: 10s" >> docker-compose.yml
               echo "      timeout: 10s" >> docker-compose.yml
               echo "      retries: 5" >> docker-compose.yml

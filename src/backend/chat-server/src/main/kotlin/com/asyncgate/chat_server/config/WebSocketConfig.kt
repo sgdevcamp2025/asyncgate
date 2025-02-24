@@ -20,6 +20,7 @@ class WebSocketConfig(
         registry.addEndpoint("/asyncgate-chat")
             .setAllowedOriginPatterns("*")
             .addInterceptors(jwtHandshakeInterceptor)
+            .withSockJS()
     }
 
     override fun configureMessageBroker(registry: MessageBrokerRegistry) {
