@@ -169,6 +169,12 @@ struct GuildMainView: View {
                 guildDetailViewModel.guildId = guildListViewModel.firstGuildId
                 needToFetchGuildList = true
                 needToFetchDetails = true
+                print("dldldld")
+            }
+            .onChange(of: guildListViewModel.firstGuildId) {
+                guildDetailViewModel.guildId = guildListViewModel.firstGuildId
+                needToFetchDetails = true
+                print("alalal")
             }
             .onChange(of: guildDetailViewModel.guildId) {
                 needToFetchDetails = true
@@ -198,9 +204,22 @@ struct GuildMainView: View {
             }
             .fullScreenCover(isPresented: $isShowCreateGuildView) {
                 CreateGuildView(isShowCreateGuildView: $isShowCreateGuildView)
+                    .onDisappear {
+                        cudGuildViewModel.reset()
+                        needToFetchGuildList = true
+                        needToFetchDetails = true
+                    }
             }
             .sheet(isPresented: $isShowGuildModalView) {
                 GuildModalView(guildListViewModel: guildListViewModel, guildDetailViewModel: guildDetailViewModel, cudGuildViewModel: cudGuildViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
+                    .onDisappear {
+                        if cudGuildViewModel.isDeleteGuild {
+                            guildDetailViewModel.guildId = guildListViewModel.firstGuildId ?? ""
+                        }
+                        needToFetchGuildList = true
+                        cudGuildViewModel.reset()
+                        needToFetchDetails = true
+                    }
             }
             .sheet(isPresented: $isShowCategoryModalView) {
                 GuildCategoryModalView(guildDetailViewModel: guildDetailViewModel, guildCategoryViewModel: guildCategoryViewModel, guildChannelViewModel: guildChannelViewModel)
