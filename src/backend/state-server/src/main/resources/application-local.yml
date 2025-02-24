@@ -11,6 +11,28 @@ eureka:
 spring:
   application:
     name: state-server
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      
+  kafka:
+    topic:
+      login-status: login-status-topic
+    consumer:
+      group-id:
+        login-status-gip: login-status-gip
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      properties:
+        heartbeat.interval.ms: 10000
+        session.timeout.ms: 60000
+        max.poll.interval.ms: 1800000
+        max.poll.records: 1000
+        connections.max.idle.ms: 1800000
+        request.timeout.ms: 120000
+        retry.backoff.ms: 5000
+        reconnect.backoff.ms: 5000
 
 management:
   endpoints:
