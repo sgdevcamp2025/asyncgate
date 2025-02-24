@@ -207,7 +207,7 @@ runs:
               echo "      retries: 2" >> docker-compose.yml
               echo "    restart: unless-stopped" >> docker-compose.yml
 
-              # MongoDB 설정
+              # MongoDB
               echo "  mongo:" >> docker-compose.yml
               echo "    image: mongo:latest" >> docker-compose.yml
               echo "    container_name: mongo" >> docker-compose.yml
@@ -217,11 +217,12 @@ runs:
               echo "    volumes:" >> docker-compose.yml
               echo "      - mongo_data:/data/db" >> docker-compose.yml
               echo "    healthcheck:" >> docker-compose.yml
-              echo "      test: [\"CMD-SHELL\", \"mongo --eval 'db.adminCommand({ ping: 1 })' localhost:27017 --quiet || exit 1\"]" >> docker-compose.yml
+              echo "      test: [\"CMD-SHELL\", \"mongosh --quiet --eval \\\"db.adminCommand({ ping: 1 })\\\" || exit 1\"]" >> docker-compose.yml
               echo "      interval: 10s" >> docker-compose.yml
               echo "      timeout: 10s" >> docker-compose.yml
               echo "      retries: 5" >> docker-compose.yml
               echo "      start_period: 30s" >> docker-compose.yml
+
 
             else
               # 일반 서비스 블록 (chat-server가 아닌 경우)
