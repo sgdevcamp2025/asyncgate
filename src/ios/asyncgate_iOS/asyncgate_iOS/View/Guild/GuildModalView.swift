@@ -33,7 +33,6 @@ struct GuildModalView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .frame(width: 70, height: 70)
                         }
-                        
                     } else {
                         RoundedRectangle(cornerRadius: 10)
                             .frame(width: 70, height: 70)
@@ -68,6 +67,9 @@ struct GuildModalView: View {
             }
             
             Button {
+                if let guildId = guildDetailViewModel.guildId {
+                    guildChannelViewModel.guildId = guildId
+                }
                 isShowCreateChannelView = true
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "채널 만들기", imageWidth: 0, imageHeight: 0)

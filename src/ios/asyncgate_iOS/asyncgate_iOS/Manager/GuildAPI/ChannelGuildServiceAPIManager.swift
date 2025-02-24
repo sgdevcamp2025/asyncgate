@@ -28,6 +28,8 @@ class ChannelGuildServiceAPIManager {
         ]
         
         print("guildId: \(guildId)")
+        print("name: \(name)")
+        print("channelType: \(channelType)")
         print("categoryId: \(categoryId)")
         print("isPrivate: \(isPrivate)")
         

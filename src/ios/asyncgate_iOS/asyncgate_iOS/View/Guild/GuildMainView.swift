@@ -110,7 +110,6 @@ struct GuildMainView: View {
                                                 guildChannelViewModel.guildId = guildId
                                             }
                                             guildChannelViewModel.channelId = channel.channelId
-                                            let _ = print(" guildChannelViewModel.channelId: \( guildChannelViewModel.channelId)")
                                             guildChannelViewModel.name = channel.name
                                             isShowChannelModalView = true
                                         } label: {
