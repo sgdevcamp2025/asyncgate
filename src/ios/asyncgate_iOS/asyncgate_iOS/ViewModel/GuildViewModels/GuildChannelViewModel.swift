@@ -11,7 +11,7 @@ import SwiftUI
 class GuildChannelViewModel: ObservableObject {
     @Published var name: String = "새로운 채널"
     @Published var guildId: String = ""
-    @Published var categoryId: String = "CATEGORY_ID_IS_NULL"
+    @Published var categoryId: String = ""
     @Published var channelType: String = "TEXT"
     @Published var isPrivate: Bool = false
     
