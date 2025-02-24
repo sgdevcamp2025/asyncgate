@@ -17,7 +17,9 @@ class CUDGuildViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     @Published var isNeedRefresh: Bool = false
-    @Published var isRefreshing: Bool = false
+    @Published var isDeleteGuild: Bool = false
+    @Published var isNeedRefreshAll: Bool = false
+    
     
     @Published var guildId: String = ""
     
@@ -28,7 +30,8 @@ class CUDGuildViewModel: ObservableObject {
         self.profileImage = nil
         self.errorMessage = nil
         self.isNeedRefresh = false
-        self.isRefreshing = false
+        self.isNeedRefreshAll = false
+        self.isDeleteGuild = false
     }
     
     // MARK: 함수 - 길드 생성하기
@@ -39,7 +42,7 @@ class CUDGuildViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.errorMessage = nil
                     self.isNeedRefresh = true
-                    self.isRefreshing = true
+                    self.isNeedRefreshAll = true
                 }
                 self.reset()
                 
@@ -61,8 +64,7 @@ class CUDGuildViewModel: ObservableObject {
             case .success(let successResponse):
                 DispatchQueue.main.async {
                     self.errorMessage = nil
-                    self.isNeedRefresh = true
-                    self.isRefreshing = true
+                    self.isNeedRefreshAll = true
                 }
                 self.reset()
                 
@@ -84,7 +86,7 @@ class CUDGuildViewModel: ObservableObject {
             case .success(_):
                 DispatchQueue.main.async {
                     self.isNeedRefresh = true
-                    self.isRefreshing = true
+                    self.isDeleteGuild = true
                 }
                 self.reset()
                 print("GuildDetailViewModel - deleteGuildDetail() - 길드 삭제 성공")

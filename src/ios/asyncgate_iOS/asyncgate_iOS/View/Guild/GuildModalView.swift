@@ -91,6 +91,7 @@ struct GuildModalView: View {
                 if let guildId = guildDetailViewModel.guildId {
                     cudGuildViewModel.guildId = guildId
                     cudGuildViewModel.deleteGuildDetail()
+                    presentation.wrappedValue.dismiss()
                 }
             } label: {
                 CreateGuildButtonStyle(imageName: "", text: "길드 삭제하기", imageWidth: 0, imageHeight: 0)
@@ -104,12 +105,21 @@ struct GuildModalView: View {
         .padding(.top, 20)
         .fullScreenCover(isPresented: $isShowCreateCategoryView) {
             CreateCategoryView(guildCategoryViewModel: guildCategoryViewModel, guildDetailViewModel: guildDetailViewModel)
+                .onDisappear() {
+                    presentation.wrappedValue.dismiss()
+                }
         }
         .fullScreenCover(isPresented: $isShowCreateChannelView) {
             CreateChannelView(guildChannelViewModel: guildChannelViewModel, guildDetailViewModel: guildDetailViewModel)
+                .onDisappear() {
+                    presentation.wrappedValue.dismiss()
+                }
         }
         .fullScreenCover(isPresented: $isShowUpdateGuildView) {
             UpdateGuildView(cudGuildViewModel: cudGuildViewModel, guildListViewModel: guildListViewModel)
+                .onDisappear() {
+                    presentation.wrappedValue.dismiss()
+                }
         }
     }
 }
