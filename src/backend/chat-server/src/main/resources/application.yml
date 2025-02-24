@@ -35,6 +35,11 @@ spring:
         retry.backoff.ms: 5000
         reconnect.backoff.ms: 5000
 
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/chatdb
+
 management:
   endpoints:
     web:
