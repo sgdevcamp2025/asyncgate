@@ -223,6 +223,7 @@ runs:
 
               echo "volumes:" >> docker-compose.yml
               echo "  mongo_data:" >> docker-compose.yml
+            fi
 
           else
             echo "Unknown namespace: ${{ inputs.namespace }}"
