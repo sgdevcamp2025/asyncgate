@@ -10,7 +10,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ResponseStatusException
-import java.io.Serializable
 
 @Component
 class FilterChannelInterceptor(
@@ -19,7 +18,14 @@ class FilterChannelInterceptor(
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
-        private const val AUTHORIZATION_HEADER = "Authorization"
+        private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
+    }
+
+    private fun extractToken(protocolHeader: String?): String? {
+        if (protocolHeader == null) return null
+        val parts = protocolHeader.split(",").map { it.trim() }
+        if (!parts.contains("v10.stomp")) return null
+        return parts.find { it.startsWith("Bearer ") }?.removePrefix("Bearer ")?.trim()
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -27,25 +33,18 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            // JWT 토큰은 Authorization 헤더에서 추출하고, Bearer 접두어를 제거
-            val rawToken = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
-            log.info("🔑 [STOMP] Raw Access Token: $rawToken")
-            val jwtToken = if (rawToken != null && rawToken.startsWith("Bearer ")) {
-                rawToken.removePrefix("Bearer ").trim()
-            } else {
-                rawToken?.trim()
-            }
-
+            // 여기서는 Authorization 헤더가 없으므로, Sec-WebSocket-Protocol에서 JWT 추출
+            val rawProtocol = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
+            log.info("🔑 [STOMP] Raw Protocol Header: $rawProtocol")
+            val jwtToken = extractToken(rawProtocol)
             if (jwtToken.isNullOrBlank()) {
-                log.error("🚨 [STOMP] Access Token is missing!")
+                log.error("🚨 [STOMP] Access Token is missing or improperly formatted!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access token is missing")
             }
-
             if (!jwtTokenProvider.validate(jwtToken)) {
                 log.error("🚨 [STOMP] Access Token validation failed!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
             }
-
             log.info("✅ [STOMP] CONNECT 요청 처리 완료")
         }
         return message
@@ -80,13 +79,10 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        // JWT 토큰는 Authorization 헤더에서 추출 (Bearer 접두어 제거)
-        val rawToken = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
-        val jwtToken = if (rawToken != null && rawToken.startsWith("Bearer ")) {
-            rawToken.removePrefix("Bearer ").trim()
-        } else {
-            rawToken?.trim()
-        } ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
+        // JWT 토큰는 Sec-WebSocket-Protocol에서 추출
+        val rawProtocol = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
+        val jwtToken = extractToken(rawProtocol)
+            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
         val currentUserId = jwtTokenProvider.extract(jwtToken)
 
         val loginSessionRequest = LoginSessionRequest(
@@ -115,7 +111,7 @@ data class LoginSessionRequest(
     val userId: String,
     val communityId: String? = null,
     val ids: List<Long>? = null,
-) : Serializable {
+) : java.io.Serializable {
     override fun toString(): String {
         return "LoginSessionRequest(type=$type, sessionId='$sessionId', userId='$userId', communityId=$communityId, ids=$ids)"
     }
@@ -130,7 +126,7 @@ data class StateRequest(
     val type: StatusType,
     val userId: String,
     val guildIds: List<String>? = null,
-) : Serializable
+) : java.io.Serializable
 
 enum class StatusType {
     CONNECT,
