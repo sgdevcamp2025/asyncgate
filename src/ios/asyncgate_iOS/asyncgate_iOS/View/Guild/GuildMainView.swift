@@ -142,12 +142,9 @@ struct GuildMainView: View {
                                             Button {
                                                 if let guildId = guildDetailViewModel.guildId {
                                                     guildChannelViewModel.guildId = guildId
-                                                    let _ = print("메인뷰에서 전달하는 길드 아이디: \( guildId)")
                                                 }
                                                 guildChannelViewModel.channelId = channel.channelId
-                                                let _ = print("메인뷰에서 설정하는 채널 아이디: \(guildChannelViewModel.channelId)")
                                                 guildChannelViewModel.categoryId = category.categoryId
-                                                let _ = print("메인뷰에서 설정하는 카테고리 아이디: \(guildChannelViewModel.categoryId)")
                                                 guildChannelViewModel.name = channel.name
                                                 isShowChannelModalView = true
                                             } label: {
@@ -168,12 +165,10 @@ struct GuildMainView: View {
                 guildDetailViewModel.guildId = guildListViewModel.firstGuildId
                 needToFetchGuildList = true
                 needToFetchDetails = true
-                print("dldldld")
             }
             .onChange(of: guildListViewModel.firstGuildId) {
                 guildDetailViewModel.guildId = guildListViewModel.firstGuildId
                 needToFetchDetails = true
-                print("alalal")
             }
             .onChange(of: guildDetailViewModel.guildId) {
                 needToFetchDetails = true

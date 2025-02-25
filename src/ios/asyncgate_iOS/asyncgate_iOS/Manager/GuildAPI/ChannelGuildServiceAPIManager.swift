@@ -27,12 +27,6 @@ class ChannelGuildServiceAPIManager {
             "private": isPrivate
         ]
         
-        print("guildId: \(guildId)")
-        print("name: \(name)")
-        print("channelType: \(channelType)")
-        print("categoryId: \(categoryId)")
-        print("isPrivate: \(isPrivate)")
-        
         if let accessToken = accessTokenViewModel.accessToken {
             let headers: HTTPHeaders = [
                 "Authorization": "Bearer \(accessToken)",
@@ -44,21 +38,17 @@ class ChannelGuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("ABOUT RESPONSE: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("ABOUT RESPONSE: \(response)")
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                                print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                            print("ABOUT RESPONSE: \(response)")
                         }
                     }
                 }

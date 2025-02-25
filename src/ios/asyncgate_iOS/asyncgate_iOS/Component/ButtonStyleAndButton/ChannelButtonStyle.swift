@@ -28,7 +28,7 @@ struct ChannelButtonStyle: View {
                         .font(Font.pretendardRegular(size: 20))
                 }
 
-                Text(channelName)  
+                Text(channelName)
                     .foregroundStyle(Color.colorGrayImage)
                     .font(Font.pretendardSemiBold(size: 14))
                 
