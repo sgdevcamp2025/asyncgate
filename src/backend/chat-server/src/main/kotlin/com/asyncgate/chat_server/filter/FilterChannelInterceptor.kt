@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.messaging.Message
 import org.springframework.messaging.MessageChannel
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.simp.stomp.StompCommand
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.messaging.support.ChannelInterceptor
+import org.springframework.messaging.support.MessageBuilder
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ResponseStatusException
 import java.io.Serializable
@@ -15,6 +17,7 @@ import java.io.Serializable
 @Component
 class FilterChannelInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
+    private val messagingTemplate: SimpMessagingTemplate,
 ) : ChannelInterceptor {
 
     /*
@@ -32,7 +35,7 @@ class FilterChannelInterceptor(
 
         if (StompCommand.CONNECT == headerAccessor.command) {
             val accessToken = headerAccessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
-            log.info("🔑 [STOMP] Access Token: $accessToken") // 토큰 확인
+            log.info("🔑 [STOMP] Access Token: $accessToken")
 
             if (accessToken == null) {
                 log.error("🚨 [STOMP] Access Token is missing!")
@@ -59,10 +62,12 @@ class FilterChannelInterceptor(
                 log.info("✅ [STOMP] CONNECT 성공 - sessionId: ${accessor.sessionId}")
                 handleConnect(accessor)
             }
+
             StompCommand.DISCONNECT -> {
                 log.info("🔌 [STOMP] DISCONNECT 요청 - sessionId: ${accessor.sessionId}")
                 handleDisconnect(accessor)
             }
+
             else -> {}
         }
     }
@@ -74,18 +79,25 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        val jwtToken = accessor.getFirstNativeHeader("jwt-token")
+        val jwtToken = accessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
         val currentUserId = jwtTokenProvider.extract(jwtToken)
 
-        val loginSessionRequest = LoginSessionRequest(
-            type = LoginType.LOGIN,
-            sessionId = currentSessionId,
-            userId = currentUserId
-        )
-//
-//        // ToDo 상태관리 서버에 로그인 전달
-//        val guildIds = guildClient.getGuildIds(jwtToken)
+        log.info("✅ [STOMP] CONNECT 성공 - sessionId: $currentSessionId, userId: $currentUserId")
+
+        val stompHeaders = StompHeaderAccessor.create(StompCommand.CONNECT)
+        stompHeaders.setLeaveMutable(true)
+
+        val connectedMessage = MessageBuilder.withPayload("CONNECTED")
+            .setHeaders(stompHeaders)
+            .build()
+
+        // ✅ 실제로 `CONNECTED` 프레임을 클라이언트에게 반환
+        messagingTemplate.convertAndSendToUser(currentUserId, "/stomp/connected", connectedMessage)
+
+        log.info("📡 [STOMP] CONNECTED 프레임 반환 - sessionId: $currentSessionId")
+
+        //        val guildIds = guildClient.getGuildIds(jwtToken)
 
         val stateRequest = StateRequest(
             StatusType.CONNECT,
