@@ -63,7 +63,6 @@ class JwtHandshakeInterceptor(
         }
         val userId = jwtTokenProvider.extract(jwtToken)
         println("✅ WebSocket Handshake 성공 - userId: $userId")
-        response.headers.remove("Sec-WebSocket-Protocol")
 
         return true
     }
