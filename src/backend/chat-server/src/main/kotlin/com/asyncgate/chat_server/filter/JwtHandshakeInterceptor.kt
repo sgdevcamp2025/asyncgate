@@ -37,15 +37,15 @@ class JwtHandshakeInterceptor(
             println("header = $key : $value")
         }
 
-        // STOMP 프로토콜 확인
+        // 클라이언트가 보낸 Sec-WebSocket-Protocol 헤더 목록
         val protocols = headers["Sec-WebSocket-Protocol"]
-        if (protocols.isNullOrEmpty() || !protocols.any { it.contains("v10.stomp") }) {
+        if (protocols.isNullOrEmpty()) {
             println("❌ STOMP 프로토콜 없음: WebSocket 연결 거부")
             response.setStatusCode(HttpStatus.BAD_REQUEST)
             return false
         }
 
-        // JWT 토큰은 Sec-WebSocket-Protocol 헤더의 두 번째 값에서 추출
+        // 예: protocols[0] = "v10.stomp, eyJ..."
         val rawProtocol = protocols[0]
         val jwtToken = extractJwtFromProtocol(rawProtocol)
         if (jwtToken.isNullOrBlank()) {
@@ -68,12 +68,9 @@ class JwtHandshakeInterceptor(
             val userId = jwtTokenProvider.extract(jwtToken)
             println("✅ WebSocket Handshake 성공 - userId: $userId")
 
-            // 클라이언트에게 지원하는 STOMP 프로토콜을 응답으로 설정
-            // 현재는
-            response.headers.add("Sec-WebSocket-Protocol", "v10.stomp")
-            // 이렇게 되어 있는데,
-            // 클라이언트가 보낸 전체 값을 그대로 반환하도록:
-            response.headers.add("Sec-WebSocket-Protocol", protocols[0])
+            // 🔹 클라이언트가 보낸 전체 프로토콜 문자열을 그대로 반환
+            //    (기존에 "v10.stomp"만 반환하던 부분 삭제)
+            response.headers.set("Sec-WebSocket-Protocol", rawProtocol)
 
             return true
         } catch (e: ChatServerException) {
