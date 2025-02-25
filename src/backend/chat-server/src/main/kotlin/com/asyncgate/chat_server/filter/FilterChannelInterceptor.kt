@@ -21,13 +21,11 @@ class FilterChannelInterceptor(
         private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
     }
 
-    // Sec-WebSocket-Protocol 헤더에서 두 번째 값 (JWT 토큰) 추출
-    private fun extractToken(headerValue: String?): String? {
-        if (headerValue == null) return null
+    private fun splitProtocolHeader(headerValue: String?): Pair<String, String>? {
+        if (headerValue.isNullOrBlank()) return null
         val parts = headerValue.split(",").map { it.trim() }
         if (parts.size < 2) return null
-        if (parts[0] != "v10.stomp") return null
-        return parts[1]
+        return Pair(parts[0], parts[1]) // (v10.stomp, <JWT>)
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -37,11 +35,17 @@ class FilterChannelInterceptor(
         if (StompCommand.CONNECT == headerAccessor.command) {
             val rawProtocol = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
             log.info("🔑 [STOMP] Raw Protocol Header: $rawProtocol")
-            val jwtToken = extractToken(rawProtocol)
-            if (jwtToken.isNullOrBlank()) {
-                log.error("🚨 [STOMP] Access Token is missing or improperly formatted!")
+
+            val (stompValue, jwtToken) = splitProtocolHeader(rawProtocol) ?: run {
+                log.error("🚨 [STOMP] 형식 오류: v10.stomp, <JWT> 형태가 아님")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access token is missing")
             }
+
+            if (stompValue != "v10.stomp") {
+                log.error("🚨 [STOMP] STOMP 프로토콜이 아님")
+                throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Not STOMP protocol")
+            }
+
             if (!jwtTokenProvider.validate(jwtToken)) {
                 log.error("🚨 [STOMP] Access Token validation failed!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
@@ -80,26 +84,26 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
+
         val rawProtocol = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
-        val jwtToken = extractToken(rawProtocol)
+        val (stompValue, jwtToken) = splitProtocolHeader(rawProtocol)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
+
         val currentUserId = jwtTokenProvider.extract(jwtToken)
+        log.info("🔑 [STOMP] 유저 ID 추출 완료: $currentUserId")
 
         val loginSessionRequest = LoginSessionRequest(
             type = LoginType.LOGIN,
             sessionId = currentSessionId,
             userId = currentUserId
         )
-        //
-        //        // ToDo 상태관리 서버에 로그인 전달
-        //        val guildIds = guildClient.getGuildIds(jwtToken)
         val stateRequest = StateRequest(
             StatusType.CONNECT,
             userId = currentUserId
         )
-        // 시그널링 서버에 전달
-        //                messageSender.signaling(stateTopic, stateRequest)
-        // 이후 상태 관리나 로그인을 처리할 수 있음
+
+        // 시그널링 서버에 전달 (주석)
+        // messageSender.signaling(stateTopic, stateRequest)
     }
 }
 
