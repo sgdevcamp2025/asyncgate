@@ -13,10 +13,14 @@ class JwtHandshakeInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : HandshakeInterceptor {
 
-    private fun extractJwtToken(headerValue: String?): String? {
+    // Sec-WebSocket-Protocol 헤더에서 첫 번째 값이 "v10.stomp"이고,
+    // 두 번째 값이 JWT 토큰이면 이를 반환, 아니면 null
+    private fun extractJwtFromProtocol(headerValue: String?): String? {
         if (headerValue == null) return null
-        val token = headerValue.trim()
-        return if (token.startsWith("Bearer ")) token.removePrefix("Bearer ").trim() else null
+        val parts = headerValue.split(",").map { it.trim() }
+        if (parts.size < 2) return null
+        if (parts[0] != "v10.stomp") return null
+        return parts[1]
     }
 
     override fun beforeHandshake(
@@ -33,7 +37,7 @@ class JwtHandshakeInterceptor(
             println("header = $key : $value")
         }
 
-        // 클라이언트가 STOMP 프로토콜 "v10.stomp"를 사용했는지 확인
+        // STOMP 프로토콜 확인
         val protocols = headers["Sec-WebSocket-Protocol"]
         if (protocols.isNullOrEmpty() || !protocols.any { it.contains("v10.stomp") }) {
             println("❌ STOMP 프로토콜 없음: WebSocket 연결 거부")
@@ -41,19 +45,14 @@ class JwtHandshakeInterceptor(
             return false
         }
 
-        // JWT 토큰은 Authorization 헤더에서 추출 (프론트에서 Bearer 접두어가 포함되어 있음)
-        val rawToken = headers["Authorization"]?.firstOrNull()
-        if (rawToken.isNullOrBlank()) {
-            println("❌ JWT 검증 실패: Authorization 헤더 없음")
+        // JWT 토큰은 Sec-WebSocket-Protocol 헤더의 두 번째 값에서 추출
+        val rawProtocol = protocols[0]
+        val jwtToken = extractJwtFromProtocol(rawProtocol)
+        if (jwtToken.isNullOrBlank()) {
+            println("❌ JWT 검증 실패: JWT 토큰이 Sec-WebSocket-Protocol 헤더에 없음")
             response.setStatusCode(HttpStatus.UNAUTHORIZED)
             response.headers["WWW-Authenticate"] =
-                "Bearer error=\"invalid_token\", error_description=\"not found JWT token\""
-            return false
-        }
-        val jwtToken = extractJwtToken(rawToken)
-        if (jwtToken.isNullOrBlank()) {
-            println("❌ JWT 검증 실패: Bearer 접두어가 붙은 JWT 토큰 없음")
-            response.setStatusCode(HttpStatus.UNAUTHORIZED)
+                "Bearer error=\"invalid_token\", error_description=\"JWT token missing in protocol header\""
             return false
         }
 
@@ -87,6 +86,5 @@ class JwtHandshakeInterceptor(
         wsHandler: WebSocketHandler,
         exception: Exception?,
     ) {
-        // Handshake 이후 추가 처리가 필요하면 여기에 작성
     }
 }

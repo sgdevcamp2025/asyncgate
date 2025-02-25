@@ -21,10 +21,13 @@ class FilterChannelInterceptor(
         private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
     }
 
+    // Sec-WebSocket-Protocol 헤더에서 두 번째 값 (JWT 토큰) 추출
     private fun extractToken(headerValue: String?): String? {
         if (headerValue == null) return null
-        val token = headerValue.trim()
-        return if (token.startsWith("Bearer ")) token.removePrefix("Bearer ").trim() else null
+        val parts = headerValue.split(",").map { it.trim() }
+        if (parts.size < 2) return null
+        if (parts[0] != "v10.stomp") return null
+        return parts[1]
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
