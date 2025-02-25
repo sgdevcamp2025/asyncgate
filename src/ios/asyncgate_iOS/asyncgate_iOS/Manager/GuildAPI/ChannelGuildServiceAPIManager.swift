@@ -80,42 +80,24 @@ class ChannelGuildServiceAPIManager {
                 "Authorization": "Bearer \(accessToken)",
             ]
             
-            print("accessToken: \(accessToken)")
-            print("name: \(name)")
-            print("topic: \(topic)")
-            print("isPrivate: \(isPrivate)")
-            print("guildId: \(guildId)")
-            print("categoryId: \(categoryId)")
-            print("channelId: \(channelId)")
-            
-            print("urlurlurl: \(url)")
-            
             AF.request(url, method: .patch, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
                 .validate()
                 .responseDecodable(of: ChannelResponse.self) { response in
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("ABOUT RESPONSE: \(response)")
                         
                     case .failure(let e):
                         if let data = response.data {
-                            print("Raw Response Data: \(String(data: data, encoding: .utf8) ?? "Invalid Data")")
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("ABOUT RESPONSE: \(response)")
-                                print("Error: \(e.localizedDescription)")
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                                print("ABOUT RESPONSE: \(response)")
-                                print("Error: \(e.localizedDescription)")
                             }
                             print("Error: \(e.localizedDescription)")
                         } else {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                            print("ABOUT RESPONSE: \(response)")
-                            print("Error: \(e.localizedDescription)")
                         }
                     }
                 }
@@ -137,21 +119,17 @@ class ChannelGuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("ABOUT RESPONSE: \(response)")
-                        
+                      
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("ABOUT RESPONSE: \(response)")
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                                print("ABOUT RESPONSE: \(response)")
                             }
                         } else {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                            print("ABOUT RESPONSE: \(response)")
                         }
                     }
                 }
