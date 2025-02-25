@@ -52,7 +52,6 @@ class GuildCategoryViewModel: ObservableObject {
     
     // MARK: 함수 - 카테고리 삭제
     func deleteCategory() {
-        print("guildId:::::::::::::: \(guildId)")
         if let guildId = guildId {
             CategoryGuildServiceAPIManager.shared.deleteGuildCategory(guildId: guildId, categoryId: categoryId) {
                 result in

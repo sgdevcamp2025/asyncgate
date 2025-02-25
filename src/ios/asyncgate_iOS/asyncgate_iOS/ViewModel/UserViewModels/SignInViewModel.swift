@@ -31,7 +31,6 @@ class SignInViewModel: ObservableObject {
                         self.isSignInSuccess = true
                         if let accessToken = signInResponse.result?.accessToken {
                             self.auth.saveToken(accessToken)
-                            print("\(self.auth.accessToken ?? "")")
                             self.isSignInSuccess = true
                         }
                     }

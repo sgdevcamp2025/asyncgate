@@ -111,11 +111,7 @@ struct UpdateChannelView: View {
                         }
                     }
                 }
-                
-                let _ = print("guildId: \(guildChannelViewModel.guildId)")
-                let _ = print("categoryId: \(guildChannelViewModel.categoryId)")
-                let _ = print("channelId: \(guildChannelViewModel.channelId)")
-                
+               
                 Text("채널을 비공개로 만들면 선택한 멤버들과 역할만 이 채널을 볼 수 있어요.")
                     .font(Font.pretendardSemiBold(size: 14))
                     .foregroundColor(Color.colorDart400)

@@ -25,24 +25,20 @@ class UserServiceAPIManager {
                 switch response.result {
                 case .success(let healthResponse):
                     completion(.success(healthResponse))
-                    print("Response status code: \(response)")
-                    
+                   
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response status code: \(response)")
-                            
+                           
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response status code: \(response)")
-                                                    
+                                                   
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response code: \(response)")
-                                                
+                                               
                     }
                 }
             }
@@ -66,7 +62,6 @@ class UserServiceAPIManager {
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
-                    print("알ㄴ알ㅇㄹㅇ: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
@@ -75,11 +70,11 @@ class UserServiceAPIManager {
                             completion(.failure(errorResponse))
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response ww code: \(response)")
+                
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response ss code: \(response)")
+                        
                     }
                 }
             }
@@ -99,7 +94,7 @@ class UserServiceAPIManager {
                 switch response.result {
                 case .success(let checkDuplicatedEmailResponse):
                     completion(.success(checkDuplicatedEmailResponse))
-                    print("ㄴㄴㄴㄴㄴㄴ: \(response)")
+                   
                     
                 case .failure(_):
                     if let data = response.data {
@@ -108,11 +103,11 @@ class UserServiceAPIManager {
                             completion(.failure(errorResponse))
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response wwwwwwwww code: \(response)")
+                           
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response llllllll code: \(response)")
+                       
                     }
                 }
             }
@@ -126,31 +121,27 @@ class UserServiceAPIManager {
             "email": email,
             "authentication_code": authenticationCode,
         ]
-        
-        print("email: \(email)")
-        print("authenticationCode: \(authenticationCode)")
-        
+       
         AF.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default)
             .validate()
             .responseDecodable(of: SuccessEmptyResultResponse.self) { response in
                 switch response.result {
                 case .success(let signUpResponse):
                     completion(.success(signUpResponse))
-                    print("Response status code: \(response)")
-                  
+                   
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response status code: \(response)")
+                 
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response status code: \(response)")
+                          
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response status code: \(response)")
+                       
                     }
                 }
             }
@@ -171,21 +162,21 @@ class UserServiceAPIManager {
                 switch response.result {
                 case .success(let signInResponse):
                     completion(.success(signInResponse))
-                    print("Response ㅈㅈㅈㅈㅂㅂㅂ code: \(response)")
+                  
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response ㄴㄴㄴ code: \(response)")
+                           
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response ㅈㅈㅈ code: \(response)")
+                  
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response ㄷㄷㄷ code: \(response)")
+                       
                     }
                 }
             }
@@ -214,21 +205,20 @@ class UserServiceAPIManager {
                 switch response.result {
                 case .success(let successResponse):
                     completion(.success(successResponse))
-                    print("Response code: \(response)")
-                    
+                  
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response ㅈㅈㅈ code: \(response)")
+                         
                         } catch {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                            print("Response ㅁㅁㅁㅁㅁ code: \(response)")
+                           
                         }
                     } else {
                         completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 1, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                        print("Response ㄴ린ㅇㄹㅇ널 code: \(response)")
+                      
                     }
                 }
             }
@@ -250,14 +240,14 @@ class UserServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("Response ㅈㅈㅈ code: \(response)")
+                     
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("Response ㅈㅈㅈ code: \(response)")
+                                
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
                             }
@@ -288,8 +278,7 @@ class UserServiceAPIManager {
                     switch response.result {
                     case .success(let signUpResponse):
                         completion(.success(signUpResponse))
-                        print("디바이스 토큰 업데이트: \(response)")
-                        
+                       
                     case .failure(_):
                         if let data = response.data {
                             do {
@@ -297,11 +286,11 @@ class UserServiceAPIManager {
                                 completion(.failure(errorResponse))
                             } catch {
                                 completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "오류가 발생했습니다.", requestId: "")))
-                                print("Response ww code: \(response)")
+                               
                             }
                         } else {
                             completion(.failure(ErrorResponse(timeStamp: "", path: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", requestId: "")))
-                            print("Response ss code: \(response)")
+                           
                         }
                     }
                 }
