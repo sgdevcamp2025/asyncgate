@@ -38,21 +38,17 @@ class GuildServiceAPIManager {
                 switch response.result {
                 case .success(let successResponse):
                     completion(.success(successResponse))
-                    print("Response  code: \(response)")
-                    
+                 
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response ㅈㅈㅈ code: \(response)")
                         } catch {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
-                            print("Response ㅁㅁㅁㅁㅁ code: \(response)")
                         }
                     } else {
                         completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
-                        print("Response ㄴ린ㅇㄹㅇ널 code: \(response)")
                     }
                 }
             }
@@ -82,21 +78,17 @@ class GuildServiceAPIManager {
                 switch response.result {
                 case .success(let successResponse):
                     completion(.success(successResponse))
-                    print("Response status code: \(response)")
                     
                 case .failure(_):
                     if let data = response.data {
                         do {
                             let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                             completion(.failure(errorResponse))
-                            print("Response status code: \(response)")
                         } catch {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
-                            print("Response status code: \(response)")
                         }
                     } else {
                         completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
-                        print("Response status code: \(response)")
                     }
                 }
             }
@@ -118,21 +110,17 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("Response status code: \(response)")
                             } catch {
                                 completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
-                                print("Response status code: \(response)")
                             }
                         } else {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
-                            print("Response status code: \(response)")
                         }
                     }
                 }
@@ -154,21 +142,17 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("Response status code: \(response)")
                             } catch {
                                 completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
-                                print("Response status code: \(response)")
                             }
                         } else {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
-                            print("Response status code: \(response)")
                         }
                     }
                 }
@@ -190,21 +174,17 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
                             do {
                                 let errorResponse = try JSONDecoder().decode(OnlyHttpStatusResponse.self, from: data)
                                 completion(.failure(errorResponse))
-                                print("Response status code: \(response)")
                             } catch {
                                 completion(.failure(OnlyHttpStatusResponse(httpStatus: 0)))
-                                print("Response status code: \(response)")
                             }
                         } else {
                             completion(.failure(OnlyHttpStatusResponse(httpStatus: 1)))
-                            print("Response status code: \(response)")
                         }
                     }
                 }
@@ -226,7 +206,6 @@ class GuildServiceAPIManager {
                     switch response.result {
                     case .success(let successResponse):
                         completion(.success(successResponse))
-                        print("Response status code: \(response)")
                         
                     case .failure(_):
                         if let data = response.data {
@@ -235,11 +214,9 @@ class GuildServiceAPIManager {
                                 completion(.failure(errorResponse))
                             } catch {
                                 completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "오류가 발생했습니다.", path: "")))
-                                print("Response status code: \(response)")
                             }
                         } else {
                             completion(.failure(FourErrorResponse(timeStamp: "", status: 0, error: "서버와 연결할 수 없습니다. 다시 시도해주세요.", path: "")))
-                            print("Response status code: \(response)")
                         }
                     }
                 }
