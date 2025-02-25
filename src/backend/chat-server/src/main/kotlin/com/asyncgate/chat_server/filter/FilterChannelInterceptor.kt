@@ -21,22 +21,15 @@ class FilterChannelInterceptor(
         private const val AUTHORIZATION_HEADER = "Authorization"
     }
 
-    // 헤더에서 "v10.stomp"가 첫 번째, JWT 토큰이 두 번째인 경우 JWT 토큰만 추출하며,
-    // 토큰에 "Bearer " 접두어가 있다면 이를 제거한다.
-    private fun splitProtocolHeader(headerValue: String?): Pair<String, String>? {
-        if (headerValue.isNullOrBlank()) return null
-        val parts = headerValue.split(",").map { it.trim() }
-        if (parts.size < 2) return null
-        if (parts[0] != "v10.stomp") return null
-        var token = parts[1]
-        if (token.startsWith("Bearer ", ignoreCase = true)) {
-            token = token.substring(7)
-        }
-        return Pair(parts[0], token)
-    }
-
+    // Authorization 헤더에서 "Bearer " 접두어를 제거한 후 토큰을 반환
     private fun extractToken(headerValue: String?): String? {
-        return splitProtocolHeader(headerValue)?.second
+        if (headerValue.isNullOrBlank()) return null
+        val token = headerValue.trim()
+        return if (token.startsWith("Bearer ", ignoreCase = true)) {
+            token.substring(7)
+        } else {
+            token
+        }
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -44,9 +37,9 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            val rawProtocol = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
-            log.info("🔑 [STOMP] Raw Protocol Header: $rawProtocol")
-            val jwtToken = extractToken(rawProtocol)
+            val rawAuth = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
+            log.info("🔑 [STOMP] Raw Authorization Header: $rawAuth")
+            val jwtToken = extractToken(rawAuth)
             if (jwtToken.isNullOrBlank()) {
                 log.error("🚨 [STOMP] Access Token is missing or improperly formatted!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access token is missing")
@@ -88,11 +81,10 @@ class FilterChannelInterceptor(
 
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        val rawProtocol = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
-        val pair = splitProtocolHeader(rawProtocol)
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
-        val jwtToken = pair.second
+            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Not session now")
+        val rawAuth = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
+        val jwtToken = extractToken(rawAuth)
+            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "JWT token is missing")
         val currentUserId = jwtTokenProvider.extract(jwtToken)
         log.info("🔑 [STOMP] 유저 ID 추출 완료: $currentUserId")
 
@@ -109,7 +101,6 @@ class FilterChannelInterceptor(
         )
         // 시그널링 서버에 전달 (주석)
         // messageSender.signaling(stateTopic, stateRequest)
-        // 이후 상태 관리나 로그인을 처리할 수 있음
     }
 }
 
