@@ -28,15 +28,23 @@ class FilterChannelInterceptor(
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
         val headerAccessor = StompHeaderAccessor.wrap(message)
-        println("STOMP Command: ${headerAccessor.command}")
+        log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
             val accessToken = headerAccessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
-                ?: throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "access-token is missing")
+            log.info("🔑 [STOMP] Access Token: $accessToken") // 토큰 확인
+
+            if (accessToken == null) {
+                log.error("🚨 [STOMP] Access Token is missing!")
+                throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access token is missing")
+            }
+
             if (!jwtTokenProvider.validate(accessToken)) {
+                log.error("🚨 [STOMP] Access Token validation failed!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
             }
-            println("✅ STOMP CONNECT 요청 처리 완료") // 🔹 STOMP CONNECT 성공 로그 추가
+
+            log.info("✅ [STOMP] CONNECT 요청 처리 완료")
         }
 
         return message
@@ -44,15 +52,23 @@ class FilterChannelInterceptor(
 
     override fun postSend(message: Message<*>, channel: MessageChannel, sent: Boolean) {
         val accessor = StompHeaderAccessor.wrap(message)
+        log.info("📡 [STOMP] Command: ${accessor.command}, sessionId: ${accessor.sessionId}, sent: $sent")
+
         when (accessor.command) {
-            StompCommand.CONNECT -> handleConnect(accessor)
-            StompCommand.DISCONNECT -> handleDisconnect()
+            StompCommand.CONNECT -> {
+                log.info("✅ [STOMP] CONNECT 성공 - sessionId: ${accessor.sessionId}")
+                handleConnect(accessor)
+            }
+            StompCommand.DISCONNECT -> {
+                log.info("🔌 [STOMP] DISCONNECT 요청 - sessionId: ${accessor.sessionId}")
+                handleDisconnect(accessor)
+            }
             else -> {}
         }
     }
 
-    private fun handleDisconnect() {
-        log.info("WebSocket 연결 해제")
+    private fun handleDisconnect(accessor: StompHeaderAccessor) {
+        log.info("🔌 [STOMP] WebSocket 연결 해제 - sessionId: ${accessor.sessionId}")
     }
 
     private fun handleConnect(accessor: StompHeaderAccessor) {
