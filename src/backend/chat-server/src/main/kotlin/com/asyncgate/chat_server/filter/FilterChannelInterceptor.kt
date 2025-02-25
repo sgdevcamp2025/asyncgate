@@ -18,16 +18,21 @@ class FilterChannelInterceptor(
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
-        private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
+        private const val AUTHORIZATION_HEADER = "Authorization"
     }
 
-    // 헤더에서 "v10.stomp"가 첫 번째, JWT 토큰이 두 번째인 경우 JWT 토큰만 추출
+    // 헤더에서 "v10.stomp"가 첫 번째, JWT 토큰이 두 번째인 경우 JWT 토큰만 추출하며,
+    // 토큰에 "Bearer " 접두어가 있다면 이를 제거한다.
     private fun splitProtocolHeader(headerValue: String?): Pair<String, String>? {
         if (headerValue.isNullOrBlank()) return null
         val parts = headerValue.split(",").map { it.trim() }
         if (parts.size < 2) return null
         if (parts[0] != "v10.stomp") return null
-        return Pair(parts[0], parts[1])
+        var token = parts[1]
+        if (token.startsWith("Bearer ", ignoreCase = true)) {
+            token = token.substring(7)
+        }
+        return Pair(parts[0], token)
     }
 
     private fun extractToken(headerValue: String?): String? {
@@ -39,7 +44,7 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            val rawProtocol = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
+            val rawProtocol = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
             log.info("🔑 [STOMP] Raw Protocol Header: $rawProtocol")
             val jwtToken = extractToken(rawProtocol)
             if (jwtToken.isNullOrBlank()) {
@@ -84,7 +89,7 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        val rawProtocol = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
+        val rawProtocol = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
         val pair = splitProtocolHeader(rawProtocol)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
         val jwtToken = pair.second
