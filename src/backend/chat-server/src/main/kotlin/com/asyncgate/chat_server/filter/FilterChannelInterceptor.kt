@@ -17,14 +17,9 @@ class FilterChannelInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : ChannelInterceptor {
 
-    /*
-    @Value("\${spring.kafka.consumer.state-topic}")
-    private lateinit var stateTopic: String
-     */
-
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
-        private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
+        private const val AUTHORIZATION_HEADER = "Authorization"
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -32,22 +27,27 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            val accessToken = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
-            log.info("🔑 [STOMP] Access Token: $accessToken") // 토큰 확인
+            // JWT 토큰은 Authorization 헤더에서 추출하고, Bearer 접두어를 제거
+            val rawToken = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
+            log.info("🔑 [STOMP] Raw Access Token: $rawToken")
+            val jwtToken = if (rawToken != null && rawToken.startsWith("Bearer ")) {
+                rawToken.removePrefix("Bearer ").trim()
+            } else {
+                rawToken?.trim()
+            }
 
-            if (accessToken == null) {
+            if (jwtToken.isNullOrBlank()) {
                 log.error("🚨 [STOMP] Access Token is missing!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access token is missing")
             }
 
-            if (!jwtTokenProvider.validate(accessToken)) {
+            if (!jwtTokenProvider.validate(jwtToken)) {
                 log.error("🚨 [STOMP] Access Token validation failed!")
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
             }
 
             log.info("✅ [STOMP] CONNECT 요청 처리 완료")
         }
-
         return message
     }
 
@@ -61,8 +61,8 @@ class FilterChannelInterceptor(
                 handleConnect(accessor)
                 log.info("✅ [STOMP] CONNECTED 프레임이 자동으로 반환되었는지 확인 필요")
                 log.info("🔎 [STOMP] CONNECTED 프레임 헤더: ${accessor.messageHeaders}")
-                for (messageHeader in accessor.messageHeaders) {
-                    println("messageHeader = $messageHeader")
+                accessor.messageHeaders.forEach { header ->
+                    println("messageHeader = $header")
                 }
             }
             StompCommand.DISCONNECT -> {
@@ -80,9 +80,13 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-
-        val jwtToken = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
+        // JWT 토큰는 Authorization 헤더에서 추출 (Bearer 접두어 제거)
+        val rawToken = accessor.getFirstNativeHeader(AUTHORIZATION_HEADER)
+        val jwtToken = if (rawToken != null && rawToken.startsWith("Bearer ")) {
+            rawToken.removePrefix("Bearer ").trim()
+        } else {
+            rawToken?.trim()
+        } ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
         val currentUserId = jwtTokenProvider.extract(jwtToken)
 
         val loginSessionRequest = LoginSessionRequest(
@@ -93,7 +97,6 @@ class FilterChannelInterceptor(
 //
 //        // ToDo 상태관리 서버에 로그인 전달
 //        val guildIds = guildClient.getGuildIds(jwtToken)
-
         val stateRequest = StateRequest(
             StatusType.CONNECT,
             userId = currentUserId
@@ -102,6 +105,7 @@ class FilterChannelInterceptor(
 
         // 시그널링 서버에 전달
         //                messageSender.signaling(stateTopic, stateRequest)
+        // 이후 상태 관리나 로그인을 처리할 수 있음
     }
 }
 
