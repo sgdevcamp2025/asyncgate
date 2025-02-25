@@ -22,13 +22,22 @@ class JwtHandshakeInterceptor(
         println("✅ WebSocket Handshake - JWT 검증 시작")
 
         val headers = request.headers
-        val jwtToken = headers.getFirst("jwt-token")
 
-        if (jwtToken.isNullOrBlank()) {
+        println("headers.size = ${headers.size}")
+        for ((key, value) in headers) {
+            println("header = $key : $value")
+        }
+
+        val protocols = headers["Sec-WebSocket-Protocol"]
+
+        if (protocols.isNullOrEmpty()) {
+            println("❌ JWT 검증 실패: Sec-WebSocket-Protocol 헤더 없음")
             response.setStatusCode(HttpStatus.UNAUTHORIZED)
             response.headers["WWW-Authenticate"] = "Bearer error=\"invalid_token\", error_description=\"not found JWT token\""
             return false
         }
+
+        val jwtToken = protocols[0]
 
         try {
             if (!jwtTokenProvider.validate(jwtToken)) {
