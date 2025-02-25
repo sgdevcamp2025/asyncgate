@@ -28,15 +28,20 @@ class FilterChannelInterceptor(
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
         val headerAccessor = StompHeaderAccessor.wrap(message)
+        println("STOMP Command: ${headerAccessor.command}") 
+
         if (StompCommand.CONNECT == headerAccessor.command) {
-            val accessToken = headerAccessor.getFirstNativeHeader("jwt-token")
+            val accessToken = headerAccessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
                 ?: throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "access-token is missing")
             if (!jwtTokenProvider.validate(accessToken)) {
                 throw ResponseStatusException(HttpStatus.UNAUTHORIZED)
             }
+            println("✅ STOMP CONNECT 요청 처리 완료") // 🔹 STOMP CONNECT 성공 로그 추가
         }
+
         return message
     }
+
 
     override fun postSend(message: Message<*>, channel: MessageChannel, sent: Boolean) {
         val accessor = StompHeaderAccessor.wrap(message)
