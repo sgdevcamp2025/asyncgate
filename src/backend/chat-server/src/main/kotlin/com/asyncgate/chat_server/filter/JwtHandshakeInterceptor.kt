@@ -69,7 +69,12 @@ class JwtHandshakeInterceptor(
             println("✅ WebSocket Handshake 성공 - userId: $userId")
 
             // 클라이언트에게 지원하는 STOMP 프로토콜을 응답으로 설정
+            // 현재는
             response.headers.add("Sec-WebSocket-Protocol", "v10.stomp")
+            // 이렇게 되어 있는데,
+            // 클라이언트가 보낸 전체 값을 그대로 반환하도록:
+            response.headers.add("Sec-WebSocket-Protocol", protocols[0])
+
             return true
         } catch (e: ChatServerException) {
             println("❌ WebSocket Handshake 실패: ${e.failType.message}")
