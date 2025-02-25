@@ -9,11 +9,14 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 object CustomSecurityContext {
     private const val JWT_HEADER = "Sec-WebSocket-Protocol"
 
-    // 헤더에서 콤마로 구분된 값 중 Bearer 접두어를 제거한 JWT 토큰을 반환
+    // Bearer 접두어가 붙은 JWT 토큰만 추출. 없으면 null 반환.
     private fun parseJwtToken(headerValue: String): String? {
-        val parts = headerValue.split(",").map { it.trim() }
-        // 보통 하나는 프로토콜(v10.stomp)이고, 하나는 "Bearer ..." 형태
-        return parts.find { it.startsWith("Bearer ") }?.removePrefix("Bearer ")?.trim()
+        val token = headerValue.trim()
+        return if (token.startsWith("Bearer ")) {
+            token.removePrefix("Bearer ").trim()
+        } else {
+            null
+        }
     }
 
     fun extractJwtTokenForStomp(message: Message<*>): String {

@@ -13,6 +13,12 @@ class JwtHandshakeInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : HandshakeInterceptor {
 
+    private fun extractJwtToken(headerValue: String?): String? {
+        if (headerValue == null) return null
+        val token = headerValue.trim()
+        return if (token.startsWith("Bearer ")) token.removePrefix("Bearer ").trim() else null
+    }
+
     override fun beforeHandshake(
         request: ServerHttpRequest,
         response: ServerHttpResponse,
@@ -27,15 +33,15 @@ class JwtHandshakeInterceptor(
             println("header = $key : $value")
         }
 
-        // 클라이언트가 STOMP 프로토콜로 "v10.stomp"를 사용했는지 확인
+        // 클라이언트가 STOMP 프로토콜 "v10.stomp"를 사용했는지 확인
         val protocols = headers["Sec-WebSocket-Protocol"]
-        if (protocols.isNullOrEmpty() || !protocols.contains("v10.stomp")) {
+        if (protocols.isNullOrEmpty() || !protocols.any { it.contains("v10.stomp") }) {
             println("❌ STOMP 프로토콜 없음: WebSocket 연결 거부")
             response.setStatusCode(HttpStatus.BAD_REQUEST)
             return false
         }
 
-        // JWT 토큰은 Authorization 헤더에서 추출
+        // JWT 토큰은 Authorization 헤더에서 추출 (프론트에서 Bearer 접두어가 포함되어 있음)
         val rawToken = headers["Authorization"]?.firstOrNull()
         if (rawToken.isNullOrBlank()) {
             println("❌ JWT 검증 실패: Authorization 헤더 없음")
@@ -44,11 +50,11 @@ class JwtHandshakeInterceptor(
                 "Bearer error=\"invalid_token\", error_description=\"not found JWT token\""
             return false
         }
-        // Bearer 접두어 제거
-        val jwtToken = if (rawToken.startsWith("Bearer ")) {
-            rawToken.removePrefix("Bearer ").trim()
-        } else {
-            rawToken.trim()
+        val jwtToken = extractJwtToken(rawToken)
+        if (jwtToken.isNullOrBlank()) {
+            println("❌ JWT 검증 실패: Bearer 접두어가 붙은 JWT 토큰 없음")
+            response.setStatusCode(HttpStatus.UNAUTHORIZED)
+            return false
         }
 
         try {

@@ -21,11 +21,10 @@ class FilterChannelInterceptor(
         private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
     }
 
-    private fun extractToken(protocolHeader: String?): String? {
-        if (protocolHeader == null) return null
-        val parts = protocolHeader.split(",").map { it.trim() }
-        if (!parts.contains("v10.stomp")) return null
-        return parts.find { it.startsWith("Bearer ") }?.removePrefix("Bearer ")?.trim()
+    private fun extractToken(headerValue: String?): String? {
+        if (headerValue == null) return null
+        val token = headerValue.trim()
+        return if (token.startsWith("Bearer ")) token.removePrefix("Bearer ").trim() else null
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -33,7 +32,6 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            // 여기서는 Authorization 헤더가 없으므로, Sec-WebSocket-Protocol에서 JWT 추출
             val rawProtocol = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
             log.info("🔑 [STOMP] Raw Protocol Header: $rawProtocol")
             val jwtToken = extractToken(rawProtocol)
@@ -79,7 +77,6 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        // JWT 토큰는 Sec-WebSocket-Protocol에서 추출
         val rawProtocol = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
         val jwtToken = extractToken(rawProtocol)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
@@ -90,15 +87,13 @@ class FilterChannelInterceptor(
             sessionId = currentSessionId,
             userId = currentUserId
         )
-//
-//        // ToDo 상태관리 서버에 로그인 전달
-//        val guildIds = guildClient.getGuildIds(jwtToken)
+        //
+        //        // ToDo 상태관리 서버에 로그인 전달
+        //        val guildIds = guildClient.getGuildIds(jwtToken)
         val stateRequest = StateRequest(
             StatusType.CONNECT,
             userId = currentUserId
-//            guildIds = guildIds
         )
-
         // 시그널링 서버에 전달
         //                messageSender.signaling(stateTopic, stateRequest)
         // 이후 상태 관리나 로그인을 처리할 수 있음
