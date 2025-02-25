@@ -24,6 +24,7 @@ class FilterChannelInterceptor(
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
+        private const val WEB_SOCKET_PROTOCOL_HEADER = "Sec-WebSocket-Protocol"
     }
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
@@ -31,7 +32,7 @@ class FilterChannelInterceptor(
         log.info("📥 [STOMP] Command: ${headerAccessor.command}, sessionId: ${headerAccessor.sessionId}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
-            val accessToken = headerAccessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
+            val accessToken = headerAccessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
             log.info("🔑 [STOMP] Access Token: $accessToken") // 토큰 확인
 
             if (accessToken == null) {
@@ -79,7 +80,8 @@ class FilterChannelInterceptor(
     private fun handleConnect(accessor: StompHeaderAccessor) {
         val currentSessionId = accessor.sessionId
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "not session now")
-        val jwtToken = accessor.getFirstNativeHeader("jwt-token")
+
+        val jwtToken = accessor.getFirstNativeHeader(WEB_SOCKET_PROTOCOL_HEADER)
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "jwt-token is missing")
         val currentUserId = jwtTokenProvider.extract(jwtToken)
 
