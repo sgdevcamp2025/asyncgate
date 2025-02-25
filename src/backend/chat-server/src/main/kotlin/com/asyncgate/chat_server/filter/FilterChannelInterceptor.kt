@@ -28,7 +28,7 @@ class FilterChannelInterceptor(
 
     override fun preSend(message: Message<*>, channel: MessageChannel): Message<*> {
         val headerAccessor = StompHeaderAccessor.wrap(message)
-        println("STOMP Command: ${headerAccessor.command}") 
+        println("STOMP Command: ${headerAccessor.command}")
 
         if (StompCommand.CONNECT == headerAccessor.command) {
             val accessToken = headerAccessor.getFirstNativeHeader("Sec-WebSocket-Protocol")
@@ -41,7 +41,6 @@ class FilterChannelInterceptor(
 
         return message
     }
-
 
     override fun postSend(message: Message<*>, channel: MessageChannel, sent: Boolean) {
         val accessor = StompHeaderAccessor.wrap(message)
