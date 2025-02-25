@@ -9,6 +9,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.SignatureException
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.security.Key
@@ -16,6 +17,8 @@ import javax.crypto.spec.SecretKeySpec
 
 @Component
 class JwtTokenProvider {
+
+    private val log = LoggerFactory.getLogger(JwtTokenProvider::class.java)
 
     companion object {
         const val HMAC_SHA256 = "HmacSHA256"
@@ -36,6 +39,7 @@ class JwtTokenProvider {
                 throw ChatServerException(FailType.JWT_INVALID_TOKEN)
             }
 
+            log.info("🔑 [JWT] Token valid. Subject: ${claims.body.subject}, Expiration: ${claims.body.expiration}")
             return true
         } catch (e: SignatureException) {
             throw ChatServerException(FailType.JWT_INVALID_SIGNATURE)
