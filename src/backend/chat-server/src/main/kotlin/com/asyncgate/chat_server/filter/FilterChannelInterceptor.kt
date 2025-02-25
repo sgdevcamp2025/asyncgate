@@ -19,14 +19,14 @@ class FilterChannelInterceptor(
     companion object {
         private val log: Logger = LoggerFactory.getLogger(FilterChannelInterceptor::class.java)
         private const val AUTHORIZATION_HEADER = "Authorization"
+        private const val BEARER_PREFIX = "Bearer "
     }
 
-    // Authorization 헤더에서 "Bearer " 접두어를 제거한 후 토큰을 반환
     private fun extractToken(headerValue: String?): String? {
         if (headerValue.isNullOrBlank()) return null
         val token = headerValue.trim()
-        return if (token.startsWith("Bearer ", ignoreCase = true)) {
-            token.substring(7)
+        return if (token.startsWith(BEARER_PREFIX, ignoreCase = true)) {
+            token.substring(BEARER_PREFIX.length)
         } else {
             token
         }
@@ -61,10 +61,9 @@ class FilterChannelInterceptor(
             StompCommand.CONNECT -> {
                 log.info("✅ [STOMP] CONNECT 성공 - sessionId: ${accessor.sessionId}")
                 handleConnect(accessor)
-                log.info("✅ [STOMP] CONNECTED 프레임이 자동으로 반환되었는지 확인 필요")
                 log.info("🔎 [STOMP] CONNECTED 프레임 헤더: ${accessor.messageHeaders}")
                 accessor.messageHeaders.forEach { header ->
-                    println("messageHeader = $header")
+                    log.info("messageHeader = $header")
                 }
             }
             StompCommand.DISCONNECT -> {

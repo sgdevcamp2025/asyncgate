@@ -1,5 +1,7 @@
 package com.asyncgate.chat_server.filter
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServerHttpResponse
@@ -12,8 +14,12 @@ class JwtHandshakeInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
 ) : HandshakeInterceptor {
 
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(JwtHandshakeInterceptor::class.java)
+    }
+
     /**
-     * Sec-WebSocket-Protocol 헤더 값은 "v10.stomp, <JWT 토큰>" 형태로 온다고 가정.
+     * Sec-WebSocket-Protocol 헤더 값은 "v10.stomp, <JWT 토큰>" 형태로 요청 옴.
      * 첫 번째 값는 "v10.stomp", 두 번째 값은 JWT 토큰을 반환한다.
      */
     private fun splitProtocolHeader(headerValue: String?): Pair<String, String>? {
@@ -30,16 +36,16 @@ class JwtHandshakeInterceptor(
         wsHandler: WebSocketHandler,
         attributes: MutableMap<String, Any>,
     ): Boolean {
-        println("✅ WebSocket Handshake - JWT 검증 시작")
+        log.info("✅ WebSocket Handshake - JWT 검증 시작")
         val headers = request.headers
-        println("headers.size = ${headers.size}")
+        log.info("headers.size = ${headers.size}")
         for ((key, value) in headers) {
-            println("header = $key : $value")
+            log.info("header = $key : $value")
         }
 
         val protocols = headers["Sec-WebSocket-Protocol"]
         if (protocols.isNullOrEmpty()) {
-            println("❌ STOMP 프로토콜 없음: WebSocket 연결 거부")
+            log.info("❌ STOMP 프로토콜 없음: WebSocket 연결 거부")
             response.setStatusCode(HttpStatus.BAD_REQUEST)
             return false
         }
@@ -48,21 +54,21 @@ class JwtHandshakeInterceptor(
         val rawProtocol = protocols[0]
         val pair = splitProtocolHeader(rawProtocol)
         if (pair == null) {
-            println("❌ 형식 오류: 헤더가 'v10.stomp, <JWT>' 형태가 아님")
+            log.info("❌ 형식 오류: 헤더가 'v10.stomp, <JWT>' 형태가 아님")
             response.setStatusCode(HttpStatus.BAD_REQUEST)
             return false
         }
         val (_, jwtToken) = pair
 
         if (!jwtTokenProvider.validate(jwtToken)) {
-            println("❌ WebSocket Handshake 실패: 유효하지 않은 JWT 토큰")
+            log.info("❌ WebSocket Handshake 실패: 유효하지 않은 JWT 토큰")
             response.setStatusCode(HttpStatus.UNAUTHORIZED)
             response.headers["WWW-Authenticate"] =
                 "Bearer error=\"invalid_token\", error_description=\"invalid JWT token\""
             return false
         }
         val userId = jwtTokenProvider.extract(jwtToken)
-        println("✅ WebSocket Handshake 성공 - userId: $userId")
+        log.info("✅ WebSocket Handshake 성공 - userId: $userId")
 
         return true
     }
