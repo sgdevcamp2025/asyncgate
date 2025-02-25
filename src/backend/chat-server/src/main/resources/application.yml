@@ -36,7 +36,7 @@ spring:
         reconnect.backoff.ms: 5000
   data:
     mongodb:
-      uri: mongodb://localhost:27017/chatdb
+      uri: mongodb://mongo:27017/chatdb
 
 management:
   endpoints:
