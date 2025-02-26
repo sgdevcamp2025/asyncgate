@@ -9,19 +9,29 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("폰트 이름 출력하기")
-            .font(Font.PretendardExtraLight)
-            .onAppear {
-                for family in UIFont.familyNames {
-                    print(family)
-                    for font in UIFont.fontNames(forFamilyName: family) {
-                        print("  - \(font)")
-                    }
-                }
+        TabView {
+            GuildMainView()
+            .tabItem {
+              Image(systemName: "house.fill")
+              Text("홈")
             }
+            
+            NotificationView()
+            .tabItem {
+              Image(systemName: "bell.fill")
+              Text("알림")
+            }
+            
+            UserInfoView()
+            .tabItem {
+              Image(systemName: "person.fill")
+              Text("나")
+            }
+        }
     }
 }
 
 #Preview {
     ContentView()
 }
+
