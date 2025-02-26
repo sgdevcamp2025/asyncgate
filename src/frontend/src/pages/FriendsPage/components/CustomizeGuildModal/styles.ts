@@ -13,7 +13,7 @@ export const ContentContainer = styled.div`
   align-items: center;
 `;
 
-export const ImageUpLoad = styled.div`
+export const ImageUpLoad = styled.div<{ $profileImagePreview: string | null }>`
   position: relative;
 
   display: flex;
@@ -24,6 +24,11 @@ export const ImageUpLoad = styled.div`
   height: 8rem;
   border: 1px dashed ${({ theme }) => theme.colors.dark[400]};
   border-radius: 100%;
+
+  background-image: ${(props) => (props.$profileImagePreview ? `url(${props.$profileImagePreview})` : 'none')};
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 `;
 
 export const UpLoadIcon = styled.div`

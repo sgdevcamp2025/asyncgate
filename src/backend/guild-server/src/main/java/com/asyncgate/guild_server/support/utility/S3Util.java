@@ -6,13 +6,13 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
-import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Configuration
@@ -29,7 +29,7 @@ public class S3Util {
     // S3 이미지 업로드
     public String uploadFile(final MultipartFile file, final String domain) {
         try {
-            String fileName = domain + "/" + LocalDate.now().toString() + UUID.randomUUID().toString();
+            String fileName = domain + "/" + LocalDate.now() + UUID.randomUUID();
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(file.getSize());
             objectMetadata.setContentType(file.getContentType());

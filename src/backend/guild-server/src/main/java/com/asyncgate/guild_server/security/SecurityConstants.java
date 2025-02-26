@@ -17,6 +17,7 @@ public class SecurityConstants {
             "/swagger-ui/favicon-16x16.png",
             "/swagger-ui/index.css",
             "/v3/api-docs/swagger-config",
-            "/error"
+            "/error",
+            "/health"
     };
 }

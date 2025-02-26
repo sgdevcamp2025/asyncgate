@@ -2,6 +2,7 @@ package com.asyncgate.guild_server.domain;
 
 import com.asyncgate.guild_server.exception.FailType;
 import com.asyncgate.guild_server.exception.GuildServerException;
+
 import java.util.Arrays;
 
 public enum ChannelType {

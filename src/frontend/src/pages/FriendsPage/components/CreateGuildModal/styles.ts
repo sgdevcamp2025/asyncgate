@@ -10,7 +10,7 @@ export const CreateButtons = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-  padding: 3.6rem 4.6rem 0;
+  padding: 3.6rem 4.6rem 2.4rem;
 `;
 
 const BaseGuildButton = styled.button`

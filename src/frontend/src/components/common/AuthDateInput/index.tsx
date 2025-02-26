@@ -1,5 +1,9 @@
+import { motion } from 'motion/react';
+
+import { descriptionVarients } from '@/styles/motions';
 import { YearMonthDay } from '@/types';
 
+import { Description } from '../AuthInput';
 import DropdownInput from '../DropdownInput';
 
 import * as S from './styles';
@@ -8,10 +12,11 @@ interface AuthDateInputProps {
   label: string;
   isRequired?: boolean;
   initialValue: YearMonthDay;
+  description?: Description | null;
   handleChange: (value: YearMonthDay) => void;
 }
 
-const AuthDateInput = ({ label, isRequired, initialValue, handleChange }: AuthDateInputProps) => {
+const AuthDateInput = ({ label, isRequired, initialValue, description, handleChange }: AuthDateInputProps) => {
   const {
     years,
     months,
@@ -25,6 +30,8 @@ const AuthDateInput = ({ label, isRequired, initialValue, handleChange }: AuthDa
     handleMonthSelect,
     handleDaySelect,
   } = useDateInput({ initialValue, handleChange });
+
+  const isDescriptionDisplayed = description && description.type === 'error';
 
   return (
     <S.DateInputContainer>
@@ -62,6 +69,15 @@ const AuthDateInput = ({ label, isRequired, initialValue, handleChange }: AuthDa
           />
         </S.DayInput>
       </S.InputContainer>
+      {isDescriptionDisplayed && (
+        <motion.div
+          variants={descriptionVarients}
+          initial="hidden"
+          animate={isDescriptionDisplayed ? 'visible' : 'hidden'}
+        >
+          <S.DescriptionText $type={description.type}>{description.content}</S.DescriptionText>
+        </motion.div>
+      )}
     </S.DateInputContainer>
   );
 };

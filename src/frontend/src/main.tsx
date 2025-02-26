@@ -7,15 +7,18 @@ import { ThemeProvider } from 'styled-components';
 import router from './router';
 import GlobalStyle from './styles/GlobalStyle';
 import theme from './styles/theme';
+import retryQuery from './utils/retryQuery';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       throwOnError: true,
       refetchOnWindowFocus: false,
+      retry: retryQuery,
     },
     mutations: {
       throwOnError: true,
+      retry: retryQuery,
     },
   },
 });
@@ -25,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router}/>
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>,

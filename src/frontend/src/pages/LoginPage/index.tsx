@@ -1,24 +1,41 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { postLogin } from '@/api/users';
 import AuthInput from '@/components/common/AuthInput';
-import { FormDropVarients } from '@/styles/motions';
+import { formDropVarients } from '@/styles/motions';
 
 import useLogin from './hooks/useLogin';
 import * as S from './styles';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   const { email, password, handleEmailChange, handlePasswordChange } = useLogin();
 
   const handleRegisterButtonClick = () => {
     navigate('/register');
   };
 
+  const handleLoginButtonClick = async () => {
+    try {
+      const response = await postLogin({ email, password });
+      if (response.httpStatus === 200) {
+        localStorage.setItem('access_token', response.result.access_token);
+        return navigate('/friends', { replace: true });
+      } else if (response.httpStatus === 404) {
+        return setErrorMessage('이메일이나 비밀번호를 확인해주세요.');
+      }
+    } catch (error) {
+      console.error('로그인 요청 실패', error);
+    }
+  };
+
   return (
     <>
       <S.PageContainer>
         <S.ContentWrapper>
-          <S.LoginFormContainer variants={FormDropVarients} initial="hidden" animate="visible">
+          <S.LoginFormContainer variants={formDropVarients} initial="hidden" animate="visible">
             <S.MainLoginContainer>
               <S.LoginFormHeader>
                 <S.HeaderTitle>돌아오신 것을 환영해요!</S.HeaderTitle>
@@ -28,6 +45,7 @@ const LoginPage = () => {
                 <AuthInput
                   id="email"
                   label="이메일 또는 전화번호"
+                  type="email"
                   isRequired={true}
                   value={email}
                   handleChange={handleEmailChange}
@@ -45,8 +63,9 @@ const LoginPage = () => {
                 <S.LinkText>비밀번호를 잊으셨나요?</S.LinkText>
               </S.ForgotPasswordButton>
               <S.LoginButton>
-                <S.LoginText>로그인</S.LoginText>
+                <S.LoginText onClick={handleLoginButtonClick}>로그인</S.LoginText>
               </S.LoginButton>
+              {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
               <S.ToggleRegisterContainer>
                 <S.RegisterLabel>계정이 필요한가요?</S.RegisterLabel>
                 <S.RegisterButton onClick={handleRegisterButtonClick}>

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Getter
 public class Channel implements Identifiable {
+    public static String CATEGORY_ID_IS_NULL = "CATEGORY_ID_IS_NULL";
     private final String id;
     private final String guildId;
     private final String categoryId;
@@ -65,6 +66,4 @@ public class Channel implements Identifiable {
             this.isPrivate = isPrivate;
         }
     }
-
-    public static String CATEGORY_ID_IS_NULL = "CATEGORY_ID_IS_NULL";
 }

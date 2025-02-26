@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 import { SmallText } from '@/styles/Typography';
 
+import { DescriptionType } from '.';
+
 export const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,6 +35,15 @@ export const Input = styled.input`
   caret-color: ${({ theme }) => theme.colors.white};
 `;
 
-export const ErrorText = styled(SmallText)`
-  color: ${({ theme }) => theme.colors.red};
+export const DescriptionText = styled(SmallText)<{ $type: DescriptionType }>`
+  color: ${({ theme, $type }) => {
+    switch ($type) {
+      case 'normal':
+        return theme.colors.white;
+      case 'valid':
+        return theme.colors.green;
+      case 'error':
+        return theme.colors.red;
+    }
+  }};
 `;

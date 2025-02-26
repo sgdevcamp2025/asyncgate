@@ -1,9 +1,9 @@
 name: ECR actions for multiple folders
 
 on:
-  push:
+  pull_request:
     branches:
-      - be/refactor/54-config
+      - main
 
 env:
   NAMESPACE_MSA: "msa"

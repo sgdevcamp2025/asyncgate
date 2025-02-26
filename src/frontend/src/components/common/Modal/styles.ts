@@ -24,7 +24,6 @@ export const ModalContainer = styled.div`
   flex-direction: column;
 
   min-width: 49rem;
-  min-height: 36rem;
   border-radius: 0.4rem;
 
   color: ${({ theme }) => theme.colors.white};
@@ -43,7 +42,7 @@ export const HeaderWrapper = styled.div`
 
 export const ContentWrapper = styled.div`
   margin-top: 0.8rem;
-  padding: 0 2.4rem;
+  padding: 0 2.4rem 2.4rem;
 `;
 
 export const FooterWrapper = styled.div`
@@ -53,6 +52,7 @@ export const FooterWrapper = styled.div`
   justify-content: center;
 
   margin-top: 1.6rem;
+  padding: 2.4rem 2.4rem 0;
 `;
 
 export const CloseButton = styled.div`

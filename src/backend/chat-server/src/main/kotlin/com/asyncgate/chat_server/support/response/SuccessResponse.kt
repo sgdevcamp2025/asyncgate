@@ -6,13 +6,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder
 import java.time.LocalDateTime
 
 @JsonPropertyOrder("httpStatus", "message", "time", "result")
-data class SuccessResponse<T>(
+open class SuccessResponse<T>(
     @JsonProperty("httpStatus")
     val httpStatus: Int,
     val message: String,
     val time: LocalDateTime = LocalDateTime.now(),
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    val result: T? = null,
+    open val result: T? = null,
 ) {
     companion object {
         fun <T> ok(result: T): SuccessResponse<T> {

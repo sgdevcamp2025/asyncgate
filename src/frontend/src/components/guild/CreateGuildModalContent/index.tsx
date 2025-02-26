@@ -1,3 +1,4 @@
+import useCreateGuildData from '@/hooks/createGuild/useCreateGuildData';
 import useFunnel from '@/hooks/useFunnel';
 import CreateGuildModal from '@/pages/FriendsPage/components/CreateGuildModal';
 import CustomizeGuildModal from '@/pages/FriendsPage/components/CustomizeGuildModal';
@@ -11,14 +12,16 @@ const CreateGuildModalContent = () => {
     stepList: STEP_SEQUENCE,
   });
 
+  const { isPublicGuildProps, guildCustomProps } = useCreateGuildData();
+
   return (
     <Funnel currentStep={currentStep}>
       <Funnel.Step name="서버공개여부">
-        <CreateGuildModal onNext={moveToNextStep} />
+        <CreateGuildModal onNext={moveToNextStep} {...isPublicGuildProps} />
       </Funnel.Step>
 
       <Funnel.Step name="서버커스텀">
-        <CustomizeGuildModal onPrev={moveToPrevStep} />
+        <CustomizeGuildModal onPrev={moveToPrevStep} {...guildCustomProps} />
       </Funnel.Step>
     </Funnel>
   );

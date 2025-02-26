@@ -39,7 +39,7 @@ export const LoginFormContainer = styled(motion.div)`
   justify-content: space-between;
 
   width: 78.4rem;
-  height: 40.8rem;
+  height: fit-content;
   padding: 3.2rem;
   border-radius: 0.5rem;
 
@@ -50,7 +50,6 @@ export const MainLoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 41.6rem;
-  height: 34.4rem;
 `;
 
 export const LoginFormHeader = styled.div`
@@ -85,6 +84,10 @@ export const ForgotPasswordButton = styled.button`
 `;
 
 export const LoginButton = styled.button`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   width: 100%;
   height: 4.4rem;
   margin-bottom: 0.8rem;
@@ -93,6 +96,10 @@ export const LoginButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
 
   background-color: ${({ theme }) => theme.colors.blue};
+`;
+
+export const ErrorMessage = styled(ChipText)`
+  color: ${({ theme }) => theme.colors.red};
 `;
 
 export const LoginText = styled(MediumButtonText)`

@@ -2,7 +2,7 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: guild-server
-    ip-address: '{cipher}c371b089895aed735e459fac034acc87ca1a0e68764ddba5ebb7ac996678b9b0'
+    ip-address: '{cipher}3d0838425757275166ad774723355ea10df4b07c8922a878ba4ed8ddaf9607f6'
   client:
     service-url:
       defaultZone: '{cipher}c10802fde605ba30df72871d3dfc9c765a71c43b3f6326fd0f9169b52210c582fe3aa81f882e05c08ffcfdb402f7949a'
@@ -22,4 +22,4 @@ cloud:
 
 spring:
   kafka:
-    bootstrap-servers: '{cipher}276ada73fdb90a68125e2dcce993b77384c8c80d672a78b26eefda56bf60f808f77d486f86d9f1de94e6cb342711bb6211dd8f6cbf98b01e4ece80b938b40acf1cfef75ec74c910f32e68873b06dd3d5'
+    bootstrap-servers: '{cipher}100b6cda6e8978fad50168603e6f0ead8b1e11dc69cdae4962cbe4a7fbc6d257280432f7e5c247e2bc6d57f73482fa53937ba26d5dd2cb7b0d7328b66731121b'

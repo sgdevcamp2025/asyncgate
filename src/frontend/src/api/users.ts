@@ -1,0 +1,51 @@
+import { endPoint } from '@/constants/endPoint';
+import {
+  PatchUserInfoRequest,
+  PatchUserInfoResponse,
+  PostAuthCodeRequest,
+  PostAuthCodeResponse,
+  PostEmailDuplicateResponse,
+  PostLoginRequest,
+  PostLoginResponse,
+  PostRegisterRequest,
+  PostRegisterResponse,
+} from '@/types/users';
+import { publicAxios, tokenAxios } from '@/utils/axios';
+
+export const postLogin = async (requestBody: PostLoginRequest) => {
+  const { data } = await publicAxios.post<PostLoginResponse>(endPoint.users.POST_SIGN_IN, requestBody);
+  return data;
+};
+
+export const postRegister = async (requestBody: PostRegisterRequest) => {
+  const { data } = await publicAxios.post<PostRegisterResponse>(endPoint.users.POST_SIGN_UP, requestBody);
+  return data;
+};
+
+export const postAuthCode = async (requestBody: PostAuthCodeRequest) => {
+  const { data } = await tokenAxios.post<PostAuthCodeResponse>(endPoint.users.POST_AUTHENTICATION_CODE, requestBody);
+  return data;
+};
+
+interface PostEmailDuplicateParams {
+  email: string;
+}
+
+export const postEmailDuplicate = async ({ email }: PostEmailDuplicateParams) => {
+  const { data } = await publicAxios.post<PostEmailDuplicateResponse>(endPoint.users.POST_VALIDATION_EMAIL, null, {
+    params: { email },
+  });
+  return data;
+};
+
+interface PatchUserInfoParams {
+  userId: string;
+  bodyRequest: PatchUserInfoRequest;
+}
+
+export const PatchUserInfo = async ({ userId, bodyRequest }: PatchUserInfoParams) => {
+  const { data } = await publicAxios.patch<PatchUserInfoResponse>(endPoint.users.PATCH_USER_INFO, bodyRequest, {
+    params: userId,
+  });
+  return data;
+};

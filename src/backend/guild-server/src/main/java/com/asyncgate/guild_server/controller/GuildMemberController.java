@@ -29,7 +29,7 @@ public class GuildMemberController implements GuildMemberControllerDocs {
     }
 
     /**
-     *  초대 수락 (사용자가 초대를 수락하여 길드 가입)
+     * 초대 수락 (사용자가 초대를 수락하여 길드 가입)
      */
 
     @Override
@@ -43,7 +43,7 @@ public class GuildMemberController implements GuildMemberControllerDocs {
     }
 
     /**
-     *  초대 거절 (사용자가 초대를 거절)
+     * 초대 거절 (사용자가 초대를 거절)
      */
 
     @Override
@@ -57,7 +57,7 @@ public class GuildMemberController implements GuildMemberControllerDocs {
     }
 
     /**
-     *  초대 취소 (길드 관리자가 초대를 취소)
+     * 초대 취소 (길드 관리자가 초대를 취소)
      */
 
     @Override

@@ -5,9 +5,9 @@ import com.asyncgate.guild_server.dto.request.ChannelUpdateRequest;
 import com.asyncgate.guild_server.dto.response.ChannelResponse;
 import com.asyncgate.guild_server.support.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

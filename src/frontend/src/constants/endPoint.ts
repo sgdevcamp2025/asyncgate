@@ -5,7 +5,7 @@ export const endPoint = {
     PATCH_USER_INFO: '/users/info',
     PATCH_DEVICE_TOKEN: '/users/device-token',
     POST_VALIDATION_EMAIL: '/users/validation/email',
-    POST_AUTHENTICATION_CODE: '/users/validation/authentication',
+    POST_AUTHENTICATION_CODE: '/users/validation/authentication-code',
     POST_SIGN_UP: '/users/sign-up',
     POST_SIGN_IN: '/users/sign-in',
   },

@@ -5,16 +5,17 @@ import com.asyncgate.guild_server.exception.GuildServerException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import java.security.Key;
-import java.util.Collections;
-import java.util.List;
-import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class JwtService {

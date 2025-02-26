@@ -1,7 +1,6 @@
 package com.asyncgate.guild_server.repository;
 
 import com.asyncgate.guild_server.domain.Guild;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 

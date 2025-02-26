@@ -56,14 +56,14 @@ public class GuildMemberQuerydslRepository {
     private Optional<GuildMemberEntity> findByUserIdAndGuildIdAndStatus(final String userId, final String guildId, final GuildInvitationStatus status) {
         return Optional.ofNullable(
                 queryFactory
-                .selectFrom(guildMember)
-                .where(
-                        guildMember.userId.eq(userId),
-                        guildMember.guildId.eq(guildId),
-                        guildMember.deleted.isFalse(),
-                        guildMember.status.eq(status)
-                )
-                .fetchOne()
+                        .selectFrom(guildMember)
+                        .where(
+                                guildMember.userId.eq(userId),
+                                guildMember.guildId.eq(guildId),
+                                guildMember.deleted.isFalse(),
+                                guildMember.status.eq(status)
+                        )
+                        .fetchOne()
         );
     }
 }

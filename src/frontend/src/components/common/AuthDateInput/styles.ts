@@ -37,3 +37,16 @@ export const MonthInput = styled.div`
 export const DayInput = styled.div`
   width: 30%;
 `;
+
+export const DescriptionText = styled(SmallText)<{ $type: DescriptionType }>`
+  color: ${({ theme, $type }) => {
+    switch ($type) {
+      case 'normal':
+        return theme.colors.white;
+      case 'valid':
+        return theme.colors.green;
+      case 'error':
+        return theme.colors.red;
+    }
+  }};
+`;

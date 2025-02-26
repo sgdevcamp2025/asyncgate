@@ -1,8 +1,9 @@
 package com.asyncgate.guild_server.domain;
 
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.UUID;
 
 @Getter
 public class Category implements Identifiable {

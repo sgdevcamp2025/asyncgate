@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 import { BodyMediumText, ChipText, HeaderText, SmallText } from '@/styles/Typography';
 
@@ -21,7 +21,7 @@ export const RegisterFormContainer = styled(motion.div)`
   align-items: center;
 
   width: 48rem;
-  height: 69.8rem;
+  min-height: 58rem;
   padding: 3.2rem;
   border-radius: 0.5rem;
 

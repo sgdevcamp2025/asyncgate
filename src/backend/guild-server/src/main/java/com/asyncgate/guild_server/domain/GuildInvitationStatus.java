@@ -13,6 +13,4 @@ public enum GuildInvitationStatus {
     // 초대 만료
     EXPIRED,
 
-    ;
-
 }

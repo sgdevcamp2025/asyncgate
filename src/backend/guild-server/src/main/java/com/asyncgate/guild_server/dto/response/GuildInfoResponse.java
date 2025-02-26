@@ -30,7 +30,7 @@ public record GuildInfoResponse(
 
     private static List<InnerChannelResponse> transInnerChannels(List<ChannelResponse> channels) {
         return channels.stream().map(
-                channel -> InnerChannelResponse.of(channel.categoryId(), channel.name(), channel.topic(), channel.channelType(), channel.isPrivate())
+                channel -> InnerChannelResponse.of(channel.channelId(), channel.categoryId(), channel.name(), channel.topic(), channel.channelType(), channel.isPrivate())
         ).toList();
     }
 
@@ -50,7 +50,8 @@ public record GuildInfoResponse(
 
             @Schema(description = "비공개 여부", example = "false")
             boolean isPrivate
-    ) {}
+    ) {
+    }
 
     @Schema(description = "길드 내 채널 정보 DTO")
     private record InnerChannelResponse(
@@ -72,11 +73,11 @@ public record GuildInfoResponse(
             @Schema(description = "비공개 여부", example = "false")
             boolean isPrivate
     ) {
-        private static InnerChannelResponse of(String categoryId, String name, String topic, String channelType, boolean isPrivate) {
+        private static InnerChannelResponse of(String channelId, String categoryId, String name, String topic, String channelType, boolean isPrivate) {
             if (StringUtils.hasText(categoryId)) {
-                return new InnerChannelResponse(categoryId, name, categoryId, topic, channelType, isPrivate);
+                return new InnerChannelResponse(channelId, categoryId, name, topic, channelType, isPrivate);
             } else {
-                return new InnerChannelResponse(categoryId, name, Channel.CATEGORY_ID_IS_NULL, topic, channelType, isPrivate);
+                return new InnerChannelResponse(channelId, Channel.CATEGORY_ID_IS_NULL, name, topic, channelType, isPrivate);
             }
         }
     }

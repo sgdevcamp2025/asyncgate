@@ -36,5 +36,6 @@ public record GuildResponses(
 
             @Schema(description = "프로필 이미지 URL", example = "https://cdn.example.com/images/guild123.png")
             String profileImageUrl
-    ) {}
+    ) {
+    }
 }

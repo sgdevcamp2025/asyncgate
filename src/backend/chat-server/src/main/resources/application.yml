@@ -1,9 +1,9 @@
 server:
-  port: 0
+  port: 8700
 
 eureka:
   instance:
-    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    instance-id: ${spring.application.name}:${spring.application.instance_id:8700}
   client:
     register-with-eureka: true
     fetch-registry: true
@@ -11,13 +11,39 @@ eureka:
 spring:
   application:
     name: chat-server
+  kafka:
+    topic:
+      direct-message: direct-message-topic
+      direct-action: direct-action-topic
+      read-status: read-status-topic
+      direct-upload: direct-upload-topic
+    consumer:
+      group-id:
+        direct-message: direct-message
+        direct-action: direct-action
+        read-status: read-status
+        direct-upload: direct-upload
+      auto-offset-reset: latest
+      enable-auto-commit: false
+      properties:
+        heartbeat.interval.ms: 10000
+        session.timeout.ms: 60000
+        max.poll.interval.ms: 1800000
+        max.poll.records: 1000
+        connections.max.idle.ms: 1800000
+        request.timeout.ms: 120000
+        retry.backoff.ms: 5000
+        reconnect.backoff.ms: 5000
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/chatdb
 
 management:
   endpoints:
     web:
       exposure:
         include: refresh, health, beans, refresh
-
+    
 logging:
   level:
     com.asyncgate.chat_server: DEBUG
