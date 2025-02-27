@@ -10,6 +10,18 @@ export const endPoint = {
     POST_SIGN_IN: '/users/sign-in',
   },
 
+  friends: {
+    // Friends API
+    DELETE_FRIEND: (friendId: string) => `users/friends/${friendId}`,
+    GET_FRIENDS: '/users/friends',
+    GET_SENT_REQUESTS: '/users/friends/sent',
+    GET_RECEIVED_REQUESTS: 'users/friends/received',
+    GET_FRIENDS_LIST: 'users/friends/list',
+    POST_REQUEST: (toUserId: string) => `users/friends/request/${toUserId}`,
+    POST_REJECT_REQUEST: (friendId: string) => `users/friends/reject/${friendId}`,
+    POST_ACCEPT_REQUEST: (friendId: string) => `users/friends/accept/${friendId}`,
+  },
+
   guilds: {
     // Guild Category API
     DELETE_CATEGORY: (guildId: string, categoryId: string) => `/guilds/category/${guildId}/${categoryId}`,
