@@ -16,14 +16,22 @@ public class DirectMemberQueryDslRepository {
     private final QDirectMemberEntity directMemberEntity = QDirectMemberEntity.directMemberEntity;
 
     public List<DirectMemberEntity> getDirectMessageList(final String currentUserId) {
-        return queryFactory
-                .select(directMemberEntity)
+        // Sub Query: 현재 사용자가 참여한 directId 목록
+        var subquery = queryFactory
+                .select(directMemberEntity.directId)
                 .from(directMemberEntity)
                 .where(
                         directMemberEntity.memberId.eq(currentUserId),
                         directMemberEntity.deleted.isFalse()
+                );
+
+        // Main Query: 위 directId에 속한 모든 DirectMember 조회
+        return queryFactory
+                .selectFrom(directMemberEntity)
+                .where(
+                        directMemberEntity.directId.in(subquery)
                 )
                 .fetch();
-
     }
+
 }
