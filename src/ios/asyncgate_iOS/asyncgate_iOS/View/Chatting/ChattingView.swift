@@ -34,7 +34,7 @@ struct ChattingView: View {
             
             ScrollView {
                 ForEach(0..<4, id: \.self) { _ in
-                    Chat(profileImage: "", nickName: "KDK")
+                    Chat(profileImage: "", nickName: "KDK", message: "안녕하세요.")
                 }
             }
             

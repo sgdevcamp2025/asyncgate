@@ -10,6 +10,7 @@ import SwiftUI
 struct Chat: View {
     var profileImage: String
     var nickName: String
+    var message: String
     
     var body: some View {
         HStack {
@@ -37,13 +38,7 @@ struct Chat: View {
                         .foregroundStyle(Color(hex: "#C7C8CE"))
                 }
                 
-                Text("안녕하세요? 제 말이 잘 들리시나요?")
-                    .font(Font.pretendardRegular(size: 15))
-                    .foregroundStyle(Color.colorWhite)
-                Text("반갑습니다. 오늘도 즐거운 하루")
-                    .font(Font.pretendardRegular(size: 15))
-                    .foregroundStyle(Color.colorWhite)
-                Text("안녕하세요? 안녕하세요? 안녕하세요? 안녕하세요? 인사를 잘 받는 건 예의입니다.")
+                Text(message)
                     .font(Font.pretendardRegular(size: 15))
                     .foregroundStyle(Color.colorWhite)
             }
