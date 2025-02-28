@@ -3,6 +3,8 @@ import { BsFillTelephoneXFill } from 'react-icons/bs';
 import { useChannelInfoStore } from '@/stores/channelInfo';
 import { useGuildInfoStore } from '@/stores/guildInfo';
 
+import VoiceChannelActions from '../VoiceChannelActions';
+
 import * as S from './styles';
 
 const VoiceChannelController = () => {
@@ -20,6 +22,7 @@ const VoiceChannelController = () => {
         </S.InfoText>
         <BsFillTelephoneXFill size={20} />
       </S.ConnectStatusWrapper>
+      <VoiceChannelActions />
     </S.VoiceChannelController>
   );
 };
