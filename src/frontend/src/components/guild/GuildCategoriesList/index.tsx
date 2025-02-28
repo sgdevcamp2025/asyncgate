@@ -32,6 +32,8 @@ const GuildCategoriesList = ({ categories, channels }: CategoriesListProps) => {
 
     if (channelInfo.type === 'VOICE') {
       if (!isInVoiceChannel) setIsInVoiceChannel();
+    } else if (isInVoiceChannel) {
+      setIsInVoiceChannel();
     }
   };
 
