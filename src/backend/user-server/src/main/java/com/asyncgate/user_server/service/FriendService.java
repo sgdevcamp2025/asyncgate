@@ -1,7 +1,9 @@
 package com.asyncgate.user_server.service;
 
 import com.asyncgate.user_server.domain.Friend;
+import com.asyncgate.user_server.domain.FriendStatus;
 import com.asyncgate.user_server.domain.Member;
+import com.asyncgate.user_server.dto.response.FriendsResponse;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
 import com.asyncgate.user_server.repository.FriendRepository;
@@ -79,17 +81,26 @@ public class FriendService implements FriendUseCase {
     }
 
     @Override
-    public List<Friend> getSentFriendRequests(final String userId) {
-        return friendRepository.findSentFriendRequests(userId);
+    public FriendsResponse getSentFriendRequests(final String userId) {
+        List<String> sentFriendIds = friendRepository.findSentFriendRequests(userId);
+        return FriendsResponse.of(
+                memberRepository.getByMemberIds(sentFriendIds), FriendStatus.PENDING
+        );
     }
 
     @Override
-    public List<Friend> getReceivedFriendRequests(final String userId) {
-        return friendRepository.findReceivedFriendRequests(userId);
+    public FriendsResponse getReceivedFriendRequests(final String userId) {
+        List<String> receivedFriendIds = friendRepository.findReceivedFriendRequests(userId);
+        return FriendsResponse.of(
+                memberRepository.getByMemberIds(receivedFriendIds), FriendStatus.PENDING
+        );
     }
 
     @Override
-    public List<Friend> getFriends(final String userId) {
-        return friendRepository.findFriendsByUserId(userId);
+    public FriendsResponse getFriends(final String userId) {
+        List<String> friendsIds = friendRepository.findFriendIdsByUserId(userId);
+        return FriendsResponse.of(
+                memberRepository.getByMemberIds(friendsIds), FriendStatus.ACCEPTED
+        );
     }
 }

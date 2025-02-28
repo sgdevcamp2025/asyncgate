@@ -2,8 +2,8 @@ package com.asyncgate.user_server.usecase;
 
 import com.asyncgate.user_server.domain.Friend;
 import com.asyncgate.user_server.domain.Member;
-
-import java.util.List;
+import com.asyncgate.user_server.dto.response.FriendsResponse;
+import com.asyncgate.user_server.dto.response.UserClientInfoResponses;
 
 public interface FriendUseCase {
     Member getByEmail(String email);
@@ -16,10 +16,10 @@ public interface FriendUseCase {
 
     void deleteFriend(String userId, String friendId);
 
-    List<Friend> getFriends(String userId);
+    FriendsResponse getFriends(String userId);
 
-    List<Friend> getSentFriendRequests(String userId);
+    FriendsResponse getSentFriendRequests(String userId);
 
-    List<Friend> getReceivedFriendRequests(String userId);
+    FriendsResponse getReceivedFriendRequests(String userId);
 
 }

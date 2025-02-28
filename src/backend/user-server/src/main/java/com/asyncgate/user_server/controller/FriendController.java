@@ -12,8 +12,6 @@ import com.asyncgate.user_server.usecase.FriendUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/friends")
@@ -99,9 +97,8 @@ public class FriendController implements FriendControllerDocs {
     @Override
     @GetMapping("/sent")
     public SuccessResponse<FriendsResponse> getSentFriendRequests(final @MemberID String userId) {
-        List<Friend> sent = friendUseCase.getSentFriendRequests(userId);
         return SuccessResponse.ok(
-                FriendsResponse.from(sent)
+                friendUseCase.getSentFriendRequests(userId)
         );
     }
 
@@ -112,9 +109,8 @@ public class FriendController implements FriendControllerDocs {
     @Override
     @GetMapping("/received")
     public SuccessResponse<FriendsResponse> getReceivedFriendRequests(final @MemberID String userId) {
-        List<Friend> received = friendUseCase.getReceivedFriendRequests(userId);
         return SuccessResponse.ok(
-                FriendsResponse.from(received)
+                friendUseCase.getReceivedFriendRequests(userId)
         );
     }
 
@@ -125,9 +121,8 @@ public class FriendController implements FriendControllerDocs {
     @Override
     @GetMapping("/list")
     public SuccessResponse<FriendsResponse> getFriends(final @MemberID String userId) {
-        List<Friend> friends = friendUseCase.getFriends(userId);
         return SuccessResponse.ok(
-                FriendsResponse.from(friends)
+                friendUseCase.getFriends(userId)
         );
     }
 }

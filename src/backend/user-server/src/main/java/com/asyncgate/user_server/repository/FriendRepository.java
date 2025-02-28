@@ -11,9 +11,9 @@ public interface FriendRepository {
 
     void deleteById(String friendId);
 
-    List<Friend> findSentFriendRequests(String requestedUserId);
+    List<String> findSentFriendRequests(String requestedUserId);
 
-    List<Friend> findReceivedFriendRequests(String userId);
+    List<String> findReceivedFriendRequests(String userId);
 
-    List<Friend> findFriendsByUserId(String userId);
+    List<String> findFriendIdsByUserId(String userId);
 }

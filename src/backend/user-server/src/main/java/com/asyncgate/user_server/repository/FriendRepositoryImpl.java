@@ -42,26 +42,17 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<Friend> findSentFriendRequests(final String requestedUserId) {
-        return queryDslRepository.findSentFriendRequests(requestedUserId)
-                .stream().map(
-                        DomainUtil.FriendMapper::toDomain
-                ).toList();
+    public List<String> findSentFriendRequests(final String userId) {
+        return queryDslRepository.findSentFriendRequests(userId);
     }
 
     @Override
-    public List<Friend> findReceivedFriendRequests(final String userId) {
-        return queryDslRepository.findReceivedFriendRequests(userId)
-                .stream().map(
-                        DomainUtil.FriendMapper::toDomain
-                ).toList();
+    public List<String> findReceivedFriendRequests(final String userId) {
+        return queryDslRepository.findReceivedFriendRequests(userId);
     }
 
     @Override
-    public List<Friend> findFriendsByUserId(final String userId) {
-        return queryDslRepository.findFriendsByUserId(userId)
-                .stream().map(
-                        DomainUtil.FriendMapper::toDomain
-                ).toList();
+    public List<String> findFriendIdsByUserId(final String userId) {
+        return queryDslRepository.findFriendsIdByUserId(userId);
     }
 }
