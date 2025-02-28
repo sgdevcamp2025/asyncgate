@@ -1,0 +1,21 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '17.6'
+
+target 'asyncgate_iOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for asyncgate_iOS
+  pod 'Alamofire', '~> 5.5'
+  pod 'KeychainAccess'
+
+  target 'asyncgate_iOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'asyncgate_iOSUITests' do
+    # Pods for UI testing
+  end
+
+end

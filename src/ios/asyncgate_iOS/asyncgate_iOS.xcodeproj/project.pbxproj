@@ -1,0 +1,732 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		120C2F726ECDC78B341D40E7 /* Pods_asyncgate_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F66451FE3AC968ACC4C606FB /* Pods_asyncgate_iOS.framework */; };
+		5385074F7102DB571112FE8F /* Pods_asyncgate_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4E8023B99B4A920514027A3 /* Pods_asyncgate_iOSTests.framework */; };
+		E92BCCABD2CA3B2EB5E1BF2C /* Pods_asyncgate_iOS_asyncgate_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DCFC22FB9EAA15A8994FBCD /* Pods_asyncgate_iOS_asyncgate_iOSUITests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		42D3DCC42D51DA2A00BC3E8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42D3DCAB2D51DA2900BC3E8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42D3DCB22D51DA2900BC3E8F;
+			remoteInfo = asyncgate_iOS;
+		};
+		42D3DCCE2D51DA2A00BC3E8F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 42D3DCAB2D51DA2900BC3E8F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 42D3DCB22D51DA2900BC3E8F;
+			remoteInfo = asyncgate_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07DBC075A9F63C6B8D460FC3 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOS-asyncgate_iOSUITests.release.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOS-asyncgate_iOSUITests/Pods-asyncgate_iOS-asyncgate_iOSUITests.release.xcconfig"; sourceTree = "<group>"; };
+		0DCFC22FB9EAA15A8994FBCD /* Pods_asyncgate_iOS_asyncgate_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_asyncgate_iOS_asyncgate_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E721A53E3B7060D546CAC15 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOS-asyncgate_iOSUITests.debug.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOS-asyncgate_iOSUITests/Pods-asyncgate_iOS-asyncgate_iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		263BFD25E29DDE3581181D4D /* Pods-asyncgate_iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOS.release.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS.release.xcconfig"; sourceTree = "<group>"; };
+		26810480EB084C8998408B13 /* Pods-asyncgate_iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOSTests.release.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOSTests/Pods-asyncgate_iOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		3EA7A6DE9C203FFF10094F1E /* Pods-asyncgate_iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOSTests/Pods-asyncgate_iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		425A86F62D645D22009B4512 /* .xcconfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = .xcconfig.xcconfig; sourceTree = "<group>"; };
+		42D3DCB32D51DA2900BC3E8F /* asyncgate_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = asyncgate_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		42D3DCC32D51DA2A00BC3E8F /* asyncgate_iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = asyncgate_iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		42D3DCCD2D51DA2A00BC3E8F /* asyncgate_iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = asyncgate_iOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD81FEA621CDE1ACB91A518E /* Pods-asyncgate_iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-asyncgate_iOS.debug.xcconfig"; path = "Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E4E8023B99B4A920514027A3 /* Pods_asyncgate_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_asyncgate_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F66451FE3AC968ACC4C606FB /* Pods_asyncgate_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_asyncgate_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = asyncgate_iOS;
+			sourceTree = "<group>";
+		};
+		42D3DCC62D51DA2A00BC3E8F /* asyncgate_iOSTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = asyncgate_iOSTests;
+			sourceTree = "<group>";
+		};
+		42D3DCD02D51DA2A00BC3E8F /* asyncgate_iOSUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = asyncgate_iOSUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		42D3DCB02D51DA2900BC3E8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				120C2F726ECDC78B341D40E7 /* Pods_asyncgate_iOS.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCC02D51DA2A00BC3E8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5385074F7102DB571112FE8F /* Pods_asyncgate_iOSTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCCA2D51DA2A00BC3E8F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E92BCCABD2CA3B2EB5E1BF2C /* Pods_asyncgate_iOS_asyncgate_iOSUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		425A87B12D66E071009B4512 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				425A86F62D645D22009B4512 /* .xcconfig.xcconfig */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		42D3DCAA2D51DA2900BC3E8F = {
+			isa = PBXGroup;
+			children = (
+				42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */,
+				42D3DCC62D51DA2A00BC3E8F /* asyncgate_iOSTests */,
+				42D3DCD02D51DA2A00BC3E8F /* asyncgate_iOSUITests */,
+				42D3DCB42D51DA2900BC3E8F /* Products */,
+				B2DC13B528D33F0397396DF4 /* Pods */,
+				D7EB2A16941B0EA27DEBAC32 /* Frameworks */,
+				425A87B12D66E071009B4512 /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		42D3DCB42D51DA2900BC3E8F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				42D3DCB32D51DA2900BC3E8F /* asyncgate_iOS.app */,
+				42D3DCC32D51DA2A00BC3E8F /* asyncgate_iOSTests.xctest */,
+				42D3DCCD2D51DA2A00BC3E8F /* asyncgate_iOSUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2DC13B528D33F0397396DF4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BD81FEA621CDE1ACB91A518E /* Pods-asyncgate_iOS.debug.xcconfig */,
+				263BFD25E29DDE3581181D4D /* Pods-asyncgate_iOS.release.xcconfig */,
+				1E721A53E3B7060D546CAC15 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.debug.xcconfig */,
+				07DBC075A9F63C6B8D460FC3 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.release.xcconfig */,
+				3EA7A6DE9C203FFF10094F1E /* Pods-asyncgate_iOSTests.debug.xcconfig */,
+				26810480EB084C8998408B13 /* Pods-asyncgate_iOSTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		D7EB2A16941B0EA27DEBAC32 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F66451FE3AC968ACC4C606FB /* Pods_asyncgate_iOS.framework */,
+				0DCFC22FB9EAA15A8994FBCD /* Pods_asyncgate_iOS_asyncgate_iOSUITests.framework */,
+				E4E8023B99B4A920514027A3 /* Pods_asyncgate_iOSTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		42D3DCB22D51DA2900BC3E8F /* asyncgate_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42D3DCD72D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOS" */;
+			buildPhases = (
+				55623216BD408661BD8AF1E6 /* [CP] Check Pods Manifest.lock */,
+				42D3DCAF2D51DA2900BC3E8F /* Sources */,
+				42D3DCB02D51DA2900BC3E8F /* Frameworks */,
+				42D3DCB12D51DA2900BC3E8F /* Resources */,
+				99A40181F2C12C1C395D8DFB /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */,
+			);
+			name = asyncgate_iOS;
+			productName = asyncgate_iOS;
+			productReference = 42D3DCB32D51DA2900BC3E8F /* asyncgate_iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		42D3DCC22D51DA2A00BC3E8F /* asyncgate_iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42D3DCDA2D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOSTests" */;
+			buildPhases = (
+				121FBECF5C37504D221DBD66 /* [CP] Check Pods Manifest.lock */,
+				42D3DCBF2D51DA2A00BC3E8F /* Sources */,
+				42D3DCC02D51DA2A00BC3E8F /* Frameworks */,
+				42D3DCC12D51DA2A00BC3E8F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42D3DCC52D51DA2A00BC3E8F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42D3DCC62D51DA2A00BC3E8F /* asyncgate_iOSTests */,
+			);
+			name = asyncgate_iOSTests;
+			productName = asyncgate_iOSTests;
+			productReference = 42D3DCC32D51DA2A00BC3E8F /* asyncgate_iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		42D3DCCC2D51DA2A00BC3E8F /* asyncgate_iOSUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42D3DCDD2D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOSUITests" */;
+			buildPhases = (
+				466F2E6F2810D65E84402BCF /* [CP] Check Pods Manifest.lock */,
+				42D3DCC92D51DA2A00BC3E8F /* Sources */,
+				42D3DCCA2D51DA2A00BC3E8F /* Frameworks */,
+				42D3DCCB2D51DA2A00BC3E8F /* Resources */,
+				BF3276B03C5DBEEBAB8B01D0 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				42D3DCCF2D51DA2A00BC3E8F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				42D3DCD02D51DA2A00BC3E8F /* asyncgate_iOSUITests */,
+			);
+			name = asyncgate_iOSUITests;
+			productName = asyncgate_iOSUITests;
+			productReference = 42D3DCCD2D51DA2A00BC3E8F /* asyncgate_iOSUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		42D3DCAB2D51DA2900BC3E8F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					42D3DCB22D51DA2900BC3E8F = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					42D3DCC22D51DA2A00BC3E8F = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 42D3DCB22D51DA2900BC3E8F;
+					};
+					42D3DCCC2D51DA2A00BC3E8F = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 42D3DCB22D51DA2900BC3E8F;
+					};
+				};
+			};
+			buildConfigurationList = 42D3DCAE2D51DA2900BC3E8F /* Build configuration list for PBXProject "asyncgate_iOS" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 42D3DCAA2D51DA2900BC3E8F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 42D3DCB42D51DA2900BC3E8F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				42D3DCB22D51DA2900BC3E8F /* asyncgate_iOS */,
+				42D3DCC22D51DA2A00BC3E8F /* asyncgate_iOSTests */,
+				42D3DCCC2D51DA2A00BC3E8F /* asyncgate_iOSUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		42D3DCB12D51DA2900BC3E8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCC12D51DA2A00BC3E8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCCB2D51DA2A00BC3E8F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		121FBECF5C37504D221DBD66 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-asyncgate_iOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		466F2E6F2810D65E84402BCF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-asyncgate_iOS-asyncgate_iOSUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		55623216BD408661BD8AF1E6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-asyncgate_iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		99A40181F2C12C1C395D8DFB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS/Pods-asyncgate_iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BF3276B03C5DBEEBAB8B01D0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS-asyncgate_iOSUITests/Pods-asyncgate_iOS-asyncgate_iOSUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS-asyncgate_iOSUITests/Pods-asyncgate_iOS-asyncgate_iOSUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-asyncgate_iOS-asyncgate_iOSUITests/Pods-asyncgate_iOS-asyncgate_iOSUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		42D3DCAF2D51DA2900BC3E8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCBF2D51DA2A00BC3E8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42D3DCC92D51DA2A00BC3E8F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		42D3DCC52D51DA2A00BC3E8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42D3DCB22D51DA2900BC3E8F /* asyncgate_iOS */;
+			targetProxy = 42D3DCC42D51DA2A00BC3E8F /* PBXContainerItemProxy */;
+		};
+		42D3DCCF2D51DA2A00BC3E8F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 42D3DCB22D51DA2900BC3E8F /* asyncgate_iOS */;
+			targetProxy = 42D3DCCE2D51DA2A00BC3E8F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		42D3DCD52D51DA2A00BC3E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 42D3DCB52D51DA2900BC3E8F /* asyncgate_iOS */;
+			baseConfigurationReferenceRelativePath = .xcconfig.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		42D3DCD62D51DA2A00BC3E8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		42D3DCD82D51DA2A00BC3E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD81FEA621CDE1ACB91A518E /* Pods-asyncgate_iOS.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"asyncgate_iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "asyncgate-iOS-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		42D3DCD92D51DA2A00BC3E8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 263BFD25E29DDE3581181D4D /* Pods-asyncgate_iOS.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"asyncgate_iOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "asyncgate-iOS-Info.plist";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOS";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		42D3DCDB2D51DA2A00BC3E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3EA7A6DE9C203FFF10094F1E /* Pods-asyncgate_iOSTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/asyncgate_iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/asyncgate_iOS";
+			};
+			name = Debug;
+		};
+		42D3DCDC2D51DA2A00BC3E8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 26810480EB084C8998408B13 /* Pods-asyncgate_iOSTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/asyncgate_iOS.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/asyncgate_iOS";
+			};
+			name = Release;
+		};
+		42D3DCDE2D51DA2A00BC3E8F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1E721A53E3B7060D546CAC15 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = asyncgate_iOS;
+			};
+			name = Debug;
+		};
+		42D3DCDF2D51DA2A00BC3E8F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 07DBC075A9F63C6B8D460FC3 /* Pods-asyncgate_iOS-asyncgate_iOSUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5UTK6J592W;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "kk.asyncgate-iOSUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = asyncgate_iOS;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42D3DCAE2D51DA2900BC3E8F /* Build configuration list for PBXProject "asyncgate_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42D3DCD52D51DA2A00BC3E8F /* Debug */,
+				42D3DCD62D51DA2A00BC3E8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42D3DCD72D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42D3DCD82D51DA2A00BC3E8F /* Debug */,
+				42D3DCD92D51DA2A00BC3E8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42D3DCDA2D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42D3DCDB2D51DA2A00BC3E8F /* Debug */,
+				42D3DCDC2D51DA2A00BC3E8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		42D3DCDD2D51DA2A00BC3E8F /* Build configuration list for PBXNativeTarget "asyncgate_iOSUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42D3DCDE2D51DA2A00BC3E8F /* Debug */,
+				42D3DCDF2D51DA2A00BC3E8F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 42D3DCAB2D51DA2900BC3E8F /* Project object */;
+}
