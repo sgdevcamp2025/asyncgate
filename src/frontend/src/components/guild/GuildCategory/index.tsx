@@ -25,6 +25,7 @@ const GuildCategory = () => {
   const { data } = useQuery<GuildResultData>({
     queryKey: ['guildInfo', guildId],
     queryFn: () => getGuild(guildId),
+    enabled: !!guildId,
   });
 
   const dropdownItems: DropdownItem[] = [
