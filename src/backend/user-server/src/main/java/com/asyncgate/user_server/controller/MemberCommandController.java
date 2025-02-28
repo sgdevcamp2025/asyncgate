@@ -1,13 +1,18 @@
 package com.asyncgate.user_server.controller;
 
 import com.asyncgate.user_server.controller.docs.MemberControllerDocs;
-import com.asyncgate.user_server.dto.request.*;
+import com.asyncgate.user_server.dto.request.LoginMemberRequest;
+import com.asyncgate.user_server.dto.request.RegisterTemporaryMemberRequest;
+import com.asyncgate.user_server.dto.request.UpdateDeviceTokenRequest;
+import com.asyncgate.user_server.dto.request.ValidateAuthenticationCodeRequest;
 import com.asyncgate.user_server.dto.response.CheckEmailDuplicateResponse;
 import com.asyncgate.user_server.dto.response.DefaultJsonWebTokenResponse;
 import com.asyncgate.user_server.dto.response.UserClientInfoResponses;
+import com.asyncgate.user_server.dto.response.UserClientInfoResponses.UserClientInfoResponse;
 import com.asyncgate.user_server.security.annotation.MemberID;
 import com.asyncgate.user_server.support.response.SuccessResponse;
 import com.asyncgate.user_server.usecase.*;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -85,7 +90,7 @@ public class MemberCommandController implements MemberControllerDocs {
     @Override
     @PatchMapping("/device-token")
     public SuccessResponse<?> updateDeviceToken(
-            @MemberID final String userId,
+            final @MemberID String userId,
             @RequestBody final UpdateDeviceTokenRequest request
     ) {
         UpdateDeviceTokenUseCase.execute(userId, request);
@@ -98,7 +103,7 @@ public class MemberCommandController implements MemberControllerDocs {
     @Override
     @PatchMapping("/info")
     public SuccessResponse<?> updateUserInfo(
-            @MemberID final String userId,
+            final @MemberID String userId,
             @RequestPart(value = "name", required = false) final String name,
             @RequestPart(value = "nickname", required = false) final String nickname,
             @RequestPart(value = "profile_image", required = false) final MultipartFile profileImage
@@ -112,20 +117,31 @@ public class MemberCommandController implements MemberControllerDocs {
      */
     @Override
     @DeleteMapping("/auth")
-    public SuccessResponse<?> deleteUser(@MemberID final String userId) {
+    public SuccessResponse<?> deleteUser(final @MemberID String userId) {
         DeleteUserUseCase.execute(userId);
         return SuccessResponse.ok("회원탈퇴 완료");
     }
 
+    /* 
+    서버 내부 통신 전용
+     */
+    @Hidden
     @GetMapping("/users")
     public SuccessResponse<UserClientInfoResponses> getMembers(
             @RequestParam(required = false) List<String> memberIds
     ) {
-
         UserClientInfoResponses byUserIds = findUserInfoUseCase.getByUserIds(memberIds);
         System.out.println("byUserIds = " + byUserIds);
         return SuccessResponse.ok(
                 byUserIds
+        );
+    }
+
+    @GetMapping("/info")
+    public SuccessResponse<UserClientInfoResponse> getMemberInfo(final @MemberID String userId) {
+        UserClientInfoResponse response = findUserInfoUseCase.getByUserId(userId);
+        return SuccessResponse.ok(
+                response
         );
     }
 }
