@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { GetFriendsList } from '@/api/friends';
+import { getFriendsList } from '@/api/friends';
 
 import * as S from './styles';
 
 const FriendsList = () => {
   // TODO: 상태 동적으로 변경하기
   // TODO: 내 요청을 상대방이 수락할 경우 invalidate
-  const { data: friends } = useQuery({ queryKey: ['friendsList'], queryFn: GetFriendsList, staleTime: 10 * 60 * 1000 });
+  const { data: friends } = useQuery({ queryKey: ['friendsList'], queryFn: getFriendsList, staleTime: 10 * 60 * 1000 });
   if (!friends) return null;
 
   return (
