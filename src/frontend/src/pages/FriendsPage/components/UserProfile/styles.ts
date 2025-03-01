@@ -38,6 +38,8 @@ export const UserImage = styled.div<{ $userImageUrl: string }>`
 
   background-color: ${({ theme }) => theme.colors.white};
   background-image: url(${(props) => props.$userImageUrl});
+  background-repeat: no-repeat;
+  background-size: contain;
 `;
 
 export const UserStatusMark = styled.div<{ $isOnline: boolean }>`

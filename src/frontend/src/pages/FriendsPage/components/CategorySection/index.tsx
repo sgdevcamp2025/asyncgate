@@ -11,15 +11,7 @@ const CategorySection = () => {
   return (
     <S.CategorySectionContainer>
       <S.CategoryItemWrapper>{guildId ? <GuildCategory /> : <DirectMessageCategory />}</S.CategoryItemWrapper>
-      <UserProfile
-        userName="Fe"
-        userImageUrl=""
-        isOnline={true}
-        isMicOn={true}
-        isHeadsetOn={true}
-        handleMicToggle={() => {}}
-        handleHeadsetToggle={() => {}}
-      />
+      <UserProfile isMicOn={true} isHeadsetOn={true} handleMicToggle={() => {}} handleHeadsetToggle={() => {}} />
     </S.CategorySectionContainer>
   );
 };
