@@ -13,4 +13,6 @@ export const EmptyParticipant = styled.div`
   justify-content: center;
 
   width: 100%;
+
+  background-color: ${({ theme }) => theme.colors.black};
 `;
