@@ -1,5 +1,6 @@
 import { endPoint } from '@/constants/endPoint';
 import {
+  GetUserInfoResponse,
   PatchUserInfoRequest,
   PatchUserInfoResponse,
   PostAuthCodeRequest,
@@ -38,12 +39,17 @@ export const postEmailDuplicate = async ({ email }: PostEmailDuplicateParams) =>
   return data;
 };
 
+export const getUserInfo = async () => {
+  const { data } = await tokenAxios.get<GetUserInfoResponse>(endPoint.users.GET_USER_INFO);
+  return data;
+};
+
 interface PatchUserInfoParams {
   userId: string;
   bodyRequest: PatchUserInfoRequest;
 }
 
-export const PatchUserInfo = async ({ userId, bodyRequest }: PatchUserInfoParams) => {
+export const patchUserInfo = async ({ userId, bodyRequest }: PatchUserInfoParams) => {
   const { data } = await publicAxios.patch<PatchUserInfoResponse>(endPoint.users.PATCH_USER_INFO, bodyRequest, {
     params: userId,
   });

@@ -46,6 +46,20 @@ export interface PostEmailDuplicateResponse {
   };
 }
 
+export interface GetUserInfoResponse {
+  httpStatus: number;
+  message: string;
+  time: Date;
+  result: {
+    userId: string;
+    name: string;
+    nickname: string;
+    profileImageUrl: string;
+    email: string;
+    birth: string;
+  };
+}
+
 export interface PatchUserInfoRequest {
   name: string;
   nickname: string;

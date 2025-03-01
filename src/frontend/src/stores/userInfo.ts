@@ -11,7 +11,7 @@ interface UserState {
   clearUserInfo: () => void;
 }
 
-export const useChannelInfoStore = create<UserState>()(
+export const useUserInfoStore = create<UserState>()(
   persist(
     (set) => ({
       userInfo: null,
