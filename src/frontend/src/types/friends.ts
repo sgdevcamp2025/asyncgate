@@ -8,7 +8,7 @@ export interface FriendDefaultResponse {
 
 export type DeleteFriendResponse = FriendDefaultResponse;
 
-export interface GetFriendsResponse {
+export interface GetFriendInfoResponse {
   email: string;
   name: string;
   nickname: string;
@@ -35,15 +35,31 @@ export interface GetSentRequestsResponse {
 
 export type GetReceivedRequestsResponse = GetSentRequestsResponse;
 
-export type GetFriendsListResponse = GetSentRequestsResponse;
+export interface FriendInfo {
+  userId: string;
+  name: string;
+  nickname: string;
+  profileImageUrl: string;
+  email: string;
+  birth: string;
+}
 
-export interface PostFriendResponse {
+export interface GetFriendsListResponse {
+  httpStatus: number;
+  message: string;
+  time: Date;
+  result: {
+    friends: FriendInfo[];
+  };
+}
+
+export interface PostRequestResponse {
   httpStatus: number;
   message: string;
   time: Date;
   result: FriendRequest;
 }
 
-export type PostRejectResponse = PostFriendResponse;
+export type PostRejectResponse = PostRequestResponse;
 
-export type PostAcceptResponse = PostFriendResponse;
+export type PostAcceptResponse = PostRequestResponse;

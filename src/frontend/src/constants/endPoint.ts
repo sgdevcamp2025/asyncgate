@@ -2,6 +2,7 @@ export const endPoint = {
   users: {
     // User API
     DELETE_USER: '/users/auth',
+    GET_USER_INFO: '/users/info',
     PATCH_USER_INFO: '/users/info',
     PATCH_DEVICE_TOKEN: '/users/device-token',
     POST_VALIDATION_EMAIL: '/users/validation/email',
