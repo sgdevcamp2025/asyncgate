@@ -2,6 +2,12 @@ import styled from 'styled-components';
 
 import { BodyMediumText, ChipText } from '@/styles/Typography';
 
+export const PendingFriendsListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 export const FriendsList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -102,4 +108,10 @@ export const RejectButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
 
   background-color: ${({ theme }) => theme.colors.red};
+`;
+
+export const Divider = styled.hr`
+  margin: 0 2rem 0 3rem;
+  border: 0;
+  border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
 `;
