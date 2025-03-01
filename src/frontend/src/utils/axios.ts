@@ -11,7 +11,7 @@ export const tokenAxios = axios.create({
 });
 
 tokenAxios.interceptors.request.use((config) => {
-  const token = import.meta.env.VITE_TOKEN;
+  const token = localStorage.getItem('access_token');
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
