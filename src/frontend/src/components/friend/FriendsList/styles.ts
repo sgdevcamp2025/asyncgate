@@ -61,7 +61,7 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
 export const FriendInfo = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  flex-grow: 1;
 `;
 
 export const FriendName = styled(BodyMediumText)`
