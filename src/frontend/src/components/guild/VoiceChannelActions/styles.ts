@@ -14,6 +14,8 @@ export const VoiceChannelActions = styled.div`
 `;
 
 export const Action = styled.div`
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;

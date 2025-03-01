@@ -32,6 +32,7 @@ export const ConnectStatusWrapper = styled.div`
   justify-content: space-between;
 
   svg {
+    cursor: pointer;
     color: ${({ theme }) => theme.colors.white};
   }
 `;
