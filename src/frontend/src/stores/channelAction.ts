@@ -6,10 +6,10 @@ interface ChannelActionState {
   isSharingScreen: boolean;
   isVideoOn: boolean;
   isMicOn: boolean;
-  setIsInVoiceChannel: () => void;
-  setIsSharingScreen: () => void;
-  setIsVideoOn: () => void;
-  setIsMicOn: () => void;
+  setIsInVoiceChannel: (value: boolean) => void;
+  setIsSharingScreen: (value: boolean) => void;
+  setIsVideoOn: (value: boolean) => void;
+  setIsMicOn: (value: boolean) => void;
 }
 
 export const useChannelActionStore = create<ChannelActionState>()(
