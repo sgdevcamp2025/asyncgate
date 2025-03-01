@@ -1,41 +1,27 @@
+import { useQuery } from '@tanstack/react-query';
+
+import { GetFriendsList } from '@/api/friends';
+
 import * as S from './styles';
 
-// TODO: API 문서에 맞게 수정 및 types 폴더로 이동
-export interface Friend {
-  name: string;
-  profileImageUrl: string;
-  isOnline: boolean;
-}
-
-// TODO: useQuery로 친구 리스트 요청
-const friends: Friend[] = [
-  {
-    name: '친구1',
-    profileImageUrl: '',
-    isOnline: true,
-  },
-  {
-    name: '친구2',
-    profileImageUrl: '',
-    isOnline: true,
-  },
-  {
-    name: '친구3',
-    profileImageUrl: '',
-    isOnline: false,
-  },
-];
-
 const FriendsList = () => {
+  // TODO: 상태 동적으로 변경하기
+  // TODO: 내 요청을 상대방이 수락할 경우 invalidate
+  const { data: friends } = useQuery({ queryKey: ['friendsList'], queryFn: GetFriendsList, staleTime: 10 * 60 * 1000 });
+  if (!friends) return null;
+
   return (
     <S.FriendsList>
       <S.FriendCount>모든 친구 - {friends.length}명</S.FriendCount>
-      {friends.map((friend, index) => (
-        <S.FriendItem key={`${friend.name}_${index}`}>
+      {friends.map((friend) => (
+        <S.FriendItem key={friend.userId}>
           <S.FriendProfileImage $imageUrl={friend.profileImageUrl}>
-            <S.FriendStatusMark $isOnline={friend.isOnline} />
+            <S.FriendStatusMark $isOnline={true} />
           </S.FriendProfileImage>
-          <S.FriendName>{friend.name}</S.FriendName>
+          <S.FriendInfo>
+            <S.FriendName>{friend.name}</S.FriendName>
+            <S.FriendStatus>온라인</S.FriendStatus>
+          </S.FriendInfo>
         </S.FriendItem>
       ))}
     </S.FriendsList>

@@ -38,6 +38,7 @@ export const FriendProfileImage = styled.div<{ $imageUrl: string }>`
 
   width: 3.2rem;
   height: 3.2rem;
+  margin-right: 1.2rem;
   border-radius: 50%;
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -57,11 +58,14 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
   background-color: ${({ $isOnline }) => ($isOnline ? 'green' : 'black')};
 `;
 
+export const FriendInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 export const FriendName = styled(BodyMediumText)`
   overflow: hidden;
-
-  padding-left: 0.8rem;
-
   color: ${({ theme }) => theme.colors.white};
   text-overflow: ellipsis;
   white-space: nowrap;
