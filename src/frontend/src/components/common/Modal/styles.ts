@@ -51,8 +51,7 @@ export const FooterWrapper = styled.div`
   align-items: center;
   justify-content: center;
 
-  margin-top: 1.6rem;
-  padding: 2.4rem 2.4rem 0;
+  padding: 0 2.4rem 2.4rem;
 `;
 
 export const CloseButton = styled.div`
