@@ -52,6 +52,7 @@ const CreateDirectMessageModal = () => {
               </S.FriendProfileImage>
               <S.FriendInfo>
                 <S.FriendNickname>{friend.nickname}</S.FriendNickname>
+                <S.FriendName>{friend.name}</S.FriendName>
               </S.FriendInfo>
               <AuthCheckbox isChecked={selectedFriends.includes(friend.userId)} />
             </S.FriendItem>

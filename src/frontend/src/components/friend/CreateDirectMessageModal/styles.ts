@@ -72,16 +72,20 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
 
 export const FriendInfo = styled.div`
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
+  gap: 0.4rem;
+  align-items: center;
+
   min-width: 0;
 `;
 
 export const FriendNickname = styled(BodyRegularText)`
-  overflow: hidden;
   color: ${({ theme }) => theme.colors.white};
-  text-overflow: ellipsis;
-  white-space: nowrap;
+`;
+
+export const FriendName = styled(ChipText)`
+  line-height: 1.4rem;
+  color: ${({ theme }) => theme.colors.dark[300]};
 `;
 
 export const CreateButton = styled.button<{ $isDisabled: boolean }>`
