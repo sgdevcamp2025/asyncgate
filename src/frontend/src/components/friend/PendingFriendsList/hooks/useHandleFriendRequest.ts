@@ -3,17 +3,22 @@ import { useState } from 'react';
 
 import { postAcceptRequest, postRejectRequest } from '@/api/friends';
 
+import usePostDirect from '../../CreateDirectMessageModal/hooks/usePostDirect';
+
 const useHandleFriendRequest = () => {
   const queryClient = useQueryClient();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { createDirectMessage } = usePostDirect();
 
   const acceptRequestMutation = useMutation({
     mutationKey: ['acceptRequest'],
     mutationFn: postAcceptRequest,
-    onSuccess: () => {
+    onSuccess: (_, params) => {
       queryClient.invalidateQueries({ queryKey: ['friendsList'] });
       queryClient.invalidateQueries({ queryKey: ['receivedRequests'] });
       setErrorMessage(null);
+
+      if (params.friendId) createDirectMessage([params.friendId]);
     },
     onError: () => {
       setErrorMessage('요청 수락에 실패했어요. 다시 시도해 주세요.');

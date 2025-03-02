@@ -16,7 +16,11 @@ const usePostDirect = () => {
     },
   });
 
-  return { createDirectMessageMutation };
+  const createDirectMessage = (memberIds: string[]) => {
+    createDirectMessageMutation.mutate({ bodyRequest: { memberIds } });
+  };
+
+  return { createDirectMessage, createDirectMessageMutation };
 };
 
 export default usePostDirect;
