@@ -1,11 +1,11 @@
+import useGetReceivedRequests from './hooks/useGetReceivedRequests';
+import useGetSentRequests from './hooks/useGetSentRequests';
 import useHandleFriendRequest from './hooks/useHandleFriendRequest';
-import useReceivedRequests from './hooks/useReceivedRequests';
-import useSentRequests from './hooks/useSentRequests';
 import * as S from './styles';
 
 const PendingFriendsList = () => {
-  const { receivedRequests } = useReceivedRequests();
-  const { sentRequests } = useSentRequests();
+  const { receivedRequests } = useGetReceivedRequests();
+  const { sentRequests } = useGetSentRequests();
   const { acceptRequestMutation, rejectRequestMutation, errorMessage } = useHandleFriendRequest();
 
   const handleAcceptButtonClick = (friendId: string) => {

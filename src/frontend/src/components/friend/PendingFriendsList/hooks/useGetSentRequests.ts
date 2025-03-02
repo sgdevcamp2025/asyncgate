@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { getSentRequest } from '@/api/friends';
 
-const useSentRequests = () => {
+const useGetSentRequests = () => {
   const result = useQuery({ queryKey: ['sentRequests'], queryFn: getSentRequest });
 
   return {
@@ -11,4 +11,4 @@ const useSentRequests = () => {
   };
 };
 
-export default useSentRequests;
+export default useGetSentRequests;
