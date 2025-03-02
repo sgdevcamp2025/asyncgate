@@ -88,7 +88,10 @@ export const ButtonContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const AcceptButton = styled.button`
+export const AcceptButton = styled.button<{ $isPending: boolean }>`
+  pointer-events: ${({ $isPending }) => ($isPending ? 'none' : 'auto')};
+  cursor: ${({ $isPending }) => ($isPending ? 'not-allowed' : 'pointer')};
+
   width: 8rem;
   height: 3.2rem;
   border-radius: 0.4rem;
@@ -99,7 +102,10 @@ export const AcceptButton = styled.button`
   background-color: ${({ theme }) => theme.colors.green};
 `;
 
-export const RejectButton = styled.button`
+export const RejectButton = styled.button<{ $isPending: boolean }>`
+  pointer-events: ${({ $isPending }) => ($isPending ? 'none' : 'auto')};
+  cursor: ${({ $isPending }) => ($isPending ? 'not-allowed' : 'pointer')};
+
   width: 8rem;
   height: 3.2rem;
   border-radius: 0.4rem;
@@ -114,4 +120,10 @@ export const Divider = styled.hr`
   margin: 0 2rem 0 3rem;
   border: 0;
   border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: ${({ theme }) => theme.colors.red};
 `;
