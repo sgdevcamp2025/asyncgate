@@ -20,7 +20,7 @@ export const TitleName = styled(TitleText2)`
 export const TabList = styled.ul`
   display: flex;
   gap: 0.1rem;
-  margin: 0.8rem;
+  padding: 0.8rem 0.8rem 0;
   list-style: none;
 `;
 

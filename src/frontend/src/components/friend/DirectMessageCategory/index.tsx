@@ -3,6 +3,8 @@ import { MdPerson } from 'react-icons/md';
 import { useChannelInfoStore } from '@/stores/channelInfo';
 import { BodyMediumText } from '@/styles/Typography';
 
+import DirectMessagesList from '../DirectMessagesList';
+
 import * as S from './styles';
 
 const DirectMessageCategory = () => {
@@ -25,6 +27,7 @@ const DirectMessageCategory = () => {
           <BodyMediumText>친구</BodyMediumText>
         </S.TabItem>
       </S.TabList>
+      <DirectMessagesList />
     </>
   );
 };
