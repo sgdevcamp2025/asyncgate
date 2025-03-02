@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getFriends, postFriendRequest } from '@/api/friends';
+import { getFriends, getFriendsList, getReceivedRequest, getSentRequest, postFriendRequest } from '@/api/friends';
 
 import useGetFriendsList from '../FriendsList/hooks/useGetFriendsList';
 import useGetReceivedRequests from '../PendingFriendsList/hooks/useGetReceivedRequests';
@@ -19,34 +19,37 @@ const AddFriendForm = () => {
   const [inputData, setInputData] = useState('');
   const [resultMessage, setResultMessage] = useState<ResultMessage | null>(null);
 
-  const { friends } = useGetFriendsList();
-  const { sentRequests } = useGetSentRequests();
-  const { receivedRequests } = useGetReceivedRequests();
-
   const handleInputChange = (value: string) => {
     setInputData(value);
   };
 
   const getFriendInfoByEmail = async () => {
-    // 1. 이미 친구로 등록된 사용자인지 확인
-    if (friends && friends.some((friend) => friend.email === inputData)) {
-      setResultMessage({ type: 'fail', content: '이미 친구로 등록된 사용자예요.' });
-      return null;
-    }
-
-    // 2. 이미 친구 요청을 보낸 사용자인지 확인
-    if (sentRequests && sentRequests.some((request) => request.email === inputData)) {
-      setResultMessage({ type: 'fail', content: '이미 친구 요청을 보냈어요. 상대방의 응답을 기다려주세요.' });
-      return null;
-    }
-
-    // 3. 상대가 이미 친구 요청을 보냈는지 확인
-    if (receivedRequests && receivedRequests.some((request) => request.email === inputData)) {
-      setResultMessage({ type: 'fail', content: '상대방이 이미 친구 요청을 보냈어요. 친구 요청을 확인해주세요.' });
-      return null;
-    }
-
     try {
+      // 버튼을 눌렀을 때 요청
+      const [friends, sentRequests, receivedRequests] = await Promise.all([
+        getFriendsList(),
+        getSentRequest(),
+        getReceivedRequest(),
+      ]);
+
+      // 1. 이미 친구로 등록된 사용자인지 확인
+      if (friends && friends.some((friend) => friend.email === inputData)) {
+        setResultMessage({ type: 'fail', content: '이미 친구로 등록된 사용자예요.' });
+        return null;
+      }
+
+      // 2. 이미 친구 요청을 보낸 사용자인지 확인
+      if (sentRequests && sentRequests.some((request) => request.email === inputData)) {
+        setResultMessage({ type: 'fail', content: '이미 친구 요청을 보냈어요. 상대방의 응답을 기다려주세요.' });
+        return null;
+      }
+
+      // 3. 상대가 이미 친구 요청을 보냈는지 확인
+      if (receivedRequests && receivedRequests.some((request) => request.email === inputData)) {
+        setResultMessage({ type: 'fail', content: '상대방이 이미 친구 요청을 보냈어요. 친구 요청을 확인해주세요.' });
+        return null;
+      }
+
       const response = await getFriends({ email: inputData });
       return response;
     } catch (error) {
