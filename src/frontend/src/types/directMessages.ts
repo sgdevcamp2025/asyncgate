@@ -1,4 +1,4 @@
-interface MemberInfo {
+interface DirectMessageMemberInfo {
   userId: string;
   name: string;
   nickname: string;
@@ -10,7 +10,7 @@ interface MemberInfo {
 interface DirectMessageInfo {
   directId: string;
   members: {
-    responses: MemberInfo[];
+    responses: DirectMessageMemberInfo[];
   };
 }
 
