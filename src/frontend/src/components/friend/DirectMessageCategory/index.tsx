@@ -1,12 +1,30 @@
+import { MdPerson } from 'react-icons/md';
+
+import { useChannelInfoStore } from '@/stores/channelInfo';
+import { BodyMediumText } from '@/styles/Typography';
+
 import * as S from './styles';
 
 const DirectMessageCategory = () => {
+  const { selectedDMChannel, setSelectedDMChannel } = useChannelInfoStore();
+
+  const handleFriendsTabClick = () => {
+    setSelectedDMChannel(null);
+  };
+
   return (
     <>
       <S.FriendTitle>
         <S.TitleName>다이렉트 메시지</S.TitleName>
       </S.FriendTitle>
-      {/* TODO: 친구 채팅방 목록 */}
+      <S.TabList>
+        <S.TabItem $isSelected={!selectedDMChannel} onClick={handleFriendsTabClick}>
+          <S.TabIcon>
+            <MdPerson size={28} />
+          </S.TabIcon>
+          <BodyMediumText>친구</BodyMediumText>
+        </S.TabItem>
+      </S.TabList>
     </>
   );
 };

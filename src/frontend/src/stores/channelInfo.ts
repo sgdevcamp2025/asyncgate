@@ -18,8 +18,8 @@ interface DMChannelInfo {
 interface ChannelState {
   selectedChannel: GuildChannelInfo | null;
   selectedDMChannel: DMChannelInfo | null;
-  setSelectedChannel: (channel: GuildChannelInfo) => void;
-  setSelectedDMChannel: (channel: DMChannelInfo) => void;
+  setSelectedChannel: (channel: GuildChannelInfo | null) => void;
+  setSelectedDMChannel: (channel: DMChannelInfo | null) => void;
 }
 
 export const useChannelInfoStore = create<ChannelState>()(
