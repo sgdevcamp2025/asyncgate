@@ -27,7 +27,7 @@ const PendingFriendsList = () => {
                 <S.FriendItem key={friend.userId}>
                   <S.FriendInfoContainer>
                     <S.FriendProfileImage $imageUrl={''} />
-                    <S.FriendName>{friend.nickname}</S.FriendName>
+                    <S.FriendNickname>{friend.nickname}</S.FriendNickname>
                   </S.FriendInfoContainer>
                   <S.ButtonContainer>
                     <S.AcceptButton
@@ -59,7 +59,7 @@ const PendingFriendsList = () => {
               <S.FriendItem key={friend.userId}>
                 <S.FriendInfoContainer>
                   <S.FriendProfileImage $imageUrl={''} />
-                  <S.FriendName>{friend.userId}</S.FriendName>
+                  <S.FriendNickname>{friend.nickname}</S.FriendNickname>
                 </S.FriendInfoContainer>
               </S.FriendItem>
             ))}

@@ -66,10 +66,10 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
   border: 0.1rem solid ${({ theme }) => theme.colors.dark[400]};
   border-radius: 50%;
 
-  background-color: ${({ $isOnline }) => ($isOnline ? 'green' : 'black')};
+  background-color: ${({ theme, $isOnline }) => ($isOnline ? theme.colors.online : theme.colors.black)};
 `;
 
-export const FriendName = styled(BodyMediumText)`
+export const FriendNickname = styled(BodyMediumText)`
   overflow: hidden;
 
   padding-left: 0.8rem;
