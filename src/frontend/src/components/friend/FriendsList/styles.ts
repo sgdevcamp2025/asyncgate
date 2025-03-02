@@ -65,7 +65,7 @@ export const FriendInfo = styled.div`
   min-width: 0;
 `;
 
-export const FriendName = styled(BodyMediumText)`
+export const FriendNickname = styled(BodyMediumText)`
   overflow: hidden;
   color: ${({ theme }) => theme.colors.white};
   text-overflow: ellipsis;

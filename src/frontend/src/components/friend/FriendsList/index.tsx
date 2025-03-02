@@ -17,7 +17,7 @@ const FriendsList = () => {
                 <S.FriendStatusMark $isOnline={true} />
               </S.FriendProfileImage>
               <S.FriendInfo>
-                <S.FriendName>{friend.name}</S.FriendName>
+                <S.FriendNickname>{friend.nickname}</S.FriendNickname>
                 <S.FriendStatus>온라인</S.FriendStatus>
               </S.FriendInfo>
             </S.FriendItem>
