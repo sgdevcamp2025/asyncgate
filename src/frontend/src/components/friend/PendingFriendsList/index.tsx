@@ -24,21 +24,21 @@ const PendingFriendsList = () => {
             <S.FriendCount>받은 요청 - {receivedRequests.length}건</S.FriendCount>
             {receivedRequests.map((friend) => (
               <>
-                <S.FriendItem key={friend.id}>
+                <S.FriendItem key={friend.userId}>
                   <S.FriendInfoContainer>
                     <S.FriendProfileImage $imageUrl={''} />
-                    <S.FriendName>{friend.id}</S.FriendName>
+                    <S.FriendName>{friend.nickname}</S.FriendName>
                   </S.FriendInfoContainer>
                   <S.ButtonContainer>
                     <S.AcceptButton
                       $isPending={acceptRequestMutation.isPending}
-                      onClick={() => handleAcceptButtonClick(friend.requestedBy)}
+                      onClick={() => handleAcceptButtonClick(friend.userId)}
                     >
                       {acceptRequestMutation.isPending ? '처리 중...' : '수락하기'}
                     </S.AcceptButton>
                     <S.RejectButton
                       $isPending={rejectRequestMutation.isPending}
-                      onClick={() => handleRejectButtonClick(friend.requestedBy)}
+                      onClick={() => handleRejectButtonClick(friend.userId)}
                     >
                       {rejectRequestMutation.isPending ? '처리 중...' : '거절하기'}
                     </S.RejectButton>
@@ -56,10 +56,10 @@ const PendingFriendsList = () => {
           <S.FriendsList>
             <S.FriendCount>보낸 요청 - {sentRequests.length}건</S.FriendCount>
             {sentRequests.map((friend) => (
-              <S.FriendItem key={friend.id}>
+              <S.FriendItem key={friend.userId}>
                 <S.FriendInfoContainer>
                   <S.FriendProfileImage $imageUrl={''} />
-                  <S.FriendName>{friend.id}</S.FriendName>
+                  <S.FriendName>{friend.userId}</S.FriendName>
                 </S.FriendInfoContainer>
               </S.FriendItem>
             ))}

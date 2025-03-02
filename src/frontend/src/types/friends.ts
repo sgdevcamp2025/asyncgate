@@ -15,26 +15,6 @@ export interface GetFriendInfoResponse {
   profileImgUrl: string;
   birth: string;
 }
-
-export interface FriendRequest {
-  id: string;
-  userId1: string;
-  userId2: string;
-  requestedBy: string;
-  status: 'PENDING' | 'ACCEPTED' | string;
-}
-
-export interface GetSentRequestsResponse {
-  httpStatus: number;
-  message: string;
-  time: Date;
-  result: {
-    friends: FriendRequest[];
-  };
-}
-
-export type GetReceivedRequestsResponse = GetSentRequestsResponse;
-
 export interface FriendInfo {
   userId: string;
   name: string;
@@ -44,6 +24,18 @@ export interface FriendInfo {
   birth: string;
 }
 
+export interface GetSentRequestsResponse {
+  httpStatus: number;
+  message: string;
+  time: Date;
+  result: {
+    friends: FriendInfo[];
+    status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  };
+}
+
+export type GetReceivedRequestsResponse = GetSentRequestsResponse;
+
 export interface GetFriendsListResponse {
   httpStatus: number;
   message: string;
@@ -51,6 +43,14 @@ export interface GetFriendsListResponse {
   result: {
     friends: FriendInfo[];
   };
+}
+
+export interface FriendRequest {
+  id: string;
+  userId1: string;
+  userId2: string;
+  requestedBy: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
 }
 
 export interface PostRequestResponse {

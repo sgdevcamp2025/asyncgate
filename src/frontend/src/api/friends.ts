@@ -1,4 +1,3 @@
-import { FriendCount } from '@/components/friend/FriendsList/styles';
 import { endPoint } from '@/constants/endPoint';
 import {
   DeleteFriendResponse,
