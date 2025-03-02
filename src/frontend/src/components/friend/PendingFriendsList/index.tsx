@@ -1,31 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-import { getReceivedRequest, getSentRequest, postAcceptRequest, postRejectRequest } from '@/api/friends';
-
+import useHandleFriendRequest from './hooks/useHandleFriendRequest';
+import useReceivedRequests from './hooks/useReceivedRequests';
+import useSentRequests from './hooks/useSentRequests';
 import * as S from './styles';
 
 // TODO: 요청 실패 시 에러 메시지
+// LOCAL_TODO: query, mutation 분리
 const PendingFriendsList = () => {
-  const queryClient = useQueryClient();
-  const { data: receivedRequests } = useQuery({ queryKey: ['receivedRequests'], queryFn: getReceivedRequest });
-  const { data: sentRequests } = useQuery({ queryKey: ['sentRequests'], queryFn: getSentRequest });
-
-  const acceptRequestMutation = useMutation({
-    mutationKey: ['acceptRequest'],
-    mutationFn: postAcceptRequest,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['friendsList'] });
-      queryClient.invalidateQueries({ queryKey: ['receivedRequests'] });
-    },
-  });
-
-  const rejectRequestMutation = useMutation({
-    mutationKey: ['rejectRequest'],
-    mutationFn: postRejectRequest,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['receivedRequests'] });
-    },
-  });
+  const { receivedRequests } = useReceivedRequests();
+  const { sentRequests } = useSentRequests();
+  const { acceptRequestMutation, rejectRequestMutation } = useHandleFriendRequest();
 
   const handleAcceptButtonClick = (friendId: string) => {
     acceptRequestMutation.mutate({ friendId });
