@@ -25,6 +25,7 @@ export const FriendItem = styled.li`
   align-items: center;
 
   height: 6.2rem;
+  padding: 0 0.8rem;
   border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
   border-radius: 0.4rem;
 
@@ -74,4 +75,18 @@ export const FriendNickname = styled(BodyMediumText)`
 
 export const FriendStatus = styled(ChipText)`
   color: ${({ theme }) => theme.colors.dark[300]};
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  padding: 0 0.8rem;
+`;
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 3.2rem;
+  height: 3.2rem;
 `;

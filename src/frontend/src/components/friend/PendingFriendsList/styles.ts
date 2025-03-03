@@ -32,6 +32,7 @@ export const FriendItem = styled.li`
   justify-content: space-between;
 
   height: 6.2rem;
+  padding: 0 0.8rem;
   border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
   border-radius: 0.4rem;
 
