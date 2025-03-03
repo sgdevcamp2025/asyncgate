@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import useModalStore from '@/stores/modalStore';
@@ -11,6 +12,7 @@ interface MenuItem {
 }
 
 const useUserProfileTabElements = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { openModal } = useModalStore();
 
@@ -21,6 +23,9 @@ const useUserProfileTabElements = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('access_token');
+    // staleTime이 설정된 쿼리 삭제
+    queryClient.removeQueries({ queryKey: ['userInfo'] });
+    queryClient.removeQueries({ queryKey: ['friendsList'] });
     navigate('/login', { replace: true });
   };
 
