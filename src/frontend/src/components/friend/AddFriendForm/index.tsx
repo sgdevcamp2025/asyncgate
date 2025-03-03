@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { getFriendInfo, getFriendsList, getReceivedRequest, getSentRequest, postFriendRequest } from '@/api/friends';
+import useGetUserInfo from '@/pages/FriendsPage/components/UserProfile/hooks/useGetUserInfo';
 
 import * as S from './styles';
 
@@ -12,6 +13,7 @@ interface ResultMessage {
 }
 
 const AddFriendForm = () => {
+  const { userInfo } = useGetUserInfo();
   const [inputData, setInputData] = useState('');
   const [resultMessage, setResultMessage] = useState<ResultMessage | null>(null);
 
@@ -28,19 +30,25 @@ const AddFriendForm = () => {
         getReceivedRequest(),
       ]);
 
-      // 1. 이미 친구로 등록된 사용자인지 확인
+      // 1. 자신을 친구로 추가하려 하는지 확인
+      if (userInfo?.email === inputData) {
+        setResultMessage({ type: 'fail', content: '본인은 추가할 수 없어요.' });
+        return null;
+      }
+
+      // 2. 이미 친구로 등록된 사용자인지 확인
       if (friends && friends.some((friend) => friend.email === inputData)) {
         setResultMessage({ type: 'fail', content: '이미 친구로 등록된 사용자예요.' });
         return null;
       }
 
-      // 2. 이미 친구 요청을 보낸 사용자인지 확인
+      // 3. 이미 친구 요청을 보낸 사용자인지 확인
       if (sentRequests && sentRequests.some((request) => request.email === inputData)) {
         setResultMessage({ type: 'fail', content: '이미 친구 요청을 보냈어요. 상대방의 응답을 기다려주세요.' });
         return null;
       }
 
-      // 3. 상대가 이미 친구 요청을 보냈는지 확인
+      // 4. 상대가 이미 친구 요청을 보냈는지 확인
       if (receivedRequests && receivedRequests.some((request) => request.email === inputData)) {
         setResultMessage({ type: 'fail', content: '상대방이 이미 친구 요청을 보냈어요. 친구 요청을 확인해주세요.' });
         return null;
