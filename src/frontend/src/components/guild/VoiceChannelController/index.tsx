@@ -1,5 +1,6 @@
 import { BsFillTelephoneXFill } from 'react-icons/bs';
 
+import { useChannelActionStore } from '@/stores/channelAction';
 import { useChannelInfoStore } from '@/stores/channelInfo';
 import { useGuildInfoStore } from '@/stores/guildInfo';
 
@@ -9,6 +10,7 @@ import * as S from './styles';
 
 const VoiceChannelController = () => {
   const { selectedChannel } = useChannelInfoStore();
+  const { setIsInVoiceChannel } = useChannelActionStore();
   const { guildName } = useGuildInfoStore();
 
   return (
@@ -20,7 +22,7 @@ const VoiceChannelController = () => {
             {selectedChannel?.name} / {guildName}
           </S.ChannelInfoText>
         </S.InfoText>
-        <BsFillTelephoneXFill size={20} />
+        <BsFillTelephoneXFill size={20} onClick={() => setIsInVoiceChannel(false)} />
       </S.ConnectStatusWrapper>
       <VoiceChannelActions />
     </S.VoiceChannelController>
