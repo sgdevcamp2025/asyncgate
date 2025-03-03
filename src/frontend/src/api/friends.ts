@@ -20,13 +20,13 @@ export const deleteFriend = async ({ friendId }: DeleteFriendParams) => {
   return data;
 };
 
-interface GetFriendsParams {
+interface GetFriendInfoParams {
   email: string;
 }
 
-export const getFriends = async ({ email }: GetFriendsParams) => {
+export const getFriendInfo = async ({ email }: GetFriendInfoParams) => {
   const { data } = await tokenAxios.get<GetFriendInfoResponse>(endPoint.friends.GET_FRIENDS, { params: { email } });
-  return data;
+  return data.result;
 };
 
 export const getSentRequest = async () => {

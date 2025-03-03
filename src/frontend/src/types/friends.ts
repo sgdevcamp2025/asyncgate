@@ -8,13 +8,6 @@ export interface FriendDefaultResponse {
 
 export type DeleteFriendResponse = FriendDefaultResponse;
 
-export interface GetFriendInfoResponse {
-  email: string;
-  name: string;
-  nickname: string;
-  profileImgUrl: string;
-  birth: string;
-}
 export interface FriendInfo {
   userId: string;
   name: string;
@@ -22,6 +15,13 @@ export interface FriendInfo {
   profileImageUrl: string;
   email: string;
   birth: string;
+}
+
+export interface GetFriendInfoResponse {
+  httpStatus: number;
+  message: string;
+  time: Date;
+  result: FriendInfo;
 }
 
 export interface GetSentRequestsResponse {

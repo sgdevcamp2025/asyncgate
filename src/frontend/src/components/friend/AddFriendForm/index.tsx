@@ -1,10 +1,6 @@
 import { useState } from 'react';
 
-import { getFriends, getFriendsList, getReceivedRequest, getSentRequest, postFriendRequest } from '@/api/friends';
-
-import useGetFriendsList from '../FriendsList/hooks/useGetFriendsList';
-import useGetReceivedRequests from '../PendingFriendsList/hooks/useGetReceivedRequests';
-import useGetSentRequests from '../PendingFriendsList/hooks/useGetSentRequests';
+import { getFriendInfo, getFriendsList, getReceivedRequest, getSentRequest, postFriendRequest } from '@/api/friends';
 
 import * as S from './styles';
 
@@ -50,7 +46,7 @@ const AddFriendForm = () => {
         return null;
       }
 
-      const response = await getFriends({ email: inputData });
+      const response = await getFriendInfo({ email: inputData });
       return response;
     } catch (error) {
       console.log('회원 검색 실패', error);
@@ -64,7 +60,7 @@ const AddFriendForm = () => {
       const friendInfo = await getFriendInfoByEmail();
       if (!friendInfo) return;
 
-      await postFriendRequest({ toUserId: friendInfo.userId }); // friendInfo에 userId가 있어야 함
+      await postFriendRequest({ toUserId: friendInfo.userId });
 
       setResultMessage({ type: 'success', content: '친구 요청을 보냈어요!' });
     } catch (error) {
