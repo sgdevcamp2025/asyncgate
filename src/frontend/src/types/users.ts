@@ -6,6 +6,8 @@ export interface UserDefaultResponse {
   result: null;
 }
 
+export type DeleteAccountResponse = UserDefaultResponse;
+
 export interface PostLoginRequest {
   email: string;
   password: string;

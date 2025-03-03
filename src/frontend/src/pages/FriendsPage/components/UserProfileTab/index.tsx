@@ -1,5 +1,6 @@
 import useUserProfileTabElements from './hooks/useUserProfileTabElements';
 import * as S from './styles';
+
 const UserProfileTab = () => {
   const { userProfileTabElements } = useUserProfileTabElements();
 

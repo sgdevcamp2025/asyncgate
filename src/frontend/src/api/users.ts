@@ -13,6 +13,15 @@ import {
 } from '@/types/users';
 import { publicAxios, tokenAxios } from '@/utils/axios';
 
+interface DeleteAccountParams {
+  userId: string;
+}
+
+export const deleteAccount = async ({ userId }: DeleteAccountParams) => {
+  const { data } = await tokenAxios.delete(endPoint.users.DELETE_USER, { params: userId });
+  return data;
+};
+
 export const postLogin = async (requestBody: PostLoginRequest) => {
   const { data } = await publicAxios.post<PostLoginResponse>(endPoint.users.POST_SIGN_IN, requestBody);
   return data;
