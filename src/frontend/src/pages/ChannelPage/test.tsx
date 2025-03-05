@@ -4,7 +4,8 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import { useChannelActionStore } from '@/stores/channelAction';
 import { tokenAxios } from '@/utils/axios';
 
-const SERVER_URL = import.meta.env.VITE_SIGNALING;
+import useStompWebRTC from './hooks/useStompWebRTC';
+
 enum MessageType {
   JOIN = 'join',
   USER_JOINED = 'user-joined',
@@ -14,14 +15,11 @@ enum MessageType {
   EXIT = 'exit',
   AUDIO = 'AUDIO',
   MEDIA = 'MEDIA',
-  DATA = 'DATA',
 }
 
-// 메시지 인터페이스
-interface WebSocketMessage {
-  type: MessageType;
-  data: any;
-  token: string;
+interface AnswerMessage {
+  type: string;
+  message: string;
 }
 
 const VideoTest = () => {
@@ -37,57 +35,56 @@ const VideoTest = () => {
 
   const [roomId, setRoomId] = useState('');
   const [joined, setJoined] = useState(false);
+  const [answers, setAnswers] = useState<AnswerMessage[]>([]);
   const [statusMessage, setStatusMessage] = useState('');
 
   const { isSharingScreen, isVideoOn, isMicOn, setIsInVoiceChannel, setIsSharingScreen, setIsVideoOn, setIsMicOn } =
     useChannelActionStore();
 
+  const { client, isConnected } = useStompWebRTC({ roomId });
+
   const token = localStorage.getItem('access_token');
 
   useEffect(() => {
-    const connectWebSocket = () => {
-      if (token) {
-        try {
-          const ws = new WebSocket(SERVER_URL);
-          wsRef.current = ws;
+    if (!client || !isConnected) return;
 
-          ws.onopen = () => {
-            console.log('[ws] 연결됨');
-            setStatusMessage('시그널링 서버에 연결됨');
-          };
+    setStatusMessage('STOMP 서버에 연결됨');
 
-          ws.onmessage = (event) => {
-            try {
-              const message: WebSocketMessage = JSON.parse(event.data);
-              handleWebSocketMessage(message);
-            } catch (error) {
-              console.error('[ws] 메시지 파싱 오류:', error);
-            }
-          };
-
-          ws.onerror = (error) => {
-            console.error('[ws] 에러 발생:', error);
-            setStatusMessage('WebSocket 오류가 발생했습니다');
-          };
-
-          ws.onclose = () => {
-            console.log('[ws] 연결 종료됨');
-            setStatusMessage('서버 연결이 종료되었습니다');
-
-            setTimeout(() => {
-              connectWebSocket();
-            }, 2000);
-          };
-        } catch (error) {
-          console.error('[ws] 연결 생성 중 오류:', error);
-          setStatusMessage(`서버 연결 오류: ${error instanceof Error ? error.message : String(error)}`);
-        }
+    const userSubscription = client.subscribe(`/topic/users/${roomId}`, (message) => {
+      try {
+        const response = JSON.parse(message.body);
+        handleStompMessage(response);
+      } catch (error) {
+        console.error('[stomp] 메시지 파싱 오류:', error);
       }
-    };
+    });
 
-    connectWebSocket();
+    const candidateSubscription = client.subscribe(`/topic/candidate/${roomId}`, (message) => {
+      try {
+        const candidateData = JSON.parse(message.body);
+        if (candidateData.candidate) {
+          handleIceCandidate(candidateData.candidate);
+        }
+      } catch (error) {
+        console.error('[stomp] candidate 파싱 오류:', error);
+      }
+    });
+
+    const answerSubscription = client.subscribe(`/topic/answer/${roomId}`, (message) => {
+      try {
+        const parsedAnswer: AnswerMessage = JSON.parse(message.body);
+        setAnswers((prev) => [...prev, parsedAnswer]);
+        console.log(parsedAnswer);
+      } catch (error) {
+        console.error('[stomp] answer 파싱 오류:', error);
+      }
+    });
 
     return () => {
+      userSubscription.unsubscribe();
+      candidateSubscription.unsubscribe();
+      answerSubscription.unsubscribe();
+
       // 미디어 스트림, PeerConnection, WebSocket 종료
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => track.stop());
@@ -100,35 +97,14 @@ const VideoTest = () => {
       if (pcRef.current) {
         pcRef.current.close();
       }
-
-      if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        wsRef.current.close();
-      }
     };
-  }, []);
+  }, [client, isConnected, roomId]);
 
   const pendingCandidates = useRef<RTCIceCandidateInit[]>([]);
 
   // WebSocket 메시지 처리 함수
-  const handleWebSocketMessage = async (message: any) => {
+  const handleStompMessage = async (message: any) => {
     console.log('수신된 메시지', message);
-
-    if (message.type === 'candidate' && message.candidate) {
-      console.log('[handleWebSocketMessage] Candidate 메시지:', message.candidate);
-      try {
-        if (pcRef.current && pcRef.current.remoteDescription) {
-          await pcRef.current.addIceCandidate(new RTCIceCandidate(message.candidate));
-          console.log('ICE Candidate 추가됨');
-        } else {
-          // remoteDescription이 아직 설정되지 않았으면 후보를 대기열에 추가
-          console.log('원격 설명이 설정되지 않음, 후보 대기열에 추가');
-          pendingCandidates.current.push(message.candidate);
-        }
-      } catch (err) {
-        console.error('ICE Candidate 추가 중 오류:', err);
-      }
-      return;
-    }
 
     if (message.type === 'response' && message.users && message.users.length > 0) {
       const user = message.users[0];
@@ -168,18 +144,21 @@ const VideoTest = () => {
               pendingCandidates.current = [];
             }
 
+            // 응답 보내기 -> answer 아닌 것 같아서 확인은 해야함
             const answer = await pcRef.current.createAnswer();
             await pcRef.current.setLocalDescription(answer);
 
-            if (token) {
-              sendWebSocketMessage(
-                MessageType.ANSWER,
-                {
-                  sdpAnswer: answer.sdp,
-                  roomId,
-                },
-                token,
-              );
+            if (client && token) {
+              client.publish({
+                destination: '/answer',
+                body: JSON.stringify({
+                  type: MessageType.ANSWER,
+                  data: {
+                    roomId,
+                    sdp_answer: answer.sdp,
+                  },
+                }),
+              });
             }
 
             setStatusMessage('응답을 보냈습니다. 연결 중...');
@@ -217,7 +196,7 @@ const VideoTest = () => {
                 console.error('대기 중이던 ICE candidate 추가 중 오류:', err);
               }
             }
-            pendingCandidates.current = []; // 처리 후 배열 비우기
+            pendingCandidates.current = [];
           }
         } catch (err) {
           setStatusMessage(`Answer 처리 오류: ${err instanceof Error ? err.message : String(err)}`);
@@ -247,14 +226,18 @@ const VideoTest = () => {
     }
   };
 
-  // WebSocket 메시지 전송 헬퍼 함수
-  const sendWebSocketMessage = (type: MessageType, data: any, token: string) => {
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      const message: WebSocketMessage = { type, data, token };
-      wsRef.current.send(JSON.stringify(message));
-    } else {
-      console.error('[ws] WebSocket이 열려있지 않아 메시지를 보낼 수 없습니다');
-      setStatusMessage('서버에 연결되어 있지 않습니다');
+  const handleIceCandidate = async (candidate: RTCIceCandidateInit) => {
+    console.log('[handleIceCandidate] Candidate 메시지:', candidate);
+    try {
+      if (pcRef.current && pcRef.current.remoteDescription) {
+        await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+        console.log('ICE Candidate 추가됨');
+      } else {
+        console.log('원격 설명이 설정되지 않음, 후보 대기열에 추가');
+        pendingCandidates.current.push(candidate);
+      }
+    } catch (err) {
+      console.error('ICE Candidate 추가 중 오류:', err);
     }
   };
 
@@ -299,15 +282,16 @@ const VideoTest = () => {
               .then(() => {
                 // 새 오퍼를 서버로 전송
                 if (token && pcRef.current?.localDescription?.sdp) {
-                  sendWebSocketMessage(
-                    MessageType.OFFER,
-                    {
-                      sdpOffer: pcRef.current.localDescription.sdp,
-                      roomId,
-                      iceRestart: true,
-                    },
-                    token,
-                  );
+                  client?.publish({
+                    destination: '/offer',
+                    body: JSON.stringify({
+                      type: MessageType.OFFER,
+                      data: {
+                        roomId,
+                        sdp_offer: pcRef.current.localDescription.sdp,
+                      },
+                    }),
+                  });
                   console.log('[pc] ICE 재시작 오퍼 전송됨');
                 }
               })
@@ -326,17 +310,19 @@ const VideoTest = () => {
 
       // onicecandidate 이벤트: 수집된 ICE 후보를 시그널링 서버로 전송
       pcRef.current.onicecandidate = (event) => {
-        if (event.candidate && token) {
+        if (event.candidate && token && client) {
           console.log('[pc] 생성된 ICE Candidate:', event.candidate);
 
-          sendWebSocketMessage(
-            MessageType.CANDIDATE,
-            {
-              candidate: event.candidate,
-              roomId,
-            },
-            token,
-          );
+          client.publish({
+            destination: '/candidate',
+            body: JSON.stringify({
+              type: MessageType.CANDIDATE,
+              data: {
+                roomId,
+                candidate: event.candidate,
+              },
+            }),
+          });
         } else {
           console.log('[pc] ICE Candidate 수집 완료');
         }
@@ -495,7 +481,7 @@ const VideoTest = () => {
   const joinRoom = async () => {
     setStatusMessage('방 참여 중...');
 
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+    if (token && isConnected && client) {
       if (!pcRef.current) {
         const success = await createPeerConnection();
         if (!success) {
@@ -526,14 +512,16 @@ const VideoTest = () => {
                 // SDP 제안을 보내기 전에 잠시 대기하여 ICE 후보 수집이 일부 완료되도록 함
                 setTimeout(() => {
                   if (token && pcRef.current?.localDescription) {
-                    sendWebSocketMessage(
-                      MessageType.OFFER,
-                      {
-                        sdpOffer: pcRef.current.localDescription.sdp,
-                        roomId,
-                      },
-                      token,
-                    );
+                    client?.publish({
+                      destination: '/offer',
+                      body: JSON.stringify({
+                        type: MessageType.OFFER,
+                        data: {
+                          roomId,
+                          sdp_offer: pcRef.current.localDescription.sdp,
+                        },
+                      }),
+                    });
                   }
 
                   setJoined(true);
@@ -609,17 +597,6 @@ const VideoTest = () => {
         }
       }
 
-      if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        sendWebSocketMessage(
-          MessageType.DATA,
-          {
-            roomId,
-            enabled: true,
-          },
-          token,
-        );
-      }
-
       setIsSharingScreen(true);
       setStatusMessage('화면 공유 중...');
     } catch (error) {
@@ -658,17 +635,6 @@ const VideoTest = () => {
         }
       }
 
-      if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        sendWebSocketMessage(
-          MessageType.DATA,
-          {
-            roomId,
-            enabled: false,
-          },
-          token,
-        );
-      }
-
       screenStreamRef.current = null;
       screenTrackRef.current = null;
       setIsSharingScreen(false);
@@ -686,15 +652,17 @@ const VideoTest = () => {
         track.enabled = newAudioState;
       });
 
-      if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        sendWebSocketMessage(
-          MessageType.AUDIO,
-          {
-            roomId,
-            enabled: newAudioState,
-          },
-          token,
-        );
+      if (token && isConnected && client) {
+        client.publish({
+          destination: '/toggle',
+          body: JSON.stringify({
+            type: MessageType.AUDIO,
+            data: {
+              roomId,
+              enabled: newAudioState,
+            },
+          }),
+        });
       }
 
       setIsMicOn(newAudioState);
@@ -712,15 +680,17 @@ const VideoTest = () => {
         track.enabled = newVideoState;
       });
 
-      if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-        sendWebSocketMessage(
-          MessageType.MEDIA,
-          {
-            roomId,
-            enabled: newVideoState,
-          },
-          token,
-        );
+      if (token && isConnected && client) {
+        client.publish({
+          destination: '/toggle',
+          body: JSON.stringify({
+            type: MessageType.MEDIA,
+            data: {
+              roomId,
+              enabled: newVideoState,
+            },
+          }),
+        });
       }
 
       setIsVideoOn(newVideoState);
@@ -733,13 +703,15 @@ const VideoTest = () => {
     setStatusMessage('통화 종료 중...');
 
     if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      sendWebSocketMessage(
-        MessageType.EXIT,
-        {
-          roomId,
-        },
-        token,
-      );
+      client?.publish({
+        destination: '/exit',
+        body: JSON.stringify({
+          type: MessageType.EXIT,
+          data: {
+            roomId,
+          },
+        }),
+      });
     }
 
     if (pcRef.current) {
