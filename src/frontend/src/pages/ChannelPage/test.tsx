@@ -28,14 +28,13 @@ const VideoTest = () => {
   const screenShareRef = useRef<HTMLVideoElement>(null);
 
   const pcRef = useRef<RTCPeerConnection | null>(null);
-  const wsRef = useRef<WebSocket | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
   const screenStreamRef = useRef<MediaStream | null>(null);
   const screenTrackRef = useRef<MediaStreamTrack | null>(null);
 
   const [roomId, setRoomId] = useState('');
   const [joined, setJoined] = useState(false);
-  const [answers, setAnswers] = useState<AnswerMessage[]>([]);
+  const [answers, setAnswers] = useState<AnswerMessage>();
   const [statusMessage, setStatusMessage] = useState('');
 
   const { isSharingScreen, isVideoOn, isMicOn, setIsInVoiceChannel, setIsSharingScreen, setIsVideoOn, setIsMicOn } =
@@ -73,8 +72,8 @@ const VideoTest = () => {
     const answerSubscription = client.subscribe(`/topic/answer/${roomId}`, (message) => {
       try {
         const parsedAnswer: AnswerMessage = JSON.parse(message.body);
-        setAnswers((prev) => [...prev, parsedAnswer]);
-        console.log(parsedAnswer);
+        setAnswers(parsedAnswer);
+        console.log('answer', parsedAnswer);
       } catch (error) {
         console.error('[stomp] answer 파싱 오류:', error);
       }
@@ -107,10 +106,10 @@ const VideoTest = () => {
     console.log('수신된 메시지', message);
 
     if (message.type === 'response' && message.users && message.users.length > 0) {
-      const user = message.users[0];
+      const user = message.users.filter((user: any) => user.is_me === false);
 
       console.log('메시지정보', message);
-      console.log('사용자정보', message.users);
+      console.log('사용자정보', message.user);
 
       if (user.sdpOffer) {
         // 사용자가 sdpOffer를 보냈는지 확인
@@ -118,54 +117,6 @@ const VideoTest = () => {
 
         if (!pcRef.current) {
           await createPeerConnection();
-        }
-
-        if (pcRef.current) {
-          try {
-            await pcRef.current.setRemoteDescription(
-              new RTCSessionDescription({
-                type: 'offer',
-                sdp: user.sdpOffer,
-              }),
-            );
-
-            // 이거 type이 response에서 하는게 맞나?
-            if (pendingCandidates.current.length > 0) {
-              console.log(`${pendingCandidates.current.length}개의 대기 중인 후보 처리 중`);
-
-              for (const candidate of pendingCandidates.current) {
-                try {
-                  await pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
-                  console.log('대기 중이던 ICE candidate 추가됨');
-                } catch (err) {
-                  console.error('대기 중이던 ICE candidate 추가 중 오류:', err);
-                }
-              }
-              pendingCandidates.current = [];
-            }
-
-            // 응답 보내기 -> answer 아닌 것 같아서 확인은 해야함
-            const answer = await pcRef.current.createAnswer();
-            await pcRef.current.setLocalDescription(answer);
-
-            if (client && token) {
-              client.publish({
-                destination: '/answer',
-                body: JSON.stringify({
-                  type: MessageType.ANSWER,
-                  data: {
-                    roomId,
-                    sdp_answer: answer.sdp,
-                  },
-                }),
-              });
-            }
-
-            setStatusMessage('응답을 보냈습니다. 연결 중...');
-          } catch (err) {
-            console.error('Offer 처리 중 오류:', err);
-            setStatusMessage(`Offer 처리 오류: ${err instanceof Error ? err.message : String(err)}`);
-          }
         }
       }
 
@@ -178,7 +129,7 @@ const VideoTest = () => {
             await pcRef.current.setRemoteDescription(
               new RTCSessionDescription({
                 type: 'answer',
-                sdp: user.sdpAnswer,
+                sdp: answers?.message,
               }),
             );
           }
@@ -287,7 +238,7 @@ const VideoTest = () => {
                     body: JSON.stringify({
                       type: MessageType.OFFER,
                       data: {
-                        roomId,
+                        room_id: roomId,
                         sdp_offer: pcRef.current.localDescription.sdp,
                       },
                     }),
@@ -311,15 +262,15 @@ const VideoTest = () => {
       // onicecandidate 이벤트: 수집된 ICE 후보를 시그널링 서버로 전송
       pcRef.current.onicecandidate = (event) => {
         if (event.candidate && token && client) {
-          console.log('[pc] 생성된 ICE Candidate:', event.candidate);
+          console.log('[pc] 생성된 ICE Candidate:', event.candidate.candidate);
 
           client.publish({
             destination: '/candidate',
             body: JSON.stringify({
               type: MessageType.CANDIDATE,
               data: {
-                roomId,
-                candidate: event.candidate,
+                room_id: roomId,
+                candidate: event.candidate.candidate,
               },
             }),
           });
@@ -517,7 +468,7 @@ const VideoTest = () => {
                       body: JSON.stringify({
                         type: MessageType.OFFER,
                         data: {
-                          roomId,
+                          room_id: roomId,
                           sdp_offer: pcRef.current.localDescription.sdp,
                         },
                       }),
@@ -658,7 +609,7 @@ const VideoTest = () => {
           body: JSON.stringify({
             type: MessageType.AUDIO,
             data: {
-              roomId,
+              room_id: roomId,
               enabled: newAudioState,
             },
           }),
@@ -686,7 +637,7 @@ const VideoTest = () => {
           body: JSON.stringify({
             type: MessageType.MEDIA,
             data: {
-              roomId,
+              room_id: roomId,
               enabled: newVideoState,
             },
           }),
@@ -702,13 +653,13 @@ const VideoTest = () => {
   const hangUp = () => {
     setStatusMessage('통화 종료 중...');
 
-    if (token && wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      client?.publish({
+    if (token && client) {
+      client.publish({
         destination: '/exit',
         body: JSON.stringify({
           type: MessageType.EXIT,
           data: {
-            roomId,
+            room_id: roomId,
           },
         }),
       });
