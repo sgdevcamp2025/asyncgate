@@ -91,30 +91,13 @@ spring:
             - RewritePath=/users/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
-        - id: signaling-server
-          uri: lb://SIGNALING-SERVER
+        - id: user-server
+          uri: lb://USER-SERVER
           predicates:
-            - Path=/signalings/**
+            - Path=/users/room/profile
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/signalings/(?<segment>.*), /$\{segment}
-            - AuthorizationHeaderFilter
-
-        - id: signaling-server
-          uri: ws://SIGNALING-SERVER
-          predicates:
-            - Path=/signalings/**
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/signalings/(?<segment>.*), /$\{segment}
-          
-        - id: signaling-server
-          uri: wss://SIGNALING-SERVER
-          predicates:
-            - Path=/signalings/**
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/signalings/(?<segment>.*), /$\{segment}
+            - RewritePath=/users/(?<segment>.*), /$\{segment}
 
         - id: chat-server
           uri: lb://CHAT-SERVER

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @Getter
-public class WebRTCConfig {
+public class ICEServerConfig {
 
     @Value("${stun.server.urls}")
     private String stunServer;
@@ -25,8 +25,7 @@ public class WebRTCConfig {
         return String.format("turn:%s", turnServer);
     }
 
-    // TURN 서버 인증 정보 반환
-    public String getTurnCredential() {
-        return turnPassword;
+    public String getStunUrl() {
+        return String.format("stun:%s", stunServer);
     }
 }

@@ -23,3 +23,7 @@ cloud:
 spring:
   kafka:
     bootstrap-servers: '{cipher}276ada73fdb90a68125e2dcce993b77384c8c80d672a78b26eefda56bf60f808f77d486f86d9f1de94e6cb342711bb6211dd8f6cbf98b01e4ece80b938b40acf1cfef75ec74c910f32e68873b06dd3d5'
+
+service:
+  member:
+    url: '{cipher}ee68f6c31f6db2e21b7e008c670634ed0cbb642a75ae18e6cb87794165e82bd3520c15c0a997eb0e049f7ed5ded02091a5543448fc14de697ea18023c61ec9c4'

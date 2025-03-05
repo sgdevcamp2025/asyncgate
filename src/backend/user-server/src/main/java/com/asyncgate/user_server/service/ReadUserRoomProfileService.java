@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReadUserRoomProfileService implements ReadUserRoomProfileUseCase {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public ReadUserRoomProfileResponse execute(final String userId) {
 

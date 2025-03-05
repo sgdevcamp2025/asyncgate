@@ -25,6 +25,7 @@ public class MemberQueryController {
     /**
      * 1.7 회원 화상 간단 정보 조회
      */
+    // test
     @GetMapping("/room/profile")
     public SuccessResponse<ReadUserRoomProfileResponse> readUserRoomProfile(@RequestParam("userId") final String userId) {
         return SuccessResponse.ok(readUserRoomProfileUseCase.execute(userId));

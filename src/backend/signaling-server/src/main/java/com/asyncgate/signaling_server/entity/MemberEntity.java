@@ -1,5 +1,6 @@
 package com.asyncgate.signaling_server.entity;
 
+import com.asyncgate.signaling_server.entity.type.MemberMediaType;
 import org.springframework.data.annotation.Id;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,7 +20,7 @@ public class MemberEntity {
     private String profileImageUrl;
     private String nickname;
 
-    private boolean isMicEnabled;
-    private boolean isCameraEnabled;
-    private boolean isScreenSharingEnabled;
+    private boolean isAudioEnabled; // 오디오
+    private boolean isMediaEnabled; // 화상 공유
+    private boolean isDataEnabled; // 화면 공유
 }

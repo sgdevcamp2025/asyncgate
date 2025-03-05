@@ -17,9 +17,9 @@ public class DomainUtil {
             return MemberEntity.builder()
                     .id(member.getId())
                     .roomId(member.getRoomId())
-                    .isMicEnabled(member.isMicEnabled())
-                    .isCameraEnabled(member.isCameraEnabled())
-                    .isScreenSharingEnabled(member.isScreenSharingEnabled())
+                    .isAudioEnabled(member.isAudioEnabled())
+                    .isMediaEnabled(member.isMediaEnabled())
+                    .isDataEnabled(member.isDataEnabled())
                     .build();
         }
 
@@ -27,9 +27,9 @@ public class DomainUtil {
             return Member.builder()
                     .id(entity.getId())
                     .roomId(entity.getRoomId())
-                    .isMicEnabled(entity.isMicEnabled())
-                    .isCameraEnabled(entity.isCameraEnabled())
-                    .isScreenSharingEnabled(entity.isScreenSharingEnabled())
+                    .isAudioEnabled(entity.isAudioEnabled())
+                    .isMediaEnabled(entity.isMediaEnabled())
+                    .isDataEnabled(entity.isDataEnabled())
                     .build();
         }
     }

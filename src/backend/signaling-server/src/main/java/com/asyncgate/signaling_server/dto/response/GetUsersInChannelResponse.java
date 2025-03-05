@@ -21,6 +21,7 @@ public class GetUsersInChannelResponse {
         this.users = users;
     }
 
+    @Getter
     public static class UserInRoom {
         @JsonProperty("id")
         private final String id;

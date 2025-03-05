@@ -28,7 +28,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
     private final ObjectMapper objectMapper;
 
     private static final List<String> NO_NEED_URLS = List.of(
-        "/sign-up", "/sign-in", "/validation/email", "/validation/authentication-code"
+        "/sign-up", "/sign-in", "/validation/email", "/validation/authentication-code", "/room/profile"
     );
 
     public AuthorizationHeaderFilter(

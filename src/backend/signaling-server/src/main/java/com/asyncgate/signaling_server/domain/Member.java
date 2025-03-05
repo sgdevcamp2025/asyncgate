@@ -1,5 +1,6 @@
 package com.asyncgate.signaling_server.domain;
 
+import com.asyncgate.signaling_server.entity.type.MemberMediaType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,44 +15,44 @@ public class Member implements Identifiable {
     private String roomId; // 사용자가 속한 방 ID
 
     // 미디어 상태
-    private boolean isMicEnabled;
-    private boolean isCameraEnabled;
-    private boolean isScreenSharingEnabled;
+    private boolean isAudioEnabled;
+    private boolean isMediaEnabled;
+    private boolean isDataEnabled;
 
     @Builder
-    public Member(final String id, final String roomId, final String progileImageUrl, final String nickname, final boolean isMicEnabled, final boolean isCameraEnabled, final boolean isScreenSharingEnabled) {
+    public Member(final String id, final String roomId, final String progileImageUrl, final String nickname, final boolean isAudioEnabled, final boolean isMediaEnabled, final boolean isDataEnabled) {
         this.id = id;
         this.roomId = roomId;
         this.progileImageUrl = progileImageUrl;
         this.nickname = nickname;
-        this.isMicEnabled = isMicEnabled;
-        this.isCameraEnabled = isCameraEnabled;
-        this.isScreenSharingEnabled = isScreenSharingEnabled;
+        this.isAudioEnabled = isAudioEnabled;
+        this.isMediaEnabled = isMediaEnabled;
+        this.isDataEnabled = isDataEnabled;
     }
 
-    public static Member create(final String id, final String roomId, final String progileImageUrl, final String nickname) {
+    public static Member create(final String id, final String roomId, final String progileImageUrl, final String nickname, final boolean isAudioEnabled, final boolean isMediaEnabled, final boolean isDataEnabled) {
         return Member.builder()
                 .id(id)
                 .roomId(roomId)
                 .progileImageUrl(progileImageUrl)
                 .nickname(nickname)
-                .isMicEnabled(false)
-                .isCameraEnabled(false)
-                .isScreenSharingEnabled(false)
+                .isAudioEnabled(isAudioEnabled)
+                .isMediaEnabled(isMediaEnabled)
+                .isDataEnabled(isDataEnabled)
                 .build();
     }
 
     // 미디어 상태 업데이트
-    public void updateMediaState(String type, boolean enabled) {
-        switch (type) {
-            case "mic":
-                this.isMicEnabled = enabled;
+    public void updateMediaState(MemberMediaType type, boolean enabled) {
+        switch (type) {  // ✅ Enum 자체를 switch에 사용
+            case AUDIO:
+                this.isAudioEnabled = enabled;
                 break;
-            case "camera":
-                this.isCameraEnabled = enabled;
+            case MEDIA:
+                this.isMediaEnabled = enabled;
                 break;
-            case "screen":
-                this.isScreenSharingEnabled = enabled;
+            case DATA:
+                this.isDataEnabled = enabled;
                 break;
             default:
                 throw new IllegalArgumentException("잘못된 미디어 타입: " + type);

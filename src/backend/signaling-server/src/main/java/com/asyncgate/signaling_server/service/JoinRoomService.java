@@ -1,5 +1,6 @@
 package com.asyncgate.signaling_server.service;
 
+import com.asyncgate.signaling_server.dto.request.JoinRoomRequest;
 import com.asyncgate.signaling_server.signaling.KurentoManager;
 import com.asyncgate.signaling_server.usecase.JoinRoomUseCase;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,9 @@ public class JoinRoomService implements JoinRoomUseCase {
      * 방에 유저 추가
      */
     @Override
-    public void execute(final String roomId, final String memberId) {
+    public void execute(final String roomId, final String memberId, final JoinRoomRequest request) {
 
         // kurento media pipeline 생성
-        kurentoManager.getOrCreatePipeline(roomId);
+        kurentoManager.getOrCreateEndpoint(roomId, memberId, request);
     }
 }

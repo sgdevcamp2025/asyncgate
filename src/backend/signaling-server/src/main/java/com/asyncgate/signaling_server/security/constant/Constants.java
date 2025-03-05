@@ -23,6 +23,7 @@ public class Constants {
             "/health",
             "/index.html",
             "/signal",
+            "/ice",
 
             // Swagger
             "/api-docs.html",

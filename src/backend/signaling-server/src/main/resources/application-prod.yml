@@ -1,5 +1,7 @@
 server:
   port: 8600
+  tomcat:
+    connection-timeout: 0
 
 eureka:
   instance:
