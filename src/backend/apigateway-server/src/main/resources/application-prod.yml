@@ -32,10 +32,10 @@ spring:
         - id: chat-server-swagger
           uri: lb://CHAT-SERVER
           predicates:
-            - Path=/guilds/swagger-ui/**, /guilds/v3/api-docs/**, /guilds/swagger-resources/**, /guilds/webjars/**
+            - Path=/chats/swagger-ui/**, /chats/v3/api-docs/**, /chats/swagger-resources/**, /chats/webjars/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/guilds/(?<segment>.*), /$\{segment}
+            - RewritePath=/chats/(?<segment>.*), /$\{segment}
 
         - id: guild-server
           uri: lb://GUILD-SERVER
