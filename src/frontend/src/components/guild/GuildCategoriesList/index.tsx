@@ -5,7 +5,7 @@ import { TbPlus } from 'react-icons/tb';
 import { GuildChannelInfo, useChannelInfoStore } from '@/stores/channelInfo';
 import { useGuildInfoStore } from '@/stores/guildInfo';
 import useModalStore from '@/stores/modalStore';
-import { BodyMediumText, BodyRegularText } from '@/styles/Typography';
+import { BodyMediumText, BodyRegularText, ChipText } from '@/styles/Typography';
 import { CategoryDataResult, ChannelResult, ChannelType } from '@/types/guilds';
 
 import CreateChannelModal from '../CreateChannelModal';
@@ -34,7 +34,7 @@ const GuildCategoriesList = ({ categories, channels }: CategoriesListProps) => {
       {categories?.map((category) => (
         <S.Category key={category.categoryId}>
           <S.CategoryName>
-            <BodyMediumText>{category.name}</BodyMediumText>
+            <ChipText>{category.name}</ChipText>
             <TbPlus size={18} onClick={() => handleOpenModal(category.categoryId, guildId)} />
           </S.CategoryName>
           <S.Channels>

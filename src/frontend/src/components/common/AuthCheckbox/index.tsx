@@ -3,7 +3,7 @@ import CheckedIcon from '@/assets/checked.svg';
 import * as S from './styles';
 
 interface AuthCheckboxProps {
-  id: string;
+  id?: string;
   isChecked: boolean;
   handleChange?: () => void;
   label?: string;

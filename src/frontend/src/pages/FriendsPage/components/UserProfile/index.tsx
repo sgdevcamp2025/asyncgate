@@ -6,39 +6,32 @@ import useDropdown from '@/hooks/useDropdown';
 
 import UserProfileTab from '../UserProfileTab';
 
+import useGetUserInfo from './hooks/useGetUserInfo';
 import * as S from './styles';
 
+// TODO: 마이크, 헤드셋 전역 상태로 관리
 interface UserProfileProps {
-  userImageUrl: string;
-  userName: string;
-  isOnline: boolean;
   isMicOn: boolean;
   isHeadsetOn: boolean;
   handleMicToggle: () => void;
   handleHeadsetToggle: () => void;
 }
 
-// TODO: props로 받고 있는 정보들을 전역 상태 및 사용자 정보 요청으로 대체
-const UserProfile = ({
-  userImageUrl,
-  userName,
-  isOnline,
-  isMicOn,
-  isHeadsetOn,
-  handleMicToggle,
-  handleHeadsetToggle,
-}: UserProfileProps) => {
+const UserProfile = ({ isMicOn, isHeadsetOn, handleMicToggle, handleHeadsetToggle }: UserProfileProps) => {
   const { isOpened, dropdownRef, toggleDropdown } = useDropdown();
+
+  const { userInfo } = useGetUserInfo();
+  if (!userInfo) return null;
 
   return (
     <S.UserProfileContainer ref={dropdownRef}>
       <S.UserInfoContainer onClick={toggleDropdown}>
-        <S.UserImage $userImageUrl={userImageUrl}>
-          <S.UserStatusMark $isOnline={isOnline} />
+        <S.UserImage $userImageUrl={userInfo.profileImageUrl}>
+          <S.UserStatusMark $isOnline={true} />
         </S.UserImage>
         <S.UserInfo>
-          <S.UserName>{userName}</S.UserName>
-          <S.UserStatus>{isOnline ? '온라인' : '오프라인'}</S.UserStatus>
+          <S.UserName>{userInfo.nickname}</S.UserName>
+          <S.UserStatus>온라인</S.UserStatus>
         </S.UserInfo>
       </S.UserInfoContainer>
       <S.ControlButtonContainer>

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { BodyRegularText, ChipText, TitleText2 } from '@/styles/Typography';
+import { BodyRegularText, TitleText2 } from '@/styles/Typography';
 
 import { ResultMessageType } from '.';
 

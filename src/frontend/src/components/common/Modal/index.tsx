@@ -15,7 +15,7 @@ const Modal = ({ children, name }: ModalProps) => {
 
   return (
     <>
-      <S.Overlay onClick={() => closeModal(name, 'close-modal')} />
+      <S.Overlay onClick={() => closeModal(name, 'closeModal')} />
       <S.ModalContainer>
         <S.CloseButton>
           <S.CloseIcon size={28} onClick={() => closeAllModal()} />

@@ -2,6 +2,12 @@ import styled from 'styled-components';
 
 import { BodyMediumText, ChipText } from '@/styles/Typography';
 
+export const PendingFriendsListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
 export const FriendsList = styled.ul`
   display: flex;
   flex-direction: column;
@@ -26,6 +32,7 @@ export const FriendItem = styled.li`
   justify-content: space-between;
 
   height: 6.2rem;
+  padding: 0 0.8rem;
   border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
   border-radius: 0.4rem;
 
@@ -60,10 +67,10 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
   border: 0.1rem solid ${({ theme }) => theme.colors.dark[400]};
   border-radius: 50%;
 
-  background-color: ${({ $isOnline }) => ($isOnline ? 'green' : 'black')};
+  background-color: ${({ theme, $isOnline }) => ($isOnline ? theme.colors.online : theme.colors.black)};
 `;
 
-export const FriendName = styled(BodyMediumText)`
+export const FriendNickname = styled(BodyMediumText)`
   overflow: hidden;
 
   padding-left: 0.8rem;
@@ -82,7 +89,10 @@ export const ButtonContainer = styled.div`
   gap: 0.5rem;
 `;
 
-export const AcceptButton = styled.button`
+export const AcceptButton = styled.button<{ $isPending: boolean }>`
+  pointer-events: ${({ $isPending }) => ($isPending ? 'none' : 'auto')};
+  cursor: ${({ $isPending }) => ($isPending ? 'not-allowed' : 'pointer')};
+
   width: 8rem;
   height: 3.2rem;
   border-radius: 0.4rem;
@@ -93,7 +103,10 @@ export const AcceptButton = styled.button`
   background-color: ${({ theme }) => theme.colors.green};
 `;
 
-export const RejectButton = styled.button`
+export const RejectButton = styled.button<{ $isPending: boolean }>`
+  pointer-events: ${({ $isPending }) => ($isPending ? 'none' : 'auto')};
+  cursor: ${({ $isPending }) => ($isPending ? 'not-allowed' : 'pointer')};
+
   width: 8rem;
   height: 3.2rem;
   border-radius: 0.4rem;
@@ -102,4 +115,16 @@ export const RejectButton = styled.button`
   color: ${({ theme }) => theme.colors.white};
 
   background-color: ${({ theme }) => theme.colors.red};
+`;
+
+export const Divider = styled.hr`
+  margin: 0 2rem 0 3rem;
+  border: 0;
+  border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
+`;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: ${({ theme }) => theme.colors.red};
 `;

@@ -6,6 +6,8 @@ export interface UserDefaultResponse {
   result: null;
 }
 
+export type DeleteAccountResponse = UserDefaultResponse;
+
 export interface PostLoginRequest {
   email: string;
   password: string;
@@ -43,6 +45,20 @@ export interface PostEmailDuplicateResponse {
   time: Date;
   result: {
     is_duplicate: boolean;
+  };
+}
+
+export interface GetUserInfoResponse {
+  httpStatus: number;
+  message: string;
+  time: Date;
+  result: {
+    userId: string;
+    name: string;
+    nickname: string;
+    profileImageUrl: string;
+    email: string;
+    birth: string;
   };
 }
 

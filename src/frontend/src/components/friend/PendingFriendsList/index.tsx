@@ -1,52 +1,72 @@
-import { Friend } from '../FriendsList';
-
+import useGetReceivedRequests from './hooks/useGetReceivedRequests';
+import useGetSentRequests from './hooks/useGetSentRequests';
+import useHandleFriendRequest from './hooks/useHandleFriendRequest';
 import * as S from './styles';
 
-const friends: Friend[] = [
-  {
-    name: '친구1',
-    profileImageUrl: '',
-    isOnline: true,
-  },
-  {
-    name: '친구2',
-    profileImageUrl: '',
-    isOnline: true,
-  },
-];
-
 const PendingFriendsList = () => {
-  // TODO: 받은 친구 및 보낸 친구 요청 리스트 보여주기
-  // TODO: 받은 친구 요청인 경우 수락 및 거절 로직 구현
-  // TODO: 보낸 친구 요청인 경우 요청 취소 로직 구현
-  // 현재는 받은 친구 요청 UI만 구현
+  const { receivedRequests } = useGetReceivedRequests();
+  const { sentRequests } = useGetSentRequests();
+  const { acceptRequestMutation, rejectRequestMutation, errorMessage } = useHandleFriendRequest();
 
-  const handleAcceptButtonClick = () => {
-    console.log('친구 요청 수락');
+  const handleAcceptButtonClick = (friendId: string) => {
+    acceptRequestMutation.mutate({ friendId });
   };
 
-  const handleRejectButtonClick = () => {
-    console.log('친구 요청 거절');
+  const handleRejectButtonClick = (friendId: string) => {
+    rejectRequestMutation.mutate({ friendId });
   };
 
   return (
-    <S.FriendsList>
-      <S.FriendCount>대기 중인 친구 - {friends.length}명</S.FriendCount>
-      {friends.map((friend, index) => (
-        <S.FriendItem key={`${friend.name}_${index}`}>
-          <S.FriendInfoContainer>
-            <S.FriendProfileImage $imageUrl={friend.profileImageUrl}>
-              <S.FriendStatusMark $isOnline={friend.isOnline} />
-            </S.FriendProfileImage>
-            <S.FriendName>{friend.name}</S.FriendName>
-          </S.FriendInfoContainer>
-          <S.ButtonContainer>
-            <S.AcceptButton onClick={handleAcceptButtonClick}>수락하기</S.AcceptButton>
-            <S.RejectButton onClick={handleRejectButtonClick}>거절하기</S.RejectButton>
-          </S.ButtonContainer>
-        </S.FriendItem>
-      ))}
-    </S.FriendsList>
+    <S.PendingFriendsListContainer>
+      {receivedRequests && (
+        <>
+          <S.FriendsList>
+            <S.FriendCount>받은 요청 - {receivedRequests.length}건</S.FriendCount>
+            {receivedRequests.map((friend) => (
+              <>
+                <S.FriendItem key={friend.userId}>
+                  <S.FriendInfoContainer>
+                    <S.FriendProfileImage $imageUrl={''} />
+                    <S.FriendNickname>{friend.nickname}</S.FriendNickname>
+                  </S.FriendInfoContainer>
+                  <S.ButtonContainer>
+                    <S.AcceptButton
+                      $isPending={acceptRequestMutation.isPending}
+                      onClick={() => handleAcceptButtonClick(friend.userId)}
+                    >
+                      {acceptRequestMutation.isPending ? '처리 중...' : '수락하기'}
+                    </S.AcceptButton>
+                    <S.RejectButton
+                      $isPending={rejectRequestMutation.isPending}
+                      onClick={() => handleRejectButtonClick(friend.userId)}
+                    >
+                      {rejectRequestMutation.isPending ? '처리 중...' : '거절하기'}
+                    </S.RejectButton>
+                  </S.ButtonContainer>
+                </S.FriendItem>
+                {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
+              </>
+            ))}
+          </S.FriendsList>
+          {receivedRequests.length > 0 && <S.Divider />}
+        </>
+      )}
+      {sentRequests && (
+        <>
+          <S.FriendsList>
+            <S.FriendCount>보낸 요청 - {sentRequests.length}건</S.FriendCount>
+            {sentRequests.map((friend) => (
+              <S.FriendItem key={friend.userId}>
+                <S.FriendInfoContainer>
+                  <S.FriendProfileImage $imageUrl={''} />
+                  <S.FriendNickname>{friend.nickname}</S.FriendNickname>
+                </S.FriendInfoContainer>
+              </S.FriendItem>
+            ))}
+          </S.FriendsList>
+        </>
+      )}
+    </S.PendingFriendsListContainer>
   );
 };
 

@@ -25,6 +25,7 @@ export const FriendItem = styled.li`
   align-items: center;
 
   height: 6.2rem;
+  padding: 0 0.8rem;
   border-top: 0.1rem solid ${({ theme }) => theme.colors.dark[500]};
   border-radius: 0.4rem;
 
@@ -38,6 +39,7 @@ export const FriendProfileImage = styled.div<{ $imageUrl: string }>`
 
   width: 3.2rem;
   height: 3.2rem;
+  margin-right: 1.2rem;
   border-radius: 50%;
 
   background-color: ${({ theme }) => theme.colors.white};
@@ -54,14 +56,18 @@ export const FriendStatusMark = styled.div<{ $isOnline: boolean }>`
   border: 0.1rem solid ${({ theme }) => theme.colors.dark[400]};
   border-radius: 50%;
 
-  background-color: ${({ $isOnline }) => ($isOnline ? 'green' : 'black')};
+  background-color: ${({ theme, $isOnline }) => ($isOnline ? theme.colors.online : theme.colors.black)};
 `;
 
-export const FriendName = styled(BodyMediumText)`
+export const FriendInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+`;
+
+export const FriendNickname = styled(BodyMediumText)`
   overflow: hidden;
-
-  padding-left: 0.8rem;
-
   color: ${({ theme }) => theme.colors.white};
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -69,4 +75,18 @@ export const FriendName = styled(BodyMediumText)`
 
 export const FriendStatus = styled(ChipText)`
   color: ${({ theme }) => theme.colors.dark[300]};
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  padding: 0 0.8rem;
+`;
+
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 3.2rem;
+  height: 3.2rem;
 `;
