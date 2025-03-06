@@ -132,8 +132,8 @@ data class FileRequest(
     @Schema(description = "썸네일 이미지 파일", nullable = true)
     val thumbnail: MultipartFile? = null,
 
-    @Schema(description = "사용자 ID", example = "12345")
-    val userId: Long,
+    @Schema(description = "사용자 ID", example = "asdfbnmzxcvasdf1234")
+    val userId: String,
 
     @Schema(description = "사용자 이름", example = "John Doe")
     val name: String,
