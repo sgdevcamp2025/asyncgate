@@ -124,14 +124,18 @@ const VideoTest = () => {
       if (user.sdpAnswer) {
         setStatusMessage('응답을 받았습니다. 연결 중...');
 
+        console.log(answers?.message);
+
         try {
           if (pcRef.current) {
+            console.log('원격 설명 설정 시도');
             await pcRef.current.setRemoteDescription(
               new RTCSessionDescription({
                 type: 'answer',
                 sdp: answers?.message,
               }),
             );
+            console.log('원격 설명 설정 완료');
           }
 
           if (pendingCandidates.current.length > 0) {
@@ -200,6 +204,10 @@ const VideoTest = () => {
 
       console.log('[pc] PeerConnection 구성됨:', pcRef.current);
 
+      pcRef.current.onsignalingstatechange = () => {
+        console.log('[pc] Signaling 상태 변경:', pcRef.current?.signalingState);
+      };
+
       // ICE 후보 수집 상태 모니터링
       pcRef.current.onicegatheringstatechange = () => {
         console.log('[pc] ICE 수집 상태:', pcRef.current?.iceGatheringState);
@@ -231,16 +239,27 @@ const VideoTest = () => {
         if (event.candidate && token && client) {
           console.log('[pc] 생성된 ICE Candidate:', event.candidate.candidate);
 
-          client.publish({
-            destination: '/candidate',
-            body: JSON.stringify({
-              type: MessageType.CANDIDATE,
-              data: {
-                room_id: roomId,
-                candidate: event.candidate.candidate,
-              },
-            }),
-          });
+          pendingCandidates.current.push(event.candidate);
+
+          if (client && client.connected) {
+            try {
+              client.publish({
+                destination: '/candidate',
+                body: JSON.stringify({
+                  type: MessageType.CANDIDATE,
+                  data: {
+                    room_id: roomId,
+                    candidate: event.candidate.candidate,
+                  },
+                }),
+              });
+              console.log('ICE candidate 전송 성공');
+            } catch (err) {
+              console.error('ICE candidate 전송 오류:', err);
+            }
+          } else {
+            console.log('STOMP 연결이 없어 candidate를 큐에 저장합니다');
+          }
         } else {
           console.log('[pc] ICE Candidate 수집 완료');
         }
@@ -397,6 +416,11 @@ const VideoTest = () => {
   };
 
   const joinRoom = async () => {
+    if (!roomId.trim()) {
+      setStatusMessage('방 ID를 입력하세요');
+      return;
+    }
+
     setStatusMessage('방 참여 중...');
 
     if (token && isConnected && client) {
@@ -426,6 +450,7 @@ const VideoTest = () => {
                 });
 
                 await pcRef.current!.setLocalDescription(offer);
+                console.log('로컬 설명 설정됨:', pcRef.current!.localDescription);
 
                 setTimeout(() => {
                   if (token && pcRef.current?.localDescription) {
@@ -663,6 +688,34 @@ const VideoTest = () => {
       screenShareRef.current.play().catch((err) => console.error('useEffect에서 비디오 재생 오류:', err));
     }
   }, [isSharingScreen]);
+
+  // STOMP 연결 상태 변경 감지
+  useEffect(() => {
+    if (isConnected && client && pendingCandidates.current.length > 0 && roomId) {
+      console.log(`연결 복구 - ${pendingCandidates.current.length}개의 대기 중인 ICE candidate 전송 시도`);
+
+      // 대기 중인 모든 후보 전송 시도
+      for (const candidate of pendingCandidates.current) {
+        try {
+          client.publish({
+            destination: '/candidate',
+            body: JSON.stringify({
+              type: MessageType.CANDIDATE,
+              data: {
+                room_id: roomId,
+                candidate: candidate.candidate,
+              },
+            }),
+          });
+          console.log('대기 중인 ICE candidate 전송 성공');
+        } catch (err) {
+          console.error('대기 중인 ICE candidate 전송 오류:', err);
+        }
+      }
+
+      pendingCandidates.current = [];
+    }
+  }, [isConnected, client, roomId]);
 
   return (
     <div style={{ padding: '1rem' }} onClick={playAllVideos}>
