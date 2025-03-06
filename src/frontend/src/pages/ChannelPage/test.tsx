@@ -217,39 +217,6 @@ const VideoTest = () => {
         // ICE 연결 실패 시 처리
         if (state === 'failed' || state === 'disconnected') {
           console.log('[pc] ICE 연결 문제 발생, 재연결 시도...');
-
-          // 연결이 끊어진 경우 재연결 시도
-          if (pcRef.current) {
-            // ICE 재시작 오퍼 생성
-            pcRef.current
-              .createOffer({
-                iceRestart: true,
-                offerToReceiveAudio: true,
-                offerToReceiveVideo: true,
-              })
-              .then((offer) => {
-                return pcRef.current?.setLocalDescription(offer);
-              })
-              .then(() => {
-                // 새 오퍼를 서버로 전송
-                if (token && pcRef.current?.localDescription?.sdp) {
-                  client?.publish({
-                    destination: '/offer',
-                    body: JSON.stringify({
-                      type: MessageType.OFFER,
-                      data: {
-                        room_id: roomId,
-                        sdp_offer: pcRef.current.localDescription.sdp,
-                      },
-                    }),
-                  });
-                  console.log('[pc] ICE 재시작 오퍼 전송됨');
-                }
-              })
-              .catch((err) => {
-                console.error('[pc] ICE 재시작 실패:', err);
-              });
-          }
         }
 
         // ICE 연결 성공 시
@@ -441,7 +408,7 @@ const VideoTest = () => {
         }
       }
 
-      if (roomId) {
+      if (roomId && pcRef.current) {
         const response = await tokenAxios.post(`https://api.jungeunjipi.com/room/${roomId}/join`, {
           audio_enabled: isMicOn,
           media_enabled: isVideoOn,
@@ -460,7 +427,6 @@ const VideoTest = () => {
 
                 await pcRef.current!.setLocalDescription(offer);
 
-                // SDP 제안을 보내기 전에 잠시 대기하여 ICE 후보 수집이 일부 완료되도록 함
                 setTimeout(() => {
                   if (token && pcRef.current?.localDescription) {
                     client?.publish({
