@@ -1,87 +1,92 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Client, Frame } from '@stomp/stompjs';
 import { useEffect, useRef, useState } from 'react';
 
+import { getUserId } from '@/api/users';
+
 interface UseStompWebRTCProps {
   roomId: string;
+  handleUsers: (users: any) => void;
+  handleAnswer: (answer: any) => void;
+  handleIceCandidate: (candidate: any) => void;
+  handlePublish: (publisherId: any) => void;
 }
 
-const useStompWebRTC = ({ roomId }: UseStompWebRTCProps) => {
+const useStompWebRTC = ({
+  roomId,
+  handleUsers,
+  handleAnswer,
+  handleIceCandidate,
+  handlePublish,
+}: UseStompWebRTCProps) => {
   const [isConnected, setIsConnected] = useState(false);
-  const clientRef = useRef<Client | null>(null);
-  const connectionAttempts = useRef(0);
+  const stompClient = useRef<Client | null>(null);
 
   const SERVER_URL = import.meta.env.VITE_SIGNALING;
+  const token = localStorage.getItem('access_token');
 
-  useEffect(() => {
-    if (!roomId) return;
+  if (!token) return;
+  const userId = getUserId();
 
-    const token = localStorage.getItem('access_token');
-    if (!token) return;
+  if (!roomId) return;
 
-    if (clientRef.current) {
-      console.log('이전 STOMP 연결 정리 중...');
-      clientRef.current.deactivate();
-      clientRef.current = null;
-    }
+  const client = new Client({
+    webSocketFactory: () => new WebSocket(SERVER_URL, ['v10.stomp', token]),
+    connectHeaders: { Authorization: `Bearer ${token}` },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 10000,
+    heartbeatOutgoing: 10000,
 
-    connectionAttempts.current = 0;
+    onConnect: (frame: Frame) => {
+      console.log('✅ STOMP 연결 성공!', frame);
+      setIsConnected(true);
 
-    const client = new Client({
-      webSocketFactory: () => new WebSocket(SERVER_URL, ['v10.stomp', token]),
-      connectHeaders: { Authorization: `Bearer ${token}` },
-      debug: (msg) => console.log('STOMP DEBUG:', msg),
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+      // 연결 성공 시 subscribe
+      client.subscribe(`/topic/users/${roomId}`, (message) => {
+        const users = JSON.parse(message.body);
+        console.log('📩 users 받은 메시지:', message);
+        handleUsers(users);
+      });
 
-      onConnect: (frame: Frame) => {
-        console.log('✅ STOMP 연결 성공!', frame);
-        connectionAttempts.current = 0;
-        setIsConnected(true);
+      client.subscribe(`/topic/answer/${roomId}/${userId}`, (message) => {
+        const answer = JSON.parse(message.body);
+        console.log('📩 answer 받은 메시지:', message);
+        handleAnswer(answer.message);
+      });
 
-        const subscriptions = [];
+      client.subscribe(`/topic/candidate/${roomId}/${userId}`, (message) => {
+        const candidate = JSON.parse(message.body);
+        console.log('📩 candidate 받은 메시지:', message);
+        handleIceCandidate(candidate.candidate);
+      });
 
-        // 연결 성공 시 subscribe
-        subscriptions.push(
-          client.subscribe(`/topic/users/${roomId}`, (message) => {
-            console.log('📩 users 받은 메시지:', message);
-          }),
-        );
+      client.subscribe(`/topic/publisher/${roomId}`, (message) => {
+        const publisher_id = JSON.parse(message.body);
+        console.log('📩 publisher 받은 메시지:', message);
+        handlePublish(publisher_id);
+      });
+    },
 
-        subscriptions.push(
-          client.subscribe(`/topic/answer/${roomId}`, (message) => {
-            console.log('📩 answer 받은 메시지:', message);
-          }),
-        );
+    onWebSocketError: (error: Error) => {
+      console.log('WebSocket 에러', error);
+    },
 
-        subscriptions.push(
-          client.subscribe(`/topic/candidate/${roomId}`, (message) => {
-            console.log('📩 candidate 받은 메시지:', message);
-          }),
-        );
-      },
+    onStompError: (frame) => {
+      console.error('❌ STOMP 오류 발생!', frame);
+    },
+  });
 
-      onWebSocketError: (error: Error) => {
-        console.log('WebSocket 에러', error);
-      },
+  client.activate();
+  stompClient.current = client;
 
-      onStompError: (frame) => {
-        console.error('❌ STOMP 오류 발생!', frame);
-      },
-    });
-
-    client.activate();
-    clientRef.current = client;
-
-    return () => {
-      client.deactivate();
-      clientRef.current = null;
-      setIsConnected(false);
-      console.log('✅ WebSocket 연결 해제됨');
-    };
-  }, [roomId]);
-
-  return { client: clientRef.current, isConnected };
+  return {
+    // client.deactivate();
+    // clientRef.current = null;
+    // setIsConnected(false);
+    // console.log('✅ WebSocket 연결 해제됨');
+    client: stompClient.current,
+    isConnected,
+  };
 };
 
 export default useStompWebRTC;

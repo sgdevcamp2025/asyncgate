@@ -1,18 +1,16 @@
-import { useState } from 'react';
-
+import { useChannelActionStore } from '@/stores/channelAction';
 import { useChannelInfoStore } from '@/stores/channelInfo';
 import { BodyRegularText, TitleText1 } from '@/styles/Typography';
 
 import * as S from './styles';
 
 const VideoPage = () => {
-  const [isAttend, setIsAttend] = useState(false);
-
+  const { isInVoiceChannel } = useChannelActionStore();
   const { selectedChannel } = useChannelInfoStore();
 
   return (
     <S.VideoPage>
-      {isAttend ? (
+      {isInVoiceChannel ? (
         <>참여시 비디오들</>
       ) : (
         <S.EmptyParticipant>

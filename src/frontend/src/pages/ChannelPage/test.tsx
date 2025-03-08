@@ -37,67 +37,108 @@ const VideoTest = () => {
   const [answers, setAnswers] = useState<AnswerMessage>();
   const [statusMessage, setStatusMessage] = useState('');
 
-  const { isSharingScreen, isVideoOn, isMicOn, setIsInVoiceChannel, setIsSharingScreen, setIsVideoOn, setIsMicOn } =
-    useChannelActionStore();
+  const {
+    isInVoiceChannel,
+    isSharingScreen,
+    isVideoOn,
+    isMicOn,
+    setIsInVoiceChannel,
+    setIsSharingScreen,
+    setIsVideoOn,
+    setIsMicOn,
+  } = useChannelActionStore();
 
-  const { client, isConnected } = useStompWebRTC({ roomId });
+  const { client, isConnected } = useStompWebRTC({
+    roomId,
+    handleUsers,
+    handleAnswer,
+    handleIceCandidate,
+    handlePublish,
+  });
 
   const token = localStorage.getItem('access_token');
 
-  useEffect(() => {
-    if (!client || !isConnected) return;
+  const handleAnswer = async (sdpAnswer: string) => {
+    if (!pcRef.current) return;
 
-    setStatusMessage('STOMP 서버에 연결됨');
+    try {
+      await pcRef.current.setRemoteDescription(
+        new RTCSessionDescription({
+          type: 'answer',
+          sdp: sdpAnswer,
+        }),
+      );
+    } catch (error) {
+      console.error('answer 요청 실패', error);
+    } finally {
+      sendGetherIceCandidate();
+    }
+  };
 
-    const userSubscription = client.subscribe(`/topic/users/${roomId}`, (message) => {
-      try {
-        const response = JSON.parse(message.body);
-        handleStompMessage(response);
-      } catch (error) {
-        console.error('[stomp] 메시지 파싱 오류:', error);
-      }
-    });
+  const sendGetherIceCandidate = async () => {
+    if (!client) {
+      alert('gather STOMP WebSocket이 연결되지 않았습니다.');
+      return;
+    }
 
-    const candidateSubscription = client.subscribe(`/topic/candidate/${roomId}`, (message) => {
-      try {
-        const candidateData = JSON.parse(message.body);
-        if (candidateData.candidate) {
-          handleIceCandidate(candidateData.candidate);
+    try {
+      client.publish({
+        destination: '/gather/candidate',
+        body: JSON.stringify({
+          data: {
+            room_id: roomId,
+          },
+        }),
+      });
+
+      sendIceCandidates(); // SDP Answer 수신 후 ICE Candidate 전송
+    } catch (error) {
+      console.error('gather 요청 실패:', error);
+    }
+  };
+
+  const sendIceCandidates = () => {
+    if (!pcRef.current || !client) return;
+
+    console.log('접근 완료');
+    pcRef.current.onicecandidate = (event) => {
+      if (event.candidate) {
+        if (event.candidate.candidate.includes('typ host')) {
+          return; // host 후보는 버립니다
         }
-      } catch (error) {
-        console.error('[stomp] candidate 파싱 오류:', error);
-      }
-    });
 
-    const answerSubscription = client.subscribe(`/topic/answer/${roomId}`, (message) => {
-      try {
-        const parsedAnswer: AnswerMessage = JSON.parse(message.body);
-        setAnswers(parsedAnswer);
-        console.log('answer', parsedAnswer);
-      } catch (error) {
-        console.error('[stomp] answer 파싱 오류:', error);
-      }
-    });
+        console.log('전송 ice candidate: ', event.candidate);
 
-    return () => {
-      userSubscription.unsubscribe();
-      candidateSubscription.unsubscribe();
-      answerSubscription.unsubscribe();
-
-      // 미디어 스트림, PeerConnection, WebSocket 종료
-      if (localStreamRef.current) {
-        localStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-
-      if (screenStreamRef.current) {
-        screenStreamRef.current.getTracks().forEach((track) => track.stop());
-      }
-
-      if (pcRef.current) {
-        pcRef.current.close();
+        client.publish({
+          destination: '/candidate',
+          body: JSON.stringify({
+            data: {
+              room_id: roomId,
+              candidate: {
+                candidate: event.candidate.candidate,
+                sdpMid: event.candidate.sdpMid,
+                sdpMLineIndex: event.candidate.sdpMLineIndex,
+              },
+            },
+          }),
+        });
+        console.log('ICE Candidate 전송: ', event.candidate);
       }
     };
-  }, [client, isConnected, roomId]);
+
+    pcRef.current.onicegatheringstatechange = () => {
+      console.log('[pc] ICE 수집 상태:', pcRef.current?.iceGatheringState);
+
+      if (pcRef.current?.iceGatheringState === 'complete') {
+        console.log('[pc] ICE 후보 수집 완료');
+      }
+    };
+
+    pcRef.current.oniceconnectionstatechange = () => {
+      const state = pcRef.current?.iceConnectionState;
+      console.log('[pc] ICE 연결 상태 변경:', state);
+    };
+  };
 
   const pendingCandidates = useRef<RTCIceCandidateInit[]>([]);
 
@@ -196,43 +237,19 @@ const VideoTest = () => {
     }
   };
 
+  const disconnectStomp = () => {
+    if (client) {
+      client.deactivate();
+      setIsInVoiceChannel(false);
+      console.log('🔌 STOMP WebSocket 연결 해제 시도');
+    }
+  };
+
   const createPeerConnection = useCallback(async () => {
     try {
       pcRef.current = new RTCPeerConnection({
         iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
       });
-
-      console.log('[pc] PeerConnection 구성됨:', pcRef.current);
-
-      pcRef.current.onsignalingstatechange = () => {
-        console.log('[pc] Signaling 상태 변경:', pcRef.current?.signalingState);
-      };
-
-      // ICE 후보 수집 상태 모니터링
-      pcRef.current.onicegatheringstatechange = () => {
-        console.log('[pc] ICE 수집 상태:', pcRef.current?.iceGatheringState);
-
-        // 수집 완료 시 로그
-        if (pcRef.current?.iceGatheringState === 'complete') {
-          console.log('[pc] ICE 후보 수집 완료');
-        }
-      };
-
-      pcRef.current.oniceconnectionstatechange = () => {
-        const state = pcRef.current?.iceConnectionState;
-        console.log('[pc] ICE 연결 상태 변경:', state);
-
-        // ICE 연결 실패 시 처리
-        if (state === 'failed' || state === 'disconnected') {
-          console.log('[pc] ICE 연결 문제 발생, 재연결 시도...');
-        }
-
-        // ICE 연결 성공 시
-        if (state === 'connected' || state === 'completed') {
-          console.log('[pc] ICE 연결 성공!');
-          setStatusMessage('ICE 연결 성공! 화상 통화 진행 중...');
-        }
-      };
 
       // onicecandidate 이벤트: 수집된 ICE 후보를 시그널링 서버로 전송
       pcRef.current.onicecandidate = (event) => {
@@ -421,66 +438,34 @@ const VideoTest = () => {
       return;
     }
 
-    setStatusMessage('방 참여 중...');
+    try {
+      const response = await tokenAxios.post(`https://api.jungeunjipi.com/room/${roomId}/join`, {
+        audio_enabled: isMicOn,
+        media_enabled: isVideoOn,
+        data_enabled: isSharingScreen,
+      });
 
-    if (token && isConnected && client) {
-      if (!pcRef.current) {
-        const success = await createPeerConnection();
-        if (!success) {
-          setStatusMessage('미디어 장치 접근 실패');
-          return;
-        }
+      if (response) {
+        console.log(response);
+        // handleSdpAnswer(response.sdp_answer);
+        setIsInVoiceChannel(true);
+      } else {
+        console.error('참여 실패: ', response);
       }
+    } catch (error) {
+      console.error('API 요청 오류: ', error);
+    }
+  };
 
-      if (roomId && pcRef.current) {
-        const response = await tokenAxios.post(`https://api.jungeunjipi.com/room/${roomId}/join`, {
-          audio_enabled: isMicOn,
-          media_enabled: isVideoOn,
-          data_enabled: isSharingScreen,
-        });
-
-        if (response) {
-          if (pcRef.current) {
-            // 타임아웃을 설정하여 ICE 후보 수집에 충분한 시간 부여
-            setTimeout(async () => {
-              try {
-                const offer = await pcRef.current!.createOffer({
-                  offerToReceiveAudio: true,
-                  offerToReceiveVideo: true,
-                });
-
-                await pcRef.current!.setLocalDescription(offer);
-                console.log('로컬 설명 설정됨:', pcRef.current!.localDescription);
-
-                setTimeout(() => {
-                  if (token && pcRef.current?.localDescription) {
-                    client?.publish({
-                      destination: '/offer',
-                      body: JSON.stringify({
-                        type: MessageType.OFFER,
-                        data: {
-                          room_id: roomId,
-                          sdp_offer: pcRef.current.localDescription.sdp,
-                        },
-                      }),
-                    });
-                  }
-
-                  setJoined(true);
-                  setStatusMessage(`방 ${roomId}에 참여함. 응답 대기 중...`);
-                }, 1000);
-              } catch (error) {
-                console.error('Offer 생성 중 오류:', error);
-                setStatusMessage(`Offer 생성 오류: ${error instanceof Error ? error.message : String(error)}`);
-              }
-            }, 500);
-          }
-        } else {
-          alert('방 참가 실패');
-        }
-      }
-    } else {
-      setStatusMessage('소켓 연결이 없습니다. 페이지를 새로고침하세요.');
+  const handleSdpAnswer = async (sdpAnswer: string) => {
+    if (pcRef.current) {
+      await pcRef.current.setRemoteDescription(
+        new RTCSessionDescription({
+          type: 'answer',
+          sdp: sdpAnswer,
+        }),
+      );
+      console.log('✅ SDP Answer 설정 완료');
     }
   };
 
@@ -641,81 +626,38 @@ const VideoTest = () => {
   };
 
   // 통화 종료
-  const hangUp = () => {
+  const hangUp = async () => {
     setStatusMessage('통화 종료 중...');
 
-    if (token && client) {
-      client.publish({
-        destination: '/exit',
-        body: JSON.stringify({
-          type: MessageType.EXIT,
-          data: {
-            room_id: roomId,
-          },
-        }),
-      });
-    }
+    try {
+      const response = await tokenAxios(`https://api.jungeunjipi.com/room/${roomId}/leave`);
 
-    if (pcRef.current) {
-      pcRef.current.close();
-      pcRef.current = null;
-    }
-
-    // 로컬 비디오 스트림 정리
-    if (localStreamRef.current) {
-      localStreamRef.current.getTracks().forEach((track) => track.stop());
-      localStreamRef.current = null;
-    }
-
-    // 비디오 요소 초기화
-    if (localVideoRef.current?.srcObject) {
-      localVideoRef.current.srcObject = null;
-    }
-    if (remoteVideoRef.current?.srcObject) {
-      remoteVideoRef.current.srcObject = null;
-    }
-
-    setJoined(false);
-    setIsInVoiceChannel(false);
-
-    setStatusMessage('통화가 종료되었습니다.');
-  };
-
-  useEffect(() => {
-    if (isSharingScreen && screenShareRef.current && screenStreamRef.current) {
-      screenShareRef.current.srcObject = screenStreamRef.current;
-
-      screenShareRef.current.play().catch((err) => console.error('useEffect에서 비디오 재생 오류:', err));
-    }
-  }, [isSharingScreen]);
-
-  // STOMP 연결 상태 변경 감지
-  useEffect(() => {
-    if (isConnected && client && pendingCandidates.current.length > 0 && roomId) {
-      console.log(`연결 복구 - ${pendingCandidates.current.length}개의 대기 중인 ICE candidate 전송 시도`);
-
-      // 대기 중인 모든 후보 전송 시도
-      for (const candidate of pendingCandidates.current) {
-        try {
-          client.publish({
-            destination: '/candidate',
-            body: JSON.stringify({
-              type: MessageType.CANDIDATE,
-              data: {
-                room_id: roomId,
-                candidate: candidate.candidate,
-              },
-            }),
-          });
-          console.log('대기 중인 ICE candidate 전송 성공');
-        } catch (err) {
-          console.error('대기 중인 ICE candidate 전송 오류:', err);
-        }
+      if (!response) {
+        console.error('방 나가기 실패: ', response);
+        return;
+      }
+      // 로컬 비디오 스트림 정리
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((track) => track.stop());
+        localStreamRef.current = null;
       }
 
-      pendingCandidates.current = [];
+      // 비디오 요소 초기화
+      if (localVideoRef.current?.srcObject) {
+        localVideoRef.current.srcObject = null;
+      }
+      if (remoteVideoRef.current?.srcObject) {
+        remoteVideoRef.current.srcObject = null;
+      }
+
+      setJoined(false);
+      setIsInVoiceChannel(false);
+
+      setStatusMessage('통화가 종료되었습니다.');
+    } catch (error) {
+      console.error('API 요청 오류', error);
     }
-  }, [isConnected, client, roomId]);
+  };
 
   return (
     <div style={{ padding: '1rem' }} onClick={playAllVideos}>
