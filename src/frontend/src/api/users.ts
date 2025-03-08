@@ -37,6 +37,18 @@ export const postAuthCode = async (requestBody: PostAuthCodeRequest) => {
   return data;
 };
 
+interface GetUserIdResponse {
+  httpStatus: number;
+  message: string;
+  time: string;
+  result: string;
+}
+
+export const getUserId = async () => {
+  const { data } = await tokenAxios.get<GetUserIdResponse>(endPoint.users.GET_USER_ID);
+  return data.result;
+};
+
 interface PostEmailDuplicateParams {
   email: string;
 }
