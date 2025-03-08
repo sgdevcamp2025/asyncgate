@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getUserId } from '@/api/users';
 import { useChannelActionStore } from '@/stores/channelAction';
 import { tokenAxios } from '@/utils/axios';
+import { useUserInfoStore } from '@/stores/userInfo';
 
 const SERVER_URL = import.meta.env.VITE_SIGNALING;
 
@@ -25,7 +26,6 @@ const WebRTC = () => {
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
   const peerConnection = useRef<RTCPeerConnection | null>(null);
-  const [userId, setUserId] = useState('');
 
   // 구독된 publisher id들을 저장
   const [subscribedPublishers, setSubscribedPublishers] = useState<string[]>([]);
@@ -52,24 +52,8 @@ const WebRTC = () => {
 
   const token = localStorage.getItem('access_token');
 
-  useEffect(() => {
-    const fetchUserId = async () => {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        return;
-      }
-
-      try {
-        const id = await getUserId();
-        setUserId(id);
-        console.log('사용자 ID 가져오기 성공:', id);
-      } catch (error) {
-        console.error('사용자 ID 가져오기 실패:', error);
-      }
-    };
-
-    fetchUserId();
-  }, []);
+  const { userInfo } = useUserInfoStore();
+  const userId = userInfo?.userId || '';
 
   // ✅ STOMP WebSocket 연결 함수
   const connectStomp = async () => {
@@ -304,6 +288,7 @@ const WebRTC = () => {
         console.log(user);
         await handlePublish(user.id);
       }
+      setFirstEnter(false);
     }
   };
 
