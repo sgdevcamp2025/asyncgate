@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { getUserId } from '@/api/users';
 import { useChannelActionStore } from '@/stores/channelAction';
-import { tokenAxios } from '@/utils/axios';
 import { useUserInfoStore } from '@/stores/userInfo';
+import { tokenAxios } from '@/utils/axios';
 
 const SERVER_URL = import.meta.env.VITE_SIGNALING;
 
@@ -124,6 +124,11 @@ const WebRTC = () => {
           });
         });
 
+        client.subscribe(`/topic/removed/${roomId}`, (message) => {
+          const recentUsers = JSON.parse(message.body);
+          console.log('recentUsers', recentUsers);
+        });
+
         console.log(`✅ 구독 성공 하였습니다.`);
       },
       onDisconnect: () => {
@@ -223,9 +228,9 @@ const WebRTC = () => {
   };
 
   // ✅ kurento ice 수집 요청
-  const sendGetherIceCandidate = async () => {
+  const sendGatherIceCandidate = async () => {
     if (!stompClient.current) {
-      alert('gether STOMP WebSocket이 연결되지 않았습니다.');
+      alert('gather STOMP WebSocket이 연결되지 않았습니다.');
       return;
     }
 
@@ -235,7 +240,6 @@ const WebRTC = () => {
         destination: '/gather/candidate',
         body: JSON.stringify({
           data: {
-            // ✅ data 내부에 room_id 포함
             room_id: roomId,
           },
         }),
@@ -243,7 +247,7 @@ const WebRTC = () => {
 
       sendIceCandidates(); // 🔥 SDP Answer 수신 후 ICE Candidate 전송
     } catch (error) {
-      console.error('Gether 요청 실패:', error);
+      console.error('gather 요청 실패:', error);
     }
   };
 
@@ -261,19 +265,8 @@ const WebRTC = () => {
     } catch (error) {
       console.error('Answer 요청 실패:', error);
     } finally {
-      sendGetherIceCandidate();
-      // sendIceCandidates();
+      sendGatherIceCandidate();
     }
-
-    // sendGetherIceCandidate();
-  };
-
-  // 예시: 특정 사용자(userId)의 remote stream을 업데이트
-  const handleRemoteStream = (userId: string, stream: MediaStream) => {
-    setRemoteStreams((prev) => ({
-      ...prev,
-      [userId]: stream,
-    }));
   };
 
   // ✅ WebRTC Users 처리
