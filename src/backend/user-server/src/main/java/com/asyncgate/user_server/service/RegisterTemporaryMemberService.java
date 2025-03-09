@@ -54,8 +54,6 @@ public class RegisterTemporaryMemberService implements RegisterTemporaryMemberUs
         temporaryMemberRepository.save(DomainUtil.TemporaryMemberMapper.toEntity(tempMember));
 
         String code = PasswordUtil.generateAuthCode(6);
-        System.out.println("code = " + code);
-
         AuthenticationCode authCode = AuthenticationCode.create(request.email(), code);
 
         authenticationCodeRepository.save(DomainUtil.AuthenticationCodeMapper.toEntity(authCode));

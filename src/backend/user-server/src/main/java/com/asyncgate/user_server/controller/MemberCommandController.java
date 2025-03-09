@@ -131,7 +131,6 @@ public class MemberCommandController implements MemberControllerDocs {
             @RequestParam(required = false) List<String> memberIds
     ) {
         UserClientInfoResponses byUserIds = findUserInfoUseCase.getByUserIds(memberIds);
-        System.out.println("byUserIds = " + byUserIds);
         return SuccessResponse.ok(
                 byUserIds
         );

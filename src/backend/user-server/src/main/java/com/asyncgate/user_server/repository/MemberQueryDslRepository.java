@@ -16,7 +16,7 @@ public class MemberQueryDslRepository {
     private final QMemberEntity memberEntity = QMemberEntity.memberEntity;
 
     public List<MemberEntity> getByMemberIds(final List<String> memberIds) {
-        return jpaQueryFactory
+        List<MemberEntity> memberEntities = jpaQueryFactory
                 .select(this.memberEntity)
                 .from(this.memberEntity)
                 .where(
@@ -24,5 +24,6 @@ public class MemberQueryDslRepository {
                         this.memberEntity.deleted.isFalse()
                 )
                 .fetch();
+        return memberEntities;
     }
 }

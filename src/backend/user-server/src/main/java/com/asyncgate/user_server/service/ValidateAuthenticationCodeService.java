@@ -35,10 +35,6 @@ public class ValidateAuthenticationCodeService implements ValidateAuthentication
 
         String redisSaveCode = storedAuthCode.getCode();
         String requestCode = request.authenticationCode();
-
-        System.out.println("requestCode = " + requestCode);
-        System.out.println("redisSaveCode = " + redisSaveCode);
-
         if (!redisSaveCode.equals(requestCode)) {
             throw new UserServerException(FailType.INVALID_EMAIL_AUTH_CODE);
         }

@@ -39,7 +39,6 @@ public class HttpMemberIDArgumentResolver implements HandlerMethodArgumentResolv
         if (memberId == null) {
             throw new CommonException(FailType.ACCESS_DENIED);
         }
-
         return memberId.toString();
     }
 }

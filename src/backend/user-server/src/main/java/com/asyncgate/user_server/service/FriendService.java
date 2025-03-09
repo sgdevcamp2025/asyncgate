@@ -86,7 +86,7 @@ public class FriendService implements FriendUseCase {
     public FriendsResponse getSentFriendRequests(final String userId) {
         List<FriendQueryDto> sentFriendDtos = friendRepository.findSentFriendRequests(userId);
         List<String> friendIds = sentFriendDtos.stream()
-                .map(FriendQueryDto::friendId)
+                .map(FriendQueryDto::userId)
                 .toList();
         List<Member> members = memberRepository.getByMemberIds(friendIds);
         return FriendsResponse.of(sentFriendDtos, members, FriendStatus.PENDING);
@@ -97,7 +97,7 @@ public class FriendService implements FriendUseCase {
     public FriendsResponse getReceivedFriendRequests(final String userId) {
         List<FriendQueryDto> receivedFriendDtos = friendRepository.findReceivedFriendRequests(userId);
         List<String> friendIds = receivedFriendDtos.stream()
-                .map(FriendQueryDto::friendId)
+                .map(FriendQueryDto::userId)
                 .toList();
         List<Member> members = memberRepository.getByMemberIds(friendIds);
         return FriendsResponse.of(receivedFriendDtos, members, FriendStatus.RECEIVED);
@@ -107,7 +107,7 @@ public class FriendService implements FriendUseCase {
     public FriendsResponse getFriends(final String userId) {
         List<FriendQueryDto> friendDtos = friendRepository.findFriendIdsByUserId(userId);
         List<String> friendIds = friendDtos.stream()
-                .map(FriendQueryDto::friendId)
+                .map(FriendQueryDto::userId)
                 .toList();
         List<Member> members = memberRepository.getByMemberIds(friendIds);
         return FriendsResponse.of(friendDtos, members, FriendStatus.ACCEPTED);

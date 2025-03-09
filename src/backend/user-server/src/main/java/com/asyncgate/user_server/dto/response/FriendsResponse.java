@@ -27,7 +27,7 @@ public record FriendsResponse(
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
         List<FriendInformation> friendInfos = friendQueryDtos.stream()
                 .map(dto -> {
-                    Member member = memberMap.get(dto.friendId());
+                    Member member = memberMap.get(dto.userId());
                     return new FriendInformation(
                             dto.friendId(),
                             member.getId(),
