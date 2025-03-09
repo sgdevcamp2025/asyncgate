@@ -1,10 +1,11 @@
 import { Client } from '@stomp/stompjs';
-import React, { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { getUserId } from '@/api/users';
 import { useChannelActionStore } from '@/stores/channelAction';
 import { useUserInfoStore } from '@/stores/userInfo';
 import { tokenAxios } from '@/utils/axios';
+
+import VideoCard from './components/VideoCard';
 
 const SERVER_URL = import.meta.env.VITE_SIGNALING;
 
@@ -464,25 +465,13 @@ const WebRTC = () => {
 
       <div style={{ marginTop: '20px' }}>
         <h3>📹 내 화면</h3>
-        <video ref={localVideoRef} autoPlay playsInline muted style={{ width: '320px', border: '1px solid black' }} />
+        <VideoCard userId={userId} localRef={localVideoRef} />
       </div>
 
       <div style={{ marginTop: '20px' }}>
         <h3>🔗 원격 사용자 화면</h3>
         {Object.entries(remoteStreams).map(([userId, stream]) => (
-          <div key={userId} style={{ marginBottom: '10px' }}>
-            <h4>{userId}</h4>
-            <video
-              autoPlay
-              playsInline
-              style={{ width: '320px', border: '1px solid black' }}
-              ref={(videoElement) => {
-                if (videoElement && videoElement.srcObject !== stream) {
-                  videoElement.srcObject = stream;
-                }
-              }}
-            />
-          </div>
+          <VideoCard key={userId} userId={userId} stream={stream} />
         ))}
       </div>
     </div>
