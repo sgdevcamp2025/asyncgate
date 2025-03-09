@@ -3,6 +3,7 @@ package com.asyncgate.user_server.service;
 import com.asyncgate.user_server.domain.Friend;
 import com.asyncgate.user_server.domain.FriendStatus;
 import com.asyncgate.user_server.domain.Member;
+import com.asyncgate.user_server.dto.response.FriendQueryDto;
 import com.asyncgate.user_server.dto.response.FriendsResponse;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
@@ -83,25 +84,32 @@ public class FriendService implements FriendUseCase {
 
     @Override
     public FriendsResponse getSentFriendRequests(final String userId) {
-        List<String> sentFriendIds = friendRepository.findSentFriendRequests(userId);
-        return FriendsResponse.of(
-                memberRepository.getByMemberIds(sentFriendIds), FriendStatus.PENDING
-        );
+        List<FriendQueryDto> sentFriendDtos = friendRepository.findSentFriendRequests(userId);
+        List<String> friendIds = sentFriendDtos.stream()
+                .map(FriendQueryDto::friendId)
+                .toList();
+        List<Member> members = memberRepository.getByMemberIds(friendIds);
+        return FriendsResponse.of(sentFriendDtos, members, FriendStatus.PENDING);
     }
+
 
     @Override
     public FriendsResponse getReceivedFriendRequests(final String userId) {
-        List<String> receivedFriendIds = friendRepository.findReceivedFriendRequests(userId);
-        return FriendsResponse.of(
-                memberRepository.getByMemberIds(receivedFriendIds), FriendStatus.RECEIVED
-        );
+        List<FriendQueryDto> receivedFriendDtos = friendRepository.findReceivedFriendRequests(userId);
+        List<String> friendIds = receivedFriendDtos.stream()
+                .map(FriendQueryDto::friendId)
+                .toList();
+        List<Member> members = memberRepository.getByMemberIds(friendIds);
+        return FriendsResponse.of(receivedFriendDtos, members, FriendStatus.RECEIVED);
     }
 
     @Override
     public FriendsResponse getFriends(final String userId) {
-        List<String> friendsIds = friendRepository.findFriendIdsByUserId(userId);
-        return FriendsResponse.of(
-                memberRepository.getByMemberIds(friendsIds), FriendStatus.ACCEPTED
-        );
+        List<FriendQueryDto> friendDtos = friendRepository.findFriendIdsByUserId(userId);
+        List<String> friendIds = friendDtos.stream()
+                .map(FriendQueryDto::friendId)
+                .toList();
+        List<Member> members = memberRepository.getByMemberIds(friendIds);
+        return FriendsResponse.of(friendDtos, members, FriendStatus.ACCEPTED);
     }
 }

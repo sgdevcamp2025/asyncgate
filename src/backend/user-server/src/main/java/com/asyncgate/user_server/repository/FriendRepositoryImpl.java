@@ -1,6 +1,7 @@
 package com.asyncgate.user_server.repository;
 
 import com.asyncgate.user_server.domain.Friend;
+import com.asyncgate.user_server.dto.response.FriendQueryDto;
 import com.asyncgate.user_server.entity.common.BaseEntity;
 import com.asyncgate.user_server.exception.FailType;
 import com.asyncgate.user_server.exception.UserServerException;
@@ -42,17 +43,17 @@ public class FriendRepositoryImpl implements FriendRepository {
     }
 
     @Override
-    public List<String> findSentFriendRequests(final String userId) {
+    public List<FriendQueryDto> findSentFriendRequests(final String userId) {
         return queryDslRepository.findSentFriendRequests(userId);
     }
 
     @Override
-    public List<String> findReceivedFriendRequests(final String userId) {
+    public List<FriendQueryDto> findReceivedFriendRequests(final String userId) {
         return queryDslRepository.findReceivedFriendRequests(userId);
     }
 
     @Override
-    public List<String> findFriendIdsByUserId(final String userId) {
+    public List<FriendQueryDto> findFriendIdsByUserId(final String userId) {
         return queryDslRepository.findFriendsIdByUserId(userId);
     }
 
