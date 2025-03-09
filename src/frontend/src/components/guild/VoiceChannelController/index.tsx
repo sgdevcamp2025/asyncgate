@@ -20,6 +20,7 @@ const VoiceChannelController = () => {
 
   const handleLeaveRoom = async () => {
     setIsInVoiceChannel(false);
+
     if (!roomId) {
       alert('방 ID를 입력해주세요!');
       return;
@@ -29,7 +30,6 @@ const VoiceChannelController = () => {
       const response = await tokenAxios.delete(`https://api.jungeunjipi.com/room/${roomId}/leave`);
       console.log('방 나가기 성공: ', response);
 
-      setIsInVoiceChannel(false);
       setIsStompConnected(false);
 
       disconnectStomp();
