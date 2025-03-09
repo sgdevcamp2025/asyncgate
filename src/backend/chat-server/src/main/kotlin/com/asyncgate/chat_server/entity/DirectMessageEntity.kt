@@ -1,14 +1,13 @@
 package com.asyncgate.chat_server.entity
 
 import com.asyncgate.chat_server.domain.DirectMessageType
-import com.asyncgate.chat_server.support.utility.IdGenerator
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "directMessage")
 data class DirectMessageEntity(
-    @get:Id
-    val id: String = IdGenerator.generate(),
+    @Id
+    val id: String,
 
     val channelId: String,
     val userId: String,

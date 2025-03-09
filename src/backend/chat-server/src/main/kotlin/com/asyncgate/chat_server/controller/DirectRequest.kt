@@ -12,7 +12,7 @@ import java.io.Serializable
 @JsonSerialize
 @JsonDeserialize
 data class DirectMessageCreate(
-    @Schema(description = "채널 ID, 다이렉트 채팅방 생성 후 id. DirectId와 같음", example = "channel-12345")
+    @Schema(description = "채널 ID", example = "channel-12345")
     val channelId: String,
 
     @Schema(description = "프로필 이미지 URL", example = "http://example.com/image.png")
@@ -24,20 +24,21 @@ data class DirectMessageCreate(
     @Schema(description = "메시지 내용", example = "Hello!")
     val content: String,
 
-    @Schema(description = "썸네일 URL", example = "http://example.com/thumbnail.png", nullable = true)
+    @Schema(description = "썸네일 URL", nullable = true)
     val thumbnail: String? = null,
 
-    @Schema(description = "부모 메시지 ID", example = "msg-12345", nullable = true)
+    @Schema(description = "부모 메시지 ID", nullable = true)
     val parentId: String? = null,
 
-    @Schema(description = "부모 메시지 작성자 이름", example = "Jane Doe", nullable = true)
+    @Schema(description = "부모 메시지 작성자 이름", nullable = true)
     val parentName: String? = null,
 
-    @Schema(description = "부모 메시지 내용", example = "Previous message content", nullable = true)
+    @Schema(description = "부모 메시지 내용", nullable = true)
     val parentContent: String? = null,
 ) : Serializable {
+
     fun toDomain(userId: String): DirectMessage {
-        return DirectMessage(
+        return DirectMessage.create(
             channelId = channelId,
             userId = userId,
             type = DirectMessageType.CREATE,
@@ -70,6 +71,7 @@ data class DirectMessageEditRequest(
 ) : Serializable {
     fun toDomain(userId: String): DirectMessage {
         return DirectMessage(
+            id = id,
             channelId = channelId,
             userId = userId,
             type = DirectMessageType.EDIT,
@@ -113,7 +115,7 @@ data class DirectMessageTypingRequest(
     val name: String,
 ) : Serializable {
     fun toDomain(userId: String): DirectMessage {
-        return DirectMessage(
+        return DirectMessage.create(
             channelId = channelId,
             userId = userId,
             name = name,
@@ -151,7 +153,7 @@ data class FileRequest(
     val fileType: DirectMessageType,
 ) : Serializable {
     fun toDomain(userId: String, type: DirectMessageType): DirectMessage {
-        return DirectMessage(
+        return DirectMessage.create(
             userId = userId,
             name = name,
             profileImage = profileImage,

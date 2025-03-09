@@ -70,7 +70,7 @@ class DirectController(
     }
 
     @ResponseBody
-    @GetMapping("chat/direct")
+    @GetMapping("/chat/direct")
     override fun readPaging(
         @RequestParam("page", defaultValue = "0") page: Int,
         @RequestParam("size", defaultValue = "10") size: Int,

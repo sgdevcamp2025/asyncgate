@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page
 
 fun DirectMessage.toEntity(existingEntity: DirectMessageEntity? = null): DirectMessageEntity {
     return DirectMessageEntity(
-        id = id ?: IdGenerator.generate(),
+        id = id,
         channelId = channelId,
         userId = userId,
         profileImage = profileImage,
@@ -24,7 +24,7 @@ fun DirectMessage.toEntity(existingEntity: DirectMessageEntity? = null): DirectM
         parentId = parentId,
         parentName = parentName,
         parentContent = parentContent,
-        isDeleted = existingEntity?.isDeleted ?: false
+        isDeleted = existingEntity?.isDeleted ?: isDeleted
     )
 }
 
@@ -43,7 +43,8 @@ fun DirectMessageEntity.toDomain(): DirectMessage {
         parentContent = parentContent,
         createdAt = createdAt,
         updatedAt = updatedAt,
-        type = type
+        type = type,
+        isDeleted = isDeleted
     )
 }
 
@@ -53,7 +54,7 @@ fun DirectMessage.toFileResponse(
     fileRequest: FileRequest,
 ): FileUploadResponse {
     val response = FileUploadResponse(
-        id = domain.id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
+        id = domain.id,
         name = domain.name ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
         domain.profileImage ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
         content = domain.content ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
@@ -67,7 +68,7 @@ fun DirectMessage.toFileResponse(
 
 fun DirectMessage.toSingleResponse(): DirectSingleResponse {
     return DirectSingleResponse(
-        id = id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR),
+        id = id,
         channelId = channelId,
         userId = userId,
         type = type,

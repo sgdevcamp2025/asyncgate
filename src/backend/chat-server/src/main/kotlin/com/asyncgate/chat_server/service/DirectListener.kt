@@ -3,8 +3,6 @@ package com.asyncgate.chat_server.service
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.domain.DirectMessageType
 import com.asyncgate.chat_server.domain.ReadStatus
-import com.asyncgate.chat_server.exception.ChatServerException
-import com.asyncgate.chat_server.exception.FailType
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -32,13 +30,13 @@ class DirectListener(
         log.info("directMessage = $directMessage")
 
         val msg = HashMap<String, String>()
-        msg["type"] = DirectMessageType.CREATE.toString().lowercase()
+        msg["type"] = DirectMessageType.CREATE.toString()
         msg["userId"] = java.lang.String.valueOf(directMessage.userId)
         msg["name"] = directMessage.name ?: ""
         msg["profileImage"] = directMessage.profileImage ?: ""
         msg["message"] = directMessage.content ?: ""
         msg["time"] = java.lang.String.valueOf(directMessage.createdAt)
-        msg["id"] = directMessage.id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
+        msg["id"] = directMessage.id
 
         val serializable = objectMapper.writeValueAsString(msg)
         template.convertAndSend("/topic/direct-message/" + directMessage.channelId, serializable)
@@ -85,13 +83,14 @@ class DirectListener(
 
         when (directMessage.type) {
             DirectMessageType.EDIT -> {
+                msg["id"] = directMessage.id
                 msg["type"] = DirectMessageType.EDIT.toString()
                 msg["userId"] = directMessage.userId
                 msg["channelId"] = directMessage.channelId
                 msg["content"] = directMessage.content ?: ""
             }
             DirectMessageType.DELETE -> {
-                msg["id"] = directMessage.id ?: throw ChatServerException(FailType.X_DIRECT_INTERNAL_ERROR)
+                msg["id"] = directMessage.id
                 msg["type"] = DirectMessageType.DELETE.toString()
                 msg["userId"] = directMessage.userId
                 msg["channelId"] = directMessage.channelId

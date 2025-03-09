@@ -11,7 +11,6 @@ import com.asyncgate.chat_server.exception.FailType
 import com.asyncgate.chat_server.kafka.KafkaProperties
 import com.asyncgate.chat_server.repository.DirectMessageRepository
 import com.asyncgate.chat_server.repository.ReadStatusRepository
-import com.asyncgate.chat_server.support.utility.IdGenerator
 import com.asyncgate.chat_server.support.utility.S3Util
 import com.asyncgate.chat_server.support.utility.toDomain
 import com.asyncgate.chat_server.support.utility.toEntity
@@ -95,28 +94,24 @@ class DirectServiceImpl(
 
     @Transactional
     override fun edit(directMessage: DirectMessage) {
-        checkNotNull(directMessage.id) {
-            "Logic error: 수정시에는 id가 필수이므로 존재하지 않을 수 없음"
-        }
-
+        checkNotNull(directMessage.id) { "Logic error: 수정시에는 id가 필수이므로 존재하지 않을 수 없음" }
         val pastMessage = directMessageRepository.findById(directMessage.id)
-
-        checkNotNull(pastMessage) {
-            "Logic error: 이미 Null Check 완료"
-        }
+            ?: throw IllegalStateException("Logic error: 이미 Null Check 완료")
 
         validPermission(directMessage, pastMessage)
 
-        val deletedEntity = pastMessage.toEntity().copy(isDeleted = true)
-        directMessageRepository.save(deletedEntity.toDomain())
+        // 도메인 멤버 메서드를 활용하여 수정 결과를 생성
+        val deletedMessage = pastMessage.markDeleted()
 
-        val updatedMessage = pastMessage.toEntity().copy(
-            id = IdGenerator.generate(),
-            name = directMessage.name,
-            content = directMessage.content,
-            type = DirectMessageType.EDIT
-        )
-        directMessageRepository.save(updatedMessage.toDomain())
+        checkNotNull(directMessage.name) { "Logic error: 수정시 name이 필수로 들어옴" }
+        checkNotNull(directMessage.content) { "Logic error: 수정시 content가 필수로 들어옴" }
+
+        val editedMessage = pastMessage.withEdit(directMessage.name, directMessage.content)
+
+        // 기존 메시지를 삭제 상태로 업데이트 (엔티티 변환 후, isDeleted를 true로 설정)
+        directMessageRepository.save(deletedMessage.toEntity().copy(isDeleted = true).toDomain())
+        // 새로 생성된 수정본 저장
+        directMessageRepository.save(editedMessage)
 
         val key = directMessage.channelId
         kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directAction, key, directMessage)

@@ -105,7 +105,7 @@ spring:
             - Path=/chats/**
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/users/(?<segment>.*), /$\{segment}
+            - RewritePath=/chats/(?<segment>.*), /$\{segment}
             - AuthorizationHeaderFilter
 
       default-filters:
