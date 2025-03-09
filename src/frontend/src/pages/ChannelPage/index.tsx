@@ -2,7 +2,9 @@ import { Client } from '@stomp/stompjs';
 import { useRef, useState } from 'react';
 
 import { useChannelActionStore } from '@/stores/channelAction';
+import { useChannelInfoStore } from '@/stores/channelInfo';
 import { useUserInfoStore } from '@/stores/userInfo';
+import { useWebRTCStore } from '@/stores/webRTCStore';
 import { tokenAxios } from '@/utils/axios';
 
 import VideoCard from './components/VideoCard';
@@ -21,8 +23,6 @@ interface UserInRoom {
 
 const WebRTC = () => {
   const stompClient = useRef<Client | null>(null);
-  const [connected, setConnected] = useState(false);
-  const [roomId, setRoomId] = useState('');
   const [offerSent, setOfferSent] = useState(false);
   const localVideoRef = useRef<HTMLVideoElement | null>(null);
   const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
@@ -40,21 +40,18 @@ const WebRTC = () => {
 
   // 유저 리스트
   const [userInRoomList, setUserInRoomList] = useState<UserInRoom[]>([]);
-  const {
-    isInVoiceChannel,
-    isSharingScreen,
-    isVideoOn,
-    isMicOn,
-    setIsInVoiceChannel,
-    setIsSharingScreen,
-    setIsVideoOn,
-    setIsMicOn,
-  } = useChannelActionStore();
+  const { isSharingScreen, isVideoOn, isMicOn, setIsInVoiceChannel, setIsSharingScreen, setIsVideoOn, setIsMicOn } =
+    useChannelActionStore();
+
+  const { isStompConnected, setIsStompConnected } = useWebRTCStore();
 
   const token = localStorage.getItem('access_token');
+  const roomId = useChannelInfoStore((state) => state.selectedChannel?.name);
 
   const { userInfo } = useUserInfoStore();
   const userId = userInfo?.userId || '';
+
+  if (!roomId) return;
 
   // ✅ STOMP WebSocket 연결 함수
   const connectStomp = async () => {
@@ -75,7 +72,7 @@ const WebRTC = () => {
       heartbeatOutgoing: 10000,
       onConnect: () => {
         console.log(`✅ STOMP WebSocket 연결 성공 (Room: ${roomId})`);
-        setConnected(true);
+        setIsStompConnected(true);
 
         client.subscribe(`/topic/users/${roomId}`, (message) => {
           const users = JSON.parse(message.body);
@@ -135,7 +132,7 @@ const WebRTC = () => {
       onDisconnect: () => {
         alert('🔌 STOMP WebSocket 연결 해제됨');
         console.log('🔌 STOMP WebSocket 연결 해제됨');
-        setConnected(false);
+        setIsStompConnected(false);
       },
       onWebSocketError: (error) => {
         alert(`🚨 WebSocket 오류 발생: ${error}`);
@@ -153,7 +150,7 @@ const WebRTC = () => {
 
   // ✅ WebRTC Offer 전송 (버튼 클릭 시 실행)
   const sendOffer = async () => {
-    if (!stompClient.current || !connected) {
+    if (!stompClient.current || !isStompConnected) {
       alert('offer STOMP WebSocket이 연결되지 않았습니다.');
       return;
     }
@@ -362,16 +359,6 @@ const WebRTC = () => {
     };
   };
 
-  // ✅ STOMP 연결 해제 함수
-  const disconnectStomp = () => {
-    if (stompClient.current) {
-      stompClient.current.deactivate();
-      stompClient.current = null;
-      setConnected(false);
-      console.log('🔌 STOMP WebSocket 연결 해제 시도');
-    }
-  };
-
   const joinRoom = async (roomId: string) => {
     if (!roomId) {
       alert('방 ID를 입력해주세요!');
@@ -397,27 +384,6 @@ const WebRTC = () => {
     }
   };
 
-  const leaveRoom = async (roomId: string) => {
-    if (!roomId) {
-      alert('방 ID를 입력해주세요!');
-      return;
-    }
-
-    try {
-      const response = await tokenAxios.delete(`https://api.jungeunjipi.com/room/${roomId}/leave`);
-      console.log('방 나가기 성공: ', response);
-      // ✅ 상태 초기화
-      setIsInVoiceChannel(false);
-      setConnected(false);
-      setRoomId('');
-
-      disconnectStomp();
-    } catch (error) {
-      console.error('🚨 방 나가기 오류:', error);
-    }
-  };
-
-  // ✅ SDP Answer 처리
   const handleSdpAnswer = async (sdpAnswer: string) => {
     if (peerConnection.current) {
       await peerConnection.current.setRemoteDescription(
@@ -434,34 +400,15 @@ const WebRTC = () => {
     <div>
       <h1>Kurento SFU WebRTC</h1>
 
-      <input
-        type="text"
-        placeholder="Room ID 입력"
-        value={roomId}
-        onChange={(e) => setRoomId(e.target.value)}
-        disabled={connected}
-        style={{ marginRight: '10px', padding: '5px' }}
-      />
-
-      <button onClick={connectStomp} disabled={connected} style={{ marginRight: '10px' }}>
-        {connected ? '🔄 WebSocket 연결됨' : '✅ WebSocket 연결'}
+      <button onClick={connectStomp} disabled={isStompConnected} style={{ marginRight: '10px' }}>
+        {isStompConnected ? '🔄 WebSocket 연결됨' : '✅ WebSocket 연결'}
       </button>
 
-      <button onClick={sendOffer} disabled={!connected || offerSent} style={{ marginRight: '10px' }}>
+      <button onClick={sendOffer} disabled={!isStompConnected || offerSent} style={{ marginRight: '10px' }}>
         {offerSent ? '📤 Offer 전송 완료' : '📤 Offer 전송'}
       </button>
 
-      <button onClick={disconnectStomp} disabled={!connected} style={{ marginRight: '10px' }}>
-        🔌 WebSocket 해제
-      </button>
-
-      <button onClick={() => joinRoom(roomId)} disabled={isInVoiceChannel}>
-        {isInVoiceChannel ? '🔄 방 참여 완료' : '✅ 방 참여'}
-      </button>
-
-      <button onClick={() => leaveRoom(roomId)} disabled={!isInVoiceChannel}>
-        방 나가기
-      </button>
+      <button onClick={() => joinRoom(roomId)}>✅ 방 참여</button>
 
       <div style={{ marginTop: '20px' }}>
         <h3>📹 내 화면</h3>

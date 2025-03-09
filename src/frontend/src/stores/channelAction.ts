@@ -6,7 +6,7 @@ interface ChannelActionState {
   isSharingScreen: boolean;
   isVideoOn: boolean;
   isMicOn: boolean;
-  setIsInVoiceChannel: (value: boolean) => void;
+  setIsInVoiceChannel: (value?: boolean) => void;
   setIsSharingScreen: (value: boolean) => void;
   setIsVideoOn: (value: boolean) => void;
   setIsMicOn: (value: boolean) => void;

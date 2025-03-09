@@ -5,9 +5,7 @@ import { persist } from 'zustand/middleware';
 interface WebRTCState {
   stompClient: Client | null;
   isStompConnected: boolean;
-  roomId: string;
   setStompClient: (client: Client | null) => void;
-  setRoomId: (value: string) => void;
   setIsStompConnected: (value: boolean) => void;
   disconnectStomp: () => void;
 }
@@ -17,10 +15,8 @@ export const useWebRTCStore = create<WebRTCState>()(
     (set, get) => ({
       stompClient: null,
       isStompConnected: false,
-      roomId: '',
 
       setStompClient: (client: Client | null) => set({ stompClient: client }),
-      setRoomId: (roomId) => set({ roomId }),
       setIsStompConnected: (isStompConnected) => set({ isStompConnected }),
       disconnectStomp: () => {
         const { stompClient } = get();
@@ -34,7 +30,6 @@ export const useWebRTCStore = create<WebRTCState>()(
     {
       name: 'webRTCInfo',
       partialize: (state) => ({
-        roomId: state.roomId,
         isStompConnected: state.isStompConnected,
       }),
     },
