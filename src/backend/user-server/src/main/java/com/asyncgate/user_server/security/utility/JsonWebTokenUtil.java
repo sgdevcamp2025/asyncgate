@@ -32,9 +32,10 @@ public class JsonWebTokenUtil implements InitializingBean {
     }
 
     // token 생성 메서드
-    public DefaultJsonWebTokenResponse generate(final String id) {
+    public DefaultJsonWebTokenResponse generate(final String id, final String nickname) {
         return new DefaultJsonWebTokenResponse(
                 id,
+                nickname,
                 generateJwt(id, accessTokenExpirePeriod)
         );
     }
