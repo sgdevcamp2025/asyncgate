@@ -15,6 +15,7 @@ class KafkaProperties {
         lateinit var directAction: String
         lateinit var readStatus: String
         lateinit var directUpload: String
+        lateinit var loginSession: String
     }
 
     class ConsumerProperties {
@@ -25,6 +26,7 @@ class KafkaProperties {
             lateinit var directAction: String
             lateinit var readStatus: String
             lateinit var directUpload: String
+            lateinit var loginSession: String
         }
     }
 }

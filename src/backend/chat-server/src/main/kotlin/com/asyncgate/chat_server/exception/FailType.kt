@@ -32,5 +32,6 @@ enum class FailType(
     DIRECT_MESSAGE_CONTENT_NULL(HttpStatus.BAD_REQUEST, "DirectMessage_4002", "CODE, SNIPPET 타입은 content가 필수입니다."),
     REQUEST_PARAMETER_MISSING(HttpStatus.BAD_REQUEST, "Request_4001", "필수 요청 파라미터가 누락되었습니다."),
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource_4040", "요청한 리소스를 찾을 수 없습니다."),
+    SESSION_ID_NOT_FOUND(HttpStatus.UNAUTHORIZED, "StompSession_4031", "stomp 에서 세션ID를 추출할 수 없습니다."),
     ;
 }

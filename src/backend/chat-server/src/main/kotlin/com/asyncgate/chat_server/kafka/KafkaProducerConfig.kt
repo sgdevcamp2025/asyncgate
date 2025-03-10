@@ -2,6 +2,7 @@ package com.asyncgate.chat_server.kafka
 
 import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
+import com.asyncgate.chat_server.domain.LoginSession
 import com.asyncgate.chat_server.domain.ReadStatus
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringSerializer
@@ -51,6 +52,15 @@ class KafkaProducerConfig(
     }
 
     fun producerFactoryForUpload(): ProducerFactory<String, FileUploadResponse> {
+        return DefaultKafkaProducerFactory(producerConfigurations())
+    }
+
+    @Bean
+    fun kafkaTemplateForLoginSession(): KafkaTemplate<String, LoginSession> {
+        return KafkaTemplate(producerFactoryForLoginSession())
+    }
+
+    fun producerFactoryForLoginSession(): ProducerFactory<String, LoginSession> {
         return DefaultKafkaProducerFactory(producerConfigurations())
     }
 }

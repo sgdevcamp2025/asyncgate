@@ -2,6 +2,7 @@ package com.asyncgate.chat_server.kafka
 
 import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
+import com.asyncgate.chat_server.domain.LoginSession
 import com.asyncgate.chat_server.domain.ReadStatus
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -141,6 +142,37 @@ class KafkaConsumerConfig(
         return ConcurrentKafkaListenerContainerFactory<String, FileUploadResponse>().apply {
             this.consumerFactory = consumerFactoryForUpload()
             this.containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
+        }
+    }
+
+    /**
+     * ✅ 4. Login Session 관련 설정
+     */
+
+    private fun loginSessionConsumerConfigurations(): Map<String, Any> {
+        // groupId를 "loginSession" 같은 이름으로 설정한다고 가정
+        return baseConsumerConfigurations() + mapOf(
+            ConsumerConfig.GROUP_ID_CONFIG to kafkaProperties.consumer.groupId.loginSession
+        )
+    }
+
+    @Bean
+    fun consumerFactoryForLoginSession(): ConsumerFactory<String, LoginSession> {
+        val deserializer = JsonDeserializer(LoginSession::class.java).apply {
+            addTrustedPackages("*")
+        }
+        return DefaultKafkaConsumerFactory(
+            loginSessionConsumerConfigurations(),
+            StringDeserializer(),
+            deserializer
+        )
+    }
+
+    @Bean
+    fun loginSessionFactory(): ConcurrentKafkaListenerContainerFactory<String, LoginSession> {
+        return ConcurrentKafkaListenerContainerFactory<String, LoginSession>().apply {
+            consumerFactory = consumerFactoryForLoginSession()
+            containerProperties.ackMode = ContainerProperties.AckMode.MANUAL_IMMEDIATE
         }
     }
 }

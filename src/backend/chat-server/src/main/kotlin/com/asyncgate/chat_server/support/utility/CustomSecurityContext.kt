@@ -39,4 +39,9 @@ object CustomSecurityContext {
 
         return parseJwtToken(headerValue)
     }
+
+    fun extractSessionIdForStomp(message: Message<*>): String {
+        val accessor = StompHeaderAccessor.wrap(message)
+        return accessor.sessionId ?: throw ChatServerException(FailType.SESSION_ID_NOT_FOUND)
+    }
 }
