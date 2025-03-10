@@ -33,7 +33,7 @@ public class LoginMemberService implements LoginMemberUsecase {
             throw new UserServerException(FailType._INVALID_PASSWORD);
         }
 
-        DefaultJsonWebTokenResponse response = jsonWebTokenUtil.generate(member.getId());
+        DefaultJsonWebTokenResponse response = jsonWebTokenUtil.generate(member.getId(), member.getNickname());
         log.info(response.getAccessToken());
 
         return response;
