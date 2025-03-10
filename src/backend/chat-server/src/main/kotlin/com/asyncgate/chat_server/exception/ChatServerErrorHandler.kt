@@ -26,7 +26,6 @@ class ChatServerErrorHandler {
 
     @ExceptionHandler(NoResourceFoundException::class)
     fun handleResourceException(exception: NoResourceFoundException): ResponseEntity<FailResponse> {
-        log.error("🚨 [Global Error] Resource not found: ${exception.message}", exception)
         val errorType = FailType.RESOURCE_NOT_FOUND
         val response: FailResponse = FailResponse.of(
             errorType.errorCode,
@@ -38,7 +37,6 @@ class ChatServerErrorHandler {
 
     @ExceptionHandler(MissingServletRequestParameterException::class)
     fun handleMissingRequestParamException(e: MissingServletRequestParameterException): ResponseEntity<FailResponse> {
-        log.error("🚨 [Global Error] Missing request parameter: ${e.parameterName}", e)
         val errorType = FailType.REQUEST_PARAMETER_MISSING
         val response: FailResponse = FailResponse.of(
             errorType.errorCode,
