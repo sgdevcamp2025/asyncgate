@@ -1,10 +1,11 @@
 package com.asyncgate.chat_server.controller
 
+import com.asyncgate.chat_server.domain.LoginSession
+import com.asyncgate.chat_server.domain.Type
 import com.asyncgate.chat_server.filter.JwtTokenProvider
-import com.asyncgate.chat_server.filter.LoginSessionRequest
-import com.asyncgate.chat_server.filter.LoginType
 import com.asyncgate.chat_server.filter.StateRequest
 import com.asyncgate.chat_server.filter.StatusType
+import com.asyncgate.chat_server.service.StateSessionService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException
 @RestController
 class WebSocketDisconnectController(
     private val jwtTokenProvider: JwtTokenProvider,
+    private val stateSessionService: StateSessionService,
 ) {
 
     companion object {
@@ -42,21 +44,24 @@ class WebSocketDisconnectController(
         log.info("📌 받은 JWT Token: $jwtToken")
         log.info("📌 받은 세션 ID: $currentSessionId")
 
-        // ✅ JWT 토큰에서 사용자 ID 추출
+        //  JWT 토큰에서 사용자 ID 추출
         val currentUserId = jwtTokenProvider.extract(jwtToken)
 
-        val logOutSessionRequest = LoginSessionRequest(
-            type = LoginType.LOGOUT,
+        //  상태관리 서버에 로그아웃 전달
+        val logOutSessionRequest = LoginSession(
+            type = Type.LOGOUT,
             sessionId = currentSessionId,
             userId = currentUserId
         )
 
-        // ✅ 상태관리 서버에 로그아웃 전달
+        stateSessionService.sendLoginSessionToStateServer(logOutSessionRequest)
+
+        // 시그널링 서버에 비연결 전달
         val stateRequest = StateRequest(
             StatusType.DISCONNECT,
             userId = currentUserId
         )
 
-        // TODO: 상태관리 서버로 `stateRequest` 전송
+        // TODO: 시그널링 서버로 `stateRequest` 전송
     }
 }

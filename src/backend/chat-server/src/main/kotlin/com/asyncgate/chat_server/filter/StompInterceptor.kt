@@ -1,7 +1,10 @@
 package com.asyncgate.chat_server.filter
 
+import com.asyncgate.chat_server.domain.LoginSession
+import com.asyncgate.chat_server.domain.Type
 import com.asyncgate.chat_server.exception.ChatServerException
 import com.asyncgate.chat_server.exception.FailType
+import com.asyncgate.chat_server.service.StateSessionService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -17,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException
 @Component
 class FilterChannelInterceptor(
     private val jwtTokenProvider: JwtTokenProvider,
+    private val stateSessionService: StateSessionService,
 ) : ChannelInterceptor {
 
     companion object {
@@ -94,11 +98,13 @@ class FilterChannelInterceptor(
         val currentUserId = jwtTokenProvider.extract(jwtToken)
         log.info("🔑 [STOMP] 유저 ID 추출 완료: $currentUserId")
 
-        val loginSessionRequest = LoginSessionRequest(
-            type = LoginType.LOGIN,
+        val loginSession = LoginSession(
+            type = Type.LOGIN,
             sessionId = currentSessionId,
             userId = currentUserId
         )
+        stateSessionService.sendLoginSessionToStateServer(loginSession)
+
         // ToDo: 상태관리 서버에 로그인 전달 (주석 유지)
         // val guildIds = guildClient.getGuildIds(jwtToken)
         val stateRequest = StateRequest(
@@ -120,23 +126,6 @@ class FilterChannelInterceptor(
 
         return MessageBuilder.createMessage(ByteArray(0), errorAccessor.messageHeaders)
     }
-}
-
-data class LoginSessionRequest(
-    var type: LoginType,
-    val sessionId: String,
-    val userId: String,
-    val communityId: String? = null,
-    val ids: List<Long>? = null,
-) : java.io.Serializable {
-    override fun toString(): String {
-        return "LoginSessionRequest(type=$type, sessionId='$sessionId', userId='$userId', communityId=$communityId, ids=$ids)"
-    }
-}
-
-enum class LoginType {
-    LOGIN,
-    LOGOUT,
 }
 
 data class StateRequest(
