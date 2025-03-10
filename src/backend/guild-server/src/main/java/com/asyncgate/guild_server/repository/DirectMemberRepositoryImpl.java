@@ -31,4 +31,9 @@ public class DirectMemberRepositoryImpl implements DirectMemberRepository {
                 )
                 .toList();
     }
+
+    @Override
+    public List<String> getDirectMemberIds(final String directId) {
+        return queryDslRepository.getMemberIdsByDirectId(directId);
+    }
 }

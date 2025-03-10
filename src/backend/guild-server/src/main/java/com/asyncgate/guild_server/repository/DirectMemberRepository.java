@@ -8,4 +8,6 @@ public interface DirectMemberRepository {
     void saveAll(List<DirectMember> directMembers);
 
     List<DirectMember> getDirectMessageList(String currentUserId);
+
+    List<String> getDirectMemberIds(String directId);
 }

@@ -19,6 +19,7 @@ public class SecurityConstants {
             "/v3/api-docs/swagger-config",
             "/error",
             "/health",
-            "/actuator/info"
+            "/actuator/info",
+            "/direct/open/**"
     };
 }

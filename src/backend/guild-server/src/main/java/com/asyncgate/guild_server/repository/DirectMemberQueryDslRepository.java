@@ -34,4 +34,14 @@ public class DirectMemberQueryDslRepository {
                 .fetch();
     }
 
+    public List<String> getMemberIdsByDirectId(final String directId) {
+        return queryFactory
+                .select(directMemberEntity.memberId)
+                .from(directMemberEntity)
+                .where(
+                        directMemberEntity.directId.eq(directId),
+                        directMemberEntity.deleted.isFalse()
+                )
+                .fetch();
+    }
 }
