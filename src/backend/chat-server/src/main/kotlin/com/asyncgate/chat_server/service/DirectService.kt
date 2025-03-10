@@ -1,11 +1,14 @@
 package com.asyncgate.chat_server.service
 
+import com.asyncgate.chat_server.client.GuildClient
 import com.asyncgate.chat_server.controller.DirectPagingResponse
 import com.asyncgate.chat_server.controller.FileRequest
 import com.asyncgate.chat_server.controller.FileUploadResponse
 import com.asyncgate.chat_server.domain.DirectMessage
 import com.asyncgate.chat_server.domain.DirectMessageType
+import com.asyncgate.chat_server.domain.LoginSession
 import com.asyncgate.chat_server.domain.ReadStatus
+import com.asyncgate.chat_server.domain.Type
 import com.asyncgate.chat_server.exception.ChatServerException
 import com.asyncgate.chat_server.exception.FailType
 import com.asyncgate.chat_server.kafka.KafkaProperties
@@ -23,7 +26,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 interface DirectService {
-    fun send(directMessage: DirectMessage)
+    fun send(directMessage: DirectMessage, sessionId: String)
     fun updateReadStatus(readStatus: ReadStatus)
     fun typing(directMessage: DirectMessage)
     fun edit(directMessage: DirectMessage)
@@ -43,6 +46,8 @@ class DirectServiceImpl(
     private val directMessageRepository: DirectMessageRepository,
 
     private val s3Util: S3Util,
+    private val stateSessionService: StateSessionService,
+    private val guildClient: GuildClient,
 ) : DirectService {
 
     companion object {
@@ -50,13 +55,26 @@ class DirectServiceImpl(
     }
 
     @Transactional
-    override fun send(directMessage: DirectMessage) {
+    override fun send(directMessage: DirectMessage, sessionId: String) {
         log.info("📌 DirectServiceImpl.send")
         val key = directMessage.channelId
 
         // ToDo 추후 저장 서버 분리
         val saveDirectMessage = directMessageRepository.save(directMessage)
 
+        // Direct는 길드 > 카테고리 > 채널 과 같은 개념이 아닌 단순히 채널 ID가 directId
+        val directId = directMessage.channelId
+        val memberIds = guildClient.getDirectDetail(directId)
+
+        val loginSession = LoginSession(
+            type = Type.DIRECT,
+            sessionId = sessionId,
+            userId = directMessage.userId,
+            communityId = directMessage.channelId,
+            ids = memberIds
+        )
+
+        stateSessionService.sendLoginSessionToStateServer(loginSession)
         kafkaTemplateForDirectMessage.send(kafkaProperties.topic.directMessage, key, saveDirectMessage)
     }
 

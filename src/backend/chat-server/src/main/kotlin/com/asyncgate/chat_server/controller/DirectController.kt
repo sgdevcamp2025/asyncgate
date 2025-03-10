@@ -28,7 +28,8 @@ class DirectController(
         val jwtToken = CustomSecurityContext.extractJwtTokenForStomp(message)
         val userId = jwtTokenProvider.extract(jwtToken)
         val directMessage = directMessageCreate.toDomain(userId)
-        directService.send(directMessage)
+        val sessionId = CustomSecurityContext.extractSessionIdForStomp(message)
+        directService.send(directMessage, sessionId)
     }
 
     @MessageMapping("/chat/direct/read")
