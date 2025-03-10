@@ -100,9 +100,8 @@ public class DirectServiceImpl implements DirectService {
     }
 
     @Override
-    public UserClientInfoResponses getDirectDetail(final String directId) {
-        List<String> memberIds = directMemberRepository.getDirectMemberIds(directId);
-        return userClient.getUsersInfo(memberIds).getResult();
+    public List<String> getDirectDetail(final String directId) {
+        return directMemberRepository.getDirectMemberIds(directId);
     }
 
 }
