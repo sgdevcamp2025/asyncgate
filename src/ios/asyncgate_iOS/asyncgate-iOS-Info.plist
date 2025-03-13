@@ -14,5 +14,7 @@
 		<string>Pretendard-SemiBold.otf</string>
 		<string>Pretendard-Thin.otf</string>
 	</array>
+	<key>hostUrl</key>
+	<string>$(hostUrl)</string>
 </dict>
 </plist>
