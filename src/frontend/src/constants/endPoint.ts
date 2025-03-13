@@ -11,6 +11,7 @@ export const endPoint = {
     POST_AUTHENTICATION_CODE: '/users/validation/authentication-code',
     POST_SIGN_UP: '/users/sign-up',
     POST_SIGN_IN: '/users/sign-in',
+    GET_USER_ID: '/users/user/id',
   },
 
   friends: {

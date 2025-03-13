@@ -4,6 +4,8 @@ import ModalRenderer from './components/common/ModalRender';
 import AuthFullLayout from './components/layout/AuthFullLayout';
 import FullLayout from './components/layout/FullLayout';
 import PublicOnlyLayout from './components/layout/PublicOnlyLayout';
+import WebRTC from './pages/ChannelPage';
+import VideoTest from './pages/ChannelPage/test';
 import FriendsPage from './pages/FriendsPage';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
@@ -46,6 +48,10 @@ const router = createBrowserRouter([
           {
             path: '/friends',
             element: <FriendsPage />,
+          },
+          {
+            path: '/video',
+            element: <WebRTC />,
           },
         ],
       },

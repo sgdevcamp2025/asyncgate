@@ -11,12 +11,17 @@ import * as S from './styles';
 
 const GuildList = () => {
   const { openModal } = useModalStore();
-  const { setGuildId } = useGuildInfoStore();
+  const { setGuildId, setGuildName } = useGuildInfoStore();
 
   const { data } = useQuery<GuildResponse[]>({ queryKey: ['guildList'], queryFn: getGuilds });
 
   const handleChangeModal = () => {
     openModal('basic', <CreateGuildModalContent />);
+  };
+
+  const handleStoreGuildInfo = (guild: GuildResponse) => {
+    setGuildId(guild.guildId);
+    setGuildName(guild.name);
   };
 
   return (
@@ -29,7 +34,7 @@ const GuildList = () => {
           key={guild.guildId}
           data-tooltip={guild.name}
           $imageUrl={guild.profileImageUrl}
-          onClick={() => setGuildId(guild.guildId)}
+          onClick={() => handleStoreGuildInfo(guild)}
         />
       ))}
       <S.AddGuildButton onClick={handleChangeModal}>

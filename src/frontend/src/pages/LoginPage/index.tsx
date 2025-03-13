@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { postLogin } from '@/api/users';
 import AuthInput from '@/components/common/AuthInput';
+import { useUserInfoStore } from '@/stores/userInfo';
 import { formDropVarients } from '@/styles/motions';
 
 import useLogin from './hooks/useLogin';
@@ -12,6 +13,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const { email, password, handleEmailChange, handlePasswordChange } = useLogin();
+  const { setUserInfo } = useUserInfoStore();
 
   const handleRegisterButtonClick = () => {
     navigate('/register');
@@ -22,6 +24,7 @@ const LoginPage = () => {
       const response = await postLogin({ email, password });
       if (response.httpStatus === 200) {
         localStorage.setItem('access_token', response.result.access_token);
+        setUserInfo({ userId: response.result.user_id });
         return navigate('/friends', { replace: true });
       } else if (response.httpStatus === 404) {
         return setErrorMessage('이메일이나 비밀번호를 확인해주세요.');

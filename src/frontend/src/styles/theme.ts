@@ -17,6 +17,7 @@ const colors = {
   red: '#FF595E',
   green: '#248045',
   online: '#23A55A',
+  lightGreen: '#28B964',
   blue: '#5765F2',
   link: '#069BE3',
 };
