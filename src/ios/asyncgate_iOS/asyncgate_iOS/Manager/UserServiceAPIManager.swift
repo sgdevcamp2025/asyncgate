@@ -241,7 +241,6 @@ class UserServiceAPIManager {
                     case .success(let successResponse):
                         completion(.success(successResponse))
                      
-                        
                     case .failure(_):
                         if let data = response.data {
                             do {

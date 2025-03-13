@@ -8,7 +8,7 @@ target 'asyncgate_iOS' do
   # Pods for asyncgate_iOS
   pod 'Alamofire', '~> 5.5'
   pod 'KeychainAccess'
-
+  pod 'Starscream', '~> 4.0.6'
   target 'asyncgate_iOSTests' do
     inherit! :search_paths
     # Pods for testing

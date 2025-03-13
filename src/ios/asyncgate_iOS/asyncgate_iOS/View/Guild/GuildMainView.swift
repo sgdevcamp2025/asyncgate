@@ -30,7 +30,7 @@ struct GuildMainView: View {
                     ScrollView {
                         VStack(alignment: .center) {
                             Button {
-                                guildChannelViewModel.updateChannel()
+                               
                             } label: {
                                 SecondaryActionButtonStyle(imageName: "message.fill", color: Color.colorGrayImage)
                             }
@@ -106,21 +106,25 @@ struct GuildMainView: View {
                                 if !filteredChannels.isEmpty {
                                     ForEach(filteredChannels, id: \.self) { channel in
                                         Button {
+                                            
+                                        } label: {
+                                            ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
+                                        }
+                                        .simultaneousGesture(LongPressGesture().onEnded { _ in
                                             if let guildId = guildDetailViewModel.guildId {
                                                 guildChannelViewModel.guildId = guildId
                                             }
                                             guildChannelViewModel.channelId = channel.channelId
                                             guildChannelViewModel.name = channel.name
                                             isShowChannelModalView = true
-                                        } label: {
-                                            ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
                                         }
+                                        )
                                     }
                                 }
                                 
                                 ForEach(guildDetailViewModel.categories, id: \.self) { category in
                                     Button {
-                                       
+                                        
                                     } label: {
                                         CategoryButtonStyle(categoryName: category.name)
                                     }
@@ -132,7 +136,7 @@ struct GuildMainView: View {
                                         guildCategoryViewModel.categoryId = category.categoryId
                                         guildCategoryViewModel.name = category.name
                                         isShowCategoryModalView = true
-                                        }
+                                    }
                                     )
                                     
                                     let filteredChannelList = guildDetailViewModel.channels.filter({ $0.categoryId == category.categoryId })
@@ -140,6 +144,11 @@ struct GuildMainView: View {
                                     if !filteredChannelList.isEmpty {
                                         ForEach(filteredChannelList, id: \.self) { channel in
                                             Button {
+                                              
+                                            } label: {
+                                                ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
+                                            }
+                                            .simultaneousGesture(LongPressGesture().onEnded { _ in
                                                 if let guildId = guildDetailViewModel.guildId {
                                                     guildChannelViewModel.guildId = guildId
                                                 }
@@ -147,9 +156,8 @@ struct GuildMainView: View {
                                                 guildChannelViewModel.categoryId = category.categoryId
                                                 guildChannelViewModel.name = channel.name
                                                 isShowChannelModalView = true
-                                            } label: {
-                                                ChannelButtonStyle(channelName: channel.name, channelType: channel.channelType)
                                             }
+                                            )
                                         }
                                     }
                                 }

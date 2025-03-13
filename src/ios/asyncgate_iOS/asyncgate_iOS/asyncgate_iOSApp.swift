@@ -14,7 +14,7 @@ struct asyncgate_iOSApp: App {
     var body: some Scene {
         WindowGroup {
             if accessTokenViewModel.accessToken != nil {
-                ContentView()
+                GuildMainView()
             } else {
                 SignMainView()
             }
