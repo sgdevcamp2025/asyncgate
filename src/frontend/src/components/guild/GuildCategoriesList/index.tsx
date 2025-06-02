@@ -2,6 +2,7 @@ import { BiHash } from 'react-icons/bi';
 import { BsFillMicFill } from 'react-icons/bs';
 import { TbPlus } from 'react-icons/tb';
 
+import { useChannelActionStore } from '@/stores/channelAction';
 import { GuildChannelInfo, useChannelInfoStore } from '@/stores/channelInfo';
 import { useGuildInfoStore } from '@/stores/guildInfo';
 import useModalStore from '@/stores/modalStore';
@@ -20,6 +21,7 @@ const GuildCategoriesList = ({ categories, channels }: CategoriesListProps) => {
   const { openModal } = useModalStore();
   const { guildId } = useGuildInfoStore();
   const { selectedChannel, setSelectedChannel } = useChannelInfoStore();
+  const { isInVoiceChannel, setIsInVoiceChannel } = useChannelActionStore();
 
   const handleOpenModal = (categoryId: string, guildId: string) => {
     openModal('withFooter', <CreateChannelModal categoryId={categoryId} guildId={guildId} />);
@@ -27,6 +29,10 @@ const GuildCategoriesList = ({ categories, channels }: CategoriesListProps) => {
 
   const handleChannelClick = (channelInfo: GuildChannelInfo) => {
     setSelectedChannel({ id: channelInfo.id, name: channelInfo.name, type: channelInfo.type });
+
+    if (channelInfo.type === 'VOICE') {
+      if (!isInVoiceChannel) setIsInVoiceChannel(true);
+    }
   };
 
   return (
