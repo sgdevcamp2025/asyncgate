@@ -481,9 +481,10 @@ public class KurentoManager {
         // 사용자 정보 제거
         userStates.remove(userId);
 
-        // 사용자 제거 이벤트 브로드캐스트
+        log.info("유저가 방을 나가려고 합니다 ~~!!!!!! roomId={}, userId={}", roomId, userId);
+
         // 예: 클라이언트 측에서 해당 사용자의 미디어 스트림 제거 처리를 수행하도록 알림 전송
-        messagingTemplate.convertAndSend("/topic/removed/" + roomId, userId);
+        messagingTemplate.convertAndSend("/topic/removed/" + roomId, new KurentoAnswerResponse("userId", userId));
 
         // 선택사항: 방이 비어있다면 미디어 파이프라인도 정리
         if (roomEndpoints.get(roomId).isEmpty()) {
